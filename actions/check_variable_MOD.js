@@ -19,44 +19,44 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Version 1.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
-<retrieve-from-variable allowSlashParams dropdownLabel="Variable" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></retrieve-from-variable>
+<retrieve-from-variable allowSlashParams dropdownLabel="Variavel" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></retrieve-from-variable>
 
 <br><br><br>
 
 <div style="padding-top: 8px;">
 	<div style="float: left; width: 35%;">
-		<span class="dbminputlabel">Comparison type</span><br>
+		<span class="dbminputlabel">Tipo de comparação</span><br>
 		<select id="comparison" class="round" onchange="glob.onComparisonChanged(this)">
-    <option value="0">Exists</option>
-    <option value="1" selected>Equals</option>
-    <option value="2">Exactly</option>
-    <option value="3">Less than</option>
-    <option value="13">Less than or equal to</option>
-    <option value="4">Greater than</option>
-    <option value="12">Greater than or equal to</option>
-    <option value="5">Includes</option>
-    <option value="6">Matches Regex</option>
-    <option value="14">Matches Full Regex</option>
-    <option value="7">Length is greater than</option>
-    <option value="8">Length is less than</option>
-    <option value="9">Length is equal to</option>
-    <option value="10">Starts with</option>
-    <option value="11">Ends with</option>
-    <option value="15">Between</option>
-    <option value="16">Does it have accents?</option>
-    <option value="17">Includes the words ["a" , "b" , "c"]</option>
-    <option value="18">Equals the words ["a" , "b" , "c"]</option>
-    <option value="19">Is an even number</option>
-    <option value="20">Is an odd number</option>
+			<option value="0">Existe</option>
+			<option value="1" selected>Igual a</option>
+			<option value="2">Exatamente igual</option>
+			<option value="3">Menor que</option>
+      <option value="13">Menor ou igual a</option>
+			<option value="4">Maior que</option>
+      <option value="12">Maior ou igual a</option>
+			<option value="5">Inclui</option>
+			<option value="6">Matches Regex</option>
+      <option value="14">Matches Full Regex</option>
+      <option value="7">O comprimento é maior que</option>
+			<option value="8">O comprimento é menor que</option>
+			<option value="9">O comprimento é igual a</option>
+			<option value="10">Começa com</option>
+			<option value="11">Termina com</option>
+      <option value="15">Entre</option>
+      <option value="16">Possui acentuações?</option>
+      <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
+      <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
+      <option value="19">É um número par</option>
+      <option value="20">É um número ímpar</option>
 		</select>
 	</div>
 	<table style="float: right;width: 65%;"><tr><td style="padding:0px 8px"><div style="width: 100%" id="directValue">
-		<span class="dbminputlabel">Value to compare</span>
+		<span class="dbminputlabel">Valor para comparar</span>
 		<input id="value" class="round" type="text">
 	</div></td><td style="padding:0px 3px";> <div style="width: 100%;" id="containerxin">
-  <span class="dbminputlabel">is</span><br>
+  <span class="dbminputlabel">e</span><br>
   <input id="value2" class="round" type="text"></td></tr></table>
 </div></div>
 
