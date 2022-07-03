@@ -19,7 +19,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <retrieve-from-variable allowSlashParams dropdownLabel="Variavel" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></retrieve-from-variable>
 
@@ -30,6 +30,7 @@ module.exports = {
 		<span class="dbminputlabel">Tipo de comparação</span><br>
 		<select id="comparison" class="round" onchange="glob.onComparisonChanged(this)">
 			<option value="0">Existe</option>
+      <option value="21">Não existe</option>
 			<option value="1" selected>Igual a</option>
 			<option value="2">Exatamente igual</option>
 			<option value="3">Menor que</option>
@@ -92,7 +93,7 @@ module.exports = {
         document.getElementById("directValue").style.display = null;
         document.getElementById("containerxin").style.display = null;
       }
-      if (event.value === "16" || event.value === "19" || event.value === "20") {
+      if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21") {
         document.getElementById("directValue").style.display = "none";
         document.getElementById("containerxin").style.display = "none";
       }
@@ -187,6 +188,9 @@ module.exports = {
         case 20:
           result = val1 % 2 == 1
         break;
+        case 21:
+          result = undefined || null == val1;
+          break;
     }
 
     this.executeResults(result, data?.branch ?? data, cache);
