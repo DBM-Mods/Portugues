@@ -58,7 +58,7 @@ html: function(isEvent, data) {
 	<center><span class="dbminputlabel">Formato da Data</span></center>
 	<div style="width:100%;border:1px solid #333;background: rgba(50,50,50,0.5)"><br>
 <table style="width:100%"><tr>
-<td><span class="dbminputlabel">Anos</span><input id="ano" value="ano" value="anos " class="round" type="text"></td>
+<td><span class="dbminputlabel">Anos</span><input id="ano" value=" anos " class="round" type="text"></td>
 <td><span class="dbminputlabel">Meses</span><input id="meses" value=" meses " class="round" type="text"></td>
 <td><span class="dbminputlabel">Dias</span><input id="dia" value=" dias " class="round" type="text"></td>
 <td><span class="dbminputlabel">Horas</span><input id="hora" value=" horas " class="round" type="text"></td>
@@ -67,7 +67,7 @@ html: function(isEvent, data) {
 </table>
 <br>
 <table style="width:100%"><tr>
-<td><span class="dbminputlabel">Ano</span><input id="ano2" value="ano " class="round" type="text"></td>
+<td><span class="dbminputlabel">Ano</span><input id="ano2" value=" ano " class="round" type="text"></td>
 <td><span class="dbminputlabel">Mês</span><input id="meses2" value=" mês " class="round" type="text"></td>
 <td><span class="dbminputlabel">Dia</span><input id="dia2" value=" dia " class="round" type="text"></td>
 <td><span class="dbminputlabel">Hora</span><input id="hora2" value=" hora " class="round" type="text"></td>
