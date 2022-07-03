@@ -40,17 +40,17 @@ html: function(isEvent, data) {
 			<option value="10">Ignorar grupos iguais a 0 e ignorar os grupos [anos/meses]</option>
 			<option value="11">Ignorar grupos iguais a 0 e ignorar os grupos [anos/meses/dias]</option>
 
-			<option value="5">[2 dezenas ++] Ignorar grupos iguais a 0</option>
-			<option value="6">[2 dezenas ++] Ignorar grupos iguais a 0 e ignorar os grupos [anos/meses]</option>
-			<option value="7">[2 dezenas ++] Ignorar grupos iguais a 0 e ignorar os grupos [anos/meses/dias]</option>
+			<option value="5">[Mínimo 2 algarismos] Ignorar grupos iguais a 0</option>
+			<option value="6">[Mínimo 2 algarismos] Ignorar grupos iguais a 0 e ignorar os grupos [anos/meses]</option>
+			<option value="7">[Mínimo 2 algarismos] Ignorar grupos iguais a 0 e ignorar os grupos [anos/meses/dias]</option>
 
 			<option value="1">Mostrar todos os grupos</option>
 			<option value="8">Mostrar somente os grupos [dias/horas/minutos/segundos]</option>
 			<option value="9">Mostrar somente os grupos [horas/minutos/segundos]</option>
 
-			<option value="2">[2 dezenas ++] Mostrar todos os grupos</option>
-			<option value="3">[2 dezenas ++] Mostrar somente os grupos [dias/horas/minutos/segundos]</option>
-			<option value="4">[2 dezenas ++] Mostrar somente os grupos [horas/minutos/segundos]</option>
+			<option value="2">[Mínimo 2 algarismos] Mostrar todos os grupos</option>
+			<option value="3">[Mínimo 2 algarismos] Mostrar somente os grupos [dias/horas/minutos/segundos]</option>
+			<option value="4">[Mínimo 2 algarismos] Mostrar somente os grupos [horas/minutos/segundos]</option>
 		</select>
 	</div>
 	<br>
