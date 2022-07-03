@@ -55,7 +55,7 @@ html: function(isEvent, data) {
 	</div>
 	<br>
 
-	<center><span class="dbminputlabel">Formato da Data</span></center>
+	<center><span class="dbminputlabel">Textos da Data</span></center>
 	<div style="width:100%;border:1px solid #333;background: rgba(50,50,50,0.5)"><br>
 <table style="width:100%"><tr>
 <td><span class="dbminputlabel">Anos</span><input id="ano" value=" anos " class="round" type="text"></td>
