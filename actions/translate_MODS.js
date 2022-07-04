@@ -53,7 +53,7 @@ module.exports = {
     </select>
   </div>
   <div id="varNameContainer" style="display: none; float: right; width: 60%;">
-  <span class="dbminputlabel">Nome da Variável</span>><br>
+  <span class="dbminputlabel">Nome da Variável</span><br>
     <input id="varName" class="round" type="text">
   </div>
 </div>`;
