@@ -90,7 +90,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <voice-channel-input dropdownLabel="Canal de origem" selectId="channel" variableContainerId="varNameContainer" variableInputId="varName" selectWidth="45%" variableInputWidth="50%"></voice-channel-input>
@@ -161,7 +161,7 @@ module.exports = {
         result = targetChannel.bitrate;
         break;
       case 6:
-          result = targetChannel.members.filter(member => member).map(member => member.user).join(",");
+          result = targetChannel.members.filter(member => member).map(member => member.user);
           break;
       case 7:
         result = targetChannel.members.size;
