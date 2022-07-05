@@ -10,14 +10,14 @@ module.exports = {
   },
 
   subtitle (data) {
-    return `Editar "${data.value}" na posição ${data.position}`
+    return `Editar "${data.varName}" da posição ${data.position}`
   },
 
-  fields: ['storage', 'varName', 'position', 'value', 'tipo'],
+  fields: ['storage', 'varName', 'position', "addType2", 'value', 'tipo' , "valueeval"],
 
   html (isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div>
   <div style="float: left; width: 35%;">
@@ -45,17 +45,41 @@ module.exports = {
 		</select>
 	</div>
   <br><br><br>
-  <div style="width: 100%;float:left">
-  <span class="dbminputlabel">Valor</span><br>
-     <textarea id="value" rows="6" class="round" style="width:100%"></textarea>
-  </div>
+  <div style="float: left; width: 100%;">
+<span class="dbminputlabel">Comportamento</span><br>
+<select id="addType2" class="round" onchange="glob.onChange2(this)">
+  <option value="0" selected>Texto</option>
+  <option value="1">Eval</option>
+</select>
+</div>
+<br><br><br><br>
+  <div style="padding-top: 8px;" id="valor">
+	<span class="dbminputlabel">Valor</span><br>
+  <textarea id="value" rows="4" class="round" style="width:100%"></textarea>
+</div>
+<div style="padding-top: 8px;display:none" id="valoreval">
+	<span class="dbminputlabel">Valor</span><br>
+  <textarea id="valueeval" rows="4" name="is-eval" class="round" style="width:100%"></textarea>
+</div>
 </div>`
   },
 
   init () {
     const { glob, document } = this
 
+    glob.onChange2 = function (event) {
+      const value = parseInt(event.value, 10);
+      if (value == 0) {
+        document.getElementById("valor").style.display = null;
+        document.getElementById("valoreval").style.display = "none";
+      } else {
+        document.getElementById("valor").style.display = "none";
+        document.getElementById("valoreval").style.display = null;
+      }
+    };
+
     glob.refreshVariableList(document.getElementById('storage'))
+    glob.onChange2(document.getElementById("addType2"));
   },
 
   action (cache) {
@@ -64,13 +88,14 @@ module.exports = {
     const varName = this.evalMessage(data.varName, cache)
     const list = this.getVariable(storage, varName, cache)
     const position = this.evalMessage(data.position, cache)
-    const val = this.evalMessage(data.value, cache)
+    let val = this.evalMessage(data.value, cache)
+    let val2 = this.evalMessage(data.valueeval, cache);
     const compare = parseInt(data.tipo, 10);
     const itemarm = list[position];
-    const itemnumero = itemarm.toString();
-    const valnumero = val.toString();
+    const type2 = parseInt(data.addType2, 10);
 
-    let result;
+    switch (type2) {
+      case 0:
     switch (compare) {
       case 0:
         if (list.length > position) {
@@ -100,6 +125,45 @@ module.exports = {
           }
           break;
     }
+    break;
+      case 1:      
+    try {
+      val2 = this.eval(val2, cache);
+    } catch (e) {
+      this.displayError(data, cache, e);
+    }
+    switch (compare) {
+      case 0:
+        if (list.length > position) {
+          list[position] = val2
+        }
+        break;
+      case 1:
+        if (itemarm === undefined) {
+          if (list.length > position) {
+            list[position] = val2
+          }
+        } else {
+          if (list.length > position) {
+            list[position] = itemarm + val2;
+          }
+        }
+        break;
+        case 2:
+          if (itemarm === undefined) {
+            if (list.length > position) {
+              list[position] = val2
+            }
+          } else {
+            if (list.length > position) {
+              list[position] = parseFloat(itemarm) + parseFloat(val2);
+            }
+          }
+          break;
+    }
+    break;
+  }
+
 
     this.callNextAction(cache)
   },
