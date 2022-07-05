@@ -11,7 +11,7 @@ module.exports = {
 
   subtitle(data, presets) {
     const storage = presets.variables;
-    return `Add "${data.value}" em ${storage[parseInt(data.storage, 10)]} (${data.varName})`;
+    return `${storage[parseInt(data.storage, 10)]} (${data.varName})`;
   },
 
   fields: ["storage", "varName", "addType", "addType2", "position", "value" , "valueeval"],
@@ -19,7 +19,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <retrieve-from-variable dropdownLabel="Lista" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></retrieve-from-variable>
 
