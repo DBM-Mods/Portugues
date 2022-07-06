@@ -6,8 +6,8 @@ module.exports = {
       version: '2.1.5',
       preciseCheck: true,
       author: '[Tempest - 321400509326032897]',
-      authorUrl: 'https://github.com/DBM-Brazil/mods',
-      downloadURL: 'https://github.com/DBM-Brazil/mods',
+    authorUrl: 'https://github.com/DBM-Mods/Portugues',
+    downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
     },
 
     subtitle(data) {
