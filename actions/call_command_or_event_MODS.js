@@ -29,7 +29,7 @@ module.exports = {
     return `
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
-<div style="float: left; width: 85%; padding-top: 20px;">
+<div style="float: left; width: 100%; padding-top: 20px;">
 <span class="dbminputlabel">Tipo de fonte</span><br>
   <select id="sourcetype" class="round" onchange="glob.onChange1(this)">
     <option value="0" selected>Escolha da lista</option>
@@ -37,18 +37,18 @@ module.exports = {
     <option value="2">Inserir o nome do comando/evento</option>
   </select>
 </div>
-<div id="info1"; style="float: left; width: 85%; padding-top: 20px; display: none;">
+<div id="info1"; style="float: left; width: 100%; padding-top: 20px; display: none;">
 <span class="dbminputlabel">Comando/Evento</span><br>
   <select id="source" class="round">
     <optgroup id="commands" label="Commands"></optgroup>
     <optgroup id="events" label="Events"></optgroup>
   </select>
 </div>
-<div id="info2" style="float: left; width: 85%; padding-top: 20px;">
+<div id="info2" style="float: left; width: 100%; padding-top: 20px;">
 <span class="dbminputlabel">ID do comando/evento</span><br>
   <input id="source2" class="round" type="text" placeholder="">
 </div>
-<div id="info3" style="float: left; width: 85%; padding-top: 20px;">
+<div id="info3" style="float: left; width: 100%; padding-top: 20px;">
 <span class="dbminputlabel">Nome do comando/evento</span><br>
   <input id="source3" class="round" type="text" placeholder="">
 </div>
