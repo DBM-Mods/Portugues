@@ -19,7 +19,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
     <span class="dbminputlabel">Informação</span><br>
 <textarea id="storage" rows="3" placeholder="Insira a informação aqui..." style="width: 99%; font-family: monospace; white-space: nowrap;"></textarea>
@@ -48,6 +48,8 @@ module.exports = {
       <option value="16">Possui acentuações?</option>
       <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
       <option value="18">E igual as palavras  ["a" , "b" , "c"]</option>
+      <option value="19">É um número par</option>
+      <option value="20">É um número ímpar</option>
 		</select>
 	</div>
 	<table style="float: right;width: 65%;"><tr><td style="padding:0px 8px";><div style="width: 100%" id="directValue">
@@ -62,7 +64,7 @@ module.exports = {
 <br><br><br><br>
 
 <hr class="subtlebar">
-<br><br>
+<br>
 <div>
 <conditional-input id="branch" style="padding-top: 8px;"></conditional-input></div>`;
   },
@@ -90,7 +92,7 @@ module.exports = {
         document.getElementById("containerxin").style.display = null;
         document.getElementById("containerxin2").style.display = "none";
       }
-      if (event.value === "16") {
+      if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21") {
         document.getElementById("directValue").style.display = "none";
         document.getElementById("containerxin").style.display = "none";
       }
@@ -177,6 +179,12 @@ module.exports = {
           case 18:
             const conditionsZ = val2
             result = conditionsZ.some(elz => val1 == (elz));
+          break;
+          case 19:
+            result = val1 % 2 == 0
+          break;
+          case 20:
+            result = val1 % 2 == 1
           break;
     }
 
