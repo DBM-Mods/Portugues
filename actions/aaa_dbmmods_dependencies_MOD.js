@@ -7,7 +7,7 @@ const Mods = {
       try {
         resolve(require(moduleName))
       } catch {
-        console.log(`Failed to Install ${moduleName}, please re-try or install manually with "npm i ${moduleName}"`)
+        console.log(`Falha ao instalar ${moduleName}, tente novamente ou instale manualmente com "npm i ${moduleName}"`)
       }
     })
   },
