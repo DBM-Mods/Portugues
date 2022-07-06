@@ -50,7 +50,7 @@ module.exports = {
 </div>
 </div><br><br><br>
 <div style="padding-top: 8px; width: 100%;">
-<span class="dbminputlabel">Comparador</span><br>
+<span class="dbminputlabel">Tipo de comparação</span><br>
 			<select id="buscadoxin" class="round">
 				<option value="0" selected>Exatamente igual a</option>
 				<option value="1">Que inclua</option>
