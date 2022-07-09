@@ -25,7 +25,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <retrieve-from-variable dropdownLabel="Lista" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></retrieve-from-variable>
 
@@ -135,15 +135,18 @@ module.exports = {
           break;
           case 4:
               for(var i = 0; i < list.length; i++)
-              if(valor == list[i]) {
-              result = list[i]
-              list.splice(i, 1);};
+              if(valor.toString() == list[i].toString()) {
+              list2.push(list[i]);
+              list.splice(i, 1);
+              i = -1}
+              result = list2
               break;
             case 5:
                 for(var i = 0; i < list.length; i++)
                 if(list[i].includes(valor)) {
-                list2.push(list[i])
-                list.splice(i, 1);}
+                list2.push(list[i]);
+                list.splice(i, 1)
+                i = -1;}
                 result = list2
               break;
     }
