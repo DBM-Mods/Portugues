@@ -98,7 +98,7 @@ module.exports = {
     const varName = this.evalMessage(data.varName, cache);
     const list = this.getVariable(storage, varName, cache);
     const valor = this.evalMessage(data.valor, cache);
-
+    const list2 = []
     const type = parseInt(data.removeType, 10);
 
     let result = null;
@@ -142,8 +142,9 @@ module.exports = {
             case 5:
                 for(var i = 0; i < list.length; i++)
                 if(list[i].includes(valor)) {
-                result = list[i]
-                list.splice(i, 1);};
+                list2.push(list[i])
+                list.splice(i, 1);}
+                result = list2
               break;
     }
 
