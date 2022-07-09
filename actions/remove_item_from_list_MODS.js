@@ -56,7 +56,7 @@ module.exports = {
 <input id="valor" class="round" type="text"><br>
 </div>
 </div><br><br><br>
-<store-in-variable allowNone style="padding-top: 8px;" selectId="storage2" variableInputId="varName2" variableContainerId="varNameContainer2"></store-in-variable>`;
+<store-in-variable allowNone dropdownLabel="Armazenar em" style="padding-top: 8px;" selectId="storage2" variableInputId="varName2" variableContainerId="varNameContainer2"></store-in-variable>`;
   },
 
   init() {
