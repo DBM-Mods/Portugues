@@ -39,8 +39,8 @@ module.exports = {
       <option value="1">Remover da frente</option>
       <option value="2">Remover de uma posição específica</option>
       <option value="3">Remover vários itens</option>
-      <option value="4">Remover um item igual a</option>
-      <option value="5">Remover um item que inclui</option>
+      <option value="4">Remover todos os itens iguais a</option>
+      <option value="5">Remover todos os itens que incluem</option>
 		</select><br>
 	</div>
 	<div id="positionHolder" style="float: right; width: 100%; display: none;">
