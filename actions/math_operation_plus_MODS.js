@@ -5,13 +5,13 @@ section: "Other Stuff",
 meta: {
     version: '2.1.5',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
 subtitle: function(data) {
-	const info = ['Adição', 'Subtração', 'Multiplicação', 'Divisão', 'Arredondar', 'Arredondar em A.S.', 'Absoluto', 'Arredondar para cima', 'Arredondar para baixo', 'Fatorial', 'Elevado por (Expoentes)', 'Enraizado por (Raízes)', 'Seno', 'Cosseno', 'Tangente', 'Arco Seno', 'Arco Cosseno', 'Arco Tangente', '% do Número', 'Aumentar por %', 'Reduzir por %', 'Valor de Pi', 'Valor do número de Eulers', 'Raiz quadrada', 'Número aleátorio entre'];
+	const info = ['Adição', 'Subtração', 'Multiplicação', 'Divisão', 'Arredondar', 'Arredondar em A.S.', 'Absoluto', 'Arredondar para cima', 'Arredondar para baixo', 'Fatorial', 'Elevado por (Expoentes)', 'Enraizado por (Raízes)', 'Seno', 'Cosseno', 'Tangente', 'Arco Seno', 'Arco Cosseno', 'Arco Tangente', '% do Número', 'Aumentar por %', 'Reduzir por %', 'Valor de Pi', 'Valor do número de Eulers', 'Raiz quadrada', 'Número aleátorio entre', 'Fahrenheit para Celsius', 'Celsius para Fahrenheit', 'Celsius para Kelvin', 'Fahrenheit para Kelvin', 'Kelvin para Celsius', 'Kelvin para Fahrenheit', 'Raiz cúbica'];
 	return `${info[data.info]}`;
 },
 	
@@ -26,7 +26,7 @@ fields: ["FirstNumber", "info", "SecondNumber", "storage", "varName"],
 
 html: function(isEvent, data) {
 	return `
-	<div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.2</div>
+	<div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <table style="width:100%"><tr><td style="width:45%" id="Principado">
@@ -73,7 +73,14 @@ html: function(isEvent, data) {
 			<option value="21">Valor de Pi</option>
 			<option value="22">Valor do número de Eulers</option>
 			<option value="23">[ √ ] Raiz quadrada</option>
+			<option value="31">Raiz cúbica</option>
 			<option value="24">[ e ] Número aleátorio entre um e outro</option>
+			<option value="25">Fahrenheit para Celsius</option>
+			<option value="26">Celsius para Fahrenheit</option>
+			<option value="27">Celsius para Kelvin</option>
+			<option value="28">Fahrenheit para Kelvin</option>
+			<option value="29">Kelvin para Celsius</option>
+			<option value="30">Kelvin para Fahrenheit</option>
 </select>
 <br>
 </div>
@@ -252,10 +259,52 @@ init: function() {
 			dom2p.style.width = "45%";
 			document.querySelector("[name='Meio']").innerText = (`e`);
 			document.querySelector("[name='Informativo']").innerText = (`Número aleátorio entre (Valor 1) e (Valor 2)`);
+		} else if (value == 25) {
+			dom.style.display = "none";
+			dom2.style.display = null;
+			dom2p.style.width = "100%";
+			document.querySelector("[name='Meio']").innerText = (``);
+			document.querySelector("[name='Informativo']").innerText = (`Converta Fahrenheit(Valor 1) para Celsius\nExemplo: 100°F = 37,7°C`);
+		} else if (value == 26) {
+			dom.style.display = "none";
+			dom2.style.display = null;
+			dom2p.style.width = "100%";
+			document.querySelector("[name='Meio']").innerText = (``);
+			document.querySelector("[name='Informativo']").innerText = (`Converta Celsius(Valor 1) para Fahrenheit\nExemplo: 100°C = 212°F`);
+		} else if (value == 27) {
+			dom.style.display = "none";
+			dom2.style.display = null;
+			dom2p.style.width = "100%";
+			document.querySelector("[name='Meio']").innerText = (``);
+			document.querySelector("[name='Informativo']").innerText = (`Converta Celsius(Valor 1) para Kelvin\nExemplo: 100°C = 373,15 K`);
+		} else if (value == 28) {
+			dom.style.display = "none";
+			dom2.style.display = null;
+			dom2p.style.width = "100%";
+			document.querySelector("[name='Meio']").innerText = (``);
+			document.querySelector("[name='Informativo']").innerText = (`Converta Fahrenheit(Valor 1) para Kelvin\nExemplo: 100°F = 310,92 K`);
+		} else if (value == 29) {
+			dom.style.display = "none";
+			dom2.style.display = null;
+			dom2p.style.width = "100%";
+			document.querySelector("[name='Meio']").innerText = (``);
+			document.querySelector("[name='Informativo']").innerText = (`Converta Kelvin(Valor 1) para Celsius\nExemplo: 100 K = -173,15°C`);
+		} else if (value == 30) {
+			dom.style.display = "none";
+			dom2.style.display = null;
+			dom2p.style.width = "100%";
+			document.querySelector("[name='Meio']").innerText = (``);
+			document.querySelector("[name='Informativo']").innerText = (`Converta Kelvin(Valor 1) para Fahrenheit\nExemplo: 100 K = -279,67°F`);
+		} else if (value == 31) {
+			dom.style.display = "none";
+			dom2.style.display = null;
+			dom2p.style.width = "100%";
+			document.querySelector("[name='Meio']").innerText = (``);
+			document.querySelector("[name='Informativo']").innerText = (`Raiz cúbica do (Valor 1)`);
 		} else {
-            dom.style.display = 'none';
+                        dom.style.display = 'none';
 		}
-
+	    
 		
     };
 	glob.onChange1(document.getElementById('info'));
@@ -361,6 +410,27 @@ action: function(cache) {
 			break;
 		case 24:
 			result = Math.floor(Math.random() * (SN - FN)) + FN;
+			break;
+		case 25:
+			result = (FN - 32) * 5/9;
+			break;
+		case 26:
+			result = (FN * 9/5) + 32;
+			break;
+		case 27:
+			result = FN + 273.15;
+			break;
+		case 28:
+			result = (FN - 32) * 5/9 + 273.15;
+			break;
+		case 29:
+			result = FN - 273.15;
+			break;
+		case 30:
+			result = (FN  - 273.15) * 9/5 + 32;
+			break;
+		case 31:
+			result = Math.cbrt(FN);
 			break;
 		default:
 			break;
