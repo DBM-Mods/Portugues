@@ -48,8 +48,10 @@ module.exports = {
       <option value="16">Possui acentuações?</option>
       <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
       <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
-      <option value="19">É um número par</option>
-      <option value="20">É um número ímpar</option>
+      <option value="19">É um número par?</option>
+      <option value="20">É um número ímpar?</option>
+      <option value="21">É um número?</option>
+      <option value="22">É uma lista?</option>
 		</select>
 	</div>
 	<table style="float: right;width: 65%;"><tr><td style="padding:0px 8px"><div style="width: 100%" id="directValue">
@@ -92,7 +94,7 @@ module.exports = {
         document.getElementById("directValue").style.display = null;
         document.getElementById("containerxin").style.display = null;
       }
-      if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21") {
+      if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21" || event.value === "22") {
         document.getElementById("directValue").style.display = "none";
         document.getElementById("containerxin").style.display = "none";
       }
@@ -187,6 +189,12 @@ module.exports = {
         case 20:
           result = val1 % 2 == 1
         break;
+	case 21:
+          result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
+          break;
+        case 22:
+          result = Boolean(Array.isArray(val1));
+          break;
     }
 
     this.executeResults(result, data?.branch ?? data, cache);
