@@ -5,7 +5,7 @@ module.exports = {
   meta: {
     version: '2.1.5',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -19,7 +19,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
     <span class="dbminputlabel">Informação</span><br>
 <textarea id="storage" rows="3" placeholder="Insira a informação aqui..." style="width: 99%; font-family: monospace; white-space: nowrap;"></textarea>
@@ -47,9 +47,11 @@ module.exports = {
       <option value="15">Entre</option>
       <option value="16">Possui acentuações?</option>
       <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
-      <option value="18">E igual as palavras  ["a" , "b" , "c"]</option>
-      <option value="19">É um número par</option>
-      <option value="20">É um número ímpar</option>
+      <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
+      <option value="19">É um número par?</option>
+      <option value="20">É um número ímpar?</option>
+      <option value="21">É um número?</option>
+      <option value="22">É uma lista?</option>
 		</select>
 	</div>
 	<table style="float: right;width: 65%;"><tr><td style="padding:0px 8px";><div style="width: 100%" id="directValue">
@@ -185,6 +187,12 @@ module.exports = {
           break;
           case 20:
             result = val1 % 2 == 1
+          break;
+	  case 21:
+          result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
+          break;
+         case 22:
+          result = Boolean(Array.isArray(val1));
           break;
     }
 
