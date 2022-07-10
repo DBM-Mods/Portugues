@@ -19,6 +19,7 @@ module.exports = {
       "Canal da interação",
       "ID do canal da interação",
       "Objeto > Opções da Interação",
+      "Total de parâmetros",
     ];
     return `${info[parseInt(data.info, 10)]}`;
   },
@@ -27,7 +28,7 @@ module.exports = {
   variableStorage: function(data, varType) {
     const type = parseInt(data.storage);
     const prse2 = parseInt(data.info);
-    const info2 = ['Object','ID', 'Language','Type','Token','Channel','Channel ID','Object > Options'];
+    const info2 = ['Object','ID', 'Language','Type','Token','Channel','Channel ID','Object > Options','Number'];
     if(type !== varType) return;
     return ([data.varName2, info2[prse2]]);
 },
@@ -37,7 +38,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div>
@@ -51,6 +52,7 @@ module.exports = {
   <option value="4">Token da interação</option>
   <option value="5">Canal da interação</option>
   <option value="6">ID do canal da interação</option>
+  <option value="8">Total de parâmetros</option>
   <option value="7">Objeto > Opções da Interação</option>
 	</select>
 </div>
@@ -107,6 +109,10 @@ module.exports = {
         case 7:
         result = interaction.options._hoistedOptions;
         break;
+        case 8:
+          parametros = interaction.options._hoistedOptions
+          result = parametros.length
+          break;
       default:
         break;
     }
