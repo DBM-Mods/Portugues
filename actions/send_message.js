@@ -39,6 +39,9 @@ module.exports = {
     if (data.dontSend) {
       return `Store Data: ${text}`;
     }
+    if (data.descriptioncolor == undefined) {
+      data.descriptioncolor = "#ffffff"
+    }
     return data.description
     ? `<font color="${data.descriptioncolor}">${data.description}</font>`
     : `<font color="${data.descriptioncolor}">${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}</font>`
@@ -118,19 +121,19 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.6</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.7</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
-<send-reply-target-input selectId="channel" variableInputId="varName"></send-reply-target-input>
+<send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
 
 <br><br><br>
 
 <tab-system style="margin-top: 20px;">
 
 
-  <tab label="Message" icon="align left">
+  <tab label="Msg" icon="align left">
     <div style="padding: 8px;">
-      <textarea id="message" class="dbm_monospace" rows="10" placeholder="Insert message here..." style="height: calc(100vh - 309px); white-space: nowrap; resize: none;"></textarea>
+      <textarea id="message" class="dbm_monospace" rows="10" placeholder="Insira a mensagem aqui..." style="height: calc(100vh - 309px); white-space: nowrap; resize: none;"></textarea>
     </div>
   </tab>
 
@@ -146,36 +149,36 @@ module.exports = {
             <tab label="General" icon="certificate">
               <div style="padding: 8px">
                 <div style="float: left; width: calc(50% - 12px);">
-                  <span class="dbminputlabel">Title</span><br>
+                  <span class="dbminputlabel">Título</span><br>
                   <input id="title" class="round" type="text">
 
                   <br>
 
-                  <span class="dbminputlabel">Color</span><br>
-                  <table style="width:100%"><tr><td><input id="color" name="actionxinxyla" class="round" type="text" placeholder="Leave blank for default..."><td>
+                  <span class="dbminputlabel">Cor</span><br>
+                  <table style="width:100%"><tr><td><input id="color" name="actionxinxyla" class="round" type="text" placeholder="Deixe em branco para o padrão..."><td>
                   <td style="width:40px;text-align:center;padding:4px"><a id="btr1" style="cursor:pointer" onclick="(function(){
                     document.getElementById('color').type = 'color'
                     document.getElementById('btr1').style.display = 'none';
                     document.getElementById('btr2').style.display = 'block';
-                    })()"><button class="tiny compact ui icon button">Color</button></a><a id="btr2" style="cursor:pointer;display:none" onclick="(function(){
+                    })()"><button class="tiny compact ui icon button">Cor</button></a><a id="btr2" style="cursor:pointer;display:none" onclick="(function(){
                       document.getElementById('color').type = 'text';
                       document.getElementById('btr1').style.display = 'block';
                       document.getElementById('btr2').style.display = 'none';
-                      })()"><button class="tiny compact ui icon button">Text</button></a><td></tr></table>
+                      })()"><button class="tiny compact ui icon button">Texto</button></a><td></tr></table>
                 </div>
                 
                 
 
                 <div style="float: right; width: calc(50% - 12px);">
                   <span class="dbminputlabel">URL</span><br>
-                  <input id="url" class="round" type="text" placeholder="Leave blank for none...">
+                  <input id="url" class="round" type="text" placeholder="Deixe em branco para nenhum...">
 
                   <br>
 
-                  <span class="dbminputlabel">Use Timestamp</span><br>
+                  <span class="dbminputlabel">Usar Timestamp</span><br>
                   <select id="timestamp" class="round">
-                    <option value="true">Yes</option>
-                    <option value="false" selected>No</option>
+                    <option value="true">Sim</option>
+                    <option value="false" selected>Não</option>
                   </select>
                 </div>
 
@@ -185,19 +188,19 @@ module.exports = {
 
                 <br>
 
-                <span class="dbminputlabel">Image URL</span><br>
-                <input id="imageUrl" class="round" type="text" placeholder="Leave blank for none...">
+                <span class="dbminputlabel">Imagem URL</span><br>
+                <input id="imageUrl" class="round" type="text" placeholder="Deixe em branco para nenhum...">
 
                 <br>
 
                 <span class="dbminputlabel">Thumbnail URL</span><br>
-                <input id="thumbUrl" class="round" type="text" placeholder="Leave blank for none...">
+                <input id="thumbUrl" class="round" type="text" placeholder="Deixe em branco para nenhum...">
               </div>
             </tab>
 
-            <tab label="Description" icon="file image">
+            <tab label="Descrição" icon="file image">
               <div style="padding: 8px">
-                <textarea id="description" class="dbm_monospace" rows="10" placeholder="Insert description here..." style="height: calc(100vh - 149px); white-space: nowrap; resize: none;"></textarea>
+                <textarea id="description" class="dbm_monospace" rows="10" placeholder="Insira a descrição aqui..." style="height: calc(100vh - 149px); white-space: nowrap; resize: none;"></textarea>
               </div>
             </tab>
 
@@ -206,54 +209,54 @@ module.exports = {
                 <dialog-list id="fields" fields='["name", "value", "inline"]' dialogTitle="Field Info" dialogWidth="540" dialogHeight="300" listLabel="Fields" listStyle="height: calc(100vh - 190px);" itemName="Field" itemCols="1" itemHeight="30px;" itemTextFunction="data.name + '<br>' + data.value" itemStyle="text-align: left; line-height: 30px;">
                   <div style="padding: 16px;">
                     <div style="float: left; width: calc(50% - 12px);">
-                      <span class="dbminputlabel">Field Name</span><br>
+                      <span class="dbminputlabel">Field Nome</span><br>
                       <input id="name" class="round" type="text">
                     </div>
 
                     <div style="float: right; width: calc(50% - 12px);">
-                      <span class="dbminputlabel">Inline?</span><br>
+                      <span class="dbminputlabel">Em linha?</span><br>
                       <select id="inline" class="round">
-                        <option value="true">Yes</option>
-                        <option value="false" selected>No</option>
+                        <option value="true">Sim</option>
+                        <option value="false" selected>Não</option>
                       </select>
                     </div>
 
                     <br><br><br><br>
 
-                    <span class="dbminputlabel">Field Value</span><br>
-                    <textarea id="value" class="dbm_monospace" rows="10" placeholder="Insert field text here..." style="height: calc(100vh - 190px); white-space: nowrap; resize: none;"></textarea>
+                    <span class="dbminputlabel">Field Valor</span><br>
+                    <textarea id="value" class="dbm_monospace" rows="10" placeholder="Insira o texto do Field aqui..." style="height: calc(100vh - 190px); white-space: nowrap; resize: none;"></textarea>
 
                   </div>
                 </dialog-list>
               </div>
             </tab>
 
-            <tab label="Author" icon="user circle">
+            <tab label="Autor" icon="user circle">
               <div style="padding: 8px">
-                <span class="dbminputlabel">Author Text</span><br>
-                <input id="author" class="round" type="text" placeholder="Leave blank to disallow...">
+                <span class="dbminputlabel">Autor Texto</span><br>
+                <input id="author" class="round" type="text" placeholder="Deixe em branco para não permitir...">
 
                 <br>
 
-                <span class="dbminputlabel">Author URL</span><br>
-                <input id="authorUrl" class="round" type="text" placeholder="Leave blank for none...">
+                <span class="dbminputlabel">Autor URL</span><br>
+                <input id="authorUrl" class="round" type="text" placeholder="Deixe em branco para nenhum...">
 
                 <br>
 
-                <span class="dbminputlabel">Author Icon URL</span><br>
-                <input id="authorIcon" class="round" type="text" placeholder="Leave blank for none...">
+                <span class="dbminputlabel">Autor Icone URL</span><br>
+                <input id="authorIcon" class="round" type="text" placeholder="Deixe em branco para nenhum...">
               </div>
             </tab>
 
             <tab label="Footer" icon="map outline">
               <div style="padding: 8px;">
-                <span class="dbminputlabel">Footer Icon URL</span><br>
-                <input id="footerIconUrl" class="round" type="text" placeholder="Leave blank for none...">
+                <span class="dbminputlabel">Footer Icone URL</span><br>
+                <input id="footerIconUrl" class="round" type="text" placeholder="Deixe em branco para nenhum...">
 
                 <br>
 
-                <span class="dbminputlabel">Footer Text</span><br>
-                <textarea id="footerText" class="dbm_monospace" rows="10" placeholder="Leave blank to disallow..." style="height: calc(100vh - 234px); white-space: nowrap; resize: none;"></textarea>
+                <span class="dbminputlabel">Footer Texto</span><br>
+                <textarea id="footerText" class="dbm_monospace" rows="10" placeholder="Deixe em branco para não permitir..." style="height: calc(100vh - 234px); white-space: nowrap; resize: none;"></textarea>
               </div>
             </tab>
 
@@ -266,62 +269,62 @@ module.exports = {
   </tab>
 
 
-  <tab label="Buttons" icon="clone">
+  <tab label="Botões" icon="clone">
     <div style="padding: 8px;">
 
-      <dialog-list id="buttons" fields='["name", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions"]' dialogTitle="Button Info" dialogWidth="600" dialogHeight="700" listLabel="Buttons" listStyle="height: calc(100vh - 350px);" itemName="Button" itemCols="4" itemHeight="40px;" itemTextFunction="data.name" itemStyle="text-align: center; line-height: 40px;">
+      <dialog-list id="buttons" fields='["name", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions"]' dialogTitle="Button Info" dialogWidth="600" dialogHeight="700" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemCols="4" itemHeight="40px;" itemTextFunction="data.name" itemStyle="text-align: center; line-height: 40px;">
         <div style="padding: 16px;">
           <div style="width: calc(50% - 12px); float: left;">
-            <span class="dbminputlabel">Name</span>
+            <span class="dbminputlabel">Nome</span>
             <input id="name" class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Type</span><br>
+            <span class="dbminputlabel">Tipo</span><br>
             <select id="type" class="round">
-              <option value="PRIMARY" selected>Primary (Blurple)</option>
-              <option value="SECONDARY">Secondary (Grey)</option>
-              <option value="SUCCESS">Success (Green)</option>
-              <option value="DANGER">Danger (Red)</option>
-              <option value="LINK">Link (Grey)</option>
+              <option value="PRIMARY" selected>Primário (Blurple)</option>
+              <option value="SECONDARY">Secundário (Cinza)</option>
+              <option value="SUCCESS">Sucesso (Verde)</option>
+              <option value="DANGER">Perigo (Vermelho)</option>
+              <option value="LINK">Link (Cinza)</option>
             </select>
 
             <br>
 
             <span class="dbminputlabel">Link URL</span>
-            <input id="url" placeholder="Leave blank for none..." class="round" type="text">
+            <input id="url" placeholder="Deixe em branco para nenhum..." class="round" type="text">
 
             <br>
 
             <span class="dbminputlabel">
-              Action Response Mode
+            Modo de resposta da ação
               <help-icon type="ACTION_RESPONSE_MODE"></help-icon>
             </span><br>
             <select id="mode" class="round">
-              <option value="PERSONAL">Once, Command User Only</option>
-              <option value="PUBLIC">Once, Anyone Can Use</option>
-              <option value="MULTIPERSONAL">Multi, Command User Only</option>
-              <option value="MULTI" selected>Multi, Anyone Can Use</option>
-              <option value="PERSISTENT">Persistent</option>
+            <option value="PERSONAL">Uma vez, apenas para o usuário do comando</option>
+            <option value="PUBLIC">Uma vez, qualquer um pode usar</option>
+            <option value="MULTIPERSONAL">Multi, comando apenas para usuários</option>
+            <option value="MULTI" selected>Multi, qualquer um pode usar</option>
+            <option value="PERSISTENT">Persistente</option>
             </select>
           </div>
           <div style="width: calc(50% - 12px); float: right;">
-            <span class="dbminputlabel">Unique ID</span>
-            <input id="id" placeholder="Leave blank to auto-generate..." class="round" type="text">
+            <span class="dbminputlabel">Único ID</span>
+            <input id="id" placeholder="Deixe em branco para gerar automaticamente..." class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Action Row (1 - 5)</span>
-            <input id="row" placeholder="Leave blank for default..." class="round" type="text">
+            <span class="dbminputlabel">Linha da ação (1 - 5)</span>
+            <input id="row" placeholder="Deixe em branco para o padrão..." class="round" type="text">
 
             <br>
 
             <span class="dbminputlabel">Emoji</span>
-            <input id="emoji" placeholder="Leave blank for none..." class="round" type="text">
+            <input id="emoji" placeholder="Deixe em branco para nenhum..." class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Temporary Time-Limit (Miliseconds)</span>
+            <span class="dbminputlabel">Limite de tempo (milissegundos)</span>
             <input id="time" placeholder="60000" class="round" type="text">
           </div>
 
@@ -336,86 +339,86 @@ module.exports = {
   </tab>
 
 
-  <tab label="Selects" icon="list alternate">
+  <tab label="Menus" icon="list alternate">
     <div style="padding: 8px;">
 
-      <dialog-list id="selectMenus" fields='["placeholder", "id", "tempVarName", "row", "min", "max", "mode", "time", "options", "actions"]' dialogTitle="Select Menu Info" dialogWidth="800" dialogHeight="700" listLabel="Select Menus" listStyle="height: calc(100vh - 350px);" itemName="Select Menu" itemCols="1" itemHeight="40px;" itemTextFunction="data.placeholder + '<br>' + data.options" itemStyle="text-align: left; line-height: 40px;">
+      <dialog-list id="selectMenus" fields='["placeholder", "id", "tempVarName", "row", "min", "max", "mode", "time", "options", "actions"]' dialogTitle="Select Menu Info" dialogWidth="800" dialogHeight="700" listLabel="Menus" listStyle="height: calc(100vh - 350px);" itemName="Select Menu" itemCols="1" itemHeight="40px;" itemTextFunction="data.placeholder + '<br>' + data.options" itemStyle="text-align: left; line-height: 40px;">
         <div style="padding: 16px;">
           <div style="width: calc(33% - 16px); float: left; margin-right: 16px;">
-            <span class="dbminputlabel">Placeholder</span>
+            <span class="dbminputlabel">Nome do Menu</span>
             <input id="placeholder" class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Temp Variable Name</span>
+            <span class="dbminputlabel">Nome da variável temporária</span>
             <input id="tempVarName" placeholder="Stores selected value for actions..." class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Minimum Select Number</span>
+            <span class="dbminputlabel">Número mínimo de seleção</span>
             <input id="min" class="round" type="text" value="1">
 
             <br>
 
             <span class="dbminputlabel">
-              Action Response Mode
+            Modo de resposta da ação
               <help-icon type="ACTION_RESPONSE_MODE"></help-icon>
             </span><br>
             <select id="mode" class="round">
-              <option value="PERSONAL">Once, Command User Only</option>
-              <option value="PUBLIC">Once, Anyone Can Use</option>
-              <option value="MULTIPERSONAL">Multi, Command User Only</option>
-              <option value="MULTI" selected>Multi, Anyone Can Use</option>
-              <option value="PERSISTENT">Persistent</option>
+            <option value="PERSONAL">Uma vez, apenas para o usuário do comando</option>
+            <option value="PUBLIC">Uma vez, qualquer um pode usar</option>
+            <option value="MULTIPERSONAL">Multi, comando apenas para usuários</option>
+            <option value="MULTI" selected>Multi, qualquer um pode usar</option>
+            <option value="PERSISTENT">Persistente</option>
             </select>
           </div>
           <div style="width: calc(33% - 16px); float: left; margin-right: 16px;">
-            <span class="dbminputlabel">Unique ID</span>
-            <input id="id" placeholder="Leave blank to auto-generate..." class="round" type="text">
+            <span class="dbminputlabel">ID único</span>
+            <input id="id" placeholder="Deixe em branco para gerar automaticamente..." class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Action Row (1 - 5)</span>
-            <input id="row" placeholder="Leave blank for default..." class="round" type="text">
+            <span class="dbminputlabel">Linha da ação (1 - 5)</span>
+            <input id="row" placeholder="Deixe em branco para o padrão..." class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Maximum Select Number</span>
+            <span class="dbminputlabel">Número máximo de seleção</span>
             <input id="max" class="round" type="text" value="1">
 
             <br>
 
-            <span class="dbminputlabel">Temporary Time-Limit (Miliseconds)</span>
+            <span class="dbminputlabel">Limite de tempo (milissegundos)</span>
             <input id="time" placeholder="60000" class="round" type="text">
           </div>
           <div style="width: calc(34% - 8px); height: 300px; float: left; margin-left: 8px;">
 
             <dialog-list id="options" fields='["label", "description", "value", "emoji", "default"]' dialogTitle="Select Menu Option Info" dialogWidth="360" dialogHeight="440" listLabel="Options" listStyle="height: 210px;" itemName="Option" itemCols="1" itemHeight="20px;" itemTextFunction="data.label" itemStyle="text-align: left; line-height: 20px;">
               <div style="padding: 16px;">
-                <span class="dbminputlabel">Name</span>
+                <span class="dbminputlabel">Nome</span>
                 <input id="label" class="round" type="text">
 
                 <br>
 
-                <span class="dbminputlabel">Description</span>
+                <span class="dbminputlabel">Descrição</span>
                 <input id="description" class="round" type="text">
 
                 <br>
 
-                <span class="dbminputlabel">Value</span>
-                <input id="value" placeholder="The text passed to the temp variable..." class="round" type="text">
+                <span class="dbminputlabel">Valor</span>
+                <input id="value" placeholder="O texto passado para a variável temp..." class="round" type="text">
 
                 <br>
 
                 <span class="dbminputlabel">Emoji</span>
-                <input id="emoji" placeholder="Leave blank for none..." class="round" type="text">
+                <input id="emoji" placeholder="Deixe em branco para nenhum..." class="round" type="text">
 
                 <br>
 
-                <span class="dbminputlabel">Default Selected</span><br>
+                <span class="dbminputlabel">Padrão selecionado</span><br>
                 <select id="default" class="round">
-                  <option value="true">Yes</option>
-                  <option value="false" selected>No</option>
+                  <option value="true">Sim</option>
+                  <option value="false" selected>Não</option>
                 </select>
               </div>
             </dialog-list>
@@ -440,23 +443,23 @@ module.exports = {
   </tab>
 
 
-  <tab label="Files" icon="file image">
+  <tab label="Arquivos" icon="file image">
     <div style="padding: 8px;">
 
-      <dialog-list id="attachments" fields='["url", "name", "spoiler"]' dialogTitle="Attachment Info" dialogWidth="400" dialogHeight="280" listLabel="Files" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="data.url" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="attachments" fields='["url", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="400" dialogHeight="280" listLabel="Arquivos" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="data.url" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 16px;">
-          <span class="dbminputlabel">Attachment Local/Web URL</span>
+          <span class="dbminputlabel">Anexo Local/Web URL</span>
           <input id="url" class="round" type="text" value="resources/">
 
           <br>
 
-          <span class="dbminputlabel">Attachment Name</span>
-          <input id="name" class="round" type="text" placeholder="Leave blank for default...">
+          <span class="dbminputlabel">Nome do anexo</span>
+          <input id="name" class="round" type="text" placeholder="Deixe em branco para o padrão...">
 
           <br>
 
           <div style="text-align: center; padding-top: 4px;">
-            <dbm-checkbox id="spoiler" label="Make Attachment Spoiler"></dbm-checkbox>
+            <dbm-checkbox id="spoiler" label="Fazer spoiler do anexo"></dbm-checkbox>
           </div>
         </div>
       </dialog-list>
@@ -464,20 +467,20 @@ module.exports = {
   </tab>
 
 
-  <tab label="Settings" icon="cogs">
+  <tab label="Config" icon="cogs">
     <div style="padding: 8px;height:250px;overflow:auto">
-      <dbm-checkbox style="float: left;" id="reply" label="Reply to Interaction if Possible" checked></dbm-checkbox>
+      <dbm-checkbox style="float: left;" id="reply" label="Responda à interação se possível" checked></dbm-checkbox>
 
-      <dbm-checkbox style="float: right;" id="ephemeral" label="Make Reply Private (Ephemeral)"></dbm-checkbox>
+      <dbm-checkbox style="float: right;" id="ephemeral" label="Tornar a resposta privada"></dbm-checkbox>
 
       <br><br>
 
       <div style="display: flex; justify-content: space-between;">
-        <dbm-checkbox id="tts" label="Text-to-Speech"></dbm-checkbox>
+        <dbm-checkbox id="tts" label="Texto-Para-Fala"></dbm-checkbox>
 
-        <dbm-checkbox id="overwrite" label="Overwrite Changes"></dbm-checkbox>
+        <dbm-checkbox id="overwrite" label="Substituir alterações"></dbm-checkbox>
 
-        <dbm-checkbox id="dontSend" label="Don't Send Message"></dbm-checkbox>
+        <dbm-checkbox id="dontSend" label="Não envie a mensagem"></dbm-checkbox>
       </div>
 
       <br>
@@ -486,7 +489,7 @@ module.exports = {
       <br>
 
       <div style="padding-bottom: 12px;">
-        <retrieve-from-variable allowNone dropdownLabel="Message/Options to Edit" selectId="editMessage" variableInputId="editMessageVarName" variableContainerId="editMessageVarNameContainer">
+        <retrieve-from-variable allowNone dropdownLabel="Editar mensagem" selectId="editMessage" variableInputId="editMessageVarName" variableContainerId="editMessageVarNameContainer">
           <option value="intUpdate">Interaction Update</option>
         </retrieve-from-variable>
       </div>
@@ -494,7 +497,7 @@ module.exports = {
       <br><br><br>
 
       <div style="padding-bottom: 12px;">
-        <store-in-variable allowNone selectId="storage" variableInputId="varName2" variableContainerId="varNameContainer2"></store-in-variable>
+        <store-in-variable allowNone dropdownLabel="Armazenar em" selectId="storage" variableInputId="varName2" variableContainerId="varNameContainer2"></store-in-variable>
       </div>
 
       <br><br><br>
@@ -502,22 +505,22 @@ module.exports = {
       <br>
       <div>
       <div style="float: left; width: 35%">
-      <span class="dbminputlabel">If Message Delivery Fails</span><br>
+      <span class="dbminputlabel">Se a mensagem falhar</span><br>
       <select id="iffalse" class="round" onchange="glob.onComparisonChanged(this)">
-      <option value="0">Continue Actions</option>
-      <option value="1" selected>Stop Action Sequence</option>
-      <option value="2">Jump to action</option>
-      <option value="3">Skip Next Actions</option>
-      <option value="4">Go to Action Anchor</option>
+      <option value="0">Continuar ações</option>
+      <option value="1" selecionado>Parar sequência de ação</option>
+      <option value="2">Ir para a ação</option>
+      <option value="3">Pular as próximas ações</option>
+      <option value="4">Ir para a âncora de ação</option>
     </select>
     </div>
-    <div id="iffalseContainer" style="display: none; float: right; width: 60%;"><span id="ifName" class="dbminputlabel">For</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+    <div id="iffalseContainer" style="display: none; float: right; width: 60%;"><span id="ifName" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
       <br><br><br>
 
       <div style="padding-bottom: 12px;padding-top: 12px">
       <table style="width:100%;"><tr>
-      <td><span class="dbminputlabel">Description</span><br><input type="text" class="round" id="description" placeholder="Leave empty to remove"></td>
-      <td style="padding:0px 0px 0px 10px;width:55px"><span class="dbminputlabel">Color</span><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+      <td><span class="dbminputlabel">Description</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+      <td style="padding:0px 0px 0px 10px;width:55px"><span class="dbminputlabel">Cor</span><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
       </tr></table>
       </div>
 
