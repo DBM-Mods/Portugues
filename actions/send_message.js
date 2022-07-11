@@ -519,7 +519,7 @@ module.exports = {
 
       <div style="padding-bottom: 12px;padding-top: 12px">
       <table style="width:100%;"><tr>
-      <td><span class="dbminputlabel">Description</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+      <td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
       <td style="padding:0px 0px 0px 10px;width:55px"><span class="dbminputlabel">Cor</span><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
       </tr></table>
       </div>
