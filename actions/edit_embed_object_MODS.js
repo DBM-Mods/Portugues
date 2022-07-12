@@ -101,7 +101,7 @@ module.exports = {
     </div>
   </div><br><br><br>
   <div style="padding-top: 8px;">
-    <div style="width: 100%;">
+    <div style="width: 40%;">
     <span class="dbminputlabel">Editar descrição</span><br>
       <select id="Edit2" class="round" onchange="glob.onChange2(this)">
         <option value=0 selected>Manter conteúdo</option>
@@ -213,7 +213,7 @@ module.exports = {
     </div>
   </div><br><br><br>
   <div style="padding-top: 8px;">
-    <div style="width: 100%;">
+    <div style="width: 40%;">
     <span class="dbminputlabel">Editar Footer</span><br>
       <select id="Edit9" class="round" onchange="glob.onChange9(this)">
         <option value=0 selected>Manter conteúdo</option>
