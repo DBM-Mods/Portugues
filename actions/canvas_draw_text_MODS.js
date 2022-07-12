@@ -27,7 +27,7 @@ html: function(isEvent, data) {
 	${data.variables[1]}
 </select></td>
 <td><span class="dbminputlabel">Nome da Variavel</span><br>
-	<input id="varName" class="round" type="text" value="FFFFFF" list="variableList">
+	<input id="varName" class="round" type="text" list="variableList">
 </td>
 
 <tr>
