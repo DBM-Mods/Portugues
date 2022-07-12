@@ -20,7 +20,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div style="width: 100%; height: 350px; overflow-y: scroll;padding:5px">
     
@@ -42,6 +42,7 @@ module.exports = {
 <div id="varNameContainer2" style=" width: 100%;">
   <span class="dbminputlabel">Indique o número de embeds</span><br>
   <select id="embeds" class="round" onchange="glob.onComparisonChanged2(this)">
+  <option value="0">0</option>
   <option value="1" selected>1</option>
   <option value="2">2</option>
   <option value="3">3</option>
@@ -168,7 +169,7 @@ module.exports = {
 
   glob.onComparisonChanged2 = function (event) {
     if (event.value) {
-      document.getElementById("embed1").style.display = "block";
+      document.getElementById("embed1").style.display = "none";
       document.getElementById("embed2").style.display = "none";
       document.getElementById("embed3").style.display = "none";
       document.getElementById("embed4").style.display = "none";
@@ -178,6 +179,9 @@ module.exports = {
       document.getElementById("embed8").style.display = "none";
       document.getElementById("embed9").style.display = "none";
       document.getElementById("embed10").style.display = "none";
+    }
+    if (event.value > 0) {
+      document.getElementById("embed1").style.display = "block";
     }
     if (event.value > 1) {
       document.getElementById("embed1").style.display = "block";
@@ -291,6 +295,8 @@ module.exports = {
     }
 
     switch (embeds) {
+      case 0:
+        break;
       case 1:
         messageOptions.embeds = [embed];
         break;
