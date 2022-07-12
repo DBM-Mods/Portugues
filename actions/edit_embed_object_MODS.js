@@ -125,7 +125,16 @@ module.exports = {
     </div>
     <div id="Input3" style="display: none; float: right; width: 55%;">
     <span class="dbminputlabel">Cor</span><br>
-      <input id="color" class="round" type="text">
+    <table style="width:100%"><tr><td><input id="color" name="actionxinxyla" class="round" type="text"><td>
+    <td style="width:40px;text-align:center;padding:4px"><a id="btr1" style="cursor:pointer" onclick="(function(){
+      document.getElementById('color').type = 'color'
+      document.getElementById('btr1').style.display = 'none';
+      document.getElementById('btr2').style.display = 'block';
+      })()"><button class="tiny compact ui icon button">Cor</button></a><a id="btr2" style="cursor:pointer;display:none" onclick="(function(){
+        document.getElementById('color').type = 'text';
+        document.getElementById('btr1').style.display = 'block';
+        document.getElementById('btr2').style.display = 'none';
+        })()"><button class="tiny compact ui icon button">Texto</button></a><td></tr></table>
     </div>
   </div><br><br><br>
   <div style="padding-top: 8px;">
