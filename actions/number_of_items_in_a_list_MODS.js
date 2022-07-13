@@ -27,7 +27,7 @@ module.exports = {
   
     html(isEvent, data) {
       return `
-      <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+      <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
       <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
       
       
@@ -72,7 +72,10 @@ module.exports = {
                 <option value="19">É um número par?</option>
                 <option value="20">É um número ímpar?</option>
                 <option value="21">É um número?</option>
+                <option value="24">É um texto?</option>
                 <option value="22">É uma lista?</option>
+                <option value="23">É um URL de imagem?</option>
+                <option value="25">É um URL?</option>
           </select>
       </div>
       <table style="float: right;width: 65%;"><tr><td style="padding:0px 8px"><div style="width: 100%" id="directValue">
@@ -127,7 +130,7 @@ module.exports = {
           document.getElementById("directValue").style.display = null;
           document.getElementById("containerxin").style.display = null;
         }
-        if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21" || event.value === "22") {
+        if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21" || event.value === "22" || event.value === "23" || event.value === "24" || event.value === "25") {
           document.getElementById("directValue").style.display = "none";
           document.getElementById("containerxin").style.display = "none";
         }
@@ -360,6 +363,35 @@ module.exports = {
           case 22:
             for(var i = 0; i < list.length; i++) {
               if(Array.isArray(list[i])) {
+                contagem++;
+              }
+            }
+
+            result = contagem;
+            break;
+          case 23:
+            const isImageUrl = require('is-image-url');
+            for(var i = 0; i < list.length; i++) {
+              if(isImageUrl(list[i])) {
+                contagem++;
+              }
+            }
+
+            result = contagem;
+            break;
+          case 24:
+            for(var i = 0; i < list.length; i++) {
+              if(typeof list[i] === "string") {
+                contagem++;
+              }
+            }
+
+            result = contagem;
+            break;
+          case 25:
+            const isUrl = require("is-url");
+            for(var i = 0; i < list.length; i++) {
+              if(isUrl(list[i])) {
                 contagem++;
               }
             }
