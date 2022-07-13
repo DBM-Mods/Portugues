@@ -19,11 +19,11 @@ module.exports = {
     return ([data.varName3, 'Message'])
   },
 
-  fields: ['storage', 'varName', 'channel', 'varName2', 'message', 'compress', 'spoiler', 'storage2', 'varName3'],
+  fields: ['storage', 'varName', 'channel', 'varName2', 'message', 'compress', 'spoiler', 'storage2', 'varName3' ,"storage4", "varName4",],
 
   html (isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div>
   <div style="float: left; width: 35%;">
@@ -37,7 +37,7 @@ module.exports = {
     <input id="varName" class="round" type="text" list="variableList"><br>
   </div>
 </div><br><br><br>
-<div style="padding-top: 8px;">
+<div>
   <div style="float: left; width: 35%;">
   <span class="dbminputlabel">Enviar para</span><br>
     <select id="channel" class="round" onchange="glob.sendTargetChange(this, 'varNameContainer2')">
@@ -49,11 +49,11 @@ module.exports = {
     <input id="varName2" class="round" type="text" list="variableList"><br>
   </div>
 </div><br><br><br>
-<div style="padding-top: 8px;">
+<div>
 <span class="dbminputlabel">Mensagem</span><br>
-  <textarea id="message" rows="2" placeholder="Insira sua mensagem aqui..." style="width: 100%"></textarea>
+  <textarea id="message" rows="1" placeholder="Insira sua mensagem aqui..." style="width: 100%"></textarea>
 </div><br>
-<div style="padding-top: 8px;">
+<div>
   <div style="float: left; width: 50%;">
   <span class="dbminputlabel">Imagem Spoiler</span><br>
     <select id="spoiler" class="round">
@@ -78,6 +78,15 @@ module.exports = {
   </div>
 </div><br><br>
 <div>
+<br>
+  <div id="embed1"><table><tr><td><span class="dbminputlabel">Objeto Embed</span><br>
+    <select id="storage4" class="round">
+      ${data.variables[1]}
+    </select>
+  </td><td><span class="dbminputlabel">Nome da Variavel</span><br>
+    <input id="varName4" placeholder="Opcional" class="round" type="text" list="variableList">
+  </td></tr></table>
+  </div><br>
   <div style="float: left; width: 35%;">
   <span class="dbminputlabel">Armazenar em</span><br>
     <select id="storage2" class="round" onchange="glob.variableChange(this, 'varNameContainer3')">
@@ -88,7 +97,12 @@ module.exports = {
   <span class="dbminputlabel">Nome da Variavel</span><br>
     <input id="varName3" class="round" type="text">
   </div>
-</div>`
+
+</div>
+<style>
+table{width:100%}
+td{width:50%;padding:0px 5px 0px 0px;}
+</style>`
   },
 
   init () {
@@ -105,11 +119,16 @@ module.exports = {
     const Canvas = require('canvas')
     const storage = parseInt(data.storage)
     const varName = this.evalMessage(data.varName, cache)
+    const embed = this.getVariable(data.storage4, data.varName4, cache)
     const imagedata = this.getVariable(storage, varName, cache)
     if (!imagedata) {
       this.callNextAction(cache)
       return
     }
+    let messageOptions = {};
+    if (embed !== undefined) {
+    messageOptions.embeds = [embed];
+  } else {}
     const channel = parseInt(data.channel)
     const varName2 = this.evalMessage(data.varName2, cache)
     const target = await this.getSendTargetFromData(channel, varName2, cache);
@@ -121,12 +140,11 @@ module.exports = {
     ctx.drawImage(image, 0, 0, image.width, image.height)
     const name = `${parseInt(data.spoiler) === 1 ? 'SPOILER_' : ''}image.png`
     const buffer = canvas.toBuffer('image/png', { compressionLevel: compress })
-    const attachment = new DiscordJS.MessageAttachment(buffer, name)
+    const message = this.evalMessage(data.message, cache)
+     if (message.length > 0) {messageOptions.content = message;}
+  messageOptions.files = [new DiscordJS.MessageAttachment(buffer, name)];
     if (target?.send) {
-      target.send({
-        content: (this.evalMessage(data.message, cache)).length === 0 ? " " : this.evalMessage(data.message, cache),
-        files: [new DiscordJS.MessageAttachment(buffer, name)],
-      })
+      target.send(messageOptions)
         .then((msgobject) => {
           const varName3 = this.evalMessage(data.varName3, cache)
           const storage2 = parseInt(data.storage2)
