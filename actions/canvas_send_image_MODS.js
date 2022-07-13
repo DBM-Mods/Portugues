@@ -124,7 +124,7 @@ module.exports = {
     const attachment = new DiscordJS.MessageAttachment(buffer, name)
     if (target?.send) {
       target.send({
-        content: this.evalMessage(data.message, cache),
+        content: (this.evalMessage(data.message, cache)).length === 0 ? " " : this.evalMessage(data.message, cache),
         files: [new DiscordJS.MessageAttachment(buffer, name)],
       })
         .then((msgobject) => {
