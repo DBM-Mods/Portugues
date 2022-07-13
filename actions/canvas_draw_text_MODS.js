@@ -38,7 +38,7 @@ html: function(isEvent, data) {
 
 <td>
 <span class="dbminputlabel">Cor do texto (Hex)</span><br>
-    <table style="width:100%"><tr><th><input id="fontColor" name="actionxinxyla" class="round" type="text" placeholder="Insira um código de cor HEX..."><th>
+    <table style="width:100%"><tr><th><input value="#FFFFFF" id="fontColor" name="actionxinxyla" class="round" type="text" placeholder="Insira um código de cor HEX..."><th>
     <th style="width:40px;text-align:center;padding:4px"><a id="btr1" style="cursor:pointer" onclick="(function(){
       document.getElementById('fontColor').type = 'color'
       document.getElementById('btr1').style.display = 'none';
