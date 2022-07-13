@@ -46,11 +46,11 @@ module.exports = {
 <div>
   <div style="float: left; width: 40%;">
   <span class="dbminputlabel">Armazenar em</span><br>
-    <select id="storage2" class="round">
-      ${data.variables[1]}
+    <select id="storage2" onchange="glob.onComparisonChanged(this)" class="round">
+      ${data.variables[0]}
     </select><br>
   </div>
-  <div style="padding-left: 2%; float: left; width: 60%;">
+  <div style="padding-left: 2%; float: left; width: 60%;" id="containerxin">
   <span class="dbminputlabel">Nome da Variavel</span><br>
     <input id="varName2" class="round" type="text"><br>
   </div>
@@ -60,6 +60,14 @@ module.exports = {
   init () {
     const { document, glob } = this
 
+    glob.onComparisonChanged = function (event) {
+      if (event.value == 0) {
+        document.getElementById("containerxin").style.display = "none";
+      } else
+      {document.getElementById("containerxin").style.display = "block";}
+    };
+
+    glob.onComparisonChanged(document.getElementById("storage2"));
     glob.refreshVariableList(document.getElementById('storage'))
   },
 

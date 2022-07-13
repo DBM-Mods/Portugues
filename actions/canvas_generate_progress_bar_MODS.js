@@ -47,11 +47,11 @@ module.exports = {
   </div>
 </div><br><br><br>
 <div style="padding-top: 8px;">
-  <div style="float: left; width: 50%;">
+  <div style="float: left; width: 50%;padding:5px">
   <span class="dbminputlabel">Espessura da linha</span><br>
     <input id="lineWidth" class="round" type="text"><br>
   </div>
-  <div style="float: left; width: 50%;">
+  <div style="float: left; width: 50%;padding:5px">
   <span class="dbminputlabel">Tipo de linha</span><br>
     <select id="lineCap" class="round">
       <option value="0" selected>Quadrada</option>
