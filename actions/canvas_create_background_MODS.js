@@ -44,7 +44,7 @@ module.exports = {
   <div style="float: left; width: 100%;">
   <span class="dbminputlabel">Preencher</span>
     <select id="info" class="round" onchange="glob.onChange0(this)">
-      <option value="0" selected>Cor Solida</option>
+      <option value="0" selected>Cor (HEX ou RGBA)</option>
       <option value="1">Cor Gradiente</option>
     </select>
   <div>
