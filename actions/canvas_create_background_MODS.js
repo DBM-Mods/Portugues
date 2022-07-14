@@ -12,9 +12,9 @@ module.exports = {
   subtitle (data) {
     const info = parseInt(data.info)
     if (info === 0) {
-      return data.color ? `Criar com cor ${data.color}` : 'Nenhuma cor de fundo foi criada'
+      return data.color ? `Criar com cor "${data.color}"` : 'Nenhuma cor de fundo foi criada'
     } if (info === 1) {
-      return data.gradient ? `Criar com gradiente ${data.gradient}` : 'Nenhum plano de fundo gradiente foi criado'
+      return data.gradient ? `Criar com gradiente "${data.gradient}"` : 'Nenhum plano de fundo gradiente foi criado'
     }
   },
 
@@ -28,7 +28,7 @@ module.exports = {
 
   html (isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div>
   <div style="float: left; width: 50%;">
@@ -54,8 +54,8 @@ module.exports = {
     <textarea id="gradient" rows="5" style="width: 100%; white-space: nowrap; resize:yes"></textarea><br>
   </div>
   <div id="Solid" style="float: left; width: 100%;">
-  <span class="dbminputlabel">Cor</span><br>
-    <table style="width:100%"><tr><td><input id="color" name="actionxinxyla" class="round" type="text" placeholder="Insira um código de cor HEX..."><td>
+  <span class="dbminputlabel">Cor (HEX ou RGBA)</span><br>
+    <table style="width:100%"><tr><td><input id="color" name="actionxinxyla" class="round" type="text" placeholder="#000000 ou rgba(0,0,0,0.5)"><td>
     <td style="width:40px;text-align:center;padding:4px"><a id="btr1" style="cursor:pointer" onclick="(function(){
       document.getElementById('color').type = 'color'
       document.getElementById('btr1').style.display = 'none';
@@ -141,9 +141,6 @@ span.xinxylalink:hover {
     let color = this.evalMessage(data.color, cache)
     switch (info) {
       case 0:
-        if (!color.startsWith('#')) {
-          color = color.slice(1)
-        }
         ctx.fillStyle = color
         ctx.rect(0, 0, width, height)
         ctx.fill()
