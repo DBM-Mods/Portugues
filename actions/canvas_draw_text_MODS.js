@@ -39,7 +39,7 @@ html: function(isEvent, data) {
 </td>
 <td style="width:175px">
 <span class="dbminputlabel">Tamanho</span><br>
-	<input id="fontSize" class="round" type="text" placeholder="Default size 10px">
+	<input id="fontSize" class="round" type="text" placeholder="Tamanho padrão 10px">
 </td>
 </tr>
 
