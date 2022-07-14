@@ -11,7 +11,7 @@ module.exports = {
     },
   
     subtitle(data, presets) {
-      const info = ['Existe', 'Igual a', 'Exatamente igual', 'Menor que', 'Menor ou igual a', 'Maior que', 'Maior ou igual a', 'Inclui', 'Matches Regex' , 'Matches Full Regex', 'O comprimento é maior que', 'O comprimento é menor que', 'O comprimento é igual a', 'Começa com', 'Termina com', 'Entre', 'Possui acentuações?', 'Inclui as palavras  ["a" , "b" , "c"]', 'É igual as palavras  ["a" , "b" , "c"', 'É um número par?', 'É um número ímpar?', 'É um número?', 'É uma lista?'];
+      const info = ['Existe', 'Igual a', 'Exatamente igual', 'Menor que', 'Menor ou igual a', 'Maior que', 'Maior ou igual a', 'Inclui', 'Matches Regex' , 'Matches Full Regex', 'O comprimento é maior que', 'O comprimento é menor que', 'O comprimento é igual a', 'Começa com', 'Termina com', 'Entre', 'Possui acentuações?', 'Inclui as palavras  ["a" , "b" , "c"]', 'É igual as palavras  ["a" , "b" , "c"', 'É um número par?', 'É um número ímpar?', 'É um número?', 'É uma lista?', 'É um URL de imagem?', 'É um texto?', 'É um URL?'];
       const prse = parseInt(data.comparison);
       return `Contar "${info[prse]}" em "${data.varName}"`;
     },
