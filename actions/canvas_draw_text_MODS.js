@@ -14,11 +14,11 @@ subtitle: function(data) {
 	return `${data.text}`;
 },
 
-fields: ["storage", "varName", "x", "y", "fontPath", "fontColor", "fontSize", "align", "text", "shadowcor", "blur", "shadowh", "shadowv", "fontColor2", "fontColor3",],
+fields: ["storage", "varName", "x", "y", "fontPath", "fontColor", "fontSize", "align", "text", "shadowcor", "blur", "shadowh", "shadowv", "fontColor2", "fontColor3", "largura" , "rotacionar", "x2" , "y2" , "tipocor", "gradiente"],
 
 html: function(isEvent, data) {
 	return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 	<div style="height: 370px; overflow-y: scroll;padding:0px 10px">
@@ -32,23 +32,17 @@ html: function(isEvent, data) {
 	<input id="varName" class="round" type="text" list="variableList">
 </td></tr>
 
-<tr>
-<td>
-<span class="dbminputlabel">Fonte do Texto (Local/URL)</span><br>
-<input id="fontPath" class="round" type="text" value="fonts/">
-</td>
-<td style="width:175px">
-<span class="dbminputlabel">Tamanho</span><br>
-	<input id="fontSize" class="round" type="text" placeholder="Tamanho padrão 10px">
-</td>
-</tr>
-
 </table>
 
+<div style="padding-top:12px">
+<span class="dbminputlabel">Fonte do Texto (Local/URL)</span><br>
+<input id="fontPath" class="round" type="text" value="fonts/">
+<div>
 
-<div style="padding-top:8px">
+<div style="padding-top:12px">
 <span class="dbminputlabel">Sombra do Texto</span>
-<table style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;"><tr>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
+<table style="width:100%"><tr>
 <td style="width:30px"><span class="dbminputlabel">Borrão</span><br>
 <input id="blur" class="round" type="text" value="0"></td>
 
@@ -71,11 +65,25 @@ html: function(isEvent, data) {
         })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table>
 </td>
 
-</tr></table></div>
+</tr></table></div></div>
 
-<div style="padding-top:8px">
+<div style="padding-top:12px">
 <span class="dbminputlabel">Cor do Texto (HEX ou RGBA)</span>
-<table style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;"><tr>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
+
+<span class="dbminputlabel">Tipo de Cor</span>
+<select id="tipocor" class="round" onchange="glob.onChange0(this)">
+  <option value="0" selected>Cor (HEX ou RGBA)</option>
+  <option value="1">Cor Gradiente</option>
+</select>
+<br>
+<div id="gradient">
+<span class="dbminputlabel">Gradiente</span>
+<textarea id="gradiente" name="gradientes" rows="4" style="width: 100%; white-space: nowrap; resize:yes"></textarea><br>
+</div>
+
+<div id="cor">
+<table style="width:100%"><tr>
 <td style="width:33% !important">
 <span class="dbminputlabel">Cor Principal</span><br>
     <table style="width:100%"><tr><th><input value="#FFFFFF" id="fontColor" name="actionxinxyla" class="round" type="text" placeholder="Insira um código HEX ou RGBA..."><th>
@@ -120,9 +128,51 @@ html: function(isEvent, data) {
 
 </tr></table></div>
 
-<div style="padding-top:8px">
+</div></div>
+
+<div style="padding-top:12px">
+<span class="dbminputlabel">Definições do Texto</span>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
+<table style="width:100%"><tr>
+<td style="width:33% !important">
+<span class="dbminputlabel">Largura fixa do Texto</span><br>
+	<input id="largura" class="round" type="text" placeholder="Opcional">
+</td>
+
+<td style="width:175px">
+<span class="dbminputlabel">Tamanho do Texto</span><br>
+	<input id="fontSize" class="round" type="text" placeholder="Tamanho padrão 10px">
+</td>
+
+</tr></table></div></div>
+
+<div style="padding-top:12px">
+<span class="dbminputlabel">Girar texto</span>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
+<table style="width:100%"><tr>
+<td style="width:33% !important">
+<span class="dbminputlabel">Girar (Graus)</span><br>
+	<input id="rotacionar" class="round" type="text" value="0">
+</td>
+
+<td style="width:33% !important">
+<span class="dbminputlabel">Correção X</span><br>
+	<input id="x2" class="round" type="text" value="0">
+</td>
+
+<td style="width:33% !important">
+<span class="dbminputlabel">Correção Y</span><br>
+	<input id="y2" class="round" type="text" value="0">
+</td>
+
+
+
+</tr></table></div></div>
+
+<div style="padding-top:12px">
 <span class="dbminputlabel">Posição do Texto</span>
-<table style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;"><tr>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
+<table style="width:100%"><tr>
 <td style="width:33% !important">
 <span class="dbminputlabel">Posição X</span><br>
 	<input id="x" class="round" type="text" value="0">
@@ -149,7 +199,7 @@ html: function(isEvent, data) {
 
 
 
-</tr></table></div>
+</tr></table></div></div>
 
 
 <br>
@@ -160,12 +210,26 @@ html: function(isEvent, data) {
 </div>
 
 <style>
-td{width:50%;padding:5px;}
+td{width:50%;padding:2px;}
 </style>`
 },
 
 init: function() {
 	const {glob, document} = this;
+
+	glob.onChange0 = function (event) {
+		switch (parseInt(event.value)) {
+		  case 0:
+			gradient.style.display = 'none'
+			cor.style.display = null
+			break
+		  case 1:
+			gradient.style.display = null
+			cor.style.display = 'none'
+			break
+		}
+	  }
+	  glob.onChange0(document.getElementById('tipocor'))
 
 	glob.refreshVariableList(document.getElementById('storage'));
 },
@@ -183,6 +247,7 @@ action: function(cache) {
 	const fontPath = this.evalMessage(data.fontPath, cache);
 	const fontName = fontPath.slice(fontPath.lastIndexOf("/")+1,fontPath.lastIndexOf("."))
 	const fontColor = this.evalMessage(data.fontColor, cache);
+	const largura = this.evalMessage(data.largura, cache);
 	let fontSize = parseInt(this.evalMessage(data.fontSize, cache));
 	if (isNaN(fontSize)) {
 		fontSize = 10;
@@ -203,8 +268,12 @@ action: function(cache) {
 	const fontColor2 = this.evalMessage(data.fontColor2, cache);
 	const fontColor3 = this.evalMessage(data.fontColor3, cache);
 	const align = parseInt(data.align);
+	const tipocor = parseInt(data.tipocor);
 	const x = parseInt(this.evalMessage(data.x, cache));
 	const y = parseInt(this.evalMessage(data.y, cache));
+	const rotacionar = parseInt(this.evalMessage(data.rotacionar, cache));
+	const x2 = parseInt(this.evalMessage(data.x2, cache));
+	const y2 = parseInt(this.evalMessage(data.y2, cache));
 	const text = this.evalMessage(data.text, cache);
 	const image = new Canvas.Image();
 	image.src = imagedata;
@@ -254,16 +323,40 @@ action: function(cache) {
 			ctx.textAlign = "right";
 			ctx.textBaseline = "bottom"; 
 	}
-	if (fontColor2 !== "") {
-		ctx.fillStyle = fontColor2
-		ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
-	}
-	if (fontColor3 !== "") {
-		ctx.fillStyle = fontColor3
-		ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
-	}
-		ctx.fillStyle = fontColor;
-		ctx.fillText(text, x, y);
+
+	ctx.translate(x2, y2);
+	ctx.rotate(rotacionar * Math.PI / 180)
+
+	if(tipocor == 1) {
+	eval(String(this.evalMessage(data.gradiente, cache)))
+	ctx.fillStyle = gradient;
+	ctx.fillText(text, x, y);
+		} else {
+			if (largura > 0){
+				if (fontColor2 !== "") {
+					ctx.fillStyle = fontColor2
+					ctx.fillText(text, x-(fontSize/15), y-(fontSize/15), largura);
+				}
+				if (fontColor3 !== "") {
+					ctx.fillStyle = fontColor3
+					ctx.fillText(text, x+(fontSize/15), y+(fontSize/15), largura);
+				}
+					ctx.fillStyle = fontColor;
+					ctx.fillText(text, x, y, largura);
+				}
+				else {
+					if (fontColor2 !== "") {
+						ctx.fillStyle = fontColor2
+						ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+					}
+					if (fontColor3 !== "") {
+						ctx.fillStyle = fontColor3
+						ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+					}
+						ctx.fillStyle = fontColor;
+						ctx.fillText(text, x, y);
+				}
+		}
 	const result = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
 	this.storeValue(result, storage, varName, cache);
 	this.callNextAction(cache);
