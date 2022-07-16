@@ -14,7 +14,7 @@ subtitle: function(data) {
 	return `${data.text}`;
 },
 
-fields: ["storage", "varName", "x", "y", "fontPath", "fontColor", "fontSize", "align", "text", "shadowcor", "blur", "shadowh", "shadowv", "fontColor2", "fontColor3", "largura" , "rotacionar", "x2" , "y2" , "tipocor", "gradiente"],
+fields: ["storage", "varName", "x", "y", "fontPath", "fontColor", "fontSize", "align", "text", "shadowcor", "blur", "shadowh", "shadowv", "fontColor2", "fontColor3", "largura" , "larguramax" , "rotacionar", "x2" , "y2" , "tipocor", "gradiente", "nqp" , "distancia"],
 
 html: function(isEvent, data) {
 	return `
@@ -86,7 +86,7 @@ html: function(isEvent, data) {
 <table style="width:100%"><tr>
 <td style="width:33% !important">
 <span class="dbminputlabel">Cor Principal</span><br>
-    <table style="width:100%"><tr><th><input value="#FFFFFF" id="fontColor" name="actionxinxyla" class="round" type="text" placeholder="Insira um código HEX ou RGBA..."><th>
+    <table style="width:100%"><tr><th><input value="#FFFFFF" id="fontColor" name="actionxinxyla" class="round" type="text" placeholder="Requerido"><th>
     <th style="width:40px;text-align:center;padding:4px"><a id="btr1" style="cursor:pointer" onclick="(function(){
       document.getElementById('fontColor').type = 'color'
       document.getElementById('btr1').style.display = 'none';
@@ -100,7 +100,7 @@ html: function(isEvent, data) {
 
 <td style="width:33% !important">
 <span class="dbminputlabel">Cor Diagonal 1</span><br>
-    <table style="width:100%"><tr><th><input id="fontColor2" name="actionxinxyla" class="round" type="text" placeholder="Insira um código HEX ou RGBA..."><th>
+    <table style="width:100%"><tr><th><input id="fontColor2" name="actionxinxyla" class="round" type="text" placeholder="Opcional"><th>
     <th style="width:40px;text-align:center;padding:4px"><a id="3btr1" style="cursor:pointer" onclick="(function(){
       document.getElementById('fontColor2').type = 'color'
       document.getElementById('3btr1').style.display = 'none';
@@ -114,7 +114,7 @@ html: function(isEvent, data) {
 
 <td style="width:33% !important">
 <span class="dbminputlabel">Cor Diagonal 2</span><br>
-    <table style="width:100%"><tr><th><input id="fontColor3" name="actionxinxyla" class="round" type="text" placeholder="Insira um código HEX ou RGBA..."><th>
+    <table style="width:100%"><tr><th><input id="fontColor3" name="actionxinxyla" class="round" type="text" placeholder="Opcional"><th>
     <th style="width:40px;text-align:center;padding:4px"><a id="4btr1" style="cursor:pointer" onclick="(function(){
       document.getElementById('fontColor3').type = 'color'
       document.getElementById('4btr1').style.display = 'none';
@@ -134,17 +134,32 @@ html: function(isEvent, data) {
 <span class="dbminputlabel">Definições do Texto</span>
 <div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
 <table style="width:100%"><tr>
-<td style="width:33% !important">
-<span class="dbminputlabel">Largura fixa do Texto</span><br>
-	<input id="largura" class="round" type="text" placeholder="Opcional">
-</td>
-
-<td style="width:175px">
+<td style="width:48%">
 <span class="dbminputlabel">Tamanho do Texto</span><br>
 	<input id="fontSize" class="round" type="text" placeholder="Tamanho padrão 10px">
 </td>
+<td style="width:48% !important">
+<span class="dbminputlabel">Largura Fixa</span><br>
+	<input id="largura" class="round" type="text" placeholder="Opcional">
+</td></tr></table><br>
 
-</tr></table></div></div>
+<table style="width:100%"><tr>
+
+<td style="width:32%">
+<span class="dbminputlabel">Largura Máxima</span><br>
+	<input id="larguramax" class="round" type="text" placeholder="Opcional">
+</td>
+<td style="width:4% !important;text-align:center"><br><b>></b></td>
+<td style="width:32%">
+<span class="dbminputlabel">Quebrar palavras?</span>
+<select id="nqp" class="round">
+  <option value="0" selected>Sim</option>
+  <option value="1">Não</option>
+</select></td>
+<td style="width:32%">
+<span class="dbminputlabel">Altura de distancia</span>
+<input id="distancia" class="round" type="text" placeholder="Opcional"></td></tr></table>
+</div></div>
 
 <div style="padding-top:12px">
 <span class="dbminputlabel">Girar texto</span>
@@ -231,6 +246,7 @@ init: function() {
 	  }
 	  glob.onChange0(document.getElementById('tipocor'))
 
+
 	glob.refreshVariableList(document.getElementById('storage'));
 },
 
@@ -248,6 +264,10 @@ action: function(cache) {
 	const fontName = fontPath.slice(fontPath.lastIndexOf("/")+1,fontPath.lastIndexOf("."))
 	const fontColor = this.evalMessage(data.fontColor, cache);
 	const largura = this.evalMessage(data.largura, cache);
+	const larguramax = this.evalMessage(data.larguramax, cache);
+	const nqp = this.evalMessage(data.nqp, cache);
+	var distancia = this.evalMessage(data.distancia, cache);
+
 	let fontSize = parseInt(this.evalMessage(data.fontSize, cache));
 	if (isNaN(fontSize)) {
 		fontSize = 10;
@@ -264,6 +284,8 @@ action: function(cache) {
 	if (isNaN(shadowv)) {
 		shadowv = 0;
 	}
+	if (data.distancia > 0) {distancia = (fontSize + parseInt(distancia))} else {distancia = fontSize + 2}
+
 	const shadowcor = this.evalMessage(data.shadowcor, cache);
 	const fontColor2 = this.evalMessage(data.fontColor2, cache);
 	const fontColor3 = this.evalMessage(data.fontColor3, cache);
@@ -330,31 +352,382 @@ action: function(cache) {
 	if(tipocor == 1) {
 	eval(String(this.evalMessage(data.gradiente, cache)))
 	ctx.fillStyle = gradient;
-	ctx.fillText(text, x, y);
+
+	if (larguramax > 0){
+		if(nqp == 0){
+	printAt(ctx, text, x, y, distancia, 250);
+	function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+	  fitWidth = fitWidth || 0;
+		  if (fitWidth <= 0) {
+		ctx.fillText(text, x, y);
+		return;
+	  }
+	  for (var idx = 1; idx <= text.length; idx++) {
+		var str = text.substr(0, idx);
+		if (ctx.measureText(str).width > fitWidth) {
+			ctx.fillText(text.substr(0, idx - 1), x, y);
+		  printAt(ctx, text.substr(idx - 1), x, y + lineHeight, lineHeight, fitWidth);
+		  return;
+		}
+	  }
+	  ctx.fillText(text, x, y);
+
+	}
+
+	}
+	if (nqp == 1) {
+		printAt(ctx, text, x, y, distancia, larguramax);
+		function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+		fitWidth = fitWidth || 0;
+		if (fitWidth <= 0) {
+		ctx.fillText(text, x, y);
+		return;}
+		var words = text.split(' ');
+		var currentLine = 0;
+		var idx = 1;
+		while (words.length > 0 && idx <= words.length)
+		{   var str = words.slice(0,idx).join(' ');
+		var w = ctx.measureText(str).width;
+		if ( w > fitWidth )
+		{if (idx==1)
+		{idx=2;}
+		ctx.fillText( words.slice(0,idx-1).join(' '), x, y + (lineHeight*currentLine) );
+		currentLine++;
+		words = words.splice(idx-1);
+		idx = 1;
+		}
+		else
+		{idx++;}
+		}
+		if  (idx > 0)
+		ctx.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
+		}
+		}
+
+} else {ctx.fillText(text, x, y)}
+
+
 		} else {
 			if (largura > 0){
 				if (fontColor2 !== "") {
 					ctx.fillStyle = fontColor2
-					ctx.fillText(text, x-(fontSize/15), y-(fontSize/15), largura);
+					  ctx.fillText(text, x-(fontSize/15), y-(fontSize/15), largura);
+					
+
 				}
 				if (fontColor3 !== "") {
 					ctx.fillStyle = fontColor3
-					ctx.fillText(text, x+(fontSize/15), y+(fontSize/15), largura);
-				}
+					  ctx.fillText(text, x+(fontSize/15), y+(fontSize/15), largura);
+
+			}
 					ctx.fillStyle = fontColor;
 					ctx.fillText(text, x, y, largura);
+					
+
+
 				}
 				else {
-					if (fontColor2 !== "") {
-						ctx.fillStyle = fontColor2
-						ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+
+
+					if (larguramax !== undefined){
+					if (fontColor !== "") {
+
+						if (nqp == 0) {
+										
+						printAt(ctx, text, x, y, distancia, larguramax);
+						function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+						  fitWidth = fitWidth || 0;
+							  if (fitWidth <= 0) {
+								ctx.fillStyle = fontColor
+								ctx.fillText(text, x, y);
+							return;
+						  }
+						  for (var idx = 1; idx <= text.length; idx++) {
+							var str = text.substr(0, idx);
+							if (ctx.measureText(str).width > fitWidth) {
+								ctx.fillStyle = fontColor
+								ctx.fillText(text.substr(0, idx - 1), x, y);
+							  printAt(ctx, text.substr(idx - 1), x, y + lineHeight, lineHeight, fitWidth);
+							  return;
+							}
+						  }
+						  ctx.fillStyle = fontColor
+						  ctx.fillText(text, x, y);
+						}
 					}
-					if (fontColor3 !== "") {
-						ctx.fillStyle = fontColor3
-						ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+					if (nqp == 1) {
+printAt(ctx, text, x, y, distancia, larguramax);
+function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+fitWidth = fitWidth || 0;
+if (fitWidth <= 0) {
+ctx.fillStyle = fontColor
+ctx.fillText(text, x, y);
+return;}
+var words = text.split(' ');
+var currentLine = 0;
+var idx = 1;
+while (words.length > 0 && idx <= words.length)
+{   var str = words.slice(0,idx).join(' ');
+var w = ctx.measureText(str).width;
+if ( w > fitWidth )
+{if (idx==1)
+{idx=2;}
+ctx.fillStyle = fontColor;
+ctx.fillText( words.slice(0,idx-1).join(' '), x, y + (lineHeight*currentLine) );
+currentLine++;
+words = words.splice(idx-1);
+idx = 1;
+}
+else
+{idx++;}
+}
+if  (idx > 0)
+ctx.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
+}
+}
+
 					}
-						ctx.fillStyle = fontColor;
+
+					if (fontColor2 !== "" & fontColor !== "") {
+										
+if(nqp == 0){
+						printAt(ctx, text, x, y, distancia, larguramax);
+						function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+						  fitWidth = fitWidth || 0;
+							  if (fitWidth <= 0) {
+								ctx.fillStyle = fontColor2
+								ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+								ctx.fillStyle = fontColor
+								ctx.fillText(text, x, y);
+							return;
+						  }
+						  for (var idx = 1; idx <= text.length; idx++) {
+							var str = text.substr(0, idx);
+							if (ctx.measureText(str).width > fitWidth) {
+								ctx.fillStyle = fontColor2
+								ctx.fillText(text.substr(0, idx - 1), x-(fontSize/15), y-(fontSize/15));
+								ctx.fillStyle = fontColor
+								ctx.fillText(text.substr(0, idx - 1), x, y);
+							  printAt(ctx, text.substr(idx - 1), x, y + lineHeight, lineHeight, fitWidth);
+							  return;
+							}
+						  }
+						  ctx.fillStyle = fontColor2
+						  ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+						  ctx.fillStyle = fontColor
+						  ctx.fillText(text, x, y);
+						}
+					}
+					if (nqp == 1) {
+						printAt(ctx, text, x, y, distancia, larguramax);
+						function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+						fitWidth = fitWidth || 0;
+						if (fitWidth <= 0) {
+							ctx.fillStyle = fontColor2
+							ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+						ctx.fillStyle = fontColor
 						ctx.fillText(text, x, y);
+						return;}
+						var words = text.split(' ');
+						var currentLine = 0;
+						var idx = 1;
+						while (words.length > 0 && idx <= words.length)
+						{   var str = words.slice(0,idx).join(' ');
+						var w = ctx.measureText(str).width;
+						if ( w > fitWidth )
+						{if (idx==1)
+						{idx=2;}
+						ctx.fillStyle = fontColor2;
+						ctx.fillText( words.slice(0,idx-1).join(' '), x-(fontSize/15), y-(fontSize/15) + (lineHeight*currentLine) );
+						ctx.fillStyle = fontColor;
+						ctx.fillText( words.slice(0,idx-1).join(' '), x, y + (lineHeight*currentLine) );
+						currentLine++;
+						words = words.splice(idx-1);
+						idx = 1;
+						}
+						else
+						{idx++;}
+						}
+						if  (idx > 0)
+						ctx.fillStyle = fontColor2
+						ctx.fillText( words.join(' '), x-(fontSize/15), y-(fontSize/15) + (lineHeight*currentLine));
+						ctx.fillStyle = fontColor
+						ctx.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
+						}
+						}
+
+					}
+
+					if (fontColor3 !== "" & fontColor !== "") {
+						if(nqp == 0){
+
+						printAt(ctx, text, x, y, distancia, larguramax);
+						function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+						  fitWidth = fitWidth || 0;
+							  if (fitWidth <= 0) {
+								ctx.fillStyle = fontColor3
+								ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+								ctx.fillStyle = fontColor
+								ctx.fillText(text, x, y);
+							return;
+						  }
+						  for (var idx = 1; idx <= text.length; idx++) {
+							var str = text.substr(0, idx);
+							if (ctx.measureText(str).width > fitWidth) {
+								ctx.fillStyle = fontColor3
+								ctx.fillText(text.substr(0, idx - 1), x+(fontSize/15), y+(fontSize/15));
+								ctx.fillStyle = fontColor
+								ctx.fillText(text.substr(0, idx - 1), x, y);
+							  printAt(ctx, text.substr(idx - 1), x, y + lineHeight, lineHeight, fitWidth);
+							  return;
+							}
+						  }
+						  ctx.fillStyle = fontColor3
+						  ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+						  ctx.fillStyle = fontColor
+						  ctx.fillText(text, x, y);
+						}
+					}
+					if (nqp == 1) {
+						printAt(ctx, text, x, y, distancia, larguramax);
+						function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+						fitWidth = fitWidth || 0;
+						if (fitWidth <= 0) {
+							ctx.fillStyle = fontColor3
+							ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+						ctx.fillStyle = fontColor
+						ctx.fillText(text, x, y);
+						return;}
+						var words = text.split(' ');
+						var currentLine = 0;
+						var idx = 1;
+						while (words.length > 0 && idx <= words.length)
+						{   var str = words.slice(0,idx).join(' ');
+						var w = ctx.measureText(str).width;
+						if ( w > fitWidth )
+						{if (idx==1)
+						{idx=2;}
+						ctx.fillStyle = fontColor3;
+						ctx.fillText( words.slice(0,idx-1).join(' '), x+(fontSize/15), y+(fontSize/15) + (lineHeight*currentLine) );
+						ctx.fillStyle = fontColor;
+						ctx.fillText( words.slice(0,idx-1).join(' '), x, y + (lineHeight*currentLine) );
+						currentLine++;
+						words = words.splice(idx-1);
+						idx = 1;
+						}
+						else
+						{idx++;}
+						}
+						if  (idx > 0)
+						ctx.fillStyle = fontColor3
+						ctx.fillText( words.join(' '), x+(fontSize/15), y+(fontSize/15) + (lineHeight*currentLine));
+						ctx.fillStyle = fontColor
+						ctx.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
+						}
+						}
+					}
+					
+
+					if (fontColor3 !== "" & fontColor2 !== "" & fontColor !== "") {
+										
+						if(nqp == 0){
+						printAt(ctx, text, x, y, distancia, larguramax);
+						function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+						  fitWidth = fitWidth || 0;
+							  if (fitWidth <= 0) {
+								ctx.fillStyle = fontColor2
+								ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+								ctx.fillStyle = fontColor3
+								ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+								ctx.fillStyle = fontColor
+								ctx.fillText(text, x, y);
+							return;
+						  }
+						  for (var idx = 1; idx <= text.length; idx++) {
+							var str = text.substr(0, idx);
+							if (ctx.measureText(str).width > fitWidth) {
+								ctx.fillStyle = fontColor2
+								ctx.fillText(text.substr(0, idx - 1), x-(fontSize/15), y-(fontSize/15));
+								ctx.fillStyle = fontColor3
+								ctx.fillText(text.substr(0, idx - 1), x+(fontSize/15), y+(fontSize/15));
+								ctx.fillStyle = fontColor
+								ctx.fillText(text.substr(0, idx - 1), x, y);
+							  printAt(ctx, text.substr(idx - 1), x, y + lineHeight, lineHeight, fitWidth);
+							  return;
+							}
+						  }
+						  ctx.fillStyle = fontColor2
+						  ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+						  ctx.fillStyle = fontColor3
+						  ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+						  ctx.fillStyle = fontColor
+						  ctx.fillText(text, x, y);
+						}
+					}
+
+					if (nqp == 1) {
+						printAt(ctx, text, x, y, distancia, larguramax);
+						function printAt(ctx, text, x, y, lineHeight, fitWidth) {
+						fitWidth = fitWidth || 0;
+						if (fitWidth <= 0) {
+							ctx.fillStyle = fontColor2
+							ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+							ctx.fillStyle = fontColor3
+							ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+						ctx.fillStyle = fontColor
+						ctx.fillText(text, x, y);
+						return;}
+						var words = text.split(' ');
+						var currentLine = 0;
+						var idx = 1;
+						while (words.length > 0 && idx <= words.length)
+						{   var str = words.slice(0,idx).join(' ');
+						var w = ctx.measureText(str).width;
+						if ( w > fitWidth )
+						{if (idx==1)
+						{idx=2;}
+						ctx.fillStyle = fontColor2;
+						ctx.fillText( words.slice(0,idx-1).join(' '), x-(fontSize/15), y-(fontSize/15) + (lineHeight*currentLine) );
+						ctx.fillStyle = fontColor3;
+						ctx.fillText( words.slice(0,idx-1).join(' '), x+(fontSize/15), y+(fontSize/15) + (lineHeight*currentLine) );
+						ctx.fillStyle = fontColor;
+						ctx.fillText( words.slice(0,idx-1).join(' '), x, y + (lineHeight*currentLine) );
+						currentLine++;
+						words = words.splice(idx-1);
+						idx = 1;
+						}
+						else
+						{idx++;}
+						}
+						if  (idx > 0)
+						ctx.fillStyle = fontColor2
+						ctx.fillText( words.join(' '), x-(fontSize/15), y-(fontSize/15) + (lineHeight*currentLine));
+						ctx.fillStyle = fontColor3
+						ctx.fillText( words.join(' '), x+(fontSize/15), y+(fontSize/15) + (lineHeight*currentLine));
+						ctx.fillStyle = fontColor
+						ctx.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
+						}
+						}
+				}
+
+
+					} else {
+
+						if (fontColor2 !== "") {
+							ctx.fillStyle = fontColor2
+							ctx.fillText(text, x-(fontSize/15), y-(fontSize/15));
+						}
+						if (fontColor3 !== "") {
+							ctx.fillStyle = fontColor3
+							ctx.fillText(text, x+(fontSize/15), y+(fontSize/15));
+						}
+							ctx.fillStyle = fontColor;
+							ctx.fillText(text, x, y);
+
+					}
+			
+				
+
 				}
 		}
 	const result = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
