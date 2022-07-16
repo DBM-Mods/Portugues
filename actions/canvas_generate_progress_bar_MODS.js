@@ -284,20 +284,41 @@ td{padding:5px}</style>`
     const ctx = canvas.getContext('2d')
     ctx.lineWidth = lineWidth
     if (type === 0) {
+      ctx.lineCap = Cap
+      ctx.stroke()
       ctx.beginPath()
           if(tipocor2 > 0){
           if(tipocor2 == 2) {
             eval(String(this.evalMessage(data.gradiente2, cache)))
             ctx.strokeStyle = gradient;
               } else
-          {ctx.strokeStyle = colorfundo}
+          {   
+            
+          ctx.strokeStyle = colorfundo}
+          if(lineCap == 1){
+            const center = lineWidth / 2
+                const top = height / 2 - center
+                const bottom = height / 2 + center
+                ctx.moveTo(center, top)
+                ctx.lineTo(width - lineWidth, top)
+                ctx.arcTo(width, top, width, height / 2, center)
+                ctx.arcTo(width, bottom, top, bottom, center)
+                ctx.lineTo(center, bottom)
+                ctx.arcTo(0, bottom, 0, height / 2, center)
+                ctx.arcTo(0, top, center, top, center)
+                ctx.closePath()
+                ctx.clip()
+                ctx.beginPath()
+                ctx.moveTo(-center, height / 2)
+                ctx.lineTo(width * percent / 100 - center, height / 2)
+          }
           ctx.shadowColor = shadowcor2
-          ctx.shadowBlur = blur2;
+          ctx.shadowBlur = blur2
           ctx.moveTo(0, height / 2)
-          ctx.lineCap = Cap
           ctx.lineTo(width * 100 / 100, height / 2)
           ctx.lineCap = Cap
           ctx.stroke()
+      
         }
 
           ctx.beginPath()
