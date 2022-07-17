@@ -40,14 +40,14 @@ html: function(isEvent, data) {
 <br>
 
 	<tab-system style="margin-top: 0;">
-		<tab label="Texto" icon="image">
+		<tab label="Texto" icon="align left">
 				<div style="padding-top:12px">
 		<span class="dbminputlabel">Texto</span><br>
 			<textarea id="text" rows="10" placeholder="Insira seu texto aqui..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
 		</div></div>
 	</tab>
 		
-	<tab label="Posição" icon="image">
+	<tab label="Posição" icon="move">
 	<div style="padding-top:12px">
 				<span class="dbminputlabel">Posição do Texto</span>
 				<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
@@ -104,7 +104,7 @@ html: function(isEvent, data) {
 		</tr></table></div></div>
 	</tab>
 
-	<tab label="Cor" icon="image">
+	<tab label="Cor" icon="flask">
 		<div style="padding-top:12px">
 			
 		<span class="dbminputlabel">Tipo de Cor</span>
@@ -138,7 +138,7 @@ html: function(isEvent, data) {
 	
 	</div>
 	</tab>
-	<tab label="Borda" icon="image">
+	<tab label="Borda" icon="block layout">
 	<div style="padding-top:12px">
 			
 		<span class="dbminputlabel">Tipo de Borda</span><br>
@@ -176,7 +176,7 @@ html: function(isEvent, data) {
 	
 	</div>
 	</tab>
-	<tab label="Sombra" icon="image">
+	<tab label="Sombra" icon="cloud">
 		<div style="padding-top:12px">
 		<span class="dbminputlabel">Tipo de Sombra</span><br>
 		<select id="shadowtipo" class="round" onchange="glob.onChange3(this)">
@@ -213,7 +213,7 @@ html: function(isEvent, data) {
 		</div>
 		</div>
 	</tab>
-	<tab label="Definições" icon="image">
+	<tab label="Definições" icon="cogs">
 		<div style="padding:12px 6px">
 		<table style="width:100%"><tr>
 		<td style="width:48%">
