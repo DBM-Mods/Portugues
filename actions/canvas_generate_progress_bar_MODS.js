@@ -25,15 +25,76 @@ module.exports = {
 
   html (isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
-    <div style="height: 370px; overflow-y: scroll;padding:0px 10px">
+    <table style="width:100%;">
+		<tr>
+			<td>
+				<span class="dbminputlabel">Armazenar em</span><br>
+				<select id="storage" class="round" style="width: 100%">
+					${data.variables[1]}
+				</select>
+			</td>
+			<td>
+				<span class="dbminputlabel">Nome da Variavel</span><br>
+				<input id="varName" class="round" type="text" list="variableList">
+			</td>
+		</tr>
+	</table><br>
+    <tab-system style="margin-top: 0">
+		<tab label="Barra" icon="align left">
+				<div style="padding:8px">
+        <table style="width:100%">
+        <tr>
+        <td style="width:50% !important">
+        <span class="dbminputlabel">Tipo</span><br>
+        <select id="type" class="round" onchange="glob.onChange1(this)">
+          <option value="0" selected>Basico</option>
+          <option value="1">Circulo</option><br>
+        </select>
+        </td>
+        <td style="width:50% !important">
+        <span class="dbminputlabel">Tipo de linha</span><br>
+        <select id="lineCap" class="round">
+          <option value="0" selected>Quadrada</option>
+          <option value="1">Redonda</option>
+        </select>
+        </td>
+        </tr></table>
 
-<div style="padding-top:2px">
-<span class="dbminputlabel">Barra</span>
-<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px 4px">
-<div style="padding-top:8px">
+        <table style="width:100%"><tr>
+<td style="width:33% !important">
+<span class="dbminputlabel"><span id="Change1text">Largura</span></span><br>
+<input id="width" class="round" type="text">
+</td>
+<td style="width:33% !important">
+<span class="dbminputlabel"><span id="Change2text">Altura</span></span><br>
+    <input id="height" class="round" type="text">
+</td>
+<td style="width:33% !important">
+<span class="dbminputlabel">Espessura</span><br>
+    <input id="lineWidth" class="round" type="text">
+</td>
+</tr></table>
+
+<div style="padding: 12px 4px 0px 4px">
+<span class="dbminputlabel">Porcentagem</span><br>
+    <input id="percent" class="round" type="text"></div>
+
+    <div id="conteudo2g" style="padding: 12px 4px 4px 4px">
+<span class="dbminputlabel">Girar (Graus)</span><br>
+    <input id="rotacao" class="round" value="0" type="text"></div>
+   
+    </div>
+
+</tab>
+<tab label="Cor" icon="align left">
+<div style="padding:2px">
+<table style="width:100%;height:250px"><tr><td style="width:50%;vertical-align:top">
+<span class="dbminputlabel">Cor da Barra</span><br>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:6px">
+
 <span class="dbminputlabel">Tipo de Cor</span><br>
 <select id="tipocor2" class="round" onchange="glob.onChange2(this)">
   <option value="0" selected>Nenhuma</option>
@@ -42,7 +103,7 @@ module.exports = {
 </select><br>
 <div id="gradient2">
 <span class="dbminputlabel">Gradiente</span>
-<textarea id="gradiente2" name="gradientes" rows="4" style="width: 100%; white-space: nowrap; resize:yes"></textarea><br>
+<textarea id="gradiente2" name="gradientes" rows="5" style="width: 100%; white-space: nowrap; resize:yes"></textarea>
 </div>
 
 <div id="cor2">
@@ -56,68 +117,10 @@ module.exports = {
         document.getElementById('colorfundo').type = 'text';
         document.getElementById('2btr1').style.display = 'block';
         document.getElementById('2btr2').style.display = 'none';
-        })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table><br>
-</div></div>
-<div id="conteudo2">
-<table style="width:100%">
-<tr>
-<td style="width:50% !important">
-<span class="dbminputlabel">Tipo</span><br>
-<select id="type" class="round" onchange="glob.onChange1(this)">
-  <option value="0" selected>Basico</option>
-  <option value="1">Circulo</option><br>
-</select>
-</td>
-<td style="width:50% !important">
-<span class="dbminputlabel">Tipo de linha</span><br>
-<select id="lineCap" class="round">
-  <option value="0" selected>Quadrada</option>
-  <option value="1">Redonda</option>
-</select>
-</td>
-</tr></table>
-<table style="width:100%"><tr>
-<td style="width:33% !important">
-<span class="dbminputlabel"><span id="Change1text">Largura</span></span><br>
-<input id="width" class="round" type="text">
-</td>
-<td style="width:33% !important">
-<span class="dbminputlabel"><span id="Change2text">Altura</span></span><br>
-    <input id="height" class="round" type="text">
-</td>
-<td style="width:33% !important">
-<span class="dbminputlabel">Espessura</span><br>
-    <input id="lineWidth" class="round" type="text">
-</td>
-</tr>
-<tr>
-<td style="width:33% !important"><div id="conteudo2g">
-<span class="dbminputlabel">Girar (Graus)</span><br>
-    <input id="rotacao" class="round" value="0" type="text"></div>
-    </td>
-<td style="width:33% !important">
-<span class="dbminputlabel">Borrão</span><br>
-    <input id="blur2" class="round" value="0" type="text">
-    </td>
-    <td style="width:33% !important">
-    <span class="dbminputlabel">Cor da Sombra</span><br>
-    <table style="width:100%"><tr><th><input id="shadowcor2" name="actionxinxyla" class="round" type="text" placeholder="Opcional"><th>
-    <th style="width:40px;text-align:center;padding:4px"><a id="4btr1" style="cursor:pointer" onclick="(function(){
-      document.getElementById('shadowcor2').type = 'color'
-      document.getElementById('4btr1').style.display = 'none';
-      document.getElementById('4btr2').style.display = 'block';
-      })()"><button class="tiny compact ui icon button">Cor</button></a><a id="4btr2" style="cursor:pointer;display:none" onclick="(function(){
-        document.getElementById('shadowcor2').type = 'text';
-        document.getElementById('4btr1').style.display = 'block';
-        document.getElementById('4btr2').style.display = 'none';
         })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table>
-    </td></tr></table>
-
-</div></div>
-
-<div style="padding-top:12px">
-<span class="dbminputlabel">Barra de Progresso</span>
-<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px">
+</td><td style="width:50%;vertical-align:top">
+<span class="dbminputlabel">Cor da Barra de Progresso</span><br>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:6px">
 <span class="dbminputlabel">Tipo de Cor</span>
 <select id="tipocor" class="round" onchange="glob.onChange0(this)">
   <option value="0" selected>Cor (HEX ou RGBA)</option>
@@ -126,7 +129,7 @@ module.exports = {
 <br>
 <div id="gradient">
 <span class="dbminputlabel">Gradiente</span>
-<textarea id="gradiente" name="gradientes" rows="4" style="width: 100%; white-space: nowrap; resize:yes"></textarea><br>
+<textarea id="gradiente" name="gradientes" rows="5" style="width: 100%; white-space: nowrap; resize:yes"></textarea>
 </div>
 
 <div id="cor">
@@ -140,20 +143,43 @@ module.exports = {
         document.getElementById('color').type = 'text';
         document.getElementById('btr1').style.display = 'block';
         document.getElementById('btr2').style.display = 'none';
-        })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table><br>
+        })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table>
+</div>
+</td></tr></table>
+
+
 </div>
 
+</div>
+</tab>
 
-<table style="width:100%"><tr>
-<td style="width:33% !important">
-<span class="dbminputlabel">Porcentagem</span><br>
-    <input id="percent" class="round" type="text">
-    </td>
-    <td style="width:33% !important">
+<tab label="Sombra" icon="align left">
+<div style="padding:2px">
+<table style="width:100%"><tr><td style="width:50%;vertical-align:top">
+<span class="dbminputlabel">Sombra da Barra</span><br>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px">
+<span class="dbminputlabel">Borrão</span><br>
+    <input id="blur2" class="round" value="0" type="text">
+    <br>
+    <span class="dbminputlabel">Cor da Sombra</span><br>
+    <table style="width:100%"><tr><th><input id="shadowcor2" name="actionxinxyla" class="round" type="text" placeholder="Opcional"><th>
+    <th style="width:40px;text-align:center;padding:4px"><a id="4btr1" style="cursor:pointer" onclick="(function(){
+      document.getElementById('shadowcor2').type = 'color'
+      document.getElementById('4btr1').style.display = 'none';
+      document.getElementById('4btr2').style.display = 'block';
+      })()"><button class="tiny compact ui icon button">Cor</button></a><a id="4btr2" style="cursor:pointer;display:none" onclick="(function(){
+        document.getElementById('shadowcor2').type = 'text';
+        document.getElementById('4btr1').style.display = 'block';
+        document.getElementById('4btr2').style.display = 'none';
+        })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table>
+    </div>
+</td>
+<td style="width:50%;vertical-align:top">
+<span class="dbminputlabel">Sombra da Barra de Progresso</span><br>
+<div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px">
 <span class="dbminputlabel">Borrão</span><br>
     <input id="blur" class="round" value="0" type="text">
-    </td>
-    <td style="width:33% !important">
+   <br>
     <span class="dbminputlabel">Cor da Sombra</span><br>
     <table style="width:100%"><tr><th><input id="shadowcor" name="actionxinxyla" class="round" type="text" placeholder="Opcional"><th>
     <th style="width:40px;text-align:center;padding:4px"><a id="3btr1" style="cursor:pointer" onclick="(function(){
@@ -165,25 +191,13 @@ module.exports = {
         document.getElementById('3btr1').style.display = 'block';
         document.getElementById('3btr2').style.display = 'none';
         })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table>
-    </td></tr></table>
-</div>
+       </div>
+</td></tr></table>
 
 
-<br>
-<div>
-  <div style="float: left; width: 50%;padding:5px">
-  <span class="dbminputlabel">Armazenar em</span><br>
-    <select id="storage" class="round">
-      ${data.variables[1]}
-    </select>
-  </div>
-  <div id="varNameContainer" style="float: right; width: 50%;padding:5px">
-  <span class="dbminputlabel">Nome da Variavel</span><br>
-    <input id="varName" class="round" type="text">
-  </div>
 </div>
-
-</div>
+</tab>
+</tab-system>
 
 <style>
 td{padding:5px}</style>`
