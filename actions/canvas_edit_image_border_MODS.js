@@ -14,7 +14,7 @@ module.exports = {
     return `${storeTypes[parseInt(data.storage)]} (${data.varName})`
   },
 
-  fields: ['storage', 'varName', 'circleinfo', 'radius' , 'cor' , 'lados' , 'borda','shadowtipo','shadowcor','blur','shadowh','shadowv','gradiente','tipocor'],
+  fields: ['storage', 'varName', 'circleinfo', 'radius' , 'cor' , 'lados' , 'borda', 'shadowcor','blur','shadowh','shadowv','gradiente','tipocor'],
 
   html (isEvent, data) {
     return `
