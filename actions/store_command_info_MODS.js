@@ -223,7 +223,7 @@ module.exports = {
         break;
     }
 
-    if (!result) result = 'invalid';
+    if (!result) result = 'invalido';
 
     if (result !== undefined) {
       const storage = parseInt(data.storage, 10);
