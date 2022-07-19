@@ -218,7 +218,6 @@ module.exports = {
             break;
             case 10:
               result = jp.query(command, '$..parameters');
-              console.log(result)
               break;
       default:
         break;
