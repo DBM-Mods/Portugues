@@ -28,11 +28,11 @@ module.exports = {
     } else if (data.embeds?.length > 0) {
       text = `${data.embeds.length} Embeds`;
     } else if (data.attachments?.length > 0) {
-      text = `${data.attachments.length} Attachments`;
+      text = `${data.attachments.length} Arquivos`;
     } else if (data.buttons?.length > 0 || data.selectMenus?.length > 0) {
-      text = `${data.buttons.length} Buttons and ${data.selectMenus.length} Select Menus`;
+      text = `${data.buttons.length} Botões e ${data.selectMenus.length} Menus de seleção`;
     } else if (data.editMessage && data.editMessage !== "0") {
-      text = `Message Options - ${presets.getVariableText(data.editMessage, data.editMessageVarName)}`;
+      text = `Opções da mensagem - ${presets.getVariableText(data.editMessage, data.editMessageVarName)}`;
     } else {
       text = `Nothing (might cause error)`;
     }
@@ -121,7 +121,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.7</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.8</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -446,11 +446,41 @@ module.exports = {
   <tab label="Arquivos" icon="file image">
     <div style="padding: 8px;">
 
-      <dialog-list id="attachments" fields='["url", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="400" dialogHeight="280" listLabel="Arquivos" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="data.url" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="attachments" fields='["tipo", "url", "canvasvar", "canvasnome", "compress", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="400" dialogHeight="560" listLabel="Arquivos" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="glob.formatItem(data)" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 16px;">
+
+        <span class="dbminputlabel">Tipo de Anexo</span>
+        <select id="tipo" class="round">
+          <option value="0">Anexo Local/Web URL</option>
+          <option value="1">Canvas</option>
+        </select>
+        <br>
           <span class="dbminputlabel">Anexo Local/Web URL</span>
           <input id="url" class="round" type="text" value="resources/">
 
+          <br>
+
+          <span class="dbminputlabel">Canvas > Tipo de Variavel</span><br>
+    <select id="canvasvar" class="round">
+      ${data.variables[1]}
+    </select>
+<br>
+          <span class="dbminputlabel">Canvas > Nome da Variavel</span>
+          <input id="canvasnome" class="round" type="text" list="variableList">
+<br>
+          <span class="dbminputlabel">Canvas > Nível de Compressão</span><br>
+          <select id="compress" class="round">
+            <option value="0">1</option>
+            <option value="1">2</option>
+            <option value="2">3</option>
+            <option value="3">4</option>
+            <option value="4">5</option>
+            <option value="5">6</option>
+            <option value="6">7</option>
+            <option value="7">8</option>
+            <option value="8">9</option>
+            <option value="9" selected>10</option>
+          </select>
           <br>
 
           <span class="dbminputlabel">Nome do anexo</span>
@@ -549,6 +579,23 @@ module.exports = {
       }}
 
       glob.onComparisonChanged(document.getElementById("iffalse"));
+
+
+      glob.formatItem = function (data) {
+        let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
+        const comp = data.tipo;
+        switch (comp) {
+          case "0":
+            result += "Anexo: " + data.url;
+            break;
+            case "1":
+              result += "Canvas: " +data.canvasnome;
+              break;
+        }
+        result += "</div>";
+        return result;
+      };
+
   },
   //---------------------------------------------------------------------
   // Action Editor On Save
@@ -794,6 +841,33 @@ module.exports = {
         messageOptions.files = [];
       }
       for (let i = 0; i < data.attachments.length; i++) {
+        
+        if(data.attachments[i].tipo == "1"){
+          const { DiscordJS } = this.getDBM();
+          const Canvas = require('canvas')
+          const attachment = data.attachments[i];
+          const varnamer = this.evalMessage(attachment?.canvasnome, cache);
+          const varid = this.evalMessage(attachment?.canvasvar, cache);
+          const imagedata = this.getVariable(varid, varnamer, cache)
+          if (!imagedata) {
+            this.callNextAction(cache)
+            return
+          }
+          const image = new Canvas.Image()
+          image.src = imagedata
+          const canvas = Canvas.createCanvas(image.width, image.height)
+          const ctx = canvas.getContext('2d')
+          ctx.drawImage(image, 0, 0, image.width, image.height)
+          const buffer = canvas.toBuffer('image/png', { compressionLevel: data.attachments[i].compress })
+          const spoiler = !!attachment?.spoiler;
+          const name = attachment?.name || (spoiler ? Util.basename("image.png") : undefined);
+          const msgAttachment = new MessageAttachment(buffer, name);
+          if (spoiler) {
+            msgAttachment.setSpoiler(true);
+          }
+          messageOptions.files.push(msgAttachment);
+
+        } else {
         const attachment = data.attachments[i];
         const url = this.evalMessage(attachment?.url, cache);
         if (url) {
@@ -804,7 +878,7 @@ module.exports = {
             msgAttachment.setSpoiler(true);
           }
           messageOptions.files.push(msgAttachment);
-        }
+        }}
       }
     }
 
