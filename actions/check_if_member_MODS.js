@@ -24,6 +24,7 @@ module.exports = {
         "É o proprietário atual do servidor?",
         "Está no canal AFK?",
         "Impulsionou o servidor?",
+        "É um usuário?",
       ];
       return `${info[parseInt(data.info, 10)]} > ${presets.getConditionsText(data)}`;
     },
@@ -32,7 +33,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div>
 <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
@@ -42,6 +43,7 @@ module.exports = {
   <span class="dbminputlabel">Verifique se o membro</span><br>
     <select id="info" class="round">
       <option value="0" selected>É um Bot?</option>
+      <option value="13">É um usuário?</option>
       <option value="1">Pode ser banido?</option>
       <option value="2">Pode ser kickado?</option>
       <option value="4">Está em um canal de voz?</option>
@@ -128,6 +130,9 @@ module.exports = {
       case 12:
         result = Boolean(member.premiumSinceTimestamp);
         break;
+        case 13:
+          if(member.user?.bot || member.bot){result = false}else{result = true}
+          break;
       default:
         console.log('Verifique sua ação "Verifique se o membro"! Há algo errado...');
         break;
