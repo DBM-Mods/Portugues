@@ -121,7 +121,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.8</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.9</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -446,29 +446,76 @@ module.exports = {
   <tab label="Arquivos" icon="file image">
     <div style="padding: 8px;">
 
-      <dialog-list id="attachments" fields='["tipo", "url", "canvasvar", "canvasnome", "compress", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="400" dialogHeight="560" listLabel="Arquivos" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="glob.formatItem(data)" itemStyle="text-align: left; line-height: 30px;">
-        <div style="padding: 16px;">
+      <dialog-list id="attachments" fields='["tipo", "url", "canvasvar", "canvasnome", "compress", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="400" dialogHeight="480" listLabel="Arquivos" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="glob.formatItem(data)" itemStyle="text-align: left; line-height: 30px;">
+        <div style="padding: 16px;" onmouseover="(function(){
+
+          var aselect = document.getElementById('tipo');
+            var avalue = aselect.options[aselect.selectedIndex].value
+        
+          if (avalue == 0) {
+              document.getElementById('xinxyla1').style.display = 'none';
+              document.getElementById('xinxyla2').style.display = 'block';
+              document.getElementById('xinxyla3').style.display = 'block';
+        }
+        if (avalue == 1) {
+          document.getElementById('xinxyla2').style.display = 'none';
+          document.getElementById('xinxyla1').style.display = 'block';
+          document.getElementById('xinxyla3').style.display = 'block';
+    }   
+    
+    if (avalue == 2) {
+      document.getElementById('xinxyla2').style.display = 'none';
+      document.getElementById('xinxyla1').style.display = 'block';
+      document.getElementById('xinxyla3').style.display = 'none';
+    } 
+
+        
+        })()">
 
         <span class="dbminputlabel">Tipo de Anexo</span>
-        <select id="tipo" class="round">
+        <select id="tipo" class="round" onchange="(function(){
+
+          var aselect = document.getElementById('tipo');
+            var avalue = aselect.options[aselect.selectedIndex].value
+        
+            if (avalue == 0) {
+              document.getElementById('xinxyla1').style.display = 'none';
+              document.getElementById('xinxyla2').style.display = 'block';
+              document.getElementById('xinxyla3').style.display = 'block';
+        }
+        if (avalue == 1) {
+          document.getElementById('xinxyla2').style.display = 'none';
+          document.getElementById('xinxyla1').style.display = 'block';
+          document.getElementById('xinxyla3').style.display = 'block';
+    }   
+    
+    if (avalue == 2) {
+      document.getElementById('xinxyla2').style.display = 'none';
+      document.getElementById('xinxyla1').style.display = 'block';
+      document.getElementById('xinxyla3').style.display = 'none';
+    }      
+        
+        })()">>
           <option value="0">Anexo Local/Web URL</option>
           <option value="1">Canvas</option>
+          <option value="2">DBM Imagens</option>
         </select>
-        <br>
+        <br><div id="xinxyla2">
           <span class="dbminputlabel">Anexo Local/Web URL</span>
           <input id="url" class="round" type="text" value="resources/">
 
-          <br>
-
-          <span class="dbminputlabel">Canvas > Tipo de Variavel</span><br>
+          <br></div>
+          <div id="xinxyla1">
+          <span class="dbminputlabel">Tipo de Variavel</span><br>
     <select id="canvasvar" class="round">
       ${data.variables[1]}
     </select>
 <br>
-          <span class="dbminputlabel">Canvas > Nome da Variavel</span>
+          <span class="dbminputlabel">Nome da Variavel</span>
           <input id="canvasnome" class="round" type="text" list="variableList">
 <br>
-          <span class="dbminputlabel">Canvas > Nível de Compressão</span><br>
+<div id="xinxyla3">
+          <span class="dbminputlabel">Nível de Compressão</span><br>
           <select id="compress" class="round">
             <option value="0">1</option>
             <option value="1">2</option>
@@ -481,7 +528,7 @@ module.exports = {
             <option value="8">9</option>
             <option value="9" selected>10</option>
           </select>
-          <br>
+          <br></div></div>
 
           <span class="dbminputlabel">Nome do anexo</span>
           <input id="name" class="round" type="text" placeholder="Deixe em branco para o padrão...">
@@ -591,6 +638,9 @@ module.exports = {
             case "1":
               result += "Canvas: " +data.canvasnome;
               break;
+              case "2":
+                result += "DBM Imagens: " +data.canvasnome;
+                break;
         }
         result += "</div>";
         return result;
@@ -867,7 +917,24 @@ module.exports = {
           }
           messageOptions.files.push(msgAttachment);
 
-        } else {
+        }
+        if(data.attachments[i].tipo == "2"){
+          const { Images } = this.getDBM();
+          const attachment = data.attachments[i];
+          const varnamer = this.evalMessage(attachment?.canvasnome, cache);
+          const varid = this.evalMessage(attachment?.canvasvar, cache);
+          const imagedata = this.getVariable(varid, varnamer, cache)
+          const spoiler = !!attachment?.spoiler;
+          const name = attachment?.name || (spoiler ? Util.basename("image.png") : undefined);
+          const buffer = await Images.createBuffer(imagedata)
+          const msgAttachment = new MessageAttachment(buffer, name);
+          if (spoiler) {
+            msgAttachment.setSpoiler(true);
+          }
+          messageOptions.files.push(msgAttachment);
+
+        } 
+        if(data.attachments[i].tipo == "0" || data.attachments[i].tipo == undefined){
         const attachment = data.attachments[i];
         const url = this.evalMessage(attachment?.url, cache);
         if (url) {
