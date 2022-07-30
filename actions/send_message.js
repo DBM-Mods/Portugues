@@ -42,6 +42,9 @@ module.exports = {
     if (data.descriptioncolor == undefined) {
       data.descriptioncolor = "#ffffff"
     }
+    if (data.storagewebhook > "0") {
+      return `Enviar via Webhook: ${data.varwebhook}`;
+    }
     return data.description
     ? `<font color="${data.descriptioncolor}">${data.description}</font>`
     : `<font color="${data.descriptioncolor}">${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}</font>`
@@ -106,6 +109,8 @@ module.exports = {
     "iffalseVal",
     "descriptioncolor",
     "description",
+    "storagewebhook",
+    "varwebhook",
   ],
 
   //---------------------------------------------------------------------
@@ -121,17 +126,24 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.9</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.0</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
-<send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
-
+    <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
+    <br><br><br>
+</div><div id="xin3"><div style="float: left; width: 35%">
+<span class="dbminputlabel">Enviar para</span><br>
+<select class="round">
+<option value="0" selected>Webhook</option>
+</select>
+</div>
 <br><br><br>
-
+</div>
+<div style="width:100%">
 <tab-system style="margin-top: 20px;">
 
 
-  <tab label="Msg" icon="align left">
+  <tab label="Texto" icon="align left">
     <div style="padding: 8px;">
       <textarea id="message" class="dbm_monospace" rows="10" placeholder="Insira a mensagem aqui..." style="height: calc(100vh - 309px); white-space: nowrap; resize: none;"></textarea>
     </div>
@@ -268,9 +280,9 @@ module.exports = {
     </div>
   </tab>
 
-
   <tab label="Botões" icon="clone">
-    <div style="padding: 8px;">
+  <div style="padding: 16px;text-align:center"id="xin4n">Webhook não suporta Botões</div>
+    <div style="padding: 8px;" id="xin4">
 
       <dialog-list id="buttons" fields='["name", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions"]' dialogTitle="Button Info" dialogWidth="600" dialogHeight="700" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemCols="4" itemHeight="40px;" itemTextFunction="data.name" itemStyle="text-align: center; line-height: 40px;">
         <div style="padding: 16px;">
@@ -340,7 +352,8 @@ module.exports = {
 
 
   <tab label="Menus" icon="list alternate">
-    <div style="padding: 8px;">
+  <div style="padding: 16px;text-align:center"id="xin5n">Webhook não suporta Menus</div>
+    <div style="padding: 8px;" id="xin5">
 
       <dialog-list id="selectMenus" fields='["placeholder", "id", "tempVarName", "row", "min", "max", "mode", "time", "options", "actions"]' dialogTitle="Select Menu Info" dialogWidth="800" dialogHeight="700" listLabel="Menus" listStyle="height: calc(100vh - 350px);" itemName="Select Menu" itemCols="1" itemHeight="40px;" itemTextFunction="data.placeholder + '<br>' + data.options" itemStyle="text-align: left; line-height: 40px;">
         <div style="padding: 16px;">
@@ -545,7 +558,8 @@ module.exports = {
 
 
   <tab label="Config" icon="cogs">
-    <div style="padding: 8px;height:250px;overflow:auto">
+    <div style="padding: 8px;height:250px;overflow-y: scroll;overflow-x: hidden;width:100%">
+    <div id="xincheck">
       <dbm-checkbox style="float: left;" id="reply" label="Responda à interação se possível" checked></dbm-checkbox>
 
       <dbm-checkbox style="float: right;" id="ephemeral" label="Tornar a resposta privada"></dbm-checkbox>
@@ -561,24 +575,39 @@ module.exports = {
       </div>
 
       <br>
-      <hr class="subtlebar" style="margin-top: 4px; margin-bottom: 4px;">
-
+      <hr class="subtlebar" style="margin-top: 4px; margin-bottom: 4px">
+      </div>
       <br>
-
-      <div style="padding-bottom: 12px;">
+      <div style="width:96%;display:block">
+      <div style="padding-bottom: 12px;" id="xin1">
         <retrieve-from-variable allowNone dropdownLabel="Editar mensagem" selectId="editMessage" variableInputId="editMessageVarName" variableContainerId="editMessageVarNameContainer">
           <option value="intUpdate">Interaction Update</option>
         </retrieve-from-variable>
-      </div>
+      
 
-      <br><br><br>
+      <br><br><br></div>
+
+   
+    <div style="padding-bottom: 12px;">
+      <div style="float: left; width: 35%">
+      <span class="dbminputlabel">Enviar como Webhook</span><br>
+      <select id="storagewebhook" class="round" onchange="glob.onComparisonChanged2(this)">
+      <option value="0" selecionado>Não</option>
+      <option value="1">Variavel Temporária</option>
+      <option value="2">Variavel Servidor</option>
+      <option value="3">Variavel Global</option>
+    </select>
+    </div>
+    <div id="webhookdiv" style="display: none; float: right; width: 60%;"><span id="ifName" class="dbminputlabel">Nome da Variavel</span><br><input list="variableList" id="varwebhook" class="round" name="actionxinxyla" type="text"></div>
+
+      <br><br><br><br>
 
       <div style="padding-bottom: 12px;">
         <store-in-variable allowNone dropdownLabel="Armazenar em" selectId="storage" variableInputId="varName2" variableContainerId="varNameContainer2"></store-in-variable>
       </div>
 
       <br><br><br>
-      <hr class="subtlebar" style="margin-top: 4px; margin-bottom: 4px;">
+      <hr class="subtlebar" style="margin-top: 4px; margin-bottom: 4px">
       <br>
       <div>
       <div style="float: left; width: 35%">
@@ -601,9 +630,11 @@ module.exports = {
       </tr></table>
       </div>
 
+      </div>
+
     </div>
   </tab>
-</tab-system>`;
+</tab-system></div>`;
   },
 
   //---------------------------------------------------------------------
@@ -626,6 +657,46 @@ module.exports = {
       }}
 
       glob.onComparisonChanged(document.getElementById("iffalse"));
+
+
+      glob.onComparisonChanged2 = function (event) {
+        if (event.value > "0") {
+          document.getElementById("webhookdiv").style.display = null;
+          document.getElementById("xincheck").style.display = "none";
+          document.getElementById("xin1").style.display = "none";
+          document.getElementById("xin2").style.display = "none";
+          document.getElementById("xin3").style.display = "block";
+          document.getElementById("xin4").style.display = "none";
+          document.getElementById("xin5").style.display = "none";
+          document.getElementById("xin4n").style.display = null;
+          document.getElementById("xin5n").style.display = null;
+          const myInput = document.querySelector("#reply")
+          myInput.value = false
+          const myInput2 = document.querySelector("#dontSend")
+          myInput2.value = false
+          const myInput3 = document.querySelector("#ephemeral")
+          myInput3.value = false
+          const myInput4 = document.querySelector("#tts")
+          myInput4.value = false
+          const myInput5 = document.querySelector("#overwrite")
+          myInput5.value = false
+          const myInput6 = document.querySelector("#editMessage")
+          myInput6.value = 0
+          const myInput7 = document.querySelector("#channel")
+          myInput7.value = 0
+        } else {
+          document.getElementById("webhookdiv").style.display = "none";
+          document.getElementById("xincheck").style.display = null;
+          document.getElementById("xin1").style.display = null;
+          document.getElementById("xin2").style.display = "block";
+          document.getElementById("xin3").style.display = "none";
+          document.getElementById("xin4").style.display = null;
+          document.getElementById("xin5").style.display = null;
+          document.getElementById("xin4n").style.display = "none";
+          document.getElementById("xin5n").style.display = "none";
+        }}
+  
+        glob.onComparisonChanged2(document.getElementById("storagewebhook"));
 
 
       glob.formatItem = function (data) {
@@ -723,6 +794,10 @@ module.exports = {
 
     const channel = parseInt(data.channel, 10);
     const message = data.message;
+    const storagewebhook = parseInt(data.storagewebhook)
+    const varwebhook = this.evalMessage(data.varwebhook, cache)
+    const Mods = this.getMods()
+    const webhook = Mods.getWebhook(storagewebhook, varwebhook, cache)
     if (data.channel === undefined || message === undefined) {
       return;
     }
@@ -1047,16 +1122,29 @@ module.exports = {
       promise.then(onComplete).catch((err) => this.displayError(data, cache, err));
     }
 
+    
     else if (target?.send) {
-      target
+
+      if(storagewebhook > 0){
+        webhook      
         .send(messageOptions)
         .then(onComplete)
         .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+      } else {
+        target
+        .send(messageOptions)
+        .then(onComplete)
+        .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+      }
+        
     }
 
-    else {
+
+
+        else {
       this.callNextAction(cache);
     }
+
   },
 
   //---------------------------------------------------------------------
