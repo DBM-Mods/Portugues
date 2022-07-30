@@ -795,9 +795,10 @@ module.exports = {
     const channel = parseInt(data.channel, 10);
     const message = data.message;
     const storagewebhook = parseInt(data.storagewebhook)
-    const varwebhook = this.evalMessage(data.varwebhook, cache)
-    const Mods = this.getMods()
-    const webhook = Mods.getWebhook(storagewebhook, varwebhook, cache)
+    if (storagewebhook > 0){
+    varwebhook = this.evalMessage(data.varwebhook, cache)
+    Mods = this.getMods()
+    webhook = Mods.getWebhook(storagewebhook, varwebhook, cache)}
     if (data.channel === undefined || message === undefined) {
       return;
     }
