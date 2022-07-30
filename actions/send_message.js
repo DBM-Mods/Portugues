@@ -111,6 +111,8 @@ module.exports = {
     "description",
     "storagewebhook",
     "varwebhook",
+    "webhookname",
+    "webhookavatar",
   ],
 
   //---------------------------------------------------------------------
@@ -126,7 +128,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.0</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.1</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -588,7 +590,7 @@ module.exports = {
       <br><br><br></div>
 
    
-    <div style="padding-bottom: 12px;">
+    <div>
       <div style="float: left; width: 35%">
       <span class="dbminputlabel">Enviar como Webhook</span><br>
       <select id="storagewebhook" class="round" onchange="glob.onComparisonChanged2(this)">
@@ -599,10 +601,17 @@ module.exports = {
     </select>
     </div>
     <div id="webhookdiv" style="display: none; float: right; width: 60%;"><span id="ifName" class="dbminputlabel">Nome da Variavel</span><br><input list="variableList" id="varwebhook" class="round" name="actionxinxyla" type="text"></div>
-
-      <br><br><br><br>
-
-      <div style="padding-bottom: 12px;">
+    <div id="webhookdiv2" style="display: none;padding-top: 12px;">
+    <br><br><br>
+    <span class="dbminputlabel">Nome do Webhook</span><br>
+    <input id="webhookname" class="round" type="text" style="width:100%" placeholder="Opcional">
+    <br>
+    <span class="dbminputlabel">URL de imagem do avatar Webhook</span><br>
+    <input id="webhookavatar" class="round" type="text" style="width:100%" placeholder="Opcional"><br>
+    <hr class="subtlebar" style="margin-top: 4px; margin-bottom: -54px">
+    </div>
+      <br><br><br>
+      <div style="padding-top: 12px">
         <store-in-variable allowNone dropdownLabel="Armazenar em" selectId="storage" variableInputId="varName2" variableContainerId="varNameContainer2"></store-in-variable>
       </div>
 
@@ -662,6 +671,7 @@ module.exports = {
       glob.onComparisonChanged2 = function (event) {
         if (event.value > "0") {
           document.getElementById("webhookdiv").style.display = null;
+          document.getElementById("webhookdiv2").style.display = null;
           document.getElementById("xincheck").style.display = "none";
           document.getElementById("xin1").style.display = "none";
           document.getElementById("xin2").style.display = "none";
@@ -686,6 +696,7 @@ module.exports = {
           myInput7.value = 0
         } else {
           document.getElementById("webhookdiv").style.display = "none";
+          document.getElementById("webhookdiv2").style.display = "none";
           document.getElementById("xincheck").style.display = null;
           document.getElementById("xin1").style.display = null;
           document.getElementById("xin2").style.display = "block";
@@ -795,10 +806,13 @@ module.exports = {
     const channel = parseInt(data.channel, 10);
     const message = data.message;
     const storagewebhook = parseInt(data.storagewebhook)
+    const webhookname = this.evalMessage(data.webhookname, cache)
+    const webhookavatar = this.evalMessage(data.webhookavatar, cache)
     if (storagewebhook > 0){
     varwebhook = this.evalMessage(data.varwebhook, cache)
     Mods = this.getMods()
-    webhook = Mods.getWebhook(storagewebhook, varwebhook, cache)}
+    webhook = Mods.getWebhook(storagewebhook, varwebhook, cache)
+  }
     if (data.channel === undefined || message === undefined) {
       return;
     }
@@ -955,6 +969,13 @@ module.exports = {
         });
 
       messageOptions.components = newComponents;
+    }
+
+    if(storagewebhook > 0){
+    if(webhookname !== ""){
+    messageOptions.username = webhookname}
+    if(webhookavatar !== ""){
+      messageOptions.avatarURL = await webhookavatar}
     }
 
     if (data.tts) {
