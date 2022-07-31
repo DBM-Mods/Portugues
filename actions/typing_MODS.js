@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Typing MOD',
+  name: 'Bot Typing MOD',
   section: 'Bot Client Control',
   meta: {
     version: '2.1.5',
