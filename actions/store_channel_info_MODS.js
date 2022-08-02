@@ -158,7 +158,7 @@ module.exports = {
   <option value="12">Timestamp da criação do canal</option>
   <option value="18">Tipo de canal</option>
   <option value="25">Modo lento do canal [segundos]</option>
-  <option value="26">Tópicos do canal [Modo Lista com Object]</option>
+  <option value="26">Tópicos abertos do canal [Modo Lista com Object]</option>
   </optgroup>
   <optgroup label="Categoria do Canal">
   <option value="10">ID da categoria do canal</option>
