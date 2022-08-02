@@ -5,10 +5,10 @@ module.exports = {
   meta: {
     version: '2.1.5',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
-    },
+  },
 
   subtitle(data, presets) {
     const info = [
@@ -85,6 +85,12 @@ module.exports = {
       "Total de membros no canal de voz",
       "Lista de membros por ID presentes nos canais de voz",
       "Lista de membros presentes nos canais de voz",
+      "Lista de canais de texto do servidor",
+      "Lista de IDs de canais de texto do servidor",
+      "Lista de canais de voz do servidor",
+      "Lista de IDs de canais de voz do servidor",
+      "Lista de categorias do servidor",
+      "Lista de IDs das categorias do servidor"
     ];
     return `${presets.getServerText(data.server, data.varName)} - ${info[parseInt(data.info, 10)]}`;
   },
@@ -239,39 +245,57 @@ module.exports = {
       case 61:
         dataType = "Timestamp";
         break;
-        case 62:
-          dataType = "URL";
-          break;
-          case 63:
-            dataType = "Code";
-            break;
-            case 64:
-              dataType = "Text";
-              break;
-              case 65:
-                dataType = "Text";
-                break;
-                case 66:
-                  dataType = "Number";
-                  break;
-                  case 67:
-                    dataType = "ID User";
-                    break;
-                    case 68:
-                      dataType = "Timestamp";
-                      break;
-                      case 69:
-                        dataType = "Timestamp";
-                        break;
-                        case 70:
-                          dataType = "Number";
-                          break;
-                          case 71:
-                            dataType = "List";
-                            break;
-                            case 72:
-                              dataType = "List";
-                              break;
+      case 62:
+        dataType = "URL";
+        break;
+      case 63:
+        dataType = "Code";
+        break;
+      case 64:
+        dataType = "Text";
+        break;
+      case 65:
+        dataType = "Text";
+        break;
+      case 66:
+        dataType = "Number";
+        break;
+      case 67:
+        dataType = "ID User";
+        break;
+      case 68:
+        dataType = "Timestamp";
+        break;
+      case 69:
+        dataType = "Timestamp";
+        break;
+      case 70:
+        dataType = "Number";
+        break;
+      case 71:
+        dataType = "List";
+        break;
+      case 72:
+        dataType = "List";
+        break;
+      case 73:
+        dataType = "List";
+        break;
+      case 74:
+        dataType = "List";
+        break;
+      case 75:
+        dataType = "List";
+        break;
+      case 76:
+        dataType = "List";
+        break;
+      case 77:
+        dataType = "List";
+        break;
+      case 78:
+        dataType = "List";
+        break;
 
     }
     return [data.varName2, dataType];
@@ -285,7 +309,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.0</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.1</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <server-input dropdownLabel="Servidor" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
@@ -359,8 +383,14 @@ module.exports = {
       <optgroup label="Informações da Lista de Servidores">
       <option value="15">Lista de membros do servidor</options>
       <option value="33">Lista de IDs de membros do servidor</options>
+      <option value="77">Lista de categorias do servidor</options>
+      <option value="78">Lista de IDs das categorias do servidor</options>
       <option value="13">Lista de canais do servidor</options>
       <option value="31">Lista de IDs de canais de servidor</options>
+      <option value="73">Lista de canais de texto do servidor</options>
+      <option value="74">Lista de IDs de canais de texto do servidor</options>
+      <option value="75">Lista de canais de voz do servidor</options>
+      <option value="76">Lista de IDs de canais de voz do servidor</options>
       <option value="16">Lista de emojis do servidor</options>
       <option value="14">Lista de Cargos do servidor</options>
       <option value="32">Lista de IDs de funções de servidor</options>
@@ -398,7 +428,7 @@ module.exports = {
 <store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>`;
   },
 
-   init() {},
+  init() { },
 
   async action(cache) {
     const data = cache.actions[cache.index];
@@ -430,7 +460,7 @@ module.exports = {
       case 3:
         result = targetServer.nameAcronym;
         break;
-      case 4: 
+      case 4:
         result = targetServer.preferredLocale;
         break;
       case 5:
@@ -574,7 +604,7 @@ module.exports = {
         result = targetServer.widgetChannelId;
         break;
       case 51:
-          result = targetServer.afkChannelId;
+        result = targetServer.afkChannelId;
         break;
       case 52:
         result = targetServer.premiumProgressBarEnabled;
@@ -606,40 +636,58 @@ module.exports = {
       case 61:
         result = targetServer.createdTimestamp;
         break;
-        case 62:
-          result = `https://discord.new/${(await targetServer.fetchTemplates()).map(v => v.code)}`;
-          break;
+      case 62:
+        result = `https://discord.new/${(await targetServer.fetchTemplates()).map(v => v.code)}`;
+        break;
       case 63:
-          result = `${(await targetServer.fetchTemplates()).map(v => v.code)}`;
-          break;
-          case 64:
-          result = `${(await targetServer.fetchTemplates()).map(v => v.name)}`;
-          break;
-          case 65:
-          result = `${(await targetServer.fetchTemplates()).map(v => v.description)}`;
-          break;
-          case 66:
-          result = `${(await targetServer.fetchTemplates()).map(v => v.usageCount)}`;
-          break;
-          case 67:
-          result = `${(await targetServer.fetchTemplates()).map(v => v.creatorId)}`;
-          break;
-          case 68:
-          result = `${(await targetServer.fetchTemplates()).map(v => v.createdAt)}`;
-          break;
-          case 69:
-          result = `${(await targetServer.fetchTemplates()).map(v => v.updatedAt)}`;
-          break; 
-          case 70:
-            result = targetServer.channels.cache.filter(c => c.type === 'GUILD_VOICE').map(c => c.members.size).reduce((s, a) => s + a, 0);
-            break; 
-            case 71:
-              const str = targetServer.channels.cache.filter(c => c.type === 'GUILD_VOICE').map(c => c.members.map(member => member.user.id + ',').join('')).join('');  
-              result = str.substring(0, str.length - 1).split(new RegExp(","));
-              break;     
-              case 72:
-                result = targetServer.channels.cache.filter(d => d.type === 'GUILD_VOICE').map(d => d.members.map(member => member.user).join('')).join('');  
-                break;                 
+        result = `${(await targetServer.fetchTemplates()).map(v => v.code)}`;
+        break;
+      case 64:
+        result = `${(await targetServer.fetchTemplates()).map(v => v.name)}`;
+        break;
+      case 65:
+        result = `${(await targetServer.fetchTemplates()).map(v => v.description)}`;
+        break;
+      case 66:
+        result = `${(await targetServer.fetchTemplates()).map(v => v.usageCount)}`;
+        break;
+      case 67:
+        result = `${(await targetServer.fetchTemplates()).map(v => v.creatorId)}`;
+        break;
+      case 68:
+        result = `${(await targetServer.fetchTemplates()).map(v => v.createdAt)}`;
+        break;
+      case 69:
+        result = `${(await targetServer.fetchTemplates()).map(v => v.updatedAt)}`;
+        break;
+      case 70:
+        result = targetServer.channels.cache.filter(c => c.type === 'GUILD_VOICE').map(c => c.members.size).reduce((s, a) => s + a, 0);
+        break;
+      case 71:
+        const str = targetServer.channels.cache.filter(c => c.type === 'GUILD_VOICE').map(c => c.members.map(member => member.user.id + ',').join('')).join('');
+        result = str.substring(0, str.length - 1).split(new RegExp(","));
+        break;
+      case 72:
+        result = targetServer.channels.cache.filter(d => d.type === 'GUILD_VOICE').map(d => d.members.map(member => member.user).join('')).join('');
+        break;
+      case 73:
+        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_TEXT', 'GUILD_NEWS'].includes(c.type)).map(channels => channels);
+        break;
+      case 74:
+        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_TEXT', 'GUILD_NEWS'].includes(c.type)).map(channels => channels.id);
+        break;
+      case 75:
+        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_VOICE'].includes(c.type)).map(channels => channels);
+        break;
+      case 76:
+        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_VOICE'].includes(c.type)).map(channels => channels.id);
+        break;
+      case 77:
+        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_CATEGORY'].includes(c.type)).map(channels => channels);
+        break;
+      case 78:
+        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_CATEGORY'].includes(c.type)).map(channels => channels.id);
+        break;
       default:
         break;
     }
@@ -651,7 +699,7 @@ module.exports = {
     this.callNextAction(cache);
   },
 
- 
 
-  mod() {},
+
+  mod() { },
 };
