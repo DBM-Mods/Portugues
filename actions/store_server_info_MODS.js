@@ -86,9 +86,9 @@ module.exports = {
       "Lista de membros por ID presentes nos canais de voz",
       "Lista de membros presentes nos canais de voz",
       "Lista de canais de texto do servidor",
-      "Lista de IDs de canais de texto do servidor",
+      "Lista de IDs dos canais de texto do servidor",
       "Lista de canais de voz do servidor",
-      "Lista de IDs de canais de voz do servidor",
+      "Lista de IDs dos canais de voz do servidor",
       "Lista de categorias do servidor",
       "Lista de IDs das categorias do servidor"
     ];
@@ -388,9 +388,9 @@ module.exports = {
       <option value="13">Lista de canais do servidor</options>
       <option value="31">Lista de IDs de canais de servidor</options>
       <option value="73">Lista de canais de texto do servidor</options>
-      <option value="74">Lista de IDs de canais de texto do servidor</options>
+      <option value="74">Lista de IDs dos canais de texto do servidor</options>
       <option value="75">Lista de canais de voz do servidor</options>
-      <option value="76">Lista de IDs de canais de voz do servidor</options>
+      <option value="76">Lista de IDs dos canais de voz do servidor</options>
       <option value="16">Lista de emojis do servidor</options>
       <option value="14">Lista de Cargos do servidor</options>
       <option value="32">Lista de IDs de funções de servidor</options>
