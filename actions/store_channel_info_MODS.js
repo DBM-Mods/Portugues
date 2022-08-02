@@ -37,7 +37,7 @@ module.exports = {
       "Permissões de usuários do canal [Modo Lista]",
       "Permissões de cargos do canal [Modo Lista]",
       "Modo lento do canal [segundos]",
-      "Tópicos do canal [Modo Lista com Object]",
+      "Tópicos abertos do canal [Modo Lista com Object]",
     ];
     return `${presets.getChannelText(data.channel, data.varName)} - ${info[parseInt(data.info, 10)]}`;
   },
