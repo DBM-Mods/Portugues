@@ -37,7 +37,7 @@ module.exports = {
       "Permissões de usuários do canal [Modo Lista]",
       "Permissões de cargos do canal [Modo Lista]",
       "Modo lento do canal [segundos]",
-      "Tópicos abertos do canal [Modo Lista com Object]",
+      "Tópicos do canal [Modo Lista com Object]",
     ];
     return `${presets.getChannelText(data.channel, data.varName)} - ${info[parseInt(data.info, 10)]}`;
   },
@@ -268,7 +268,7 @@ module.exports = {
         result = await targetChannel.permissionOverwrites.cache.filter(p => p.type=='member').map(p => `**Usuário**: <@${p.id}>\n • Habilitado: ${p.allow.toArray().length>=1?p.allow.toArray():'Nada'}\n • Desabilitado: ${p.deny.toArray().length>=1?p.deny.toArray():'Nada'}`).join('\n\n');
         break;
        case 20:
-        result = await targetChannel.permissionOverwrites.cache.filter(p => p.type=='role').map(p => `**Cargo**: <@&${p.id}>\n • Habilitado: ${p.allow.toArray().length>=1?p.allow.toArray():'Nada'}\n • Desabilitado: ${p.deny.toArray().length>=1?p.deny.toArray():'Nada'}`).join('\n');
+        result = await targetChannel.permissionOverwrites.cache.filter(p => p.type=='role').map(p => `**Cargo**: <@&${p.id}>\n • Habilitado: ${p.allow.toArray().length>=1?p.allow.toArray():'Nada'}\n • Desabilitado: ${p.deny.toArray().length>=1?p.deny.toArray():'Nada'}`).join('\n\n');
         break;
       case 21:
         result = await targetChannel.permissionOverwrites.cache;
