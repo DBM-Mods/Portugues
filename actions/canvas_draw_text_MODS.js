@@ -19,7 +19,7 @@ fields: ["storage","varName","x","y","fontPath","fontColor","fontSize","align","
 
 html: function(isEvent, data) {
 	return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.6</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 	
@@ -351,6 +351,9 @@ init: function() {
 action: function(cache) {
 	const Canvas = require('canvas');
 	const data = cache.actions[cache.index];
+	const fontPath = this.evalMessage(data.fontPath, cache);
+	const fontName = fontPath.slice(fontPath.lastIndexOf("/")+1,fontPath.lastIndexOf("."))
+	Canvas.registerFont(fontPath, {family:fontName})
 	const storage = parseInt(data.storage);
 	const varName = this.evalMessage(data.varName, cache);
 	const imagedata = this.getVariable(storage, varName, cache);
@@ -358,8 +361,6 @@ action: function(cache) {
 		this.callNextAction(cache);
 		return;
 	}
-	const fontPath = this.evalMessage(data.fontPath, cache);
-	const fontName = fontPath.slice(fontPath.lastIndexOf("/")+1,fontPath.lastIndexOf("."))
 	const fontColor = this.evalMessage(data.fontColor, cache);
 	const largura = this.evalMessage(data.largura, cache);
 	const larguramax = this.evalMessage(data.larguramax, cache);
@@ -402,7 +403,6 @@ action: function(cache) {
 	const canvas = Canvas.createCanvas(image.width,image.height);
 	const ctx = canvas.getContext('2d');
 	ctx.drawImage(image, 0, 0, image.width, image.height);
-	Canvas.registerFont(fontPath, {family:fontName})
 	ctx.font = fontSize+"px "+fontName;
 	switch(align) {
 		case 0:
