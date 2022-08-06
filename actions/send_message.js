@@ -32,9 +32,13 @@ module.exports = {
     } else if (data.buttons?.length > 0 || data.selectMenus?.length > 0) {
       text = `${data.buttons.length} Botões e ${data.selectMenus.length} Menus de seleção`;
     } else if (data.editMessage && data.editMessage !== "0") {
-      text = `Opções da mensagem - ${presets.getVariableText(data.editMessage, data.editMessageVarName)}`;
+      if (data.editMessage === "intUpdate") {
+        text = "Opções da mensagem - Editar interação"
+      } else {
+        text = `Opções da mensagem - ${presets.getVariableText(data.editMessage, data.editMessageVarName)}`;
+      }
     } else {
-      text = `Nothing (might cause error)`;
+      text = `Nada (Pode ocasionar erro)`;
     }
     if (data.dontSend) {
       return `Store Data: ${text}`;
@@ -46,8 +50,8 @@ module.exports = {
       return `Enviar via Webhook: ${data.varwebhook}`;
     }
     return data.description
-    ? `<font color="${data.descriptioncolor}">${data.description}</font>`
-    : `<font color="${data.descriptioncolor}">${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}</font>`
+      ? `<font color="${data.descriptioncolor}">${data.description}</font>`
+      : `<font color="${data.descriptioncolor}">${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}</font>`
   },
 
   //---------------------------------------------------------------------
@@ -72,10 +76,10 @@ module.exports = {
   // This will make it so the patch version (0.0.X) is not checked.
   //---------------------------------------------------------------------
 
-  meta: { 
-    version: "2.1.5", 
-    preciseCheck: true, 
-    author: "[Modificado por XinXyla - 172782058396057602]", 
+  meta: {
+    version: "2.1.5",
+    preciseCheck: true,
+    author: "[Modificado por XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]",
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -128,7 +132,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -171,7 +175,7 @@ module.exports = {
                   <span class="dbminputlabel">Cor</span><br>
                   <table style="width:100%"><tr><td><input id="color" name="actionxinxyla" class="round" type="text" placeholder="Deixe em branco para o padrão..."><td>
                   <td style="width:40px;text-align:center;padding:4px"><a id="btr1" style="cursor:pointer" onclick="(function(){
-                    document.getElementById('color').type = 'color'
+                     document.getElementById('color').type = 'color'
                     document.getElementById('btr1').style.display = 'none';
                     document.getElementById('btr2').style.display = 'block';
                     })()"><button class="tiny compact ui icon button">Cor</button></a><a id="btr2" style="cursor:pointer;display:none" onclick="(function(){
@@ -248,7 +252,7 @@ module.exports = {
             <tab label="Autor" icon="user circle">
               <div style="padding: 8px">
                 <span class="dbminputlabel">Autor Texto</span><br>
-                <input id="author" class="round" type="text" placeholder="Deixe em branco para não permitir...">
+                <input id="author" class="round" type="text" placeholder="Deixe em branco para nenhum....">
 
                 <br>
 
@@ -270,7 +274,7 @@ module.exports = {
                 <br>
 
                 <span class="dbminputlabel">Footer Texto</span><br>
-                <textarea id="footerText" class="dbm_monospace" rows="10" placeholder="Deixe em branco para não permitir..." style="height: calc(100vh - 234px); white-space: nowrap; resize: none;"></textarea>
+                <textarea id="footerText" class="dbm_monospace" rows="10" placeholder="Deixe em branco para nenhum..." style="height: calc(100vh - 234px); white-space: nowrap; resize: none;"></textarea>
               </div>
             </tab>
 
@@ -317,7 +321,7 @@ module.exports = {
             <select id="mode" class="round">
             <option value="PERSONAL">Uma vez, apenas para o usuário do comando</option>
             <option value="PUBLIC">Uma vez, qualquer um pode usar</option>
-            <option value="MULTIPERSONAL">Multi, comando apenas para usuários</option>
+            <option value="MULTIPERSONAL">Multi, apenas para o usuário do comando</option>
             <option value="MULTI" selected>Multi, qualquer um pode usar</option>
             <option value="PERSISTENT">Persistente</option>
             </select>
@@ -366,7 +370,7 @@ module.exports = {
             <br>
 
             <span class="dbminputlabel">Nome da variável temporária</span>
-            <input id="tempVarName" placeholder="Stores selected value for actions..." class="round" type="text">
+            <input id="tempVarName" placeholder="Armazena o valor selecionado..." class="round" type="text">
 
             <br>
 
@@ -382,7 +386,7 @@ module.exports = {
             <select id="mode" class="round">
             <option value="PERSONAL">Uma vez, apenas para o usuário do comando</option>
             <option value="PUBLIC">Uma vez, qualquer um pode usar</option>
-            <option value="MULTIPERSONAL">Multi, comando apenas para usuários</option>
+            <option value="MULTIPERSONAL">Multi, apenas para o usuário do comando</option>
             <option value="MULTI" selected>Multi, qualquer um pode usar</option>
             <option value="PERSISTENT">Persistente</option>
             </select>
@@ -574,6 +578,7 @@ module.exports = {
         <dbm-checkbox id="overwrite" label="Substituir alterações"></dbm-checkbox>
 
         <dbm-checkbox id="dontSend" label="Não envie a mensagem"></dbm-checkbox>
+
       </div>
 
       <br>
@@ -654,79 +659,81 @@ module.exports = {
   // functions for the DOM elements.
   //---------------------------------------------------------------------
 
-  init: function() {
-    const {glob, document} = this;
-  
+  init: function () {
+    const { glob, document } = this;
+
 
     glob.onComparisonChanged = function (event) {
       if (event.value > "1") {
         document.getElementById("iffalseContainer").style.display = null;
       } else {
         document.getElementById("iffalseContainer").style.display = "none";
-      }}
+      }
+    }
 
-      glob.onComparisonChanged(document.getElementById("iffalse"));
-
-
-      glob.onComparisonChanged2 = function (event) {
-        if (event.value > "0") {
-          document.getElementById("webhookdiv").style.display = null;
-          document.getElementById("webhookdiv2").style.display = null;
-          document.getElementById("xincheck").style.display = "none";
-          document.getElementById("xin1").style.display = "none";
-          document.getElementById("xin2").style.display = "none";
-          document.getElementById("xin3").style.display = "block";
-          document.getElementById("xin4").style.display = "none";
-          document.getElementById("xin5").style.display = "none";
-          document.getElementById("xin4n").style.display = null;
-          document.getElementById("xin5n").style.display = null;
-          const myInput = document.querySelector("#reply")
-          myInput.value = false
-          const myInput2 = document.querySelector("#dontSend")
-          myInput2.value = false
-          const myInput3 = document.querySelector("#ephemeral")
-          myInput3.value = false
-          const myInput4 = document.querySelector("#tts")
-          myInput4.value = false
-          const myInput5 = document.querySelector("#overwrite")
-          myInput5.value = false
-          const myInput6 = document.querySelector("#editMessage")
-          myInput6.value = 0
-          const myInput7 = document.querySelector("#channel")
-          myInput7.value = 0
-        } else {
-          document.getElementById("webhookdiv").style.display = "none";
-          document.getElementById("webhookdiv2").style.display = "none";
-          document.getElementById("xincheck").style.display = null;
-          document.getElementById("xin1").style.display = null;
-          document.getElementById("xin2").style.display = "block";
-          document.getElementById("xin3").style.display = "none";
-          document.getElementById("xin4").style.display = null;
-          document.getElementById("xin5").style.display = null;
-          document.getElementById("xin4n").style.display = "none";
-          document.getElementById("xin5n").style.display = "none";
-        }}
-  
-        glob.onComparisonChanged2(document.getElementById("storagewebhook"));
+    glob.onComparisonChanged(document.getElementById("iffalse"));
 
 
-      glob.formatItem = function (data) {
-        let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
-        const comp = data.tipo;
-        switch (comp) {
-          case "0":
-            result += "Anexo: " + data.url;
-            break;
-            case "1":
-              result += "Canvas: " +data.canvasnome;
-              break;
-              case "2":
-                result += "DBM Imagens: " +data.canvasnome;
-                break;
-        }
-        result += "</div>";
-        return result;
-      };
+    glob.onComparisonChanged2 = function (event) {
+      if (event.value > "0") {
+        document.getElementById("webhookdiv").style.display = null;
+        document.getElementById("webhookdiv2").style.display = null;
+        document.getElementById("xincheck").style.display = "none";
+        document.getElementById("xin1").style.display = "none";
+        document.getElementById("xin2").style.display = "none";
+        document.getElementById("xin3").style.display = "block";
+        document.getElementById("xin4").style.display = "none";
+        document.getElementById("xin5").style.display = "none";
+        document.getElementById("xin4n").style.display = null;
+        document.getElementById("xin5n").style.display = null;
+        const myInput = document.querySelector("#reply")
+        myInput.value = false
+        const myInput2 = document.querySelector("#dontSend")
+        myInput2.value = false
+        const myInput3 = document.querySelector("#ephemeral")
+        myInput3.value = false
+        const myInput4 = document.querySelector("#tts")
+        myInput4.value = false
+        const myInput5 = document.querySelector("#overwrite")
+        myInput5.value = false
+        const myInput6 = document.querySelector("#editMessage")
+        myInput6.value = 0
+        const myInput7 = document.querySelector("#channel")
+        myInput7.value = 0
+      } else {
+        document.getElementById("webhookdiv").style.display = "none";
+        document.getElementById("webhookdiv2").style.display = "none";
+        document.getElementById("xincheck").style.display = null;
+        document.getElementById("xin1").style.display = null;
+        document.getElementById("xin2").style.display = "block";
+        document.getElementById("xin3").style.display = "none";
+        document.getElementById("xin4").style.display = null;
+        document.getElementById("xin5").style.display = null;
+        document.getElementById("xin4n").style.display = "none";
+        document.getElementById("xin5n").style.display = "none";
+      }
+    }
+
+    glob.onComparisonChanged2(document.getElementById("storagewebhook"));
+
+
+    glob.formatItem = function (data) {
+      let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
+      const comp = data.tipo;
+      switch (comp) {
+        case "0":
+          result += "Anexo: " + data.url;
+          break;
+        case "1":
+          result += "Canvas: " + data.canvasnome;
+          break;
+        case "2":
+          result += "DBM Imagens: " + data.canvasnome;
+          break;
+      }
+      result += "</div>";
+      return result;
+    };
 
   },
   //---------------------------------------------------------------------
@@ -800,7 +807,7 @@ module.exports = {
   //---------------------------------------------------------------------
 
   async action(cache) {
-    
+
     const data = cache.actions[cache.index];
 
     const channel = parseInt(data.channel, 10);
@@ -808,11 +815,11 @@ module.exports = {
     const storagewebhook = parseInt(data.storagewebhook)
     const webhookname = this.evalMessage(data.webhookname, cache)
     const webhookavatar = this.evalMessage(data.webhookavatar, cache)
-    if (storagewebhook > 0){
-    varwebhook = this.evalMessage(data.varwebhook, cache)
-    Mods = this.getMods()
-    webhook = Mods.getWebhook(storagewebhook, varwebhook, cache)
-  }
+    if (storagewebhook > 0) {
+      varwebhook = this.evalMessage(data.varwebhook, cache)
+      Mods = this.getMods()
+      webhook = Mods.getWebhook(storagewebhook, varwebhook, cache)
+    }
     if (data.channel === undefined || message === undefined) {
       return;
     }
@@ -824,7 +831,7 @@ module.exports = {
     const overwrite = data.overwrite;
 
     let isEdit = 0;
-    if(data.editMessage === "intUpdate") {
+    if (data.editMessage === "intUpdate") {
       isEdit = 2;
     } else {
       const editMessage = parseInt(data.editMessage, 10);
@@ -843,8 +850,15 @@ module.exports = {
       }
     }
 
+    let content;
 
-    const content = this.evalMessage(message|| '\u200B', cache);
+    if (data.embeds?.length > 0 || data.attachments?.length > 0 || data.buttons?.length > 0 || data.selectMenus?.length > 0) {
+      content = this.evalMessage(message, 10);
+    } else {
+      content = this.evalMessage(message || "\u200b", cache);
+    }
+
+
     if (content) {
       if (messageOptions.content && !overwrite) {
         messageOptions.content += content;
@@ -971,11 +985,13 @@ module.exports = {
       messageOptions.components = newComponents;
     }
 
-    if(storagewebhook > 0){
-    if(webhookname !== ""){
-    messageOptions.username = webhookname}
-    if(webhookavatar !== ""){
-      messageOptions.avatarURL = await webhookavatar}
+    if (storagewebhook > 0) {
+      if (webhookname !== "") {
+        messageOptions.username = webhookname
+      }
+      if (webhookavatar !== "") {
+        messageOptions.avatarURL = await webhookavatar
+      }
     }
 
     if (data.tts) {
@@ -988,8 +1004,8 @@ module.exports = {
         messageOptions.files = [];
       }
       for (let i = 0; i < data.attachments.length; i++) {
-        
-        if(data.attachments[i].tipo == "1"){
+
+        if (data.attachments[i].tipo == "1") {
           const { DiscordJS } = this.getDBM();
           const Canvas = require('canvas')
           const attachment = data.attachments[i];
@@ -1015,7 +1031,7 @@ module.exports = {
           messageOptions.files.push(msgAttachment);
 
         }
-        if(data.attachments[i].tipo == "2"){
+        if (data.attachments[i].tipo == "2") {
           const { Images } = this.getDBM();
           const attachment = data.attachments[i];
           const varnamer = this.evalMessage(attachment?.canvasnome, cache);
@@ -1030,19 +1046,20 @@ module.exports = {
           }
           messageOptions.files.push(msgAttachment);
 
-        } 
-        if(data.attachments[i].tipo == "0" || data.attachments[i].tipo == undefined){
-        const attachment = data.attachments[i];
-        const url = this.evalMessage(attachment?.url, cache);
-        if (url) {
-          const spoiler = !!attachment?.spoiler;
-          const name = attachment?.name || (spoiler ? Util.basename(url) : undefined);
-          const msgAttachment = new MessageAttachment(url, name);
-          if (spoiler) {
-            msgAttachment.setSpoiler(true);
+        }
+        if (data.attachments[i].tipo == "0" || data.attachments[i].tipo == undefined) {
+          const attachment = data.attachments[i];
+          const url = this.evalMessage(attachment?.url, cache);
+          if (url) {
+            const spoiler = !!attachment?.spoiler;
+            const name = attachment?.name || (spoiler ? Util.basename(url) : undefined);
+            const msgAttachment = new MessageAttachment(url, name);
+            if (spoiler) {
+              msgAttachment.setSpoiler(true);
+            }
+            messageOptions.files.push(msgAttachment);
           }
-          messageOptions.files.push(msgAttachment);
-        }}
+        }
       }
     }
 
@@ -1103,12 +1120,12 @@ module.exports = {
 
       if (cache.interaction?.replied && cache.interaction?.editReply) {
         promise = cache.interaction.editReply(messageOptions);
-      } else if(cache?.interaction?.update) {
+      } else if (cache?.interaction?.update) {
         promise = cache.interaction.update(messageOptions);
       } else {
         this.displayError(data, cache, "Send Message -> Message/Options to Edit -> Interaction Update / Could not find interaction to edit");
       }
-      
+
       if (promise) {
         promise
           .then(onComplete)
@@ -1144,26 +1161,26 @@ module.exports = {
       promise.then(onComplete).catch((err) => this.displayError(data, cache, err));
     }
 
-    
+
     else if (target?.send) {
 
-      if(storagewebhook > 0){
-        webhook      
-        .send(messageOptions)
-        .then(onComplete)
-        .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+      if (storagewebhook > 0) {
+        webhook
+          .send(messageOptions)
+          .then(onComplete)
+          .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
       } else {
         target
-        .send(messageOptions)
-        .then(onComplete)
-        .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+          .send(messageOptions)
+          .then(onComplete)
+          .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
       }
-        
+
     }
 
 
 
-        else {
+    else {
       this.callNextAction(cache);
     }
 
@@ -1212,5 +1229,5 @@ module.exports = {
   // functions you wish to overwrite.
   //---------------------------------------------------------------------
 
-  mod() {},
+  mod() { },
 };
