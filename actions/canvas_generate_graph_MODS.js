@@ -138,7 +138,7 @@ module.exports = {
 </select></td>
 <td><span class="dbminputlabel">Alinhamento do título</span><br>
 <select id="alinhamento" class="round">
-<option value="start" selected>Centralizado</option>
+<option value="center" selected>Centralizado</option>
 <option value="start">Esquerda</option>
 <option value="end">Direita</option>
 </select></td>
