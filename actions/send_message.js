@@ -853,7 +853,7 @@ module.exports = {
     let content;
 
     if (data.embeds?.length > 0 || data.attachments?.length > 0 || data.buttons?.length > 0 || data.selectMenus?.length > 0) {
-      content = this.evalMessage(message, 10);
+      content = this.evalMessage(message, cache);
     } else {
       content = this.evalMessage(message || "\u200b", cache);
     }
