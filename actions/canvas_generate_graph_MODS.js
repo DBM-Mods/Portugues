@@ -20,34 +20,45 @@ module.exports = {
     return ([data.varName, 'Image'])
   },
 
-  fields: ['type', 'sort', 'width', 'height', 'title', 'borderWidth', 'borderColor', 'borderColorAlpha', 'bgColor', 'bgColorAlpha', 'labels', 'datasets', 'storage', 'varName'],
+  fields: ['type', 'sort', 'width', 'height', 'title', 'borderWidth', 'borderColor', 'borderColorAlpha', 'bgColor', 'bgColorAlpha', 'posicao', 'espacamento', 'alinhamento', 'labels', 'datasets', 'tamanhotitulo', 'cortitulo', 'storage', 'varName'],
 
   html (isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 
-    <tab-system style="margin-top: 0;">
+    <tab-system style="margin-top: -6px;">
 
 		<tab label="Dados" icon="align left">
     <div style="padding:10px 5px 5px 5px" id="xinelas">
 
     <span class="dbminputlabel">Titulo</span><br>
     <input id="title" class="round" type="text">
-    <br>   
+    <xinspace>
     <span class="dbminputlabel">Rótulos (separados por vírgula</span><br>
-    <textarea id="labels" rows="4" placeholder="Exemplo 1, Exemplo 2, Exemplo 3..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
-    <br>
+    <textarea id="labels" rows="5" placeholder="Exemplo 1, Exemplo 2, Exemplo 3..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
+    <xinspace>
     <span class="dbminputlabel">Valores (separados por vírgula)</span><br>
-    <textarea id="datasets" rows="4" placeholder="10,20,30..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
+    <textarea id="datasets" rows="5" placeholder="10,20,30..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
     </div>
     </tab>
 
     <tab label="Cores" icon="flask">
     <div style="padding:10px 5px 5px 5px">
-   
-    <table style="width:100%">
+     <span class="dbminputlabel">Cor do título</span><br>
+    <table style="width:100%"><tr><th><input id="cortitulo" name="actionxinxyla" class="round" type="text" placeholder="Deixe em branco para o padrão"><th>
+    <th style="width:40px;text-align:center;padding:4px"><a id="2btr1" style="cursor:pointer" onclick="(function(){
+      document.getElementById('cortitulo').type = 'color'
+      document.getElementById('2btr1').style.display = 'none';
+      document.getElementById('2btr2').style.display = 'block';
+      })()"><button class="tiny compact ui icon button">Cor</button></a><a id="2btr2" style="cursor:pointer;display:none" onclick="(function(){
+        document.getElementById('cortitulo').type = 'text';
+        document.getElementById('2btr1').style.display = 'block';
+        document.getElementById('2btr2').style.display = 'none';
+        })()"><button class="tiny compact ui icon button">Texto</button></a><th></tr></table>
+        <xinspace>
+<table style="width:100%">
     <tr>
     <td><span class="dbminputlabel">Opacidade do plano de fundo</span><br>
     <input id="bgColorAlpha" class="round" type="text" value="0.9">
@@ -56,12 +67,12 @@ module.exports = {
     <input id="borderColorAlpha" class="round" type="text" value="1"></td>
     </tr>
     </table>
-<br>
+    <xinspace>
     <span class="dbminputlabel">Cores de fundo HEX (separados por vírgula)</span><br>
-    <textarea id="bgColor" rows="4" placeholder="000000,333333,555555..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
-    <br>
+    <textarea id="bgColor" rows="3" placeholder="#000000,#333333,#555555..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
+    <xinspace>
     <span class="dbminputlabel">Cores da borda HEX (separados por vírgula)</span><br>
-    <textarea id="borderColor" rows="4" placeholder="000000,333333,555555..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
+    <textarea id="borderColor" rows="3" placeholder="#000000,#333333,#555555..." style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
     
 </div>
     </tab>
@@ -77,10 +88,20 @@ module.exports = {
 <input id="height" class="round" type="text"></td>
 </tr>
 
+<tr>
+<td><span class="dbminputlabel">largura da Borda (px)</span><br>
+<input id="borderWidth" class="round" type="text"></td>
+<td><span class="dbminputlabel">Tamanho do título (px)</span><br>
+<input id="tamanhotitulo" class="round" placeholder="Deixe em branco para o padrão" type="text"></td>
+</tr>
+
+<tr>
+<td><span class="dbminputlabel">Espaço nas laterais (px)</span><br>
+<input id="espacamento" class="round" value="0" type="text"></td>
+<td></td>
+</tr>
+
 </table>
-<br>
-<span class="dbminputlabel">largura da Borda (px)</span><br>
-<input id="borderWidth" class="round" type="text">
 </div>
     </tab>
 
@@ -105,7 +126,23 @@ module.exports = {
 <option value="2">Descer</option>
 </select>
 <br>
+
 <table style="width:100%">
+    <tr>
+<td><span class="dbminputlabel">Posição do título</span><br>
+<select id="posicao" class="round">
+<option value="top" selected>Superior</option>
+<option value="left">Esquerda</option>
+<option value="right">Direita</option>
+<option value="bottom">Inferior</option>
+</select></td>
+<td><span class="dbminputlabel">Alinhamento do título</span><br>
+<select id="alinhamento" class="round">
+<option value="start" selected>Centralizado</option>
+<option value="start">Esquerda</option>
+<option value="end">Direita</option>
+</select></td>
+</tr>
 <tr>
 <td><span class="dbminputlabel">Armazenar em</span><br>
 <select id="storage" class="round">
@@ -123,7 +160,8 @@ module.exports = {
     </tab-system>
 
   <style>
-  td{width:50%;padding:5px;}
+  xinspace{margin:10px 0px 0px 0px;display:block}
+  td{width:50%;padding:7px 5px;}
   </style>`
   },
 
@@ -135,7 +173,18 @@ module.exports = {
     const ChartJS = require('chart.js')
     const storage = parseInt(data.storage)
     const varName = this.evalMessage(data.varName, cache)
-    options = {}
+    const tamanhotitulo = this.evalMessage(data.tamanhotitulo, cache)
+    const cortitulo = this.evalMessage(data.cortitulo, cache)
+    const espacamento = this.evalMessage(data.espacamento, cache)
+    var alinhamento = this.evalMessage(data.alinhamento, cache)
+    if(alinhamento == ""){alinhamento = 'center'}
+    var posicao = this.evalMessage(data.posicao, cache)
+    if(posicao == ""){posicao = 'top'}
+    let options = {}
+    options.plugins = {legend: {position: posicao,align:alinhamento}}
+    if(tamanhotitulo !== ""){options.plugins = {legend: {position: posicao,align:alinhamento,labels: {font: {size: tamanhotitulo}}}}}
+    if(espacamento !== ""){options.layout = {padding: espacamento}}
+    if(cortitulo !== ""){options.color = cortitulo}
     let type = parseInt(data.type, cache)
     switch (type) {
       case 0:
@@ -146,7 +195,7 @@ module.exports = {
         break
       case 2:
         type = 'bar'
-        options = {indexAxis: 'y'}
+        options.indexAxis = 'y'
         break
       case 3:
         type = 'radar'
@@ -171,10 +220,10 @@ module.exports = {
     if (typeof labels === 'string') labels = labels.split(',')
     let datasets = this.evalMessage(data.datasets, cache)
     if (typeof datasets === 'string') datasets = datasets.split(',')
-    const bgColor = this.evalMessage(data.bgColor, cache)
+    const bgColor = this.evalMessage(data.bgColor, cache).replaceAll('#', '')
     const bgColorAlpha = parseFloat(this.evalMessage(data.bgColorAlpha, cache))
     const borderWidth = parseFloat(this.evalMessage(data.borderWidth, cache))
-    const borderColor = this.evalMessage(data.borderColor, cache)
+    const borderColor = this.evalMessage(data.borderColor, cache).replaceAll('#', '')
     const borderColorAlpha = parseFloat(this.evalMessage(data.borderColorAlpha, cache))
     try {
       const result = await ChartJS.Chart(type, width, height, titlexinxyla, labels, datasets, sort, bgColor, bgColorAlpha, borderWidth, borderColor, borderColorAlpha, options)
