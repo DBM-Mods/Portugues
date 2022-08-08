@@ -20,15 +20,15 @@
       return ([data.varName, 'Texto'])
     },
   
-    fields: ["image", "lang", "storage", "debug", "varName" ], 
+    fields: ["image", "lang", "storage", "debug", "varName"], 
 
     html(data, isEvent) {
       return `
         <span class="dbminputlabel">Local/Web URL da imagem</span><br>
-        <input id="image" class="round" type="text" ><br>
+        <input id="image" class="round" type="text"><br>
 
         <span class="dbminputlabel">língua do texto da imagem</span><span class="xinxylalink dbminputlabel" style="float:right" data-url="https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016">Prefixo das Linguas</span><br>
-        <input id="lang" class="round" value="por" type="text" ><br>
+        <input id="lang" class="round" value="por" type="text"><br>
 
         <span class="dbminputlabel">Mostrar progresso</span><br>
         <select id="debug" class="round">
@@ -71,7 +71,6 @@ span.xinxylalink:hover {
   
     },
   
-
     async action(cache) {
       const data = cache.actions[cache.index];
       const image = this.evalMessage(data.image, cache)
