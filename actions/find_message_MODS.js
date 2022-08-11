@@ -4,22 +4,23 @@ module.exports = {
   meta: {
     version: '2.1.5',
     preciseCheck: true,
-    author: '[Snull - 612775910449610763]<br>[XinXyla - 172782058396057602]',
+    author: '[Snull - 612775910449610763]<br>[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
   subtitle(data) {
-    const channels = [
-      'Mesmo Canal',
-      'Canal Mencionado',
-      '1º Canal do Servidor',
-      'Variável Temporaria',
-      'Variável do Servidor',
-      'Variável Global',
+    const info = [
+    'Localizar por conteúdo',
+    'Localizar por ID',
+    'Localizar por timestamp',
+    'Localizar por usuário',
+    'Localizar mensagens de BOTs',
+    'Localizar mensagens de Humanos',
+    'Localizar mensagens fixadas',
+    'Localizar mensagens entre dois timestamp'
     ];
-    const info = ['Localizar por conteúdo', 'Localizar por ID'];
-    return `${channels[parseInt(data.channel, 10)]} - ${info[parseInt(data.info, 10)]}`;
+    return `${info[parseInt(data.info, 10)]}`;
   },
 
   variableStorage(data, varType) {
@@ -27,36 +28,48 @@ module.exports = {
     return [data.varName2, 'Message'];
   },
 
-  fields: ['channel', 'varName', 'info', 'search', 'storage', 'varName2'],
+  fields: ['channel', 'info', 'member', 'search', 'search2', 'storage', 'varName', 'varName2', 'varName3'],
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
-<div>
-<table style="width: 100%;"><tr><td style="width: 60%">
-  <span class="dbminputlabel">Canal</span><br>
-    <select id="channel" class="round" onchange="glob.channelChange(this, 'varNameContainer')">
-      ${data.channels[isEvent ? 1 : 0]}
-    </select>
-    </td><td style="width: 40%">
-  <div id="varNameContainer" style="display: none; float: right; width: 90%;">
-  <span class="dbminputlabel">Nome da variavel</span><br>
-    <input id="varName" class="round" type="text" list="variableList">
-  </div></td></tr></table>
-<div><br>
+
+  <channel-input dropdownLabel="Source Channel" selectId="channel" variableContainerId="varNameContainer" variableInputId="varName"></channel-input>
+
+  <br><br><br>
+
   <div style="float: left; width: 70%;">
-  <span class="dbminputlabel">Encontrar por</span><br>
-    <select id="info" class="round">
+    <span class="dbminputlabel">Encontrar por</span><br>
+    <select id="info" class="round" onchange="glob.change(this)">
       <option value="0" selected>Localizar por conteúdo</option>
       <option value="1">Localizar por ID</option>
+      <option value="2">Localizar por timestamp</option>
+      <option value="7">Localizar mensagens entre dois timestamp</option>
+      <option value="3">Localizar por usuário</option>
+      <option value="4">Localizar mensagens de BOTs</option>
+      <option value="5">Localizar mensagens de Humanos</option>
+      <option value="6">Localizar mensagens fixadas</option>
     </select>
-  </div><br><br><br>
-  <div style="float: left; width: 70%;">
-  <span class="dbminputlabel">Buscar por</span><br>
+  </div>
+
+  <br><br><br>
+
+  <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer2" variableInputId="varName2"></member-input>
+
+  <div id="divValue" style="float: left; width: 100%;">
+    <span class="dbminputlabel" id="span">Buscar por</span><br>
     <input id="search" class="round" type="text"><br>
   </div>
-</div><br>
+</div>
+
+  <div id="divValue2" style="padding-left: 10px; float: left; width: 55%;">
+    <span class="dbminputlabel">Timestamp Final</span><br>
+    <input id="search2" class="round" type="text" placeholder='Use "new" para usar o timestamp atual'>
+  </div>
+
+<br><br><br><br>
+
 <div>
   <div style="float: left; width: 35%;">
   <span class="dbminputlabel">Armazenar em</span><br>
@@ -64,9 +77,9 @@ module.exports = {
       ${data.variables[1]}
     </select>
   </div>
-  <div id="varNameContainer2" style="float: right; width: 60%;">
+  <div id="varNameContainer3" style="float: right; width: 60%;">
   <span class="dbminputlabel">Nome da variavel</span><br>
-    <input id="varName2" class="round" type="text"><br>
+    <input id="varName3" class="round" type="text"><br>
   </div>
 </div><br><br><br>
 <div>
@@ -78,8 +91,32 @@ module.exports = {
   },
 
   init() {
-    const { glob, document } = this;
-    glob.channelChange(document.getElementById('channel'), 'varNameContainer');
+    glob.change = function (event) {
+      if(event.value === "7") {
+        document.querySelector("member-input").style.display = "none";
+        document.getElementById("divValue").style.display = "block";
+        document.getElementById("divValue").style.width = "45%";
+        document.getElementById("divValue2").style.display = "block";
+        document.getElementById("span").innerHTML = "Timestamp Inicial";
+      } else if(event.value === "4" || event.value === "5" || event.value === "6") {
+        document.querySelector("member-input").style.display = "none";
+        document.getElementById("divValue").style.display = "none";
+        document.getElementById("divValue2").style.display = "none";
+        document.getElementById("span").innerHTML = "Buscar por";
+      } else if(event.value === "3") {
+        document.querySelector("member-input").style.display = "block";
+        document.getElementById("divValue").style.display = "none";
+        document.getElementById("divValue2").style.display = "none";
+      } else {
+        document.querySelector("member-input").style.display = "none";
+        document.getElementById("divValue").style.display = "block";
+        document.getElementById("divValue").style.width = "100%";
+        document.getElementById("divValue2").style.display = "none";
+        document.getElementById("span").innerHTML = "Buscar por";
+      }
+    };
+
+    glob.change(document.getElementById("info"));
   },
 
   async action(cache) {
@@ -88,15 +125,28 @@ module.exports = {
     const varName = this.evalMessage(data.varName, cache);
     const info = parseInt(data.info, 10);
     const search = this.evalMessage(data.search, cache);
+    const search2 = this.evalMessage(data.search2, cache) === "new" ? Math.floor(new Date().getTime()/1000.0) : this.evalMessage(data.search2, cache);
     const targetChannel = await this.getChannel(channel, varName, cache);
     const storage = parseInt(data.storage, 10);
-    const varName2 = this.evalMessage(data.varName2, cache);
+    const varName3 = this.evalMessage(data.varName3, cache);
 
     if (!targetChannel) return this.callNextAction(cache);
-    if (!search) {
-      console.error('Erro: Insira algo para pesquisar na ação Find Message.');
-      return this.callNextAction(cache);
+
+    if(info == 3 || info == 4 || info == 5 || info == 6) {
+    } else {
+      if(!search) {
+        console.error('Erro: Insira algo para pesquisar na ação Find Message.');
+        return this.callNextAction(cache);
+      }
     }
+
+    if(info == 7) {
+      if(!search2) {
+        console.error('Erro: Insira algo para pesquisar em "Timestamp 2" na ação Find Message.');
+        return this.callNextAction(cache);
+      }
+    }
+
 
     switch (info) {
       case 0:
@@ -105,7 +155,7 @@ module.exports = {
           .then((messages) => {
             const message = messages.find((el) => el.content.includes(search));
             if (message !== undefined) {
-              this.storeValue(message, storage, varName2, cache);
+              this.storeValue(message, storage, varName3, cache);
             }
             this.callNextAction(cache);
           })
@@ -119,12 +169,131 @@ module.exports = {
           .fetch(search)
           .then((message) => {
             if (message !== undefined) {
-              this.storeValue(message, storage, varName2, cache);
+              this.storeValue(message, storage, varName3, cache);
             }
             this.callNextAction(cache);
           })
           .catch((err) => {
             console.error();
+            this.callNextAction(cache);
+          });
+        break;
+      case 2:
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            const message = messages.find((el) => el.createdTimestamp.toString() === search.toString());
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 3:
+        const member = await this.getMemberFromData(data.member, data.varName2, cache);
+
+        if (!member) return this.callNextAction(cache);
+
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.author.id.toString() === member.id.toString()).map(msg => msg);
+
+            if(message.length <= 1) {
+              message = messages.find((el) => el.author.id.toString() === member.id.toString());
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 4:
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.author.bot === true).map(msg => msg);
+
+            if(message.length <= 1) {
+              message = messages.find((el) => el.author.bot === true);
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 5:
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.author.bot === false).map(msg => msg);
+
+            if(message.length <= 1) {
+              message = messages.find((el) => el.author.bot === false);
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 6:
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.pinned === true).map(msg => msg);
+
+            if(message.length <= 1) {
+              message = messages.find((el) => el.pinned === true);
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 7:
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.createdTimestamp.toString() >= search.toString() && el.createdTimestamp.toString() <= search2.toString()).map(msg => msg);
+
+            if(message.length <= 1) {
+              message = messages.find((el) => el.createdTimestamp.toString() >= search.toString() && el.createdTimestamp.toString() <= search2.toString());
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
             this.callNextAction(cache);
           });
         break;
