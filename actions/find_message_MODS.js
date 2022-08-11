@@ -18,21 +18,24 @@ module.exports = {
     'Localizar mensagens de BOTs',
     'Localizar mensagens de Humanos',
     'Localizar mensagens fixadas',
-    'Localizar mensagens entre dois timestamp'
+    `Localizar mensagens entre ${data.search} e ${data.search2}`,
+    `Localizar mensagens com o comprimento igual a ${data.search}`,
+    `Localizar mensagens com o comprimento maior que ${data.search}`,
+    `Localizar mensagens com o comprimento menor que ${data.search}`,
     ];
     return `${info[parseInt(data.info, 10)]}`;
   },
 
   variableStorage(data, varType) {
     if (parseInt(data.storage, 10) !== varType) return;
-    return [data.varName2, 'Message'];
+    return [data.varName3, 'Message'];
   },
 
   fields: ['channel', 'info', 'member', 'search', 'search2', 'storage', 'varName', 'varName2', 'varName3'],
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
   <channel-input dropdownLabel="Canal de origem" selectId="channel" variableContainerId="varNameContainer" variableInputId="varName"></channel-input>
@@ -50,6 +53,9 @@ module.exports = {
       <option value="4">Localizar mensagens de BOTs</option>
       <option value="5">Localizar mensagens de Humanos</option>
       <option value="6">Localizar mensagens fixadas</option>
+      <option value="8">Localizar mensagens com o comprimento igual a</option>
+      <option value="9">Localizar mensagens com o comprimento maior que</option>
+      <option value="10">Localizar mensagens com o comprimento menor que</option>
     </select>
   </div>
 
@@ -203,7 +209,7 @@ module.exports = {
           .then((messages) => {
             let message = messages.filter((el) => el.author.id.toString() === member.id.toString()).map(msg => msg);
 
-            if(message.length <= 1) {
+            if(message.length == 1) {
               message = messages.find((el) => el.author.id.toString() === member.id.toString());
             }
 
@@ -223,7 +229,7 @@ module.exports = {
           .then((messages) => {
             let message = messages.filter((el) => el.author.bot === true).map(msg => msg);
 
-            if(message.length <= 1) {
+            if(message.length == 1) {
               message = messages.find((el) => el.author.bot === true);
             }
 
@@ -243,7 +249,7 @@ module.exports = {
           .then((messages) => {
             let message = messages.filter((el) => el.author.bot === false).map(msg => msg);
 
-            if(message.length <= 1) {
+            if(message.length == 1) {
               message = messages.find((el) => el.author.bot === false);
             }
 
@@ -263,7 +269,7 @@ module.exports = {
           .then((messages) => {
             let message = messages.filter((el) => el.pinned === true).map(msg => msg);
 
-            if(message.length <= 1) {
+            if(message.length == 1) {
               message = messages.find((el) => el.pinned === true);
             }
 
@@ -283,8 +289,68 @@ module.exports = {
           .then((messages) => {
             let message = messages.filter((el) => el.createdTimestamp.toString() >= search.toString() && el.createdTimestamp.toString() <= search2.toString()).map(msg => msg);
 
-            if(message.length <= 1) {
+            if(message.length == 1) {
               message = messages.find((el) => el.createdTimestamp.toString() >= search.toString() && el.createdTimestamp.toString() <= search2.toString());
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 8:
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.content.length === parseInt(search.toString().replace(",", "."))).map(msg => msg);
+
+            if(message.length == 1) {
+              message = messages.find((el) => el.content.length === parseInt(search.toString().replace(",", ".")));
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 9:
+       targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.content.length > parseInt(search.toString().replace(",", "."))).map(msg => msg);
+
+            if(message.length == 1) {
+              message = messages.find((el) => el.content.length > parseInt(search.toString().replace(",", ".")));
+            }
+
+            if (message !== undefined) {
+              this.storeValue(message, storage, varName3, cache);
+            }
+            this.callNextAction(cache);
+          })
+          .catch((err) => {
+            console.error(err);
+            this.callNextAction(cache);
+          });
+        break;
+      case 10:
+        targetChannel.messages
+          .fetch({ limit: 100 })
+          .then((messages) => {
+            let message = messages.filter((el) => el.content.length < parseInt(search.toString().replace(",", "."))).map(msg => msg);
+
+            if(message.length == 1) {
+              message = messages.find((el) => el.content.length < parseInt(search.toString().replace(",", ".")));
             }
 
             if (message !== undefined) {
