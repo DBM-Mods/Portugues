@@ -50,8 +50,13 @@ module.exports = {
   async action(cache) {
     const data = cache.actions[cache.index];
     const channel = await this.getChannelFromData(data.Canal, data.varName, cache);
-    const segundos = this.evalMessage(data.segundos, cache);
+    let segundos = this.evalMessage(data.segundos, cache);
     const reason = this.evalMessage(data.reason, cache);
+
+    if(parseInt(segundos.toString().replace(",", ".")) > 21600) {
+      segundos = 21600;
+    }
+
     channel.setRateLimitPerUser(segundos, reason);
     this.callNextAction(cache);
   },
