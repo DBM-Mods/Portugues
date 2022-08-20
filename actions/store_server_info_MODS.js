@@ -309,7 +309,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <server-input dropdownLabel="Servidor" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
@@ -668,25 +668,34 @@ module.exports = {
         result = str.substring(0, str.length - 1).split(new RegExp(","));
         break;
       case 72:
-        result = targetServer.channels.cache.filter(d => d.type === 'GUILD_VOICE').map(d => d.members.map(member => member.user).join('')).join('');
+        let channels = targetServer.channels.cache.filter((c) => c.type === "GUILD_VOICE");
+        let members = new Array();
+
+        for (const [channelID, channel] of channels) {
+          for (const [memberID, member] of channel.members) {
+            members.push(member);
+          }
+        }
+
+        result = members;
         break;
       case 73:
-        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_TEXT', 'GUILD_NEWS'].includes(c.type)).map(channels => channels);
+        result = targetServer.channels.cache.filter((c) => ["GUILD_TEXT", "GUILD_NEWS"].includes(c.type)).map(channels => channels);
         break;
       case 74:
-        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_TEXT', 'GUILD_NEWS'].includes(c.type)).map(channels => channels.id);
+        result = targetServer.channels.cache.filter((c) => ["GUILD_TEXT", "GUILD_NEWS"].includes(c.type)).map(channels => channels.id);
         break;
       case 75:
-        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_VOICE'].includes(c.type)).map(channels => channels);
+        result = targetServer.channels.cache.filter((c) => c.type === "GUILD_VOICE").map(channels => channels);
         break;
       case 76:
-        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_VOICE'].includes(c.type)).map(channels => channels.id);
+        result = targetServer.channels.cache.filter((c) => c.type === "GUILD_VOICE").map(channels => channels.id);
         break;
       case 77:
-        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_CATEGORY'].includes(c.type)).map(channels => channels);
+        result = targetServer.channels.cache.filter((c) => c.type === "GUILD_CATEGORY").map(channels => channels);
         break;
       case 78:
-        result = [...targetServer.channels.cache.values()].filter((c) => ['GUILD_CATEGORY'].includes(c.type)).map(channels => channels.id);
+        result = targetServer.channels.cache.filter((c) => c.type === "GUILD_CATEGORY").map(channels => channels.id);
         break;
       default:
         break;
