@@ -57,7 +57,7 @@ module.exports = {
   // are also the names of the fields stored in the action's JSON data.
   //---------------------------------------------------------------------
 
-  fields: ["info", "find", "branch"],
+  fields: ["info", "find", "branch", "server", "varName", "voz"],
 
   //---------------------------------------------------------------------
   // Command HTML
@@ -72,8 +72,12 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+
+    <server-input dropdownLabel="Servidor" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
+
+    <br><br><br>
 
     <div>
       <div style="float: left; width: 40%;">
@@ -87,9 +91,13 @@ module.exports = {
         <span class="dbminputlabel">Pesquisar por</span><br>
         <input id="find" class="round" type="text">
       </div>
-  </div>
+    </div>
 
-    <br><br><br>
+    <br><br><br><br>
+
+    <dbm-checkbox id="voz" label="Incluir Canais de Voz" checked></dbm-checkbox></td>
+
+    <br>
 
     <conditional-input id="branch" style="padding-top: 8px;"></conditional-input>`
   },
@@ -114,7 +122,7 @@ module.exports = {
 
   async action(cache) {
     const data = cache.actions[cache.index];
-    const server = cache.server;
+    const server = await this.getServerFromData(data.server, data.varName, cache);
     const find = this.evalMessage(data.find, cache);
     const info = parseInt(data.info, 10);
 
@@ -123,7 +131,13 @@ module.exports = {
       return;
     }
 
-    const channels = server.channels.cache.filter((c) => ["GUILD_TEXT", "GUILD_NEWS", "GUILD_VOICE"].includes(c.type));
+    let channels;
+
+    if(data.voz) {
+      channels = server.channels.cache.filter((c) => ["GUILD_TEXT", "GUILD_NEWS", "GUILD_VOICE"].includes(c.type));
+    } else {
+      channels = server.channels.cache.filter((c) => ["GUILD_TEXT", "GUILD_NEWS"].includes(c.type));
+    }
 
     switch(info) {
         case 0:
