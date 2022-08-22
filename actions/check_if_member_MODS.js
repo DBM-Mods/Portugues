@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     version: '2.1.5',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
     },
@@ -25,6 +25,7 @@ module.exports = {
         "Está no canal AFK?",
         "Impulsionou o servidor?",
         "É um usuário?",
+        "Está no servidor atual?"
       ];
       return `${info[parseInt(data.info, 10)]} > ${presets.getConditionsText(data)}`;
     },
@@ -33,7 +34,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div>
 <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
@@ -55,6 +56,7 @@ module.exports = {
       ${!isEvent && '<option value="10">É o proprietário atual do servidor?</option>'}
       <option value="11">Está no canal AFK?</option>
       <option value="12">Impulsionou o servidor?</option>
+      <option value="14">Está no servidor atual?</option>
     </select>
   </div>
 </div><br><br><br><br>
@@ -130,9 +132,28 @@ module.exports = {
       case 12:
         result = Boolean(member.premiumSinceTimestamp);
         break;
-        case 13:
-          if(member.user?.bot || member.bot){result = false}else{result = true}
+      case 13:
+          if(member.user?.bot || member.bot) {
+            result = false;
+          } else {
+            result = true;
+          }
           break;
+      case 14:
+        const server = cache.server;
+
+        if (!server?.members) {
+          result = false;
+        } else {
+          if (server.memberCount !== server.members.cache.size) {
+            server.members.fetch();
+          }
+
+          const members = server.members.cache;
+
+          result = Boolean(members.get(member.id));
+        }
+        break;
       default:
         console.log('Verifique sua ação "Verifique se o membro"! Há algo errado...');
         break;
