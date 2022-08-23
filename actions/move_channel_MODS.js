@@ -35,7 +35,7 @@ module.exports = {
       <option value="2">Tópico do canal</option>
       <option value="3">Posição do canal</option>
 		</select></td>
-    <td class="xin2"><div id="oculta3"><span class="dbminputlabel">Valor</span><br>
+    <td class="xin2"><div id="oculta3"><span class="dbminputlabel" id="xinxylaalter">Valor</span><br>
 		<input id="find" class="round" type="text"></div></td>
     </tr>
 
@@ -132,15 +132,19 @@ module.exports = {
     glob.onComparisonChanged4 = function (event) {
       if (event.value == "0") {
         document.getElementById("oculta3").style.display = null;
+        document.querySelector("[id='xinxylaalter']").innerText = (`ID`);
       } 
   if (event.value == "1") {
     document.getElementById("oculta3").style.display = null;
+    document.querySelector("[id='xinxylaalter']").innerText = (`Nome`);
   } 
   if (event.value == "2") {
     document.getElementById("oculta3").style.display = null;
+    document.querySelector("[id='xinxylaalter']").innerText = (`Tópico`);
 }
 if (event.value == "3") {
   document.getElementById("oculta3").style.display = null;
+  document.querySelector("[id='xinxylaalter']").innerText = (`Posição`);
 }
 if (event.value == "4") {
   document.getElementById("oculta3").style.display = "none";
