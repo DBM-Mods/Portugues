@@ -1,8 +1,6 @@
 module.exports = {
     name: 'File Control MOD',
-
-    section: 'Other Stuff',
-
+    section: 'File Stuff',
     meta: {
       version: '2.1.5',
       preciseCheck: true,
