@@ -155,7 +155,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.0</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.1</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
@@ -215,7 +215,23 @@ module.exports = {
 
   async action(cache) {
     const data = cache.actions[cache.index];
-    const member = await this.getMemberFromData(data.member, data.varName, cache);
+    const memberfind = this.evalMessage(data.member, cache);
+    const find = this.evalMessage(data.varName, cache);
+    var member = await this.getMemberFromData(data.member, data.varName, cache);
+
+    if(memberfind == "100" || memberfind == "101"){
+
+      const server = cache.server;
+      if (!server?.members) {
+        this.callNextAction(cache);
+        return;
+      }
+      if (server.memberCount !== server.members.cache.size) server.members.fetch();
+      const members = server.members.cache;
+
+      if(memberfind == "100"){member = members.find((m) => m.user?.username === find);}
+      if(memberfind == "101"){member = members.get(find)}
+    }
 
     if (!member) {
       this.callNextAction(cache);
