@@ -25,7 +25,7 @@ fields: ["time", "ano", "meses", "dia", "hora", "min", "seg", "ano2", "meses2", 
 
 html: function(isEvent, data) {
 	return `
-	<div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.6</div>
+	<div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.7</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 	<div style="float: left; width: 100%;">
 	<span class="dbminputlabel">Converter segundos</span>
@@ -210,8 +210,9 @@ action: function(cache) {
 			result = (a > 1 ? ''+ a + ano : '') + (a == 1 ? ''+ a + ano2 : '') + (mes > 1 ? ''+ mes + meses : '') + (mes == 1 ? ''+ mes + meses2 : '') + (d > 1 ? d + dia : '') + (d == 1 ? ''+ d + dia2 : '') + (h > 1 ? h + hora : '') + (h == 1 ? ''+ h + hora2 : '') + (m > 1 ? m + min : '') + (m == 1 ? ''+ m + min2 : '') + (s > 1 ? s + seg : '') + (s == 1 ? ''+ s + seg2 : '');
 	}
 	}
-	if (result.toString() === "Data invalida") result = undefined;
+	if (result.toString() === "Data invalida"){ result = undefined};
     // Storage.
+	result = result.toString().trim()
 	if(result !== undefined) {
 		const storage = parseInt(data.storage);
 		const varName = this.evalMessage(data.varName, cache);
