@@ -132,7 +132,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.4</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.5</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -928,6 +928,7 @@ module.exports = {
 
     if (Array.isArray(data.buttons)) {
       for (let i = 0; i < data.buttons.length; i++) {
+        if(!data.buttons[i].name) data.buttons[i].name = "\u200b";
         const button = data.buttons[i];
         const buttonData = this.generateButton(button, cache);
         this.addButtonToActionRowArray(componentsArr, this.evalMessage(button.row, cache), buttonData, cache);
