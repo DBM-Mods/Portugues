@@ -53,7 +53,7 @@ module.exports = {
         <div style="width:100%;">
         <span class="dbminputlabel">Retornar</span>
         <select id="retornar" class="round" onchange="glob.onChange1(this)">
-            <option value="0" selected>[NIVEL] Nível</option>
+            <option value="0" selected>[LVL] Nível</option>
             <option value="1">[XPF] EXP necessário para upar para o próximo Nível</option>
             <option value="2">[EXP] EXP atual</option>
             <option value="3">[XPR] EXP restante para o próximo nível</option>
