@@ -117,6 +117,7 @@ module.exports = {
     "varwebhook",
     "webhookname",
     "webhookavatar",
+    "messageoff",
   ],
 
   //---------------------------------------------------------------------
@@ -132,7 +133,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.5</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.6</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -151,7 +152,7 @@ module.exports = {
 
   <tab label="Texto" icon="align left">
     <div style="padding: 8px;">
-      <textarea id="message" class="dbm_monospace" rows="10" placeholder="Insira a mensagem aqui..." style="height: calc(100vh - 309px); white-space: nowrap; resize: none;"></textarea>
+      <textarea id="message" class="dbm_monospace" rows="9" placeholder="Insira a mensagem aqui..." style="height: calc(100vh - 309px); white-space: nowrap;"></textarea>
     </div>
   </tab>
 
@@ -219,7 +220,7 @@ module.exports = {
             <tab label="Descrição" icon="file image">
               <div style="padding: 8px">
                 <textarea id="description" class="dbm_monospace" rows="10" placeholder="Insira a descrição aqui..." style="height: calc(100vh - 149px); white-space: nowrap; resize: none;"></textarea>
-              </div>
+                </div>
             </tab>
 
             <tab label="Fields" icon="list">
@@ -580,6 +581,13 @@ module.exports = {
         <dbm-checkbox id="dontSend" label="Não envie a mensagem"></dbm-checkbox>
 
       </div>
+      <br>
+
+      <div style="display: flex; justify-content: space-between;">
+
+      <dbm-checkbox id="messageoff" label="Adicionar/Substituir Texto" checked></dbm-checkbox>
+
+      </div>
 
       <br>
       <hr class="subtlebar" style="margin-top: 4px; margin-bottom: 4px">
@@ -809,7 +817,8 @@ module.exports = {
   async action(cache) {
 
     const data = cache.actions[cache.index];
-
+    var messageoff = data.messageoff;
+    if(messageoff == undefined){messageoff = true}
     const channel = parseInt(data.channel, 10);
     const message = this.evalMessage(data.message, cache);
     const storagewebhook = parseInt(data.storagewebhook)
@@ -852,11 +861,12 @@ module.exports = {
 
     let content;
 
-    if (data.embeds?.length > 0 || data.attachments?.length > 0 || data.buttons?.length > 0 || data.selectMenus?.length > 0) {
+    if(messageoff == true){
+    if (message.length > 0) {
       content = this.evalMessage(message, cache);
     } else {
-      content = this.evalMessage(message || "\u200b", cache);
-    }
+      content = this.evalMessage("", cache);
+    }}
 
 
     if (content) {
@@ -878,7 +888,6 @@ module.exports = {
       for (let i = 0; i < embedDatas.length; i++) {
         const embedData = embedDatas[i];
         const embed = new MessageEmbed();
-
         if (embedData.title) embed.setTitle(this.evalMessage(embedData.title, cache));
         if (embedData.url) embed.setURL(this.evalMessage(embedData.url, cache));
         if (embedData.color) embed.setColor(this.evalMessage(embedData.color, cache));
