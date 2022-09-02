@@ -2,7 +2,7 @@ module.exports = {
   name: 'Find Message MOD',
   section: 'Messaging',
   meta: {
-    version: '2.1.5',
+    version: '2.1.6',
     preciseCheck: true,
     author: '[Snull - 612775910449610763]<br>[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
