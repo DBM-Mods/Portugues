@@ -2,7 +2,7 @@ module.exports = {
   name: 'Go To Action Anchor MOD',
   section: 'Other Stuff',
   meta: {
-    version: '2.1.5',
+    version: '2.1.6',
     preciseCheck: true,
     author: '[XinXyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
