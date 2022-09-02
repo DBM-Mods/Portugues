@@ -206,13 +206,6 @@ module.exports = {
     } else {
     document.getElementById("exclusao2").style.display = "none";
     }
-    if (event.value == "7"){
-      document.getElementById("remcoluna").style.display = "none";
-      document.getElementById("xinas").style.display = "none";
-    } else {
-    document.getElementById("remcoluna").style.display = null;
-    document.getElementById("xinas").style.display = null;
-    } 
   }
 
     glob.onChange3(document.getElementById("changeType"));
