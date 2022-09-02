@@ -12,8 +12,8 @@ module.exports = {
   subtitle(data, presets) {
     const members = presets.members;
     const storage = presets.variables;
-    const changeType = [``, `Alterar`,`Adicionar`,`Adicionar texto`,`Adicionar valor númerico`,`Excluir`,`Checar`];
-    return `${presets.getMemberText(data.member, data.varName)} / ${changeType[parseInt(data.changeType, 10)]}(${data.dataName}) / ${storage[parseInt(data.storage, 10)]} (${data.varName2})`;
+    const changeType = [``, `Alterar(${data.dataName})`,`Adicionar(${data.dataName})`,`Adicionar texto(${data.dataName})`,`Adicionar valor númerico(${data.dataName})`,`Excluir coluna(${data.dataName})`,`Checar(${data.dataName})`,'Excluir todas as colunas'];
+    return `${presets.getMemberText(data.member, data.varName)} / ${changeType[parseInt(data.changeType, 10)]} / ${storage[parseInt(data.storage, 10)]} (${data.varName2})`;
   },
 
   variableStorage(data, varType) {
@@ -45,9 +45,9 @@ module.exports = {
   <div id="xin">
   <table>
   <tr>
-  <td class="sep1">
+  <td class="sep1" id="xinas"><div id="remcoluna">
   <span class="dbminputlabel">Nome da coluna</span><br>
-      <input id="dataName" class="round" type="text">
+      <input id="dataName" class="round" type="text"></div>
   </td>
   <td class="sep2">
   <span class="dbminputlabel">Tipo de controle</span><br>
@@ -57,7 +57,8 @@ module.exports = {
     <option value="2">Adicionar</option>
     <option value="3">Adicionar texto</option>
     <option value="4">Adicionar valor númerico</option>
-    <option value="5">Excluir</option>
+    <option value="5">Excluir coluna</option>
+    <option value="7">Excluir todas as colunas</option>
     <option value="6">Checar</option>
   </select>
   
@@ -194,7 +195,7 @@ module.exports = {
     glob.onComparisonChanged(document.getElementById("comparison"));
 
     glob.onChange3 = function (event) {
-    if (event.value == "5" || event.value == "0") {
+    if (event.value == "5" || event.value == "0" || event.value == "7") {
       document.getElementById("exclusao").style.display = "none";
     } else {
     document.getElementById("exclusao").style.display = null;
@@ -204,6 +205,13 @@ module.exports = {
       document.getElementById("exclusao2").style.display = null;
     } else {
     document.getElementById("exclusao2").style.display = "none";
+    }
+    if (event.value == "7"){
+      document.getElementById("remcoluna").style.display = "none";
+      document.getElementById("xinas").style.display = "none";
+    } else {
+    document.getElementById("remcoluna").style.display = null;
+    document.getElementById("xinas").style.display = null;
     } 
   }
 
@@ -278,6 +286,9 @@ module.exports = {
 
       if (val !== undefined) {
         if (Array.isArray(member)) {
+          if (isAdd == "7") {
+            member.delData();
+          }
           if (isAdd == "5") {
             member.forEach(function (mem) {
               if (mem?.addData) mem.setData(dataName);
@@ -285,7 +296,10 @@ module.exports = {
           }
           if (isAdd == "4") {
             member.forEach(function (mem) {
-              if (mem?.addData) mem.setData(dataName, (parseFloat(mem.data(dataName)) + parseFloat(val)) );
+              if (mem?.addData){
+                antes = mem.data(dataName)
+              if(mem.data(dataName) == undefined || mem.data(dataName) == null || mem.data(dataName) == ""){antes = 0}
+              mem.setData(dataName, (parseFloat(antes) + parseFloat(val)) )};
             });
           }
           if (isAdd == "3") {
@@ -306,11 +320,16 @@ module.exports = {
             );
           }
         } else {
+          if (isAdd == "7") {
+            member.delData();
+          }
           if (isAdd == "5") {
             member.setData(dataName);
           }
           if (isAdd == "4") {
-            member.setData(dataName, (parseFloat(member.data(dataName)) + parseFloat(val)) );
+            antes = member.data(dataName)
+            if(member.data(dataName) == undefined || member.data(dataName) == null || member.data(dataName) == ""){antes = 0}
+            member.setData(dataName, (parseFloat(antes) + parseFloat(val)) );
           }
           if (isAdd == "3") {
             member.addData(dataName, val.toString());
@@ -448,5 +467,33 @@ module.exports = {
       this.prepareActions(data.branch?.iffalseActions);
     },
 
-  mod() {},
+    mod(DBM) {
+      Reflect.defineProperty(DBM.DiscordJS.GuildMember.prototype, 'delData', {
+        value(name) {
+          const { players } = DBM.Files.data;
+  
+          if (name && players[this.id]?.[name]) {
+            delete players[this.id][name];
+            DBM.Files.saveData('players');
+          } else if (!name) {
+            delete players[this.id];
+            DBM.Files.saveData('players');
+          }
+        },
+      });
+  
+      Reflect.defineProperty(DBM.DiscordJS.User.prototype, 'delData', {
+        value(name) {
+          const { players } = DBM.Files.data;
+  
+          if (name && players[this.id]?.[name]) {
+            delete players[this.id][name];
+            DBM.Files.saveData('players');
+          } else if (!name) {
+            delete players[this.id];
+            DBM.Files.saveData('players');
+          }
+        },
+      });
+    },
 };
