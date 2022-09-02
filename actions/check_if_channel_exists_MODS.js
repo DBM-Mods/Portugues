@@ -42,7 +42,7 @@ module.exports = {
   //---------------------------------------------------------------------
 
   meta: {
-    version: "2.1.5",
+    version: "2.1.6",
     preciseCheck: true,
     author: '[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
