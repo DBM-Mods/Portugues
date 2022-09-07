@@ -183,7 +183,7 @@ module.exports = {
             const XPF = calc2 - calc
             const XPP = Math.floor((100 / (level * up)) * calc)
             const XPN = calc3
-            array1.push(`${eval(resultFormat)}\n`)
+            array1.push(`${eval(resultFormat)}`)
             result = array1.join('')
             break
             }
