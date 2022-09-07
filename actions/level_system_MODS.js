@@ -26,7 +26,7 @@ module.exports = {
     
     html: function(isEvent, data) {
         return `
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
         <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
         <span class="dbminputlabel">XP Total</span>
@@ -237,7 +237,7 @@ module.exports = {
                 const XPF = calc2 - calc
                 const XPP = Math.floor((100 / (level * up + soma)) * calc)
                 const XPN = calc3
-                array1.push(`${eval(resultFormat)}\n`)
+                array1.push(`${eval(resultFormat)}`)
                 result = array1.join('')
                 break
                 }
