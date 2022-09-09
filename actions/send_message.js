@@ -298,7 +298,7 @@ module.exports = {
 
             <span class="dbminputlabel">Tipo</span><br>
             <select id="type" class="round">
-              <option value="PRIMARY" selected>Primário (Blurple)</option>
+              <option value="PRIMARY" selected>Primário (Azul/Blurple)</option>
               <option value="SECONDARY">Secundário (Cinza)</option>
               <option value="SUCCESS">Sucesso (Verde)</option>
               <option value="DANGER">Perigo (Vermelho)</option>
