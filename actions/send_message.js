@@ -160,7 +160,7 @@ module.exports = {
   <tab label="Embeds" icon="book image">
     <div style="padding: 8px;">
 
-      <dialog-list id="embeds" fields='["title", "url", "color", "timestamp", "timestampper", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl"]' dialogTitle="Embed Info" dialogWidth="540" dialogHeight="460" listLabel="Embeds" listStyle="height: calc(100vh - 350px);" itemName="Embed" itemCols="1" itemHeight="30px;" itemTextFunction="data.title + ' - ' + data.description" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="embeds" fields='["title", "url", "color", "colorrandom", "timestamp", "timestampper", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl"]' dialogTitle="Embed Info" dialogWidth="540" dialogHeight="460" listLabel="Embeds" listStyle="height: calc(100vh - 350px);" itemName="Embed" itemCols="1" itemHeight="30px;" itemTextFunction="data.title + ' - ' + data.description" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 16px 16px 0px 16px;">
 
           <tab-system>
@@ -173,7 +173,7 @@ module.exports = {
 
                   <br>
 
-                  <span class="dbminputlabel">Cor</span><br>
+                  <span class="dbminputlabel">Cor</span><div style="float:right;margin-top:-5px"><dbm-checkbox id="colorrandom" label="Aleatória"></dbm-checkbox></div><br>
                   <table style="width:100%"><tr><td><input id="color" name="actionxinxyla" class="round" type="text" placeholder="Deixe em branco para o padrão..."><td>
                   <td style="width:40px;text-align:center;padding:4px"><a id="btr1" style="cursor:pointer" onclick="(function(){
                      document.getElementById('color').type = 'color'
@@ -887,7 +887,9 @@ module.exports = {
         const embed = new MessageEmbed();
         if (embedData.title) embed.setTitle(this.evalMessage(embedData.title, cache));
         if (embedData.url) embed.setURL(this.evalMessage(embedData.url, cache));
-        if (embedData.color) embed.setColor(this.evalMessage(embedData.color, cache));
+        if (embedData.color){
+          if (embedData.colorrandom == true){embed.setColor("RANDOM");} else {embed.setColor(this.evalMessage(embedData.color, cache));}
+        }
         if (embedData.timestamp == "true" || embedData.timestamp == true){
           if(embedData.timestampper == "" || embedData.timestampper == undefined){
             embed.setTimestamp()
