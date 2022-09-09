@@ -133,7 +133,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.6</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.7</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -160,7 +160,7 @@ module.exports = {
   <tab label="Embeds" icon="book image">
     <div style="padding: 8px;">
 
-      <dialog-list id="embeds" fields='["title", "url", "color", "timestamp", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl"]' dialogTitle="Embed Info" dialogWidth="540" dialogHeight="460" listLabel="Embeds" listStyle="height: calc(100vh - 350px);" itemName="Embed" itemCols="1" itemHeight="30px;" itemTextFunction="data.title + ' - ' + data.description" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="embeds" fields='["title", "url", "color", "timestamp", "timestampper", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl"]' dialogTitle="Embed Info" dialogWidth="540" dialogHeight="460" listLabel="Embeds" listStyle="height: calc(100vh - 350px);" itemName="Embed" itemCols="1" itemHeight="30px;" itemTextFunction="data.title + ' - ' + data.description" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 16px 16px 0px 16px;">
 
           <tab-system>
@@ -194,11 +194,8 @@ module.exports = {
 
                   <br>
 
-                  <span class="dbminputlabel">Usar Timestamp</span><br>
-                  <select id="timestamp" class="round">
-                    <option value="true">Sim</option>
-                    <option value="false" selected>Não</option>
-                  </select>
+                  <span class="dbminputlabel">Usar Timestamp</span><div style="float:right;margin-top:-5px"><dbm-checkbox id="timestamp" label="Sim" checked></dbm-checkbox></div><br>
+                  <input id="timestampper" class="round" type="text" placeholder="Deixe em branco para o atual">
                 </div>
 
                 <br><br><br><br><br><br><br>
@@ -207,13 +204,13 @@ module.exports = {
 
                 <br>
 
-                <span class="dbminputlabel">Imagem URL</span><br>
-                <input id="imageUrl" class="round" type="text" placeholder="Deixe em branco para nenhum...">
+                <span class="dbminputlabel">Imagem URL / Nome do Anexo</span><br>
+                <input id="imageUrl" class="round" type="text" placeholder="Deixe em branco para nenhum, image.png ou um link http">
 
                 <br>
 
-                <span class="dbminputlabel">Thumbnail URL</span><br>
-                <input id="thumbUrl" class="round" type="text" placeholder="Deixe em branco para nenhum...">
+                <span class="dbminputlabel">Thumbnail URL / Nome do Anexo</span><br>
+                <input id="thumbUrl" class="round" type="text" placeholder="Deixe em branco para nenhum, image.png ou um link http">
               </div>
             </tab>
 
@@ -550,7 +547,7 @@ module.exports = {
           </select>
           <br></div></div>
 
-          <span class="dbminputlabel">Nome do anexo</span>
+          <span class="dbminputlabel">Nome do Anexo</span>
           <input id="name" class="round" type="text" placeholder="Deixe em branco para o padrão...">
 
           <br>
@@ -891,9 +888,21 @@ module.exports = {
         if (embedData.title) embed.setTitle(this.evalMessage(embedData.title, cache));
         if (embedData.url) embed.setURL(this.evalMessage(embedData.url, cache));
         if (embedData.color) embed.setColor(this.evalMessage(embedData.color, cache));
-        if (embedData.timestamp === "true") embed.setTimestamp();
-        if (embedData.imageUrl) embed.setImage(this.evalMessage(embedData.imageUrl, cache));
-        if (embedData.thumbUrl) embed.setThumbnail(this.evalMessage(embedData.thumbUrl, cache));
+        if (embedData.timestamp == "true" || embedData.timestamp == true){
+          if(embedData.timestampper == "" || embedData.timestampper == undefined){
+            embed.setTimestamp()
+          }else{
+          embed.setTimestamp(parseFloat(this.evalMessage(embedData.timestampper, cache)))
+        }
+        };
+        if (embedData.imageUrl){
+        if (embedData.imageUrl.startsWith('http')){embed.setImage(this.evalMessage(embedData.imageUrl, cache))} else
+        {embed.setImage('attachment://'+this.evalMessage(embedData.imageUrl, cache))}
+        }       
+        if (embedData.thumbUrl){
+        if (embedData.thumbUrl.startsWith('http')){embed.setThumbnail(this.evalMessage(embedData.thumbUrl, cache))} else
+        {embed.setThumbnail('attachment://'+this.evalMessage(embedData.thumbUrl, cache))}
+        }
 
         if (embedData.description) embed.setDescription(this.evalMessage(embedData.description || '\u200B', cache));
 
