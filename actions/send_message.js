@@ -1066,7 +1066,7 @@ module.exports = {
                   result = isUrl(val1);
             }
           }
-          console.log(result)
+          
           if(f.formula == "1"){
           if(result == false){result = true}
         }
