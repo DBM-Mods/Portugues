@@ -133,7 +133,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.7</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.8</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -222,13 +222,68 @@ module.exports = {
 
             <tab label="Fields" icon="list">
               <div style="padding: 8px">
-                <dialog-list id="fields" fields='["name", "value", "inline"]' dialogTitle="Field Info" dialogWidth="540" dialogHeight="300" listLabel="Fields" listStyle="height: calc(100vh - 190px);" itemName="Field" itemCols="1" itemHeight="30px;" itemTextFunction="data.name + '<br>' + data.value" itemStyle="text-align: left; line-height: 30px;">
+                <dialog-list id="fields" fields='["name", "value", "inline", "val1", "val2", "comparar", "formula"]' dialogTitle="Field Info" dialogWidth="540" dialogHeight="500" listLabel="Fields" listStyle="height: calc(100vh - 190px);" itemName="Field" itemCols="1" itemHeight="30px;" itemTextFunction="data.name + '<br>' + data.value" itemStyle="text-align: left; line-height: 30px;">
                   <div style="padding: 16px;">
+                  
+
+                  <div style="padding-top: 8px;">
+
+                  <table style="width:100%"><tr><td>
+                    <span class="dbminputlabel">Valor A</span><br>
+                    <input id="val1" class="round" type="text">
+                    </td>
+                    <td>
+                    <span class="dbminputlabel">Comparador</span><br>
+                    <select id="comparar" class="round">
+                    <option value="0">Existe</option>
+                    <option value="1" selected>Igual a</option>
+                    <option value="2">Exatamente igual</option>
+                    <option value="3">Menor que</option>
+                    <option value="13">Menor ou igual a</option>
+                    <option value="4">Maior que</option>
+                    <option value="12">Maior ou igual a</option>
+                    <option value="5">Inclui</option>
+                    <option value="6">Matches Regex</option>
+                    <option value="14">Matches Full Regex</option>
+                    <option value="7">O comprimento é maior que</option>
+                    <option value="8">O comprimento é menor que</option>
+                    <option value="9">O comprimento é igual a</option>
+                    <option value="10">Começa com</option>
+                    <option value="11">Termina com</option>
+                    <option value="16">Possui acentuações?</option>
+                    <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
+                    <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
+                    <option value="19">É um número par?</option>
+                    <option value="20">É um número ímpar?</option>
+                    <option value="21">É um número?</option>
+                    <option value="24">É um texto?</option>
+                    <option value="23">É um URL de imagem?</option>
+                    <option value="25">É um URL?</option>
+                  </select>
+                   </td>
+                    <td>
+                    <span class="dbminputlabel">Valor B</span><br>
+                    <input id="val2" class="round" type="text">
+                    </td>
+                    </tr></table>
+
+                  <br>
+                  <span class="dbminputlabel">Exibir</span><br>
+                  <select id="formula" class="round">
+                  <option value="0" selected>Sempre exibir a field</option>
+                  <option value="1">Exibir a field somente se for falso</option>
+                  <option value="2">Exibir a field somente se for verdadeiro</option>
+                </select>
+
+                    </div>
+   
+                <br>
+
                     <div style="float: left; width: calc(50% - 12px);">
                       <span class="dbminputlabel">Field Nome</span><br>
                       <input id="name" class="round" type="text">
                     </div>
-
+                    
                     <div style="float: right; width: calc(50% - 12px);">
                       <span class="dbminputlabel">Em linha?</span><br>
                       <select id="inline" class="round">
@@ -237,10 +292,10 @@ module.exports = {
                       </select>
                     </div>
 
-                    <br><br><br><br>
+                    <br><br><br>
 
                     <span class="dbminputlabel">Field Valor</span><br>
-                    <textarea id="value" class="dbm_monospace" rows="10" placeholder="Insira o texto do Field aqui..." style="height: calc(100vh - 190px); white-space: nowrap; resize: none;"></textarea>
+                    <textarea id="value" class="dbm_monospace" rows="7" placeholder="Insira o texto do Field aqui..." style="height: calc(100vh - 320px); white-space: nowrap;"></textarea>
 
                   </div>
                 </dialog-list>
@@ -288,22 +343,30 @@ module.exports = {
   <div style="padding: 16px;text-align:center"id="xin4n">Webhook não suporta Botões</div>
     <div style="padding: 8px;" id="xin4">
 
-      <dialog-list id="buttons" fields='["name", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions"]' dialogTitle="Button Info" dialogWidth="600" dialogHeight="700" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemCols="4" itemHeight="40px;" itemTextFunction="data.name" itemStyle="text-align: center; line-height: 40px;">
+      <dialog-list id="buttons" fields='["name", "typeper", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions"]' dialogTitle="Button Info" dialogWidth="600" dialogHeight="700" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemCols="4" itemHeight="40px;" itemTextFunction="data.name" itemStyle="text-align: center; line-height: 40px;">
         <div style="padding: 16px;">
-          <div style="width: calc(50% - 12px); float: left;">
+          <div style="width: calc(50%); float: left;">
             <span class="dbminputlabel">Nome</span>
             <input id="name" class="round" type="text">
 
             <br>
 
-            <span class="dbminputlabel">Tipo</span><br>
+          <table style="width:100%"><tr><td id="bxin1">
+            <span class="dbminputlabel">Tipo / Menu</span><div style="float:right;margin-top:-5px"><a style="cursor:pointer" onclick="(function(){
+              document.getElementById('bxin1').style.display = 'none';
+              document.getElementById('bxin2').style.display = 'block';
+             })()"><button class="tiny compact ui icon button">Texto</button></a></div><br>
             <select id="type" class="round">
-              <option value="PRIMARY" selected>Primário (Azul/Blurple)</option>
-              <option value="SECONDARY">Secundário (Cinza)</option>
-              <option value="SUCCESS">Sucesso (Verde)</option>
-              <option value="DANGER">Perigo (Vermelho)</option>
-              <option value="LINK">Link (Cinza)</option>
-            </select>
+              <option value="PRIMARY" selected>PRIMARY (Azul/Blurple)</option>
+              <option value="SECONDARY">SECONDARY (Cinza)</option>
+              <option value="SUCCESS">SUCCESS (Verde)</option>
+              <option value="DANGER">DANGER (Vermelho)</option>
+              <option value="LINK">LINK (Cinza)</option>
+            </select></td><td id="bxin2" style="display:none"><span class="dbminputlabel">Tipo / Variavel</span><div style="float:right;margin-top:-5px"><a style="cursor:pointer" onclick="(function(){
+              document.getElementById('bxin2').style.display = 'none';
+              document.getElementById('bxin1').style.display = 'block';
+               })()"><button class="tiny compact ui icon button">Menu</button></a></div><br><input placeholder="Deixe em branco para usar o menu" id="typeper" class="round" type="text"></td></tr></table>
+
 
             <br>
 
@@ -898,12 +961,14 @@ module.exports = {
         }
         };
         if (embedData.imageUrl){
-        if (embedData.imageUrl.startsWith('http')){embed.setImage(this.evalMessage(embedData.imageUrl, cache))} else
-        {embed.setImage('attachment://'+this.evalMessage(embedData.imageUrl, cache))}
+          embedData.imageUrl = this.evalMessage(embedData.imageUrl, cache)
+        if (embedData.imageUrl.startsWith('http')){embed.setImage(embedData.imageUrl)} else
+        {embed.setImage('attachment://'+embedData.imageUrl)}
         }       
         if (embedData.thumbUrl){
-        if (embedData.thumbUrl.startsWith('http')){embed.setThumbnail(this.evalMessage(embedData.thumbUrl, cache))} else
-        {embed.setThumbnail('attachment://'+this.evalMessage(embedData.thumbUrl, cache))}
+          embedData.thumbUrl = this.evalMessage(embedData.thumbUrl, cache)
+        if (embedData.thumbUrl.startsWith('http')){embed.setThumbnail(embedData.thumbUrl)} else
+        {embed.setThumbnail('attachment://'+embedData.thumbUrl)}
         }
 
         if (embedData.description) embed.setDescription(this.evalMessage(embedData.description || '\u200B', cache));
@@ -912,7 +977,103 @@ module.exports = {
           const fields = embedData.fields;
           for (let i = 0; i < fields.length; i++) {
             const f = fields[i];
-            embed.addField(this.evalMessage(f.name || '\u200B', cache), this.evalMessage(f.value || '\u200B', cache), f.inline === "true");
+
+            val1 = this.evalMessage(f.val1, cache)
+            val2 = this.evalMessage(f.val2, cache)
+            result = true
+
+            if(f.formula == "1" || f.formula == "2"){
+            const compare = parseInt(f.comparar, 10);
+            if (compare !== 6) val2 = this.evalIfPossible(val2, cache);
+            switch (compare) {
+              case 0:
+                result = val1.toString() !== "undefined";
+                break;
+              case 1:
+                result = val1 == val2;
+                break;
+              case 2:
+                result = val1 === val2;
+                break;
+              case 3:
+                result = parseFloat(val1) < parseFloat(val2);
+                break;
+              case 4:
+                 result = parseFloat(val1) > parseFloat(val2);
+                break;
+              case 5:
+                if (typeof val1?.toString().includes === "function") {
+                  result = val1.toString().includes(val2);
+                }
+                break;
+                case 6:
+                  result = Boolean(val1.toString().match(new RegExp('^' + val2 + '$', 'i')));
+                  break;
+                case 7:
+                  result = Boolean(val1.toString().length > val2);
+                  break;
+                case 8:
+                  result = Boolean(val1.toString().length < val2);
+                  break;
+                case 9:
+                  result = Boolean(val1.toString().length == val2);
+                  break;
+                case 10:
+                  result = val1.toString().startsWith(val2);
+                  break;
+                case 11:
+                  result = val1.toString().endsWith(val2);
+                  break;
+                  case 12:
+                  result = Boolean(val1 >= val2);
+                  break;
+                  case 13:
+                  result = Boolean(val1 <= val2);
+                  break;
+                  case 14:
+                  result = Boolean(val1.toString().match(new RegExp(val2)))
+                  break;
+                  case 16:
+                  const conditions = ["Ä","Å","Á","Â","À","Ã","Ā","Ă","Ą","ā","ă","ą","ä","á","â","à","ã","É","Ê","Ë","È","Ė","Ę","Ě","Ĕ","Ē","ė","ę","ě","ĕ","ē","é","ê","ë","è","Í","Î","Ï","Ì","İ","Į","Ī","ı","į","ī","í","î","ï","ì","Ö","Ó","Ô","Ò","Õ","Ő","Ō","ő","ō","ö","ó","ô","ò","õ","Ü","Ú","Û","Ų","Ű","Ů","Ū","ų","ű","ů","ū","ü","ú","û","ù","Ç","Ć","Č","ç","ć","č","Ñ","Ň","Ņ","Ń","ñ","ň","ņ","ń","Ÿ","Ý","ý","Ź","Ż","Ž","ź","ż","ž","Ł","Ľ","Ļ","Ĺ","ł","ľ","ĺ","Ķ","ķ","Ģ","Ğ","ģ","ğ","Ď","ď","Ś","Š","Ş","ś","š","ş","Ť","Ț","Ţ","ť","ț","ţ","Ŕ","Ř","ŕ","ř"]
+                  result = conditions.some(el => val1.includes(el));
+                  break;
+                  case 17:
+                  const conditionsX = val2
+                  result = conditionsX.some(els => val1.includes(els));
+                break;
+                case 18:
+                  const conditionsZ = val2
+                  result = conditionsZ.some(elz => val1 == (elz));
+                break;
+                case 19:
+                  result = val1 % 2 == 0
+                break;
+                case 20:
+                  result = val1 % 2 == 1
+                break;
+          case 21:
+                  result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
+                  break;
+          case 23:
+                  const isImageUrl = require('is-image-url');
+                  result = isImageUrl(val1);
+                  break;
+                case 24:
+                  result = typeof val1 === "string";
+                  break;
+                case 25:
+                  const isUrl = require("is-url");
+                  result = isUrl(val1);
+            }
+          }
+          console.log(result)
+          if(f.formula == "1"){
+          if(result == false){result = true}
+        }
+
+        
+            if(result == true){
+            embed.addField(this.evalMessage(f.name || '\u200B', cache), this.evalMessage(f.value || '\u200B', cache), f.inline === "true")};
           }
         }
 
@@ -950,6 +1111,13 @@ module.exports = {
       for (let i = 0; i < data.buttons.length; i++) {
         if(!data.buttons[i].name) data.buttons[i].name = "\u200b";
         const button = data.buttons[i];
+        if(button.typeper == "" || button.typeper == undefined){
+          button.type = this.evalMessage(button.type, cache)
+        }else{
+          check = this.evalMessage(button.typeper, cache)
+          if(check == "PRIMARY" || check == "SECONDARY" || check == "SUCCESS" || check == "DANGER" || check == "LINK"){
+          button.type = this.evalMessage(button.typeper, cache)}
+        }
         const buttonData = this.generateButton(button, cache);
         this.addButtonToActionRowArray(componentsArr, this.evalMessage(button.row, cache), buttonData, cache);
 
