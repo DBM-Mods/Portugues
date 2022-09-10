@@ -235,7 +235,7 @@ module.exports = {
                     <td>
                     <span class="dbminputlabel">Comparador</span><br>
                     <select id="comparar" class="round">
-                    <option value="0">Existe</option>
+                    <option value="0">Valor A - Existe</option>
                     <option value="1" selected>Igual a</option>
                     <option value="2">Exatamente igual</option>
                     <option value="3">Menor que</option>
@@ -250,15 +250,15 @@ module.exports = {
                     <option value="9">O comprimento é igual a</option>
                     <option value="10">Começa com</option>
                     <option value="11">Termina com</option>
-                    <option value="16">Possui acentuações?</option>
+                    <option value="16">Valor A possui acentuações?</option>
                     <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
                     <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
-                    <option value="19">É um número par?</option>
-                    <option value="20">É um número ímpar?</option>
-                    <option value="21">É um número?</option>
-                    <option value="24">É um texto?</option>
-                    <option value="23">É um URL de imagem?</option>
-                    <option value="25">É um URL?</option>
+                    <option value="19">Valor A é um número par?</option>
+                    <option value="20">Valor A é um número ímpar?</option>
+                    <option value="21">Valor A é um número?</option>
+                    <option value="24">Valor A é um texto?</option>
+                    <option value="23">Valor A é um URL de imagem?</option>
+                    <option value="25">Valor A é um URL?</option>
                   </select>
                    </td>
                     <td>
