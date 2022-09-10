@@ -10,7 +10,7 @@ module.exports = {
     },
 
   subtitle(data) {
-    const categories = ['You cheater!', 'Variavel temporaria', 'Variavel Servidor', 'Variavel Global'];
+    const categories = ['vai continuar plagiando mesmo?', 'Variavel Temporaria', 'Variavel Servidor', 'Variavel Global'];
     const info = [
       "ID da Categoria",
       "Nome da Categoria",
@@ -35,86 +35,96 @@ module.exports = {
       "Lista por Nome dos canais de texto",
       "Lista por Nome dos canais de voz",
       "Lista por Nome dos canais de palco",
+      "Lista de membros por ID presentes nos canais de voz",
+      "Lista de membros presentes nos canais de voz",
+      "Total de membros presentes nos canais de voz",
     ];
     return `${categories[parseInt(data.category, 10)]} - ${info[parseInt(data.info, 10)]}`;
   },
 
   variableStorage(data, varType) {
     if (parseInt(data.storage, 10) !== varType) return;
-    let dataType = 'Unknown Type';
+    let dataType = 'Desconhecido';
     switch (parseInt(data.info, 10)) {
-      case 0:
-  dataType = 'Category ID';
-        break;
-      case 1:
-  dataType = 'Text';
-        break;
-      case 2:
-  dataType = 'Server';
-        break;
-      case 3:
-      case 7:
-      case 9:
-      case 11:
-  dataType = 'Number';
-        break;
-      case 4:
-      case 5:
-  dataType = 'Boolean';
-        break;
-      case 6:
-  dataType = 'List';
-        break;
-        case 7:
-    dataType = 'Number';
-          break;
-          case 8:
-dataType = 'List';
-            break;
-            case 9:
-  dataType = 'Number';
-              break;
-              case 10:
-dataType = 'List';
-                break;
-                case 11:
-dataType = 'Number';
-                  break;
-                  case 12:
-dataType = 'List';
-                    break;
-                    case 13:
-dataType = 'Number';
-                      break;
-                      case 14:
-dataType = 'List';
+case 0:
+dataType = 'Categoria ID';
+break;
+case 1:
+dataType = 'Texto';
+break;
+case 2:
+dataType = 'Servidor';
+break;
+case 3:
+case 7:
+case 9:
+case 11:
+dataType = 'Número';
+break;
+case 4:
+case 5:
+dataType = 'Boolean';
+break;
+case 6:
+dataType = 'Lista';
+break;
+case 7:
+dataType = 'Número';
+break;
+case 8:
+dataType = 'Lista';
+break;
+case 9:
+dataType = 'Número';
+break;
+case 10:
+dataType = 'Lista';
+break;
+case 11:
+dataType = 'Número';
+break;
+case 12:
+dataType = 'Lista';
+break;
+case 13:
+dataType = 'Número';
+break;
+case 14:
+dataType = 'Lista';
 break;
 case 15:
-dataType = 'List';
+dataType = 'Lista';
 break;
 case 16:
-dataType = 'List';
+dataType = 'Lista';
 break;
 case 17:
-dataType = 'List';
+dataType = 'Lista';
 break;
 case 18:
-dataType = 'List';
+dataType = 'Lista';
 break;
 case 19:
-dataType = 'List';
+dataType = 'Lista';
 break;
 case 20:
-dataType = 'List';
+dataType = 'Lista';
 break;
 case 21:
-dataType = 'List';
+dataType = 'Lista';
 break;
 case 22:
-dataType = 'List';
+dataType = 'Lista';
 break;
-
-        break;
+case 23:
+dataType = 'Lista';
+break;
+case 24:
+dataType = 'Lista';
+break;
+case 25:
+dataType = 'Número';
+break;
       default:
         break;
     }
@@ -125,7 +135,7 @@ break;
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.6</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div>
 <div style="float: left; width: 35%;">
@@ -156,6 +166,7 @@ break;
       <option value="9">Total de canais de texto</option>
       <option value="11">Total de canais de voz</option>
       <option value="13">Total de canais de palco</option>
+      <option value="25">Total de membros presentes nos canais de voz</option>
       <optgroup label="Listas">
       <option value="6">Lista de canais</option>
       <option value="8">Lista de canais de texto</option>
@@ -170,6 +181,8 @@ break;
       <option value="20">Lista por Nome dos canais de texto</option>
       <option value="21">Lista por Nome dos canais de voz</option>
       <option value="22">Lista por Nome dos canais de palco</option>
+      <option value="23">Lista de membros por ID presentes nos canais de voz</options>
+      <option value="24">Lista de membros presentes nos canais de voz</options>
     </select>
   </div>
 </div><br>
@@ -184,42 +197,7 @@ break;
   <span class="dbminputlabel">Nome da variavel</span><br>
     <input id="varName2" class="round" type="text"><br>
   </div>
-</div>
-<style>
-  div.embed { /* <div class="embed"></div> */
-    position: relative;
-  }
-
-  embedleftline { /* <embedleftline></embedleftline> OR if you want to change the Color: <embedleftline style="background-color: #HEXCODE;"></embedleftline> */
-    background-color: #eee;
-    width: 4px;
-    border-radius: 3px 0 0 3px;
-    border: 0;
-    height: 100%;
-    margin-left: 4px;
-    position: absolute;
-  }
-
-  div.embedinfo { /* <div class="embedinfo"></div> */
-    background: rgba(46,48,54,.45) fixed;
-    border: 1px solid hsla(0,0%,80%,.3);
-    padding: 10px;
-    margin:0 4px 0 7px;
-    border-radius: 0 3px 3px 0;
-  }
-
-  span.embed-auth { /* <span class="embed-auth"></span> (Title thing) */
-    color: rgb(255, 255, 255);
-  }
-
-  span.embed-desc { /* <span class="embed-desc"></span> (Description thing) */
-    color: rgb(128, 128, 128);
-  }
-
-  span { /* Only making the text look, nice! */
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  }
-</style>`;
+</div>`;
   },
 
   init() {
@@ -318,6 +296,24 @@ break;
                         case 22:
                           result = targetCategory.children.filter((c) => ['GUILD_STAGE_VOICE'].includes(c.type)).map(channels => channels.name);
                        break;
+                       case 23:
+                        str = targetCategory.children.filter((c) => ['GUILD_VOICE'].includes(c.type)).map(c => c.members.map(member => member.user.id + ',').join('')).join('');
+        result = str.substring(0, str.length - 1).split(new RegExp(","));
+        break;
+        case 24:
+          let channels = targetCategory.children.filter((c) => ['GUILD_VOICE'].includes(c.type))
+          let members = new Array();
+  
+          for (const [channelID, channel] of channels) {
+            for (const [memberID, member] of channel.members) {
+              members.push(member);
+            }
+          }
+          result = members;
+          break;
+           case 25:
+            result = targetCategory.children.filter((c) => ['GUILD_VOICE'].includes(c.type)).map(c => c.members.size).reduce((s, a) => s + a, 0);
+
       default:
         break;
     }
