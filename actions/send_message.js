@@ -133,7 +133,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.8</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.9</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -951,24 +951,39 @@ module.exports = {
         if (embedData.title) embed.setTitle(this.evalMessage(embedData.title, cache));
         if (embedData.url) embed.setURL(this.evalMessage(embedData.url, cache));
         if (embedData.color){
-          if (embedData.colorrandom == true){embed.setColor("RANDOM");} else {embed.setColor(this.evalMessage(embedData.color, cache));}
+          if (embedData.colorrandom == true) {
+            embed.setColor("RANDOM");
+          } else {
+            embed.setColor(this.evalMessage(embedData.color, cache));
+          }
         }
-        if (embedData.timestamp == "true" || embedData.timestamp == true){
-          if(embedData.timestampper == "" || embedData.timestampper == undefined){
+
+        if (embedData.timestamp == "true" || embedData.timestamp == true) {
+          if(embedData.timestampper == "" || embedData.timestampper == undefined) {
             embed.setTimestamp()
-          }else{
-          embed.setTimestamp(parseFloat(this.evalMessage(embedData.timestampper, cache)))
+          } else{
+            embed.setTimestamp(parseFloat(this.evalMessage(embedData.timestampper, cache)))
+          }
         }
-        };
-        if (embedData.imageUrl){
-          embedData.imageUrl = this.evalMessage(embedData.imageUrl, cache)
-        if (embedData.imageUrl.startsWith('http')){embed.setImage(embedData.imageUrl)} else
-        {embed.setImage('attachment://'+embedData.imageUrl)}
-        }       
-        if (embedData.thumbUrl){
-          embedData.thumbUrl = this.evalMessage(embedData.thumbUrl, cache)
-        if (embedData.thumbUrl.startsWith('http')){embed.setThumbnail(embedData.thumbUrl)} else
-        {embed.setThumbnail('attachment://'+embedData.thumbUrl)}
+
+        var imgURL = this.evalMessage(embedData.imageUrl, cache);
+
+        if(imgURL) {
+          if(imgURL.toString().startsWith("http")) {
+            embed.setImage(imgURL);
+          } else {
+            embed.setImage("attachment://" + imgURL);
+          } 
+        }
+
+        var thumb = this.evalMessage(embedData.thumbUrl, cache);
+
+        if(thumb) {
+          if(thumb.toString().startsWith("http")) {
+            embed.setThumbnail(thumb);
+          } else {
+            embed.setThumbnail("attachment://" + thumb);
+          }
         }
 
         if (embedData.description) embed.setDescription(this.evalMessage(embedData.description || '\u200B', cache));
@@ -978,34 +993,34 @@ module.exports = {
           for (let i = 0; i < fields.length; i++) {
             const f = fields[i];
 
-            val1 = this.evalMessage(f.val1, cache)
-            val2 = this.evalMessage(f.val2, cache)
-            result = true
+            val1 = this.evalMessage(f.val1, cache);
+            val2 = this.evalMessage(f.val2, cache);
+            result = true;
 
-            if(f.formula == "1" || f.formula == "2"){
+            if(f.formula == "1" || f.formula == "2") {
             const compare = parseInt(f.comparar, 10);
             if (compare !== 6) val2 = this.evalIfPossible(val2, cache);
             switch (compare) {
-              case 0:
-                result = val1.toString() !== "undefined";
-                break;
-              case 1:
-                result = val1 == val2;
-                break;
-              case 2:
-                result = val1 === val2;
-                break;
-              case 3:
-                result = parseFloat(val1) < parseFloat(val2);
-                break;
-              case 4:
-                 result = parseFloat(val1) > parseFloat(val2);
-                break;
-              case 5:
-                if (typeof val1?.toString().includes === "function") {
-                  result = val1.toString().includes(val2);
-                }
-                break;
+                case 0:
+                  result = val1.toString() !== "undefined";
+                  break;
+                case 1:
+                  result = val1 == val2;
+                  break;
+                case 2:
+                  result = val1 === val2;
+                  break;
+                case 3:
+                  result = parseFloat(val1) < parseFloat(val2);
+                  break;
+                case 4:
+                  result = parseFloat(val1) > parseFloat(val2);
+                  break;
+                case 5:
+                  if (typeof val1?.toString().includes === "function") {
+                    result = val1.toString().includes(val2);
+                  }
+                  break;
                 case 6:
                   result = Boolean(val1.toString().match(new RegExp('^' + val2 + '$', 'i')));
                   break;
@@ -1024,37 +1039,37 @@ module.exports = {
                 case 11:
                   result = val1.toString().endsWith(val2);
                   break;
-                  case 12:
+                case 12:
                   result = Boolean(val1 >= val2);
                   break;
-                  case 13:
+                case 13:
                   result = Boolean(val1 <= val2);
                   break;
-                  case 14:
+                case 14:
                   result = Boolean(val1.toString().match(new RegExp(val2)))
                   break;
-                  case 16:
+                case 16:
                   const conditions = ["Ä","Å","Á","Â","À","Ã","Ā","Ă","Ą","ā","ă","ą","ä","á","â","à","ã","É","Ê","Ë","È","Ė","Ę","Ě","Ĕ","Ē","ė","ę","ě","ĕ","ē","é","ê","ë","è","Í","Î","Ï","Ì","İ","Į","Ī","ı","į","ī","í","î","ï","ì","Ö","Ó","Ô","Ò","Õ","Ő","Ō","ő","ō","ö","ó","ô","ò","õ","Ü","Ú","Û","Ų","Ű","Ů","Ū","ų","ű","ů","ū","ü","ú","û","ù","Ç","Ć","Č","ç","ć","č","Ñ","Ň","Ņ","Ń","ñ","ň","ņ","ń","Ÿ","Ý","ý","Ź","Ż","Ž","ź","ż","ž","Ł","Ľ","Ļ","Ĺ","ł","ľ","ĺ","Ķ","ķ","Ģ","Ğ","ģ","ğ","Ď","ď","Ś","Š","Ş","ś","š","ş","Ť","Ț","Ţ","ť","ț","ţ","Ŕ","Ř","ŕ","ř"]
                   result = conditions.some(el => val1.includes(el));
                   break;
-                  case 17:
+                case 17:
                   const conditionsX = val2
                   result = conditionsX.some(els => val1.includes(els));
-                break;
+                  break;
                 case 18:
                   const conditionsZ = val2
                   result = conditionsZ.some(elz => val1 == (elz));
-                break;
+                  break;
                 case 19:
                   result = val1 % 2 == 0
-                break;
+                  break;
                 case 20:
                   result = val1 % 2 == 1
-                break;
-          case 21:
+                  break;
+                case 21:
                   result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
                   break;
-          case 23:
+                case 23:
                   const isImageUrl = require('is-image-url');
                   result = isImageUrl(val1);
                   break;
@@ -1067,12 +1082,13 @@ module.exports = {
             }
           }
           
-          if(f.formula == "1"){
-          if(result == false){result = true}
-        }
+          if(f.formula == "1") {
+            if(result == false) {
+              result = true
+            }
+          }
 
-        
-            if(result == true){
+          if(result == true){
             embed.addField(this.evalMessage(f.name || '\u200B', cache), this.evalMessage(f.value || '\u200B', cache), f.inline === "true")};
           }
         }
