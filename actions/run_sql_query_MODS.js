@@ -42,10 +42,10 @@ module.exports = {
   html (isEvent, data) {
     return `
 
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.7</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.8</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
-  <div id="wrexdiv" style="height: 370px; overflow-y: scroll;padding:0px 10px">
+  <div id="wrexdiv" style="height: calc(100vh - 170px); overflow-y: scroll;padding:0px 10px">
     <div id="getSource"><br />
      <div style="float: left; width: 35%;">
     <span class="dbminputlabel">Fonte de Conexão</span><br />
