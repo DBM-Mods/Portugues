@@ -118,6 +118,7 @@ module.exports = {
     "webhookname",
     "webhookavatar",
     "messageoff",
+    "mentions",
   ],
 
   //---------------------------------------------------------------------
@@ -133,7 +134,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.9</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.0</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -165,7 +166,7 @@ module.exports = {
 
           <tab-system>
 
-            <tab label="General" icon="certificate">
+            <tab label="Geral" icon="certificate">
               <div style="padding: 8px">
                 <div style="float: left; width: calc(50% - 12px);">
                   <span class="dbminputlabel">Título</span><br>
@@ -625,34 +626,25 @@ module.exports = {
 
 
   <tab label="Config" icon="cogs">
-    <div style="padding: 8px;height:250px;overflow-y: scroll;overflow-x: hidden;width:100%">
+    <div style="padding: 8px;height: calc(100vh - 292px);overflow-y: scroll;overflow-x: hidden;width:100%">
     <div id="xincheck">
-      <dbm-checkbox style="float: left;" id="reply" label="Responda à interação se possível" checked></dbm-checkbox>
-
-      <dbm-checkbox style="float: right;" id="ephemeral" label="Tornar a resposta privada"></dbm-checkbox>
-
-      <br><br>
-
-      <div style="display: flex; justify-content: space-between;">
-        <dbm-checkbox id="tts" label="Texto-Para-Fala"></dbm-checkbox>
-
-        <dbm-checkbox id="overwrite" label="Substituir alterações"></dbm-checkbox>
-
-        <dbm-checkbox id="dontSend" label="Não envie a mensagem"></dbm-checkbox>
-
-      </div>
-      <br>
-
-      <div style="display: flex; justify-content: space-between;">
-
+    <span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(0,0,0,0.2)">
+      <dbm-checkbox id="reply" label="Responda à interação se possível" checked></dbm-checkbox>
+      <xinspace>
+      <dbm-checkbox id="ephemeral" label="Tornar a resposta privada"></dbm-checkbox>
+      <xinspace>
+      <dbm-checkbox id="mentions" label="@ Notificar membros/cargos" checked></dbm-checkbox>
+      <xinspace>
       <dbm-checkbox id="messageoff" label="Adicionar/Substituir Texto" checked></dbm-checkbox>
-
-      </div>
-
-      <br>
-      <hr class="subtlebar" style="margin-top: 4px; margin-bottom: 4px">
-      </div>
-      <br>
+      <xinspace>
+      <dbm-checkbox id="tts" label="Texto-Para-Fala"></dbm-checkbox>
+      <xinspace>
+      <dbm-checkbox id="overwrite" label="Substituir alterações"></dbm-checkbox>
+      <xinspace>
+      <dbm-checkbox id="dontSend" label="Não envie a mensagem"></dbm-checkbox>
+      
+      </div><br></div>
+      
       <div style="width:96%;display:block">
       <div style="padding-bottom: 12px;" id="xin1">
         <retrieve-from-variable allowNone dropdownLabel="Editar mensagem" selectId="editMessage" variableInputId="editMessageVarName" variableContainerId="editMessageVarNameContainer">
@@ -716,7 +708,11 @@ module.exports = {
 
     </div>
   </tab>
-</tab-system></div>`;
+</tab-system></div>
+
+<style>
+xinspace{padding:5px 0px 0px 0px;display:block}
+</style>`;
   },
 
   //---------------------------------------------------------------------
@@ -1112,6 +1108,12 @@ module.exports = {
       }
     }
 
+    if(data.mentions == false){
+    messageOptions.allowedMentions = {};
+    messageOptions.allowedMentions.repliedUser = []
+    messageOptions.allowedMentions.repliedUser = data.mentions
+  }
+
     let componentsArr = [];
     let awaitResponses = [];
 
@@ -1202,6 +1204,8 @@ module.exports = {
     if (data.tts) {
       messageOptions.tts = true;
     }
+
+
 
     if (data.attachments?.length > 0) {
       const { Util, MessageAttachment } = this.getDBM().DiscordJS;
