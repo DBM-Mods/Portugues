@@ -20,10 +20,10 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
-    <div style="height:370px;overflow:auto;padding:10px;">
+    <div style="height: calc(100vh - 170px);overflow:auto;padding:10px;">
 <channel-input dropdownLabel="Canal" selectId="channel" variableContainerId="varNameContainer" variableInputId="varName"></channel-input>
 
 <br><br><br>
@@ -41,7 +41,7 @@ module.exports = {
 <div id="containerdoxin1">
 <center>
 <table style="width:96%">
-<tr><th>Permissões</th><th>Alterar para</th></tr>
+<tr><th><span class="dbminputlabel">Permissões</span></th><th><span class="dbminputlabel">Alterar para</span></th></tr>
 
 <tr><td>Ver canais</td><td><select id="state1" class="round">
 <option value="0">Permitir</option>
@@ -211,7 +211,7 @@ module.exports = {
 <center>
 Use 0 para Permitir, 1 para Herdar e 2 para Não permitir<br><br>
 <table style="width:96%">
-<tr><th>Permissões</th><th>Alterar para</th></tr>
+<tr><th><span class="dbminputlabel">Permissões</span></th><th><span class="dbminputlabel">Alterar para</span></th></tr>
 
 <tr><td>Ver canais</td><td><input id="state1v" class="round" type="text"></td></tr>
 
@@ -281,7 +281,7 @@ Use 0 para Permitir, 1 para Herdar e 2 para Não permitir<br><br>
 	
 </div>
 <style>
-td{padding:5px;border:1px solid #777}</style>`;
+td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
   },
 
 
