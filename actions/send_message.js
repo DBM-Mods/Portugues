@@ -134,7 +134,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.0</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.1</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -305,7 +305,7 @@ module.exports = {
 
             <tab label="Autor" icon="user circle">
               <div style="padding: 8px">
-                <span class="dbminputlabel">Autor Texto</span><br>
+                <span class="dbminputlabel">Autor Texto</span>
                 <input id="author" class="round" type="text" placeholder="Deixe em branco para nenhum....">
 
                 <br>
@@ -1089,18 +1089,30 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           }
         }
 
-        if (embedData.author) {
+        var authorIcon = this.evalMessage(embedData.authorIcon, cache) || null;
+
+        if(!authorIcon?.toString().startsWith("http")) {
+          authorIcon = "attachment://" + authorIcon;
+        }
+
+        if(embedData.author) {
           embed.setAuthor({
             name: this.evalMessage(embedData.author, cache),
-            iconURL: embedData.authorIcon ? this.evalMessage(embedData.authorIcon, cache) : null,
+            iconURL: authorIcon,
             url: embedData.authorUrl ? this.evalMessage(embedData.authorUrl, cache) : null,
           });
         }
+        
+        var iconURL = this.evalMessage(embedData.footerIconUrl, cache) || null;
 
-        if (embedData.footerText) {
+        if(!iconURL?.toString().startsWith("http")) {
+          iconURL = "attachment://" + iconURL;
+        }
+
+        if(embedData.footerText) {
           embed.setFooter({
             text: this.evalMessage(embedData.footerText, cache),
-            iconURL: embedData.footerIconUrl ? this.evalMessage(embedData.footerIconUrl, cache) : null,
+            iconURL: iconURL,
           });
         }
 
