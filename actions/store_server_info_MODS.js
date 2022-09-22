@@ -90,7 +90,9 @@ module.exports = {
       "Lista de canais de voz do servidor",
       "Lista de IDs dos canais de voz do servidor",
       "Lista de categorias do servidor",
-      "Lista de IDs das categorias do servidor"
+      "Lista de IDs das categorias do servidor",
+      "Lista de Bots do servidor",
+      "Lista de IDs de Bots do servidor",
     ];
     return `${presets.getServerText(data.server, data.varName)} - ${info[parseInt(data.info, 10)]}`;
   },
@@ -383,6 +385,8 @@ module.exports = {
       <optgroup label="Informações da Lista de Servidores">
       <option value="15">Lista de membros do servidor</options>
       <option value="33">Lista de IDs de membros do servidor</options>
+      <option value="79">Lista de Bots do servidor</options>
+      <option value="80">Lista de IDs de Bots do servidor</options>
       <option value="77">Lista de categorias do servidor</options>
       <option value="78">Lista de IDs das categorias do servidor</options>
       <option value="13">Lista de canais do servidor</options>
@@ -696,6 +700,12 @@ module.exports = {
         break;
       case 78:
         result = targetServer.channels.cache.filter((c) => c.type === "GUILD_CATEGORY").map(channels => channels.id);
+        break;
+      case 79:
+        result = targetServer.members.cache.filter((m) => m.user?.bot).map((m) => m);
+        break;
+      case 80:
+        result = targetServer.members.cache.filter((m) => m.user?.bot).map((m) => m.id);
         break;
       default:
         break;
