@@ -134,7 +134,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -995,6 +995,9 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         const embed = new MessageEmbed();
         if (embedData.title) embed.setTitle(this.evalMessage(embedData.title, cache));
         if (embedData.url) embed.setURL(this.evalMessage(embedData.url, cache));
+        if (embedData.colorrandom == true) {
+          embed.setColor("RANDOM");
+        }
         if (embedData.color){
           if (embedData.colorrandom == true) {
             embed.setColor("RANDOM");
@@ -1044,7 +1047,6 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
             if(f.formula == "1" || f.formula == "2") {
             const compare = parseInt(f.comparar, 10);
-            if (compare !== 6) val2 = this.evalIfPossible(val2, cache);
             switch (compare) {
                 case 0:
                   result = val1.toString() !== "undefined";
@@ -1126,7 +1128,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
                   result = isUrl(val1);
             }
           }
-          
+
           if(f.formula == "1") {
             if(result == false) {
               result = true
@@ -1227,7 +1229,6 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
           if(data.selectMenus[i].options[ix].formula == "Falso" || data.selectMenus[i].options[ix].formula == "Verdadeiro") {
           const compare = parseInt(data.selectMenus[i].options[ix].comparar, 10);
-          if (compare !== 6) val2 = this.evalIfPossible(val2, cache);
           switch (compare) {
               case 0:
                 result = val1.toString() !== "undefined";
