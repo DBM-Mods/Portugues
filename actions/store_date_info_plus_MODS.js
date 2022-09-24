@@ -165,8 +165,8 @@ module.exports = {
         var xinxylalinks = document.getElementsByClassName("xinxylalink")
         for(var x = 0; x < xinxylalinks.length; x++) {
           
-          var xinxylalink = xinxylalinks[x];
-          var url = xinxylalink.getAttribute('data-url');   
+          const xinxylalink = xinxylalinks[x];
+          const url = xinxylalink.getAttribute('data-url');   
           if (url) {
             xinxylalink.setAttribute("title", url);
             xinxylalink.addEventListener("click", function(e){
