@@ -22,7 +22,7 @@ module.exports = {
   },
 
 
-  fields: ["list", "varName", "start", "start2", "start3", "multi", "end", "end2", "end3", "posicao", "storage", "varName2" , "itens"],
+  fields: ["list", "varName","numero", "start", "start2", "start3", "multi", "end", "end2", "end3", "posicao", "storage", "varName2" , "itens"],
 
   html(isEvent, data) {
     return `
@@ -61,14 +61,17 @@ module.exports = {
     <tab label="Todos os itens" icon="align left">
 
 <div style="width: 100%; padding: 10px;height: calc(100vh - 210px);overflow:auto">
+
+<dbm-checkbox id="numero" label="Mostrar nº da posição em cada item"></dbm-checkbox>
+<br>
 	
 		<span class="dbminputlabel">Inicio de cada item</span><br>
-    <textarea id="start" rows="4" style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
+    <textarea id="start" rows="3" style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
 	
 <br>
 	
 		<span class="dbminputlabel">Final de cada item</span><br>
-    <textarea id="end" rows="4" style="width: 100%; white-space: nowrap; resize: yes;" value="\\n"></textarea><br>
+    <textarea id="end" rows="3" style="width: 100%; white-space: nowrap; resize: yes;" value="\\n"></textarea><br>
 
 </div>
 </tab>
@@ -194,15 +197,21 @@ td{padding:0px 5px;width:50%}
     let result = "";
     acont = -1
     acont = acont + multi
-  
-    for (let i = 0; i < list.length; i++) {
 
+    
+    for (let i = 0; i < (list.length - 1); i++) {
 
+      resultitem = ""
+
+      if(data.numero == true){
+        resultitem = parseFloat(parseFloat([i]) + 1) + resultitem
+      }
+      
         if(acont == [i] && multi > 0){
           acont = acont + multi
-          resultitem = start2 + start + String(list[i]) + end + end2
+          resultitem = resultitem + start + start2 + String(list[i]) + end2
         } else {
-          resultitem = start + String(list[i]) + end;
+          resultitem = resultitem + start + String(list[i]);
         }
 
         
@@ -315,8 +324,10 @@ td{padding:0px 5px;width:50%}
         }
 
         }
+
+     
       
-        result += resultitem
+        result += resultitem + end
 
     }
 
