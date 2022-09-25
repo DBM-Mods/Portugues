@@ -63,7 +63,6 @@ module.exports = {
 <div style="width: 100%; padding: 10px;height: calc(100vh - 210px);overflow:auto">
 	
 		<span class="dbminputlabel">Inicio de cada item</span><br>
-		<text id="start" class="round" type="text">
     <textarea id="start" rows="4" style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
 	
 <br>
