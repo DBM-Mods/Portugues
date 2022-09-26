@@ -1047,6 +1047,10 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
             if(f.formula == "1" || f.formula == "2") {
             const compare = parseInt(f.comparar, 10);
+            if (compare !== 6){
+              val1 = this.evalIfPossible(val1, cache)
+              val2 = this.evalIfPossible(val2, cache)
+            }
             switch (compare) {
                 case 0:
                   result = val1.toString() !== "undefined";
