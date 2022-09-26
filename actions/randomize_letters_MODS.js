@@ -34,7 +34,7 @@ module.exports = {
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
       
 
-    <span class="dbminputlabel">Quantidades de caracteres</span>
+    <span class="dbminputlabel">Quantidade de caracteres</span>
     <input id="wordLength" class="round" type="text">
 
     <br>
