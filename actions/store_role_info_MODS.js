@@ -6,7 +6,7 @@ module.exports = {
   meta: {
     version: '2.1.6',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
     },
@@ -32,6 +32,14 @@ module.exports = {
       "ID do Servidor do Cargo",
       "O Cargo e editavel?",
       "Lista de IDs de membros do Cargo",
+      "Lista de membros online do Cargo",
+      "Lista de membros offline do Cargo",
+      "Lista de membros ausentes do Cargo",
+      "Lista de membros ocupados do Cargo",
+      "Total de membros online do Cargo",
+      "Total de membros offline do Cargo",
+      "Total de membros ausentes do Cargo",
+      "Total de membros ocupados do Cargo",
     ];
     return `${presets.getRoleText(data.role, data.varName)} - ${info[parseInt(data.info, 10)]} para (${data.varName2})`;
   },
@@ -43,19 +51,19 @@ module.exports = {
     let dataType = "Unknown Type";
     switch (info) {
       case 0:
-        dataType = "Role";
+        dataType = "Cargo";
         break;
       case 1:
-        dataType = "Role ID";
+        dataType = "Cargo ID";
         break;
       case 2:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 3:
-        dataType = "Color";
+        dataType = "Cor";
         break;
       case 4:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 5:
         dataType = "Timestamp";
@@ -68,32 +76,56 @@ module.exports = {
         dataType = "Boolean";
         break;
       case 9:
-        dataType = "Member List";
+        dataType = "Lista de membros";
         break;
       case 10:
-        dataType = "Date";
+        dataType = "Data";
         break;
       case 11:
       case 12:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 13:
-        dataType = "Image URL";
+        dataType = "URL de imagem";
         break;
       case 14:
-        dataType = "Object";
+        dataType = "Objeto";
         break;
       case 15:
-        dataType = "Server";
+        dataType = "Servidor";
         break;
       case 16:
-        dataType = "Server ID";
+        dataType = "Servidor ID";
         break;
       case 17:
         dataType = "Boolean";
         break;
       case 18:
-        dataType = "List";
+        dataType = "Lista";
+        break;
+      case 19:
+        dataType = "Lista";
+        break;
+      case 20:
+        dataType = "Lista";
+        break;
+      case 21:
+        dataType = "Lista";
+        break;
+      case 22:
+        dataType = "Lista";
+        break;
+      case 23:
+        dataType = "Número";
+        break;
+      case 24:
+        dataType = "Número";
+        break;
+      case 25:
+        dataType = "Número";
+        break;
+      case 26:
+        dataType = "Número";
         break;
     }
     return [data.varName2, dataType];
@@ -105,7 +137,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <role-input dropdownLabel="Função de origem" selectId="role" variableContainerId="varNameContainer" variableInputId="varName"></role-input>
@@ -143,6 +175,14 @@ module.exports = {
     <option value="9">Lista de membros do Cargo</option>
     <option value="18">Lista de IDs de membros do Cargo</option>
     <option value="11">Lista de permissões do Cargo</option>
+    <option value="19">Lista de membros online do Cargo</option>
+    <option value="20">Lista de membros offline do Cargo</option>
+    <option value="21">Lista de membros ausentes do Cargo</option>
+    <option value="22">Lista de membros ocupados do Cargo</option>
+    <option value="23">Total de membros online do Cargo</option>
+    <option value="24">Total de membros offline do Cargo</option>
+    <option value="25">Total de membros ausentes do Cargo</option>
+    <option value="26">Total de membros ocupados do Cargo</option>
     </optgroup>
 	</select>
 </div>
@@ -223,6 +263,30 @@ module.exports = {
         break;
       case 18:
         result = [...targetRole.members.keys()];
+        break;
+      case 19:
+        result = targetRole.members.filter((m) => m.presence?.status == "online").map((c) => c);
+        break;
+      case 20:
+        result = targetRole.members.filter((m) => m.presence?.status == "offline").map((c) => c);
+        break;
+      case 21:
+        result = targetRole.members.filter((m) => m.presence?.status == "idle").map((c) => c);
+        break;
+      case 22:
+        result = targetRole.members.filter((m) => m.presence?.status == "dnd").map((c) => c);
+        break;
+      case 23:
+        result = targetRole.members.filter((m) => m.presence?.status == "online").map((c) => c).length;
+        break;
+      case 24:
+        result = targetRole.members.filter((m) => m.presence?.status == "offline").map((c) => c).length;
+        break;
+      case 25:
+        result = targetRole.members.filter((m) => m.presence?.status == "idle").map((c) => c).length;
+        break;
+      case 26:
+        result = targetRole.members.filter((m) => m.presence?.status == "dnd").map((c) => c).length;
         break;
       default:
         break;
