@@ -134,7 +134,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -1219,16 +1219,22 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       for (let i = 0; i < data.selectMenus.length; i++) {
            const select = data.selectMenus[i];
 
-
+      totales = data.selectMenus[i].options.length
        
         
-        for (let ix = 0; ix < data.selectMenus[i].options.length; ix++) {
+        for (let ix = 0; ix < totales; ix++) {
           val1 = this.evalMessage(data.selectMenus[i].options[ix].val1, cache);
           val2 = this.evalMessage(data.selectMenus[i].options[ix].val2, cache);
+      
           result = true;
 
           if(data.selectMenus[i].options[ix].formula == "Falso" || data.selectMenus[i].options[ix].formula == "Verdadeiro") {
           const compare = parseInt(data.selectMenus[i].options[ix].comparar, 10);
+          if (compare !== 6){
+            val1 = this.evalIfPossible(val1, cache)
+            val2 = this.evalIfPossible(val2, cache)
+          }
+
           switch (compare) {
               case 0:
                 result = val1.toString() !== "undefined";
@@ -1317,8 +1323,12 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           } else {result = false}
         }
 
+        console.log(result + " / " + [ix])
+
         if(result == false){
         data.selectMenus[i].options.splice([ix], 1);
+        ix = parseFloat([ix]) - 1
+        totales = totales - 1
         }
 
 
