@@ -1323,8 +1323,6 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           } else {result = false}
         }
 
-        console.log(result + " / " + [ix])
-
         if(result == false){
         data.selectMenus[i].options.splice([ix], 1);
         ix = parseFloat([ix]) - 1
