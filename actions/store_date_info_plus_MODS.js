@@ -32,7 +32,7 @@ module.exports = {
     
         html: function(isEvent, data) {
         return `
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
+        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
         <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
         <span class="dbminputlabel">Formato</span><br>
@@ -192,8 +192,9 @@ module.exports = {
         dateLanguage = this.evalMessage(data.dateLanguage, cache);
         date = moment(Date.parse(this.evalMessage(data.sourceDate, cache)), "", dateLanguage === "" ? "en" : dateLanguage)
         
-        if(timezonegat == "on"){date.tz(timezone)}
-
+        if(timezonegat == "on"){
+            moment = require("moment-timezone");
+            date.tz(timezone)}
         }
 
         if(data.formato == "1" || data.formato == "2"){
@@ -210,7 +211,9 @@ module.exports = {
         else { unix = toDate(date) }
 
          date = moment(unix)
-         if(timezonegat == "on"){date.tz(timezone)}
+         if(timezonegat == "on"){
+            moment = require("moment-timezone");
+            date.tz(timezone)}
 
         }
 
