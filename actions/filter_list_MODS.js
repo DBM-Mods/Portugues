@@ -123,7 +123,7 @@ module.exports = {
         document.getElementById("valueDiv2").style.display = "none";
       } else if(event.value == "15") {
         document.getElementById("valueDiv").style.width = "35%";
-        document.getElementById("valueDiv2").style.display = "block";
+        document.getElementById("valueDiv").style.display = "block";
         document.getElementById("valueDiv2").style.display = "block";
       } else {
         document.getElementById("valueDiv").style.display = "block";
