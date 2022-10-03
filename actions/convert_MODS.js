@@ -12,7 +12,7 @@ module.exports = {
       },
     
     subtitle: function(data) {
-        const info = ['Número inteiro (Arredondado)', 'Número inteiro (Para cima)', 'Número inteiro (Para baixo)', 'Texto', 'Texto maiúsculo', 'Texto minúsculo', 'Texto sem espaços', 'Texto (Sem espaços de ambos os lados)', 'Número com pontuações' , 'Número resumido', 'Formato de dinheiro R$', 'Formato de dinheiro U$', 'Formato de dinheiro €', 'Texto sem acentos', 'Texto começando com a letra maiuscula', 'Texto espaçado'];
+        const info = ['Número inteiro (Arredondado)', 'Número inteiro (Para cima)', 'Número inteiro (Para baixo)', 'Texto', 'Texto maiúsculo', 'Texto minúsculo', 'Texto sem espaços', 'Texto (Sem espaços de ambos os lados)', 'Número com pontuações' , 'Número resumido', 'Formato de dinheiro R$', 'Formato de dinheiro U$', 'Formato de dinheiro €', 'Texto sem acentos', 'Texto começando com a letra maiuscula', 'Texto espaçado', 'Número resumido com pontuação', 'Número resumido para número'];
         const prse = parseInt(data.into);
         return `Converter "${data.vAria}" em ${info[prse]}`;
     },
@@ -22,7 +22,7 @@ module.exports = {
     variableStorage: function(data, varType) {
         const type = parseInt(data.storage);
         const prse2 = parseInt(data.into);
-        const info2 = ['Numero', 'Numero', 'Numero', 'Texto', 'Texto', 'Texto', 'Texto', 'Texto', 'Numero', 'Numero', 'Dinheiro', 'Dinheiro', 'Dinheiro', 'Texto', 'Texto', 'Texto'];
+        const info2 = ['Número', 'Número', 'Número', 'Texto', 'Texto', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'Dinheiro', 'Dinheiro', 'Dinheiro', 'Texto', 'Texto', 'Texto', 'Número', 'Número'];
         if(type !== varType) return;
         return ([data.varName2, info2[prse2]]);
     },
@@ -32,7 +32,7 @@ module.exports = {
     
     html: function(isEvent, data) {
         return `
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.8</div>
+        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.9</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
     <div style="width: 550px; height: 350px;">
         <div style="width: 60%;">
@@ -48,6 +48,8 @@ module.exports = {
                     <option value="2">Número inteiro (Para baixo)</option>
                     <option value="8">Número com pontuações (Ex: 1.000)</option>
                     <option value="9">Número resumido (Ex: 1k)</option>
+                    <option value="16">Número resumido com pontuação (Ex: 1.5k)</option>
+                    <option value="17">Número resumido para número (Ex: 1k = 1000)</option>
                     <option value="10">Formato de dinheiro R$</option>
                     <option value="11">Formato de dinheiro U$</option>
                     <option value="12">Formato de dinheiro €</option>
@@ -222,6 +224,134 @@ module.exports = {
                         break;
                     case 15:
                         result = theVar.toString().replaceAll("", " ");
+                        break;
+                    case 16:
+                        var number = parseInt(this.evalMessage(theVar, cache));
+        
+                        if(number >= 1000 && number <= 999999) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "k";
+                        }
+                        
+                        if(number >= 1e+6 && number <= 1e+8) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "m";
+                        }
+                        
+                        if(number >= 1e+9 && number <= 1e+11) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "b";
+                        }
+                        
+                        if(number >= 1e+12 && number <= 1e+14) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "t";
+                        }
+
+                        if(number >= 1e+15 && number <= 1e+17) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "q";
+                        }
+
+                        if(number >= 1e+18 && number <= 1e+20) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "sx";
+                        }
+
+                        if(number >= 1e+21 && number <= 1e+23) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "sp";
+                        }
+
+                        if(number >= 1e+24 && number <= 1e+26) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "o";
+                        }
+
+                        if(number >= 1e+27 && number <= 1e+29) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "n";
+                        }
+
+                        if(number >= 1e+30 && number <= 1e+32) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "d";
+                        }
+
+                        if(number >= 1e+33 && number <= 1e+35) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "u";
+                        }
+
+                        if(number >= 1e+36 && number <= 1e+38) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "du";
+                        }
+
+                        if(number >= 1e+39) {
+                            number = number.toString().slice(0, 2);
+                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "tr";
+                        }
+
+                        result = number;
+                        break;
+                    case 17:
+                        var number = this.evalMessage(theVar, cache);
+                        number = number.toString();
+
+                        if(number.toString().endsWith("k")) {
+                            number = number.slice(0, -1) * 1000;
+                        }
+
+                        if(number.toString().endsWith("m")) {
+                            number = number.slice(0, -1) * 1e+6;
+                        }
+
+                        if(number.toString().endsWith("b")) {
+                            number = number.slice(0, -1) * 1e+9;
+                        }
+                        
+                        if(number.toString().endsWith("t")) {
+                            number = number.slice(0, -1) * 1e+12;
+                        }
+                        
+                        if(number.toString().endsWith("q")) {
+                            number = number.slice(0, -1) * 1e+15;
+                        }
+
+                        if(number.toString().endsWith("sx")) {
+                            number = number.slice(0, -1) * 1e+18;
+                        }
+
+                        if(number.toString().endsWith("sp")) {
+                            number = number.slice(0, -1) * 1e+21;
+                        }
+
+                        if(number.toString().endsWith("o")) {
+                            number = number.slice(0, -1) * 1e+24;
+                        }
+
+                        if(number.toString().endsWith("n")) {
+                            number = number.slice(0, -1) * 1e+27;
+                        }
+
+                        if(number.toString().endsWith("d")) {
+                            number = number.slice(0, -1) * 1e+30;
+                        }
+
+                        if(number.toString().endsWith("u")) {
+                            number = number.slice(0, -1) * 1e+33;
+                        }
+
+                        if(number.toString().endsWith("du")) {
+                            number = number.slice(0, -1) * 1e+36;
+                        }
+
+                        if(number.toString().endsWith("tr")) {
+                            number = number.slice(0, -1) * 1e+39;
+                        }
+
+                        result = number;
                         break;
         }
         if(result !== undefined) {
