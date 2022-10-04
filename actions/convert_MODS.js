@@ -11,10 +11,13 @@ module.exports = {
         downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
       },
     
-    subtitle: function(data) {
-        const info = ['Número inteiro (Arredondado)', 'Número inteiro (Para cima)', 'Número inteiro (Para baixo)', 'Texto', 'Texto maiúsculo', 'Texto minúsculo', 'Texto sem espaços', 'Texto (Sem espaços de ambos os lados)', 'Número com pontuações' , 'Número resumido', 'Formato de dinheiro R$', 'Formato de dinheiro U$', 'Formato de dinheiro €', 'Texto sem acentos', 'Texto começando com a letra maiuscula', 'Texto espaçado', 'Número resumido com pontuação', 'Número resumido para número'];
+    subtitle: function(data, presets) {
+        const storage = presets.variables;
+        const info = ['Número inteiro (Arredondado)', 'Número inteiro (Para cima)', 'Número inteiro (Para baixo)', 'Texto', 'Texto maiúsculo', 'Texto minúsculo', 'Texto sem espaços', 'Texto (Sem espaços de ambos os lados)', 'Número com pontuações' , 'Número resumido', 'Formato de dinheiro R$', 'Formato de dinheiro U$', 'Formato de dinheiro €', 'Texto sem acentos', 'Texto começando com a letra maiuscula', 'Texto espaçado', 'Número resumido com pontuação', 'Número resumido para número','JSON','Formato de dinheiro ₽','Número inteiro mais próximo','Número absoluto'];
         const prse = parseInt(data.into);
-        return `Converter "${data.vAria}" em ${info[prse]}`;
+        const info2 =[`Texto "${data.vAria}"`,`Texto EVAL "${data.vAriaeval}"`,`${storage[parseInt(data.storage0, 10)]} (${data.varName0})`]
+        const prse2 = parseInt(data.tipo || 0);
+        return `Converter ${info2[prse2]} em "${info[prse]}"`;
     },
     
     
@@ -22,37 +25,86 @@ module.exports = {
     variableStorage: function(data, varType) {
         const type = parseInt(data.storage);
         const prse2 = parseInt(data.into);
-        const info2 = ['Número', 'Número', 'Número', 'Texto', 'Texto', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'Dinheiro', 'Dinheiro', 'Dinheiro', 'Texto', 'Texto', 'Texto', 'Número', 'Número'];
+        const info2 = ['Número', 'Número', 'Número', 'Texto', 'Texto', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'Dinheiro', 'Dinheiro', 'Dinheiro', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'JSON','Dinheiro','Número','Número'];
         if(type !== varType) return;
         return ([data.varName2, info2[prse2]]);
     },
     
     
-    fields: ["into", "vAria", "storage", "varName2"],
+    fields: ["vAriavar", "vAriaeval", "storage0", "varName0", "into", "vAria", "storage", "varName2", "valor", "tipo"],
     
     html: function(isEvent, data) {
         return `
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.9</div>
+        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.0</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
-    <div style="width: 550px; height: 350px;">
-        <div style="width: 60%;">
-            <div style="width: 150%;">
+
+    <div style="padding: 8px;height: calc(100vh - 170px);overflow: auto;width:100%">
+       
+    <span class="dbminputlabel">Tipo</span><br>
+    <select id="tipo" class="round" onchange="glob.onChange2(this)">
+    <option value="0" selected>Texto</option>
+    <option value="1">Texto Eval</option>
+    <option value="2">Variavel</option>
+    </select>
+
+    <br>
+
+    <div id="texto">
+    <div class="col-3 input-effect" style="width: 100%;">
+    <textarea id="vAria" rows="4" class="efeitoala" type="text" style="width:100%"></textarea>
+    <label><span class="dbminputlabel">Informação</span><br></label>
+    <span class="focus-border"></span></div></div>
+
+    <div id="textoeval">
+    <div class="col-3 input-effect" style="width: 100%;">
+    <textarea id="vAriaeval" rows="4" class="efeitoala" type="text" name="is-eval" style="width:100%"></textarea>
+    <label><span class="dbminputlabel">Informação - EVAL</span><br></label>
+    <span class="focus-border"></span></div></div>
+
+
+    <div id="variavel">
+    
+            <div style="float: left; width: 35%;">
             <span class="dbminputlabel">Informação</span><br>
-                   <textarea id="vAria" rows="3" style="width:100%;"></textarea>
-               </div>
+                <select id="storage0" class="round">
+                    ${data.variables[1]}
+                </select>
+            </div>
+            <div id="varNameContainer2" style="float: right; width: 60%;">
+                <div class="col-3 input-effect" style="width: 100%;">
+                    <input id="varName0" class="efeitoala" type="text" style="padding:0px 5px;width: 100%;" list="variableList">
+                    <label><span class="dbminputlabel">Nome da Variavel</span></label>
+                    <span class="focus-border"></span>
+                </div><br>
+            </div> <br> <br>
+        </div>
+
+    
+ 
             <br>
             <span class="dbminputlabel">Converter em</span><br>
-            <select id="into" class="round">
-                    <option value="0" selected>Número inteiro (Arredondado)</option>
-                    <option value="1">Número inteiro (Para cima)</option>
-                    <option value="2">Número inteiro (Para baixo)</option>
-                    <option value="8">Número com pontuações (Ex: 1.000)</option>
-                    <option value="9">Número resumido (Ex: 1k)</option>
-                    <option value="16">Número resumido com pontuação (Ex: 1.5k)</option>
+            <select id="into" class="round" onchange="glob.onChange1(this)">
+                    <optgroup label="Números">
+                    <option value="0" selected>Número inteiro (Arredondado = Ex: 5.52 = 5)</option>
+                    <option value="1">Número inteiro (Para cima - Ex: 5.52 = 6)</option>
+                    <option value="2">Número inteiro (Para baixo - Ex: 5.52 = 5)</option>
+                    <option value="20">Número inteiro mais próximo (Ex: 5.52 = 6)</option>
+                    <option value="21">Número absoluto (Ex: -50 = 50)</option>
                     <option value="17">Número resumido para número (Ex: 1k = 1000)</option>
-                    <option value="10">Formato de dinheiro R$</option>
-                    <option value="11">Formato de dinheiro U$</option>
-                    <option value="12">Formato de dinheiro €</option>
+                    </optgroup>
+                    <optgroup label="Números em String">
+                    <option value="8">Número com pontuações (Ex: 1000 = 1.000)</option>
+                    <option value="9">Número resumido (Ex: 1000 = 1k)</option>
+                    <option value="16">Número resumido com pontuação (Ex: 1500 = 1.5k)</option>
+                    </optgroup>
+                    <optgroup label="Formatos">
+                    <option value="10">Formato de dinheiro R$ (Real)</option>
+                    <option value="11">Formato de dinheiro U$ (Dollar)</option>
+                    <option value="12">Formato de dinheiro € (Euro)</option>
+                    <option value="19">Formato de dinheiro ₽ (Ruble)</option>
+                    <option value="18">JSON</option>
+                    </optgroup>
+                    <optgroup label="Converter para String">
                     <option value="3">Texto</option>
                     <option value="4">Texto maiúsculo</option>
                     <option value="5">Texto minúsculo</option>
@@ -61,9 +113,21 @@ module.exports = {
                     <option value="13">Texto sem acentos</option>
                     <option value="14">Texto começando com a letra maiúscula</option>
                     <option value="15">Texto espaçado</option>
+                    </optgroup>
             </select>
-        </div><br>
-        <div>
+
+            <div id="xinxa">
+            <br>
+                <div class="col-3 input-effect" style="width: 100%;">
+                    <input id="valor" class="efeitoala" type="text" placeholder="Deixe em branco para desativar" style="padding:0px 5px;width: 100%;">
+                    <label><span name="alternador" class="dbminputlabel">Caso retorne NaN coloque</span></label>
+                    <span class="focus-border"></span>
+                </div><br>
+                <br>
+            </div>
+             
+            <br>
+       <div>
             <div style="float: left; width: 35%;">
             <span class="dbminputlabel">Armazenar em</span><br>
                 <select id="storage" class="round">
@@ -71,14 +135,14 @@ module.exports = {
                 </select>
             </div>
             <div id="varNameContainer2" style="float: right; width: 60%;">
-                <div class="col-3 input-effect" style="width: 83%;">
-                    <input id="varName2" class="efeitoala" type="text" style="width: 100%;">
-                    <label><span class="dbminputlabel">Nome da variavel</span></label>
+                <div class="col-3 input-effect" style="width: 100%;">
+                    <input id="varName2" class="efeitoala" type="text" style="padding:0px 5px;width: 100%;">
+                    <label><span class="dbminputlabel">Nome da Variavel</span></label>
                     <span class="focus-border"></span>
                 </div><br>
             </div>
         </div>
-    </div>
+
     <style>
         .codeblock {
             margin: 4px; background-color: rgba(0,0,0,0.20); border-radius: 3.5px; border: 1px solid rgba(255,255,255,0.15); padding: 4px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; transition: border 175ms ease;
@@ -87,36 +151,117 @@ module.exports = {
         select.round{width:100%;border:0 solid #eee !important;border-radius:4px !important;box-sizing:border-box !important;display:block !important;height:28px !important;padding-left:8px !important;box-shadow:-2px 0 0 #fff;transition:box-shadow 150ms ease}
         select.round:focus{outline-width:0;box-shadow:0 1px 0 #0059ff;}
         .col-3 {border: 0px solid #eee;float: left; margin-top: 20px; margin-bottom: 6px; position: relative; background: rgba(0, 0, 0, 0.27); border-radius: 5px;}
-        input[type="text"]{font: 15px/24px 'Muli', sans-serif; color: #eee; width: 100%; box-sizing: border-box; letter-spacing: 1px; padding: 0 0 0 3px;}
-        input[type="text"]{font: 15px/24px "Lato", Arial, sans-serif; color: #eee; width: 100%; box-sizing: border-box; letter-spacing: 1px; padding: 0 0 0 3px;}
-        
+        input[type="text"]{font: 15px/24px "Lato"; box-sizing: border-box; padding: 0 0 0 3px;}
+
         .efeitoala{border: 0; padding: 4px; border-bottom: 1px solid #ccc; background-color: transparent;}
         .efeitoala ~ .focus-border{position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background-color: #4caf50; transition: 0.4s;}
         .efeitoala:focus ~ .focus-border,
         .has-content.efeitoala ~ .focus-border{width: 100%; transition: 0.4s; left: 0;}
         .efeitoala ~ label{position: absolute; left: 0%; width: 100%; top: -21px; color: #aaa; transition: 0.3s; z-index: -1; letter-spacing: 0.5px;}
         .efeitoala:focus ~ label, .has-content.efeitoala ~ label{font-size: 12px; color: #4caf50; transition: 0.3s;}
-        
+    
+
     </style>`
     },
     
-    init: function() {},
+    init: function() {
+        const {glob, document} = this;
+    
+        glob.onChange1 = function(event) {
+            const value = parseInt(event.value)
+            const dom = document.getElementById('xinxa')
+                      
+            if (value == 0 || value == 1 || value == 2 || value == 20 || value == 21 || value == 17 ) {
+                dom.style.display = null,
+                document.querySelector("[name='alternador']").innerText = (`Caso retorne NaN coloque`);
+            } else
+            {
+                dom.style.display = "none"
+            }            
+            
+        };
+        glob.onChange1(document.getElementById('into'))
+
+        glob.onChange2 = function (event) {
+            const value = parseInt(event.value, 10);
+            if (value == 0) {
+              document.getElementById("texto").style.display = null;
+              document.getElementById("textoeval").style.display = "none";
+              document.getElementById("variavel").style.display = "none";
+            }
+            if (value == 1) {
+                document.getElementById("texto").style.display = "none";
+                document.getElementById("textoeval").style.display = null;
+                document.getElementById("variavel").style.display = "none";
+              } 
+              if (value == 2) {
+                document.getElementById("texto").style.display = "none";
+                document.getElementById("textoeval").style.display = "none";
+                document.getElementById("variavel").style.display = null;
+              } 
+          };
+
+          glob.onChange2(document.getElementById('tipo'))
+    
+    },
+    
     
     action: function(cache) {
-        const data = cache.actions[cache.index],
-            theVar = this.evalMessage(data.vAria, cache),
-            INTO = parseInt(data.into);
-        let result;
+        const data = cache.actions[cache.index]
+        const tipo = this.evalMessage(data.tipo, cache)
+        
+            theVar = this.evalMessage(data.vAria, cache)
+
+            if(tipo == "1"){
+                theVar = this.evalMessage(data.vAriaeval, cache)
+                try {
+                    theVar = this.eval(theVar, cache);
+                } catch (e) {
+                  this.displayError(data, cache, e);
+                }
+            }
+
+            if(tipo == "2"){
+                const type = parseInt(data.storage0, 10);
+                const varName0 = this.evalMessage(data.varName0, cache);
+                theVar = this.getVariable(type, varName0, cache);
+            }
+
+
+            valor = this.evalMessage(data.valor, cache)
+            INTO = parseInt(data.into)
+        let result
     
         switch (INTO) {
                 case 0:
                     result = parseInt(theVar.toString().replace(",", "."));
+
+                    if(valor){
+                        if(result.toString() == "NaN"){
+                            result = parseFloat(valor)
+                        }
+                    }
+
                     break;
                 case 1:
                     result = Math.ceil(parseFloat(theVar.toString().replace(',','.')));
+
+                    if(valor){
+                        if(result.toString() == "NaN"){
+                            result = parseFloat(valor)
+                        }
+                    }
+
                     break;
                 case 2:
                     result = Math.floor(parseFloat(theVar.toString().replace(',','.')));
+
+                    if(valor){
+                        if(result.toString() == "NaN"){
+                            result = parseFloat(valor)
+                        }
+                    }
+
                     break;
                 case 3:
                     result = theVar.toString();
@@ -147,39 +292,39 @@ module.exports = {
                         number = number.toString().slice(0, -3) + "k";
                     }
                     
-                    if(number >= 1e+6 && number <= 1e+8) {
+                    if(number >= 1e+6 && number <= 999999999) {
                         number = number.toString().slice(0, -6) + "m";
                     }
                     
-                    if(number >= 1e+9 && number <= 1e+11) {
+                    if(number >= 1e+9 && number <= 999999999999) {
                         number = number.toString().slice(0, -9) + "b";
                     }
                     
-                    if(number >= 1e+12 && number <= 1e+14) {
+                    if(number >= 1e+12 && number <= 999999999999999) {
                         number = number.toString().slice(0, -12) + "t";
                     }
-                    if(number >= 1e+15 && number <= 1e+17) {
+                    if(number >= 1e+15 && number <= 999999999999999999) {
                         number = number.toString().slice(0, -15) + "q";
                     }
-                    if(number >= 1e+18 && number <= 1e+20) {
+                    if(number >= 1e+18 && number <= 999999999999999999999) {
                         number = number.toString().slice(0, -18) + "sx";
                     }
-                    if(number >= 1e+21 && number <= 1e+23) {
+                    if(number >= 1e+21 && number <= 999999999999999999999999) {
                         number = number.toString().slice(0, -4) + "sp";
                     }
-                    if(number >= 1e+24 && number <= 1e+26) {
+                    if(number >= 1e+24 && number <= 999999999999999999999999999) {
                         number = number.toString().slice(0, -4) + "o";
                     }
-                    if(number >= 1e+27 && number <= 1e+29) {
+                    if(number >= 1e+27 && number <= 999999999999999999999999999999) {
                         number = number.toString().slice(0, -4) + "n";
                     }
-                    if(number >= 1e+30 && number <= 1e+32) {
+                    if(number >= 1e+30 && number <= 999999999999999999999999999999999) {
                         number = number.toString().slice(0, -4) + "d";
                     }
-                    if(number >= 1e+33 && number <= 1e+35) {
+                    if(number >= 1e+33 && number <= 999999999999999999999999999999999999) {
                         number = number.toString().slice(0, -4) + "u";
                     }
-                    if(number >= 1e+36 && number <= 1e+38) {
+                    if(number >= 1e+36 && number <= 999999999999999999999999999999999999999) {
                         number = number.toString().slice(0, -4) + "du";
                     }
                     if(number >= 1e+39) {
@@ -229,71 +374,75 @@ module.exports = {
                         var number = parseInt(this.evalMessage(theVar, cache));
         
                         if(number >= 1000 && number <= 999999) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "k";
+                            number = number / 1000
+                            number = number + "k";
                         }
                         
-                        if(number >= 1e+6 && number <= 1e+8) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "m";
+                        if(number >= 1e+6 && number <= 999999999) {
+                            number = number / 1000000
+                            number = number + "m";
                         }
                         
-                        if(number >= 1e+9 && number <= 1e+11) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "b";
+                        if(number >= 1e+9 && number <= 999999999999) {
+                            number = number / 1000000000
+                            number = number + "b";
                         }
                         
-                        if(number >= 1e+12 && number <= 1e+14) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "t";
+                        if(number >= 1e+12 && number <= 999999999999999) {
+                            number = number / 1e+12
+                            number = number + "t";
                         }
 
-                        if(number >= 1e+15 && number <= 1e+17) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "q";
+                        if(number >= 1e+15 && number <= 999999999999999999) {
+                            number = number / 1e+15
+                            number = number + "q";
                         }
 
-                        if(number >= 1e+18 && number <= 1e+20) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "sx";
+                        if(number >= 1e+18 && number <= 999999999999999999999) {
+                            number = number / 1e+18
+                            number = number + "sx";
                         }
 
-                        if(number >= 1e+21 && number <= 1e+23) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "sp";
+                        if(number >= 1e+21 && number <= 999999999999999999999999) {
+                            number = number / 1e+21
+                            number = number + "sp";
                         }
 
-                        if(number >= 1e+24 && number <= 1e+26) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "o";
+                        if(number >= 1e+24 && number <= 999999999999999999999999999) {
+                            number = number / 1e+24
+                            number = number + "o";
                         }
 
-                        if(number >= 1e+27 && number <= 1e+29) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "n";
+                        if(number >= 1e+27 && number <= 999999999999999999999999999999) {
+                            number = number / 1e+27
+                            number = number + "n";
                         }
 
-                        if(number >= 1e+30 && number <= 1e+32) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "d";
+                        if(number >= 1e+30 && number <= 999999999999999999999999999999999) {
+                            number = number / 1e+30
+                            number = number + "d";
                         }
 
-                        if(number >= 1e+33 && number <= 1e+35) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "u";
+                        if(number >= 1e+33 && number <= 999999999999999999999999999999999999) {
+                            number = number / 1e+33
+                            number = number + "u";
                         }
 
-                        if(number >= 1e+36 && number <= 1e+38) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "du";
+                        if(number >= 1e+36 && number <= 999999999999999999999999999999999999999) {
+                            number = number / 1e+36
+                            number = number + "du";
                         }
 
                         if(number >= 1e+39) {
-                            number = number.toString().slice(0, 2);
-                            number = number.slice(0, 1) + "." + number.slice(1, 2) + "tr";
+                            number = number / 1e+39
+                            number = number + "tr";
                         }
 
-                        result = number;
+
+
+                        result = number
+
+
                         break;
                     case 17:
                         var number = this.evalMessage(theVar, cache);
@@ -351,8 +500,45 @@ module.exports = {
                             number = number.slice(0, -1) * 1e+39;
                         }
 
-                        result = number;
+                        result = parseFloat(number);
+
+                        if(valor){
+                            if(result.toString() == "NaN"){
+                                result = parseFloat(valor)
+                            }
+                        }
+
                         break;
+                        case 18:
+                            result = JSON.parse(theVar)
+                            break;
+                            case 19:
+                                let money4 = Intl.NumberFormat("Ru-ru", {
+                                    style: "currency",
+                                    currency: "RUB",
+                                    });
+                                    result = money4.format(theVar.toString())
+                                    break;
+                                    case 20:
+                                        result = Math.round(parseFloat(theVar.toString().replace(',','.')));
+
+                                        if(valor){
+                                            if(result.toString() == "NaN"){
+                                                result = parseFloat(valor)
+                                            }
+                                        }
+
+                                        break;
+                                        case 21:
+                                            result = Math.abs(parseFloat(theVar.toString().replace(',','.')));
+
+                                            if(valor){
+                                                if(result.toString() == "NaN"){
+                                                    result = parseFloat(valor)
+                                                }
+                                            }
+
+                                            break;
         }
         if(result !== undefined) {
             const storage = parseInt(data.storage);
