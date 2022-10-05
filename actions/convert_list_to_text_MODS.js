@@ -26,7 +26,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <tab-system style="margin-top: 0;">
@@ -199,7 +199,7 @@ td{padding:0px 5px;width:50%}
     acont = acont + multi
 
     
-    for (let i = 0; i < (list.length - 1); i++) {
+    for (let i = 0; i <= (list.length - 1); i++) {
 
       resultitem = ""
 
