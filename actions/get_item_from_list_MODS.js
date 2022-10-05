@@ -12,7 +12,9 @@ module.exports = {
 
   subtitle(data, presets) {
     const list = presets.lists;
-    return `Obter item de "${list[parseInt(data.list, 10)]}"`;
+    let lista
+    if(data.list == 7 || data.list == 8 || data.list == 9){lista = `${list[parseInt(data.list, 10)]}(${data.varName})`}else{lista = `"${list[parseInt(data.list, 10)]}"`}
+    return `Obter item de ${lista}`;
   },
 
 
@@ -20,27 +22,32 @@ module.exports = {
     const type = parseInt(data.storage, 10);
     if (type !== varType) return;
     const list = parseInt(data.list, 10);
-    let dataType = "Unknown Type";
+    let dataType = "Desconhecido";
     switch (list) {
       case 0:
-        dataType = "Server Member";
+        dataType = "Membro";
         break;
       case 1:
-        dataType = "Channel";
+        dataType = "Canal";
         break;
       case 2:
+        dataType = "Cargo";
+        break;
+        case 3:
+          dataType = "Emoji";
+          break;
+        case 4:
+        dataType = "Servidor";
+        break;    
       case 5:
       case 6:
-        dataType = "Role";
-        break;
-      case 3:
-        dataType = "Emoji";
-        break;
-      case 4:
-        dataType = "Server";
+        dataType = "Cargo";
         break;
     }
-    return [data.varName2, dataType];
+
+    const type2 = parseInt(data.storage3, 10);
+    if (type2 > 0){montagem = [data.varName2, dataType, data.varName3, "Posição"]}else{montagem = [data.varName2, dataType]}
+    return montagem
   },
 
 
@@ -49,7 +56,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div>
 	<div style="float: left; width: 35%;">
