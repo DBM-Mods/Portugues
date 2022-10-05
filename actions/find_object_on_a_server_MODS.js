@@ -10,7 +10,7 @@ module.exports = {
   },
 
   subtitle(data) {
-    const info = ['ID', 'Categoria', 'Canal de Texto', 'Canal de Voz', 'Tópico público', 'Tópico privado'];
+    const info = ['Geral', 'Categoria', 'Canal de Texto', 'Canal de Voz', 'Tópico público', 'Tópico privado'];
     return `Encontrar ${info[parseInt(data.filtro, 10)]} (${data.find})`;
   },
 
@@ -29,9 +29,9 @@ module.exports = {
 
     <span class="dbminputlabel">Encontrar</span><br>
     <select id="filtro" class="round" onchange="glob.onChange1(this)">
-            <option value="0">ID</option>
+            <option value="0" selected>Geral</option>
             <option value="1">Categoria</option>
-            <option value="2" selected>Canal de Texto</option>
+            <option value="2">Canal de Texto</option>
             <option value="3">Canal de Voz</option>
             <option value="4">Tópico público</option>
             <option value="5">Tópico privado</option>
@@ -173,36 +173,25 @@ select.round:focus{outline-width:0;box-shadow:0 1px 0 #0059ff;}
     glob.onChange1 = function(event) {
         const value = parseInt(event.value)
         
-        if (value == 0) {
-          document.getElementById('xinxyla0').style.display = "none";
-          document.getElementById('xinxyla1').style.display = "none";
-          document.getElementById('xinxyla2').style.display = "none";
-          document.getElementById('xinxyla3').style.display = "none";
-          document.getElementById('xinxyla4').style.display = "none";
-        }
-        if (value == 1) {
-          document.getElementById('xinxyla0').style.display = null;
+        if (value == 0 || value == 1) {
           document.getElementById('xinxyla1').style.display = "block";
           document.getElementById('xinxyla2').style.display = "none";
           document.getElementById('xinxyla3').style.display = "none";
           document.getElementById('xinxyla4').style.display = "none";
         }
         if (value == 2) {
-          document.getElementById('xinxyla0').style.display = null;
           document.getElementById('xinxyla1').style.display = "none";
           document.getElementById('xinxyla2').style.display = "block";
           document.getElementById('xinxyla3').style.display = "none";
           document.getElementById('xinxyla4').style.display = "none";
         }
         if (value == 3) {
-          document.getElementById('xinxyla0').style.display = null;
           document.getElementById('xinxyla1').style.display = "none";
           document.getElementById('xinxyla2').style.display = "none";
           document.getElementById('xinxyla3').style.display = "block";
           document.getElementById('xinxyla4').style.display = "none";
         }
         if (value == 4 || value == 5) {
-          document.getElementById('xinxyla0').style.display = null;
           document.getElementById('xinxyla1').style.display = "none";
           document.getElementById('xinxyla2').style.display = "none";
           document.getElementById('xinxyla3').style.display = "none";
@@ -250,7 +239,7 @@ select.round:focus{outline-width:0;box-shadow:0 1px 0 #0059ff;}
     let result
     let info
 
-    if(filtro == 0){channels = server.channels.cache;info = 0}
+    if(filtro == 0){channels = server.channels.cache;info = info1}
     if(filtro == 1){channels = server.channels.cache.filter((e) => e.type === 'GUILD_CATEGORY');info = info1}
     if(filtro == 2){channels = server.channels.cache.filter((e) => e.type === "GUILD_TEXT" || c.type === "GUILD_NEWS");info = info2}
     if(filtro == 3){channels = server.channels.cache.filter((e) => e.type === "GUILD_VOICE");info = info3}
