@@ -43,6 +43,15 @@ module.exports = {
       case 6:
         dataType = "Cargo";
         break;
+        case 7:
+          dataType = "Variavel = " +data.varName;
+          break;
+          case 8:
+            dataType = "Variavel = " +data.varName;
+            break;
+            case 9:
+              dataType = "Variavel = " +data.varName;
+              break;
     }
 
     const type2 = parseInt(data.storage3, 10);
