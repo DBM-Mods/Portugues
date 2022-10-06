@@ -27,7 +27,7 @@ module.exports = {
 
   html() {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div style="float: left; width: 100%; padding-top: 20px;">
 <span class="dbminputlabel">Tipo de fonte</span><br>
@@ -115,40 +115,41 @@ module.exports = {
   action(cache) {
     const data = cache.actions[cache.index];
     const { Files } = this.getDBM();
+    source = this.evalMessage(data.source, cache)
+    source2 = this.evalMessage(data.source2, cache)
+    source3 = this.evalMessage(data.source3, cache)
 
     let id;
-    if (parseInt(data.sourcetype, 10) === 1) {
-      id = this.evalMessage(data.source2, cache);
-    } else {
-      id = data.source;
+    if (data.sourcetype == "1") {
+      id = source2
+      if (!id) return console.log('Insira um ID de comando/evento!')
     }
-    if (!id) return console.log('Insira um ID de comando/evento!');
 
     let name;
-    if (parseInt(data.sourcetype, 10) === 2) {
-      name = this.evalMessage(data.source3, cache);
-    } else {
-      name = data.source;
-    }
-    if (!name) return console.log('Insira um nome de um comando/evento!');
 
+    if (data.sourcetype == "2") {
+      name = source3
+      if (!name) return console.log('Insira um nome de um comando/evento!')
+    }
+    
 
     let actions;
+
     const allData = Files.data.commands.concat(Files.data.events);
     for (let i = 0; i < allData.length; i++) {
-      if (parseInt(data.sourcetype, 10) === 0) {
+      if (data.sourcetype == "0") {
         if (allData[i] && allData[i]._id === id) {
           actions = allData[i].actions;
           break;
         }
       }
-      if (parseInt(data.sourcetype, 10) === 1) {
+      if (data.sourcetype == "1") {
         if (allData[i] && allData[i]._id === id) {
           actions = allData[i].actions;
           break;
         }
       }
-      if (parseInt(data.sourcetype, 10) === 2) {
+      if (data.sourcetype == "2") {
         if (allData[i] && allData[i].name === name) {
           actions = allData[i].actions;
           break;
