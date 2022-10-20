@@ -57,7 +57,7 @@ module.exports = {
 
   html(_isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div style="width: 100%; height: 350px; overflow-y: scroll;padding:5px">
   <div style="padding-top: 8px;">
@@ -575,8 +575,8 @@ module.exports = {
     const footerIcon = this.evalMessage(data.footerIcon, cache);
     const timestamp = this.evalMessage(data.timestamp, cache);
     const fieldNum = parseInt(this.evalMessage(data.fieldNum, cache), 10);
-    const fieldName = this.evalMessage(data.fieldName, cache);
-    const fieldDescription = this.evalMessage(data.fieldDescription, cache);
+    const fieldName = this.evalMessage(data.fieldName, cache) || '\u200B';
+    const fieldDescription = this.evalMessage(data.fieldDescription, cache) || '\u200B';
     const fieldInline = parseInt(data.fieldInline, 10);
     switch (Edit0) {
       case 1:
