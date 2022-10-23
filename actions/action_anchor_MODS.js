@@ -63,7 +63,7 @@ module.exports = {
     const { glob, document } = this;
 
     glob.onComparisonChanged = function (event) {
-      if (event.value == 1 || event.value == 2) {
+      if (event.value == 1 || event.value == 2 || event.value == 3) {
         document.getElementById("containerxin").style.display = "block";
       }
       else {
