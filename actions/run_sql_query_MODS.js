@@ -37,189 +37,260 @@ module.exports = {
     return sub
   },
 
-  fields: ['storage', 'stringifyOutput', 'varName', 'hostname', 'port', 'username', 'password', 'database', 'query', 'path', 'otype', 'source_conn_storage', 'source_conn_varName', 'store_source_conn_storage', 'store_source_conn_varName', 'debugMode'],
+  fields: [
+  'storage',
+  'stringifyOutput',
+  'formato',
+  'varName',
+  'hostname',
+  'port',
+  'username',
+  'password',
+  'database',
+  'query',
+  'path',
+  'otype',
+  'source_conn_storage',
+  'source_conn_varName',
+  'store_source_conn_storage',
+  'store_source_conn_varName',
+  'debugMode'],
 
   html (isEvent, data) {
     return `
 
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.8</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.9</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
-  <div id="wrexdiv" style="height: calc(100vh - 170px); overflow-y: scroll;padding:0px 10px">
-    <div id="getSource"><br />
-     <div style="float: left; width: 35%;">
-    <span class="dbminputlabel">Fonte de Conexão</span><br />
-      <select id="source_conn_storage" class="round" onchange="glob.variableChange(this, 'varNameContainer2')">
+    <tab-system>
+
+    <tab label="Ação" icon="wizard">
+    <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
+
+   <span class="dbminputlabel">Sequência de consulta / Ação</span>
+   <textarea id="query" class="round" placeholder="SELECT * FROM 'users'" style="width: 100%;" type="textarea" rows="6" cols="19"></textarea>
+
+    <xinspace>
+
+    <table><tr><td class="col3">
+    <span class="dbminputlabel">Nome da Coluna</span> 
+    <input id="path" class="round"; style="width: 100%;" placeholder="Deixe em branco para armazenar tudo" type="text">
+    </td>
+    <td class="col4">
+    <span class="dbminputlabel">Formato</span>
+    <select id="formato" class="round">
+      <option value="0" selected>Padrão</option>
+      <option value="1">Número</option>
+      <option value="2">Texto</option>
+      <option value="3">Lista</option>
+    </select>
+    </td></tr></table>
+
+    <xinspace>
+
+    <table><tr><td class="col1">
+    <span class="dbminputlabel">Resultados em</span><br />
+      <select id="storage" class="round" onchange="glob.variableChange(this, 'varNameContainer')">
         ${data.variables[0]}
-      </select><br />
+      </select>
+    </td>
+    <td class="col2">
+    <div id="varNameContainer">
+    <span class="dbminputlabel">Nome da variável</span><br>
+    <input id="varName" class="round" type="text"/>
     </div>
-    <div id="varNameContainer2" style="display: ; float: right; width: 60%;">
-    <span class="dbminputlabel">Nome da variável</span><br />
-      <input id="source_conn_varName" class="round" type="text" />
-    </div><br /><br />
-  </div><br /><br />
-  <div style="margin-left: 5px;" class="ui toggle checkbox">
-    <input type="checkbox" name="public" id="toggleAuth" onclick='document.getElementById("authSection").style.display = this.checked ? "" : "none";' />
-    <label><font color="white">Mostrar opções de conexão</font></label>
-    Mostrar / ocultar opções de conexão.<br />
-    Será desativado se a conexão acima for selecionada
-  </div>
-  <div id="authSection" style="display: none;"><br />
-    <div class="ui inverted column stackable center">
-      <div class="four wide column"></div>
-        <form class="ui six wide column form segment">
-          <div class="ui form">
-            <div class="field">
-              <label>Type</label>
-              <select id="otype" class="ui search dropdown round">
+    </td></tr></table>
+
+    </div>
+    </tab>
+
+    
+    <tab label="Conexão" icon="point">
+    <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
+
+
+   
+    <table><tr><td class="col1">
+    <span class="dbminputlabel">Fonte de Conexão</span><br>
+      <select id="source_conn_storage" class="round" onchange="glob.onComparisonChanged(this)">
+      <option value="0" selected>Conectar</option>
+      <option value="1">Variável Temporária</option>
+      <option value="2">Variável Servidor</option>
+      <option value="3">Variável Global</option>
+      </select>
+      </td>
+      <td class="col2">
+    <div id="varNameContainer2">
+    <span class="dbminputlabel">Nome da variável</span><br>
+      <input id="source_conn_varName" class="round" type="text" list="variableList"/>
+      </td></tr></table>      
+
+  
+  <br>
+
+  <div id="authSection" style="display: none;">
+  <span class="dbminputlabel">Banco de Dados</span><br>
+              <select id="otype" class="round">
                 <option value="0" selected="selected">mysql</option>
                 <option value="1">postgres</option>
                 <option value="2">mssql</option>
                 <option value="3">sqlite</option>
               </select>
-            </div>
-            <div id="auth">
-              <div class="two fields">
-                <div class="field">
-                  <label>Hostname</label>
-                  <input id="hostname" placeholder="localhost" type="text" />
-                </div>
-                <div class="field">
-                  <label>Port</label>
-                  <input id="port" placeholder="3311" type="text" />
-                </div>
+
+              <br>
+              
+                  <table><tr><td class="col3">
+                  <span class="dbminputlabel">Hostname</span><br>
+                  <input id="hostname" class="round" placeholder="localhost" type="text" />
+                  </td>
+                  <td class="col4">
+                  <span class="dbminputlabel">Porta</span><br>
+                  <input id="port" class="round" placeholder="3311" type="text" />
+                  </td></tr></table>
+
+                  <br>
+
+                  <table><tr><td class="col5">
+                  <span class="dbminputlabel">Username</span><br>
+                  <input id="username" class="round" placeholder="root" type="text" />
+                  </td>
+                  <td class="col6">
+                  <span class="dbminputlabel">Password</span><br>
+                  <input id="password" class="round" placeholder="password" type="password" />
+                  </td></tr></table>
+
+                  <br>
+
+                  <span class="dbminputlabel">Nome do Banco de Dados</span><br>
+                  <input id="database" class="round"  placeholder="dbm" type="text" />
+
+                  <br>
+
+                  
+              <div id="checkSection" class="tiny ui labeled button" tabindex="0" style="width:100% !important;background:#222 !important">
+                <div id="checkConnection" class="ui button" style="float:left;width:120px">Check</div>
+                <a id="checkConnection_lbl" class="ui basic label yellow" style="width:100% !important;background:#222 !important">Preparar... Salve a action antes de clicar em Check!</a>
               </div>
-              <div class="two fields">
-                <div class="field">
-                  <label>Username</label>
-                  <input id="username"placeholder="root" type="text" />
-                </div>
-                <div class="field">
-                  <label>Password</label>
-                  <input id="password" placeholder="password" type="text" />
-                </div>
-              </div>
-            </div>
-            <div class="field">
-              <label>Database Path</label>
-              <input id="database" placeholder="dbm" type="text" />
-            </div>
-              <div id="checkSection" class="tiny ui labeled button" tabindex="0">
-                <div id="checkConnection" class="ui button">
-                  Check
-                </div>
-                <a id="checkConnection_lbl" class="ui basic label yellow">Ready</a>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div><br />
-        <label for="query"> <span class="dbminputlabel">Query String</span></label>
-        <textarea id="query" class="round" placeholder="SELECT * FROM 'users'" style="width: 100%;" type="textarea" rows="6" cols="19"></textarea><br />
-      </div>
-      <div><span class="dbminputlabel">JSON Path</span> 
-      <input id="path" class="round"; style="width: 100%;" type="text"></div><br>
-      Deixe em branco para armazenar tudo<br /> Oferece suporte ao uso do caminho JSON<br>
-      Mais informações aqui  <u><span class="wrexlink" data-url="http://goessner.net/articles/JsonPath/index.html#e2">JSON Path</span></u><br /><br />
-      <div style="float: left; width: 35%;">
-      <span class="dbminputlabel">Resultados em</span><br />
-        <select id="storage" class="round" onchange="glob.variableChange(this, 'varNameContainer')">
-          ${data.variables[0]}
-        </select>
-      </div>
-      <div id="varNameContainer" style="display: ; float: right; width: 60%;">
-      <span class="dbminputlabel">Nome da variável</span><br />
-        <input id="varName" class="round" type="text" /><br />
-      </div><br><br><br>
+              
+           
+              
+
+
       <div id="storeSource"><br />
       
-        <div style="float: left; width: 35%;">
-        <span class="dbminputlabel">Conexão armazenada</span><br />
-          <select id="store_source_conn_storage" class="round" onchange="glob.variableChange(this, 'varNameContainer3')">
-            ${data.variables[0]}
-          </select>
-        </div>
-        <div id="varNameContainer3" style="display: ; float: right; width: 60%;">
-        <span class="dbminputlabel">Nome da variável</span><br />
-          <input id="store_source_conn_varName" class="round" type="text" />
-        </div>
-      </div><br /><br /><br /><br />Armazene a conexão em uma variável para salvar as conexões com o banco de dados.<br>
-      Não usado se a conexão de origem estiver definida<br /><br /><br />
-      <div style="float: left; width: 100%;">
-      <span class="dbminputlabel">Modo de depuração</span><br />
-        <select id="debugMode" class="round">
-          <option value="1">Habilitado</option>
-          <option value="0" selected="selected">Desabilitado</option>
+      <table><tr><td class="col1">
+      <span class="dbminputlabel">Armazenar conexão</span><br />
+        <select id="store_source_conn_storage" class="round" onchange="glob.variableChange(this, 'varNameContainer3')">
+          ${data.variables[0]}
         </select>
-      </div><br /><div style="width:100%">Ative para ver a impressão detalhada no console do bot</div><br /><br />
-      <div style="float: left; width: 100%;">
-      <span class="dbminputlabel">Restringir saída</span>
-      <select id="stringifyOutput" class="round">
-        <option value="1">Habilitado</option>
-        <option value="0" selected="selected">Desabilitado</option>
-      </select>
+        </td>
+        <td class="col2">
+      <div id="varNameContainer3">
+      <span class="dbminputlabel">Nome da variável</span><br />
+        <input id="store_source_conn_varName" class="round" type="text" />
       </div>
-      <br /><br />
-      Restringe os resultados no chat<br />
-    Habilite isto para não mostrar [Object object] no chat
-    Deve ser desativado para verificar as condições.<br /><br />
-      <div>
-      <p>
-      Com este mod, você pode executar consultas SQL usando MySQL, MsSQL, postgres e SQLite.
-      </p>
-      <p>
-        <u><span class="wrexlink" data-url="https://www.w3schools.com/sql/">W3 Schools SQL Tutorial</span></u> / <u><span class="wrexlink" data-url="https://tutorialzine.com/2016/01/learn-sql-in-20-minutes">Aprenda SQL em 20 minutos</span></u><br />
-      </p>
-    </div><br />
+      </td></tr></table>
+    </div>
+
+    </div>
+
+    </div>
+    </tab>
+
+
+    <tab label="Config" icon="settings">
+    <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
+
+
+    <span class="dbminputlabel">Modo de depuração</span><br>
+        <select id="debugMode" class="round">
+          <option value="0" selected="selected">Desabilitado</option>
+          <option value="1">Habilitar todos</option>
+          <option value="2">Habilitar somente dados da conexão</option>
+          <option value="3">Habilitar somente dados da Consulta/Ação</option>
+          <option value="4">Habilitar somente o resultado do Nome da Coluna</option>
+        </select>
+<br>
+      
+      <span class="dbminputlabel">Saída do resultado</span><br>
+      <select id="stringifyOutput" class="round">
+        <option value="0" selected="selected">Normal</option>
+        <option value="1">Converter para String JSON</option>
+      </select>
+    
+
+      </div>
+      </tab>
+
+<tab label="Ajuda" icon="help">
+    <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
+
+      <button class="tiny compact ui icon button"><span class="xinelaslink" data-url="https://www.w3schools.com/sql/">W3 Schools SQL Tutorial</span></button>
+      <button class="tiny compact ui icon button"><span class="xinelaslink" data-url="https://tutorialzine.com/2016/01/learn-sql-in-20-minutes">Aprenda SQL em 20 minutos</span></button>
+      <br><br>
+
+      <center>
+      <tlt><b>Inserir coluna</b></tlt>
+      <tl>INSERT IGNORE  INTO nome_da_tabela(id) VALUES(\${member.id})</tl><br>
+
+      <tlt><b>Consultar</b></tlt>
+      <tl>SELECT * FROM nome_da_tabela WHERE id = '\${member.id}'</tl><br>
+
+      <tlt><b>Atualizar coluna</b></tlt>
+      <tl>UPDATE nome_da_tabela SET money = money + 1 WHERE id=\${member.id}</tl><br>
+
+      <tlt><b>Ranking - Em saída converta para String JSON</b></tlt>
+      <tl>SELECT id, money, RANK() over(ORDER BY money DESC) AS rank FROM nome_da_tabela</tl><br>
+
+      <tlt><b>Comparadores</b></tlt>
+      <tl><table>
+      <tr><td class="cols">=</td><td class="cols">É igual a</td></tr>
+      <tr><td class="cols">!=</td><td class="cols">Não é igual a</td></tr>
+      <tr><td class="cols"><</td><td class="cols">Menor que</td></tr>
+      <tr><td class="cols">></td><td class="cols">Maior que</td></tr>
+      <tr><td class="cols"><=</td><td class="cols">Menor ou igual a</td></tr>
+      <tr><td class="cols">>=</td><td class="cols">Maior ou igual a</td></tr>
+      <tr><td class="cols">@></td><td class="cols">Contém</td></tr>
+      <tr><td class="cols"><@</td><td class="cols">É contido por</td></tr>
+      <tr><td class="cols">~</td><td class="cols">Corresponde à expressão regular, diferencia maiúsculas de minúsculas</td></tr>
+      <tr><td class="cols">~*</td><td class="cols">Corresponde à expressão regular, não diferencia maiúsculas de minúsculas</td></tr>
+      <tr><td class="cols">!~</td><td class="cols">Não corresponde à expressão regular, diferencia maiúsculas de minúsculas</td></tr>
+      <tr><td class="cols">!~*</td><td class="cols">Não corresponde à expressão regular, não diferencia maiúsculas de minúsculas</td></tr>
+      </table>
+      
+      </tl><br>
+
+      <tlt><b>Adicionar mais comparadores</b></tlt>
+      <tl><table>
+      <tr><td class="cols">OR</td><td class="cols">OU</td><td class="cols">money = 100 OR money = 200</td></tr>
+      <tr><td class="cols">AND</td><td class="cols">E</td><td class="cols">money > 0 AND mostrar = 1</td></tr>
+      </table>
+      </tl><br>
+
+      </center>
+
 
 
     </div>
+    </tab>
+    </tab-system>
+
+
  
-    <style>
-  .embed {
-    position: relative;
-  }
-
-  .embedinfo {
-    background: rgba(46,48,54,.45) fixed;
-    border: 1px solid hsla(0,0%,80%,.3);
-    padding: 10px;
-    margin:0 4px 0 7px;
-    border-radius: 0 3px 3px 0;
-  }
-
-  embedleftline {
-    background-color: #eee;
-    width: 4px;
-    border-radius: 3px 0 0 3px;
-    border: 0;
-    height: 100%;
-    margin-left: 4px;
-    position: absolute;
-  }
-
-  span {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  }
-
-  span.embed-auth {
-    color: rgb(255, 255, 255);
-  }
-
-  span.embed-desc {
-    color: rgb(128, 128, 128);
-  }
-
-  span.wrexlink {
-    color: #99b3ff;
-    text-decoration:underline;
-    cursor:pointer;
-  }
-
-  span.wrexlink:hover {
-    color:#4676b9;
-  }
+<style>
+    xinspace{padding:10px 0px 0px 0px;display:block}
+    table{width:100%}
+    .col{padding:0px 4px}
+    .cols{padding:0px 4px;border:1px solid rgba(0,0,0,0.5)}
+    .col1{width:35%;padding:0px 10px 0px 0px}
+    .col2{width:65%}
+    .col3{width:75%;padding:0px 10px 0px 0px}
+    .col4{width:25%}
+    .col5{width:50%;padding:0px 10px 0px 0px}
+    .col6{width:50%}
+    .xinelaslink {cursor:pointer}
+    tl{background:rgba(0,0,0,0.1);border: 1px solid rgba(50,50,50,0.1);padding:5px;width:100%;display:block}
+    tlt{background:rgba(0,0,0,0.2);border: 1px solid rgba(50,50,50,0.2);padding:2px;width:100%;display:block}
 </style>`
   },
 
@@ -268,11 +339,11 @@ module.exports = {
         const sequelize = new Sequelize(database || 'database', username || 'username', password || 'password', options)
 
         document.getElementById('checkConnection_lbl').setAttribute('class', 'ui basic label yellow')
-        document.getElementById('checkConnection_lbl').innerHTML = 'Checking...'
+        document.getElementById('checkConnection_lbl').innerHTML = 'Checando...'
 
         function isValid (bool, message = false) {
           document.getElementById('checkConnection_lbl').setAttribute('class', `ui basic label ${bool ? 'green' : 'red'}`)
-          document.getElementById('checkConnection_lbl').innerHTML = ((bool ? 'Valid' : 'Invalid') + (message ? `: ${message}` : ''))
+          document.getElementById('checkConnection_lbl').innerHTML = ((bool ? 'Válido' : 'Inválido') + (message ? `: ${message}` : ''))
         }
 
         sequelize.authenticate()
@@ -290,13 +361,13 @@ module.exports = {
       document.getElementById('database').setAttribute('placeholder', document.getElementById('otype').value === '3' ? './mydb.sql' : 'dbm')
 
        // interactive links
-       const wrexlinks = document.getElementsByClassName('wrexlink');
-       for (let x = 0; x < wrexlinks.length; x++) {
-         const wrexlink = wrexlinks[x];
-         const url = wrexlink.getAttribute('data-url');
+       const xinelaslinks = document.getElementsByClassName('xinelaslink');
+       for (let x = 0; x < xinelaslinks.length; x++) {
+         const xinelaslink = xinelaslinks[x];
+         const url = xinelaslink.getAttribute('data-url');
          if (url) {
-           wrexlink.setAttribute('title', url);
-           wrexlink.addEventListener('click', (e) => {
+          xinelaslink.setAttribute('title', url);
+          xinelaslink.addEventListener('click', (e) => {
              e.stopImmediatePropagation();
              console.log(`Launching URL: [${url}] in your default browser.`);
              require('child_process').execSync(`start ${url}`);
@@ -310,9 +381,26 @@ module.exports = {
       require('fs').appendFileSync('dbmmods_dbm_errors.txt', `${new Date().toUTCString()} : ${error.stack ? error.stack : error}\n\n`)
     }
 
+    glob.onComparisonChanged = function (event) {
+      if (event.value == 0) {
+        document.getElementById("varNameContainer2").style.display = "none";
+        document.getElementById("authSection").style.display = null;
+      } else {
+        document.getElementById("varNameContainer2").style.display = null;
+        document.getElementById("authSection").style.display = "none";
+      }
+  }
+
+    glob.onComparisonChanged(document.getElementById("source_conn_storage"));
+
+
+
     glob.variableChange(document.getElementById('storage'), 'varNameContainer')
-    glob.variableChange(document.getElementById('source_conn_storage'), 'varNameContainer2')
     glob.variableChange(document.getElementById('store_source_conn_storage'), 'varNameContainer3')
+
+
+   
+
   },
 
   action (cache) {
@@ -339,7 +427,9 @@ module.exports = {
     const varName = this.evalMessage(data.varName, cache)
 
     const storage = parseInt(data.storage)
+
     const DEBUG = parseInt(data.debugMode)
+
     const stringifyOutput = parseInt(data.stringifyOutput)
 
     const Mods = this.getMods()
@@ -396,7 +486,7 @@ module.exports = {
         const storedConnection = this.getVariable(sourceConnStorage, sourceConnVarName, cache)
         sequelize = storedConnection && storedConnection.sequelize
         if (sequelize) {
-          if (DEBUG) console.log(`Conexão armazenanda para host '${storedConnection.hostname}:${storedConnection.port}', usando banco de dados '${storedConnection.database}'`)
+          if (DEBUG == 1 || DEBUG == 2) console.log(`Run SQL Query MOD: Conexão estabelecida para host '${storedConnection.hostname}:${storedConnection.port}', usando banco de dados '${storedConnection.database}'`)
         } else {
           sequelize = new Sequelize(database || 'database', username || 'username', password || 'password', options)
         }
@@ -408,7 +498,7 @@ module.exports = {
         if (storeSourceConnStorage > 0 && storeSourceConnVarName && sourceConnStorage === 0) {
           if (sequelize) {
             const storedConnection = { hostname, port, database, sequelize }
-            if (DEBUG) console.log(`Conexão armazenanda para host '${storedConnection.hostname}:${storedConnection.port}' usando banco de dados '${storedConnection.database}'`)
+            if (DEBUG == 1 || DEBUG == 2) console.log(`Run SQL Query MOD: Conexão estabelecida para host '${storedConnection.hostname}:${storedConnection.port}' usando banco de dados '${storedConnection.database}'`)
             this.storeValue(storedConnection, storeSourceConnStorage, storeSourceConnVarName, cache)
           }
         }
@@ -423,28 +513,38 @@ module.exports = {
               if (jsonOut === false) jsonOut = Mods.jsonPath(results, ('$.[0].').concat(path))
               if (jsonOut) {
                 if (jsonOut.length === 0) jsonOut = jsonOut[0]
-                if (DEBUG) console.log(`Run SQL Query: valores de dados JSON começando em [${path}] armazenados em [${varName}]`)
-                if (DEBUG) console.dir(jsonOut)
+                if (DEBUG == 1 || DEBUG == 4) console.log(`Run SQL Query MOD: valores de dados JSON começando em [${path}] armazenados em [${varName}]`)
+                if (DEBUG == 1 || DEBUG == 4) console.dir(jsonOut)
               }
             }
-            if (results && path === undefined && DEBUG) {
-              console.log('\nStored value(s);\r\n')
-              console.log('Key =  Json')
+            if (DEBUG == 1 || DEBUG == 3 ) {
+              console.log('Run SQL Query MOD: Dados da consulta/ação')
               for (let i = 0; i < results.length; i++) {
                 console.log(`[${i}] = ${JSON.stringify(results[i])}`)
               }
-              console.log('\r\nAnexe a chave com a qual deseja armazenar esse valor à variável.')
               const storageType = ['', 'tempVars', 'serverVars', 'globalVars']
               const output = storageType[storage]
-              console.log('Se não estiver usando a caixa de texto Path no mod, veja como obter valores especiais.')
-              console.log(`Example \${${output}("${varName}")} to \${${output}("${varName}")[0]["${Object.keys(results[0])[0]}"]}`)
-              console.log(`Example Run Script ${output}("${varName}")["${Object.keys(results[0])[0]}"] or a place without \${}.\r\n`)
-              console.log('Anexe o caminho ao final após a chave ou use o mod Parse From Stored JSON, \n para obter o valor que você deseja')
-              console.log(`Exemplo \${${output}("${varName}")[key].path} ou use a caixa de caminho json na interface do usuário do mod.`)
+              console.log(`\r\nAnexe a chave com a qual deseja armazenar esse valor à variável.\nSe não estiver usando a caixa de texto Path no mod, veja como obter valores especiais.Exemplo \${${output}("${varName}")} para \${${output}("${varName}")[0]["${Object.keys(results[0])[0]}"]}\nExemplo: Run Script ${output}("${varName}")["${Object.keys(results[0])[0]}"] ou um lugar sem \${}.\r\nAnexe o caminho ao final após a chave ou use o mod Parse From Stored JSON, para obter o valor que você deseja\nExemplo \${${output}("${varName}")[key].path} ou use a caixa de caminho json na interface do usuário do mod.`)
             }
-            const out = jsonOut || results
-            this.storeValue(stringifyOutput ? JSON.stringify(out) : out, storage, varName, cache)
-            this.callNextAction(cache)
+            out = jsonOut || results
+
+            if(data.formato == "0" || data.formato == "undefined" || data.formato == undefined){
+              this.storeValue(stringifyOutput ? JSON.stringify(out) : out, storage, varName, cache)
+            }
+            if(data.formato == "1"){
+            out = parseFloat(out)
+            this.storeValue(out, storage, varName, cache)
+            }
+            if(data.formato == "2"){
+              out = out.toString()
+              this.storeValue(out, storage, varName, cache)
+              }
+            if(data.formato == "3"){
+              out = out.toString().split(new RegExp(','))
+              this.storeValue(out, storage, varName, cache)
+              }
+
+             this.callNextAction(cache)
           }).catch((err) => {
             if (err && err.original) {
               this.storeValue({ message: err.original, error: err.original }, storage, varName, cache)
