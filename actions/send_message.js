@@ -134,7 +134,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.4</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.5</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -345,8 +345,73 @@ module.exports = {
   <div style="padding: 16px;text-align:center"id="xin4n">Webhook não suporta Botões</div>
     <div style="padding: 8px;" id="xin4">
 
-      <dialog-list id="buttons" fields='["name", "typeper", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions"]' dialogTitle="Button Info" dialogWidth="600" dialogHeight="700" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemCols="4" itemHeight="40px;" itemTextFunction="data.name" itemStyle="text-align: center; line-height: 40px;">
+      <dialog-list id="buttons" fields='["name", "typeper", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions", "val1", "val2", "comparar", "formula"]' dialogResizable dialogTitle="Button Info" dialogWidth="600" dialogHeight="600" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemHeight="40px;" itemTextFunction="glob.formatItem2(data)" itemStyle="text-align: left; line-height: 40px;">
         <div style="padding: 16px;">
+
+        <tab-system>
+
+        <tab label="Ações" icon="list">
+
+        <action-list-input mode="BUTTON" id="actions" height="calc(100vh - 180px)"></action-list-input>
+        </tab>
+
+        <tab label="Botão / Config" icon="cogs">
+        <div style="height: calc(100vh - 138px);overflow-y: scroll;overflow-x: hidden;width:100%">
+
+        <div style="padding: 16px;background:rgba(0,0,0,0.3)">
+        <span class="dbminputlabel">Exibir</span><br>
+        <select id="formula" class="round">
+       
+        <option value="0" selected>Sempre exibir o botão / Ignorar o comparador abaixo</option>
+        <option value="1">Exibir o botão somente se o comparador for falso</option>
+        <option value="2">Exibir o botão somente se o comparador for verdadeiro</option>
+      </select>
+
+      <br>
+
+        <table style="width:100%"><tr><td>
+          <span class="dbminputlabel">Valor A</span><br>
+          <input id="val1" class="round" type="text">
+          </td>
+          <td>
+          <span class="dbminputlabel">Comparador</span><br>
+          <select id="comparar" class="round">
+          <option value="0">Valor A - Existe</option>
+          <option value="1" selected>Igual a</option>
+          <option value="2">Exatamente igual</option>
+          <option value="3">Menor que</option>
+          <option value="13">Menor ou igual a</option>
+          <option value="4">Maior que</option>
+          <option value="12">Maior ou igual a</option>
+          <option value="5">Inclui</option>
+          <option value="6">Matches Regex</option>
+          <option value="14">Matches Full Regex</option>
+          <option value="7">O comprimento é maior que</option>
+          <option value="8">O comprimento é menor que</option>
+          <option value="9">O comprimento é igual a</option>
+          <option value="10">Começa com</option>
+          <option value="11">Termina com</option>
+          <option value="16">Valor A possui acentuações?</option>
+          <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
+          <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
+          <option value="19">Valor A é um número par?</option>
+          <option value="20">Valor A é um número ímpar?</option>
+          <option value="21">Valor A é um número?</option>
+          <option value="24">Valor A é um texto?</option>
+          <option value="23">Valor A é um URL de imagem?</option>
+          <option value="25">Valor A é um URL?</option>
+        </select>
+         </td>
+          <td>
+          <span class="dbminputlabel">Valor B</span><br>
+          <input id="val2" class="round" type="text">
+          </td>
+          </tr></table>
+
+
+          </div>
+<br>
+
           <div style="width: calc(50%); float: left;">
             <span class="dbminputlabel">Nome</span>
             <input id="name" class="round" type="text">
@@ -408,10 +473,9 @@ module.exports = {
             <span class="dbminputlabel">Limite de tempo (milissegundos)</span>
             <input id="time" placeholder="60000" class="round" type="text">
           </div>
-
-          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-          <action-list-input mode="BUTTON" id="actions" height="calc(100vh - 460px)"></action-list-input>
+          </div>
+          </tab>
+          </tab-system>
 
         </div>
       </dialog-list>
@@ -846,7 +910,20 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       }
       result += "</div>";
       return result;
-    };
+    }
+    
+    glob.formatItem2 = function (data) {
+      let result = '<div style="display: inline-block; width: 100%; padding-left: 8px;"><table><tr><td style="width:100%">';
+      const comp = "0";
+      switch (comp) {
+        case "0":
+          result += data.emoji + ' ' + data.name;
+          break;
+      }
+      result += "</td><td style='width:120px;text-align:right;padding:0px 10px 0px 0px'>"+data.id+"</td></tr></table></div>";
+      return result;
+    }
+  
 
   },
   //---------------------------------------------------------------------
@@ -1194,6 +1271,112 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
     if (Array.isArray(data.buttons)) {
       for (let i = 0; i < data.buttons.length; i++) {
+        
+        const botoesconfig = data.buttons;
+        const fbot = botoesconfig[i];
+
+        val1 = this.evalMessage(fbot.val1, cache);
+        val2 = this.evalMessage(fbot.val2, cache);
+        result = true;
+
+        if(fbot.formula == "1" || fbot.formula == "2") {
+        const compare = parseInt(fbot.comparar, 10);
+        if (compare !== 6){
+          val1 = this.evalIfPossible(val1, cache)
+          val2 = this.evalIfPossible(val2, cache)
+        }
+        switch (compare) {
+            case 0:
+              result = val1.toString() !== "undefined";
+              break;
+            case 1:
+              result = val1 == val2;
+              break;
+            case 2:
+              result = val1 === val2;
+              break;
+            case 3:
+              result = parseFloat(val1) < parseFloat(val2);
+              break;
+            case 4:
+              result = parseFloat(val1) > parseFloat(val2);
+              break;
+            case 5:
+              if (typeof val1?.toString().includes === "function") {
+                result = val1.toString().includes(val2);
+              }
+              break;
+            case 6:
+              result = Boolean(val1.toString().match(new RegExp('^' + val2 + '$', 'i')));
+              break;
+            case 7:
+              result = Boolean(val1.toString().length > val2);
+              break;
+            case 8:
+              result = Boolean(val1.toString().length < val2);
+              break;
+            case 9:
+              result = Boolean(val1.toString().length == val2);
+              break;
+            case 10:
+              result = val1.toString().startsWith(val2);
+              break;
+            case 11:
+              result = val1.toString().endsWith(val2);
+              break;
+            case 12:
+              result = Boolean(val1 >= val2);
+              break;
+            case 13:
+              result = Boolean(val1 <= val2);
+              break;
+            case 14:
+              result = Boolean(val1.toString().match(new RegExp(val2)))
+              break;
+            case 16:
+              const conditions = ["Ä","Å","Á","Â","À","Ã","Ā","Ă","Ą","ā","ă","ą","ä","á","â","à","ã","É","Ê","Ë","È","Ė","Ę","Ě","Ĕ","Ē","ė","ę","ě","ĕ","ē","é","ê","ë","è","Í","Î","Ï","Ì","İ","Į","Ī","ı","į","ī","í","î","ï","ì","Ö","Ó","Ô","Ò","Õ","Ő","Ō","ő","ō","ö","ó","ô","ò","õ","Ü","Ú","Û","Ų","Ű","Ů","Ū","ų","ű","ů","ū","ü","ú","û","ù","Ç","Ć","Č","ç","ć","č","Ñ","Ň","Ņ","Ń","ñ","ň","ņ","ń","Ÿ","Ý","ý","Ź","Ż","Ž","ź","ż","ž","Ł","Ľ","Ļ","Ĺ","ł","ľ","ĺ","Ķ","ķ","Ģ","Ğ","ģ","ğ","Ď","ď","Ś","Š","Ş","ś","š","ş","Ť","Ț","Ţ","ť","ț","ţ","Ŕ","Ř","ŕ","ř"]
+              result = conditions.some(el => val1.includes(el));
+              break;
+            case 17:
+              const conditionsX = val2
+              result = conditionsX.some(els => val1.includes(els));
+              break;
+            case 18:
+              const conditionsZ = val2
+              result = conditionsZ.some(elz => val1 == (elz));
+              break;
+            case 19:
+              result = val1 % 2 == 0
+              break;
+            case 20:
+              result = val1 % 2 == 1
+              break;
+            case 21:
+              result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
+              break;
+            case 23:
+              const isImageUrl = require('is-image-url');
+              result = isImageUrl(val1);
+              break;
+            case 24:
+              result = typeof val1 === "string";
+              break;
+            case 25:
+              const isUrl = require("is-url");
+              result = isUrl(val1);
+        }
+      }
+    
+
+      if(fbot.formula == "1") {
+        if(result == false) {
+          result = true
+        } else {result = false}
+      }
+
+
+if(result == true){
+
         if(!data.buttons[i].name) data.buttons[i].name = "\u200b";
         const button = data.buttons[i];
         if(button.typeper == "" || button.typeper == undefined){
@@ -1216,7 +1399,12 @@ xinspace{padding:5px 0px 0px 0px;display:block}
             data: button,
           });
         }
+
       }
+
+    }
+
+      
     }
 
     if (Array.isArray(data.selectMenus)) {
