@@ -150,8 +150,6 @@ module.exports = {
     const jp = this.getMods().require('jsonpath');
     var interaction = cache.interaction;
 
-    console.log(interaction)
-
     if(interaction){
       command = jp.query(
         this.getDBM().Files.data.commands,
