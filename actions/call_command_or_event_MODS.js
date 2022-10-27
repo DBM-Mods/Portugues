@@ -150,8 +150,13 @@ module.exports = {
     const jp = this.getMods().require('jsonpath');
     var interaction = cache.interaction;
 
+    console.log(interaction)
+
     if(interaction){
-      command = jp.query(this.getDBM().Files.data.commands, `$..[?(@._id=="${this.evalMessage(data.valueToSearch, cache)}")]`)
+      command = jp.query(
+        this.getDBM().Files.data.commands,
+        `$..[?(@.name=="${interaction.commandName}")]`,
+      );
       } else {
         command = jp.query(
           this.getDBM().Files.data.commands,
@@ -164,7 +169,6 @@ module.exports = {
         
         idsave = jp.query(command, '$.._id')
         id = idsave.toString()
-        console.log(id)
       }
     
 
