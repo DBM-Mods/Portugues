@@ -18,7 +18,7 @@ module.exports = {
 
   html() {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <tab-system>
 
@@ -46,7 +46,7 @@ module.exports = {
   <span class="dbminputlabel">Configuração</span>
   <select id="config" class="round" onchange="glob.onComparisonChanged(this)">
     <option value="0" selected>Continuar ações</option>
-    <option value="1" selected>Parar ações</option>
+    <option value="1">Parar ações</option>
     <option value="2">Usar as seguintes ações e continuar</option>
     <option value="3">Usar somente as seguintes ações e parar</option>
   </select>
