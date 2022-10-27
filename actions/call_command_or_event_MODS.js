@@ -11,13 +11,16 @@ module.exports = {
 
   subtitle(data) {
     let source;
+    if (parseInt(data.sourcetype, 10) === 3) {
+      source = 'Mesmo comando/evento';
+    }
     if (parseInt(data.sourcetype, 10) === 2) {
       source = 'Nome do comando: ' + data.source3.toString();
     }
     if (parseInt(data.sourcetype, 10) === 1) {
       source = 'ID do comando: ' +data.source2.toString();
     } 
-    if (parseInt(data.sourcetype, 10) === 0) {
+    if (parseInt(data.sourcetype, 10) === 0 || data.sourcetype == undefined) {
       source = 'Lista > comando: ' +data.source.toString();
     }
     return `${source}`;
@@ -27,7 +30,7 @@ module.exports = {
 
   html() {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <div style="float: left; width: 100%; padding-top: 20px;">
 <span class="dbminputlabel">Tipo de fonte</span><br>
@@ -35,6 +38,7 @@ module.exports = {
     <option value="0" selected>Escolha da lista</option>
     <option value="1">Inserir o ID do comando/evento</option>
     <option value="2">Inserir o nome do comando/evento</option>
+    <option value="3">Mesmo comando/evento</option>
   </select>
 </div>
 <div id="info1"; style="float: left; width: 100%; padding-top: 20px; display: none;">
@@ -52,7 +56,7 @@ module.exports = {
 <span class="dbminputlabel">Nome do comando/evento</span><br>
   <input id="source3" class="round" type="text" placeholder="">
 </div>
-<div style="float: left; width: 85%; padding-top: 20px;">
+<div style="float: left; width: 100%; padding-top: 20px;">
 <span class="dbminputlabel">Tipo de chamada</span><br>
   <select id="type" class="round">
   <option value="true" selected>Aguarde a conclusão</option>
@@ -104,6 +108,11 @@ module.exports = {
           info2.style.display = 'none';
           info3.style.display = null;
           break;
+        case 3:
+          info1.style.display = 'none';
+          info2.style.display = 'none';
+          info3.style.display = 'none';
+          break;
         default:
           break;
       }
@@ -120,6 +129,11 @@ module.exports = {
     source3 = this.evalMessage(data.source3, cache)
 
     let id;
+
+    if (data.sourcetype == "0" || data.sourcetype == undefined) {
+      id = source
+    }
+
     if (data.sourcetype == "1") {
       id = source2
       if (!id) return console.log('Insira um ID de comando/evento!')
@@ -131,19 +145,35 @@ module.exports = {
       name = source3
       if (!name) return console.log('Insira um nome de um comando/evento!')
     }
+
+    if (data.sourcetype == "3") {
+    const jp = this.getMods().require('jsonpath');
+    var interaction = cache.interaction;
+
+    if(interaction){
+      command = jp.query(this.getDBM().Files.data.commands, `$..[?(@._id=="${this.evalMessage(data.valueToSearch, cache)}")]`)
+      } else {
+        command = jp.query(
+          this.getDBM().Files.data.commands,
+          `$..[?(@.name=="${cache.msg.content
+            .slice(this.getDBM().Files.data.settings.tag.length || cache.server.tag.length)
+            .split(/ +/)
+            .shift()}")]`,
+        )
+        }
+        
+        idsave = jp.query(command, '$.._id')
+        id = idsave.toString()
+        console.log(id)
+      }
     
 
     let actions;
 
     const allData = Files.data.commands.concat(Files.data.events);
     for (let i = 0; i < allData.length; i++) {
-      if (data.sourcetype == "0") {
-        if (allData[i] && allData[i]._id === id) {
-          actions = allData[i].actions;
-          break;
-        }
-      }
-      if (data.sourcetype == "1") {
+
+      if (data.sourcetype == "0" || data.sourcetype == "1" || data.sourcetype == "3" || data.sourcetype == undefined) {
         if (allData[i] && allData[i]._id === id) {
           actions = allData[i].actions;
           break;
