@@ -28,28 +28,35 @@ module.exports = {
         return ([data.varName, dataType]);
     },
         
-    fields: ["formato", "timezone", "sourceDate", "dateLanguage", "modeStorage", "info", "buildInput", "storage", "varName"],
+    fields: ["formato", "timezone", "soma", "sourceDate", "dateLanguage", "modeStorage", "info", "buildInput", "storage", "varName"],
     
         html: function(isEvent, data) {
         return `
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
+        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.6</div>
         <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
+        <div style="float: left; width: 62%;" id="manipulador">
         <span class="dbminputlabel">Formato</span><br>
         <select id="formato" class="round" onchange="glob.onChangeMode2(this)">
             <option value="0" selected>Data</option>
             <option value="1">Timestamp</option>
             <option value="2">Timestamp milissegundos</option>
         </select>
-<br>
-        <div style="float: left; width: 62%;" id="manipulador">
-        <span class="dbminputlabel" name="xinelas">Data de origem</span><br>
-            <input id="sourceDate" class="round" type="text" placeholder="Ex: Sun Oct 26 2019 10:38:01 GMT+0200">
         </div>
         <div style="float: right; width: 35%" id="dataxin">
         <span class="dbminputlabel">Idioma da data (iniciais)</span><br>
            <input id="dateLanguage" class="round" placeholder='O padrão é "en" (Inglês)'>
-        </div><br><br><br>
+        </div>
+<br><br><br>
+        <div style="float: left;width: 62%" id="manipulador2">
+        <span class="dbminputlabel" name="xinelas">Data de origem</span><br>
+            <input id="sourceDate" class="round" type="text" placeholder="Deixe em branco para a data atual">
+        </div>
+        <div style="float: right; width: 35%" id="dataxin2">
+        <span class="dbminputlabel">Adicionar segundos</span><br>
+           <input id="soma" class="round" value="0" placeholder='Ex: 86400 para +1 dia'>
+        </div>
+        <br><br><br>
         <div style="float: left; width: 35%">
         <span class="dbminputlabel">Modo</span><br>
             <select id="modeStorage" class="round" onchange="glob.onChangeMode(this)">
@@ -81,7 +88,7 @@ module.exports = {
             <input id="buildInput" class="round" placeholder="Ex: DD/MM/YYYY [às] HH:mm:ss">
         </div><br><br><br>
         <span class="dbminputlabel">Timezone (<span class="xinxylalink" data-url="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">Timezones</span>)</span><br>
-        <input id="timezone" class="round" type="text" placeholder="Ex: America/Sao_Paulo ou deixe vazio para o local">
+        <input id="timezone" class="round" type="text" value="America/Sao_Paulo" placeholder="Ex: America/Sao_Paulo ou deixe vazio para o local">
         <br>
 
         <div style="float: left; width: 35%">
@@ -146,17 +153,23 @@ module.exports = {
             if (value == 0) {
                 document.querySelector("[name='xinelas']").innerText = (`Data de origem`);
                 document.getElementById("dataxin").style.display = null;
+                document.getElementById("dataxin2").style.display = "none";
                 document.getElementById("manipulador").style.width = "62%";
+                document.getElementById("manipulador2").style.width = "100%";
             }
             if (value == 1) {
                 document.querySelector("[name='xinelas']").innerText = (`Timestamp`);
                 document.getElementById("dataxin").style.display = "none";
+                document.getElementById("dataxin2").style.display = null;
                 document.getElementById("manipulador").style.width = "100%";
+                document.getElementById("manipulador2").style.width = "62%";
             }
             if (value == 2) {
                 document.querySelector("[name='xinelas']").innerText = (`Timestamp milissegundos`);
                 document.getElementById("dataxin").style.display = "none";
+                document.getElementById("dataxin2").style.display = null;
                 document.getElementById("manipulador").style.width = "100%";
+                document.getElementById("manipulador2").style.width = "62%";
             }
             }
 
@@ -184,13 +197,41 @@ module.exports = {
         const data = cache.actions[cache.index];
         moment = require("moment");
 
+        const soma = parseFloat(this.evalMessage(data.soma, cache))
+        if(data.soma == "" || data.soma == undefined || data.soma == "undefined" || data.soma == "NaN" || data.soma == NaN){
+        soma = 0
+        }
+
+        if(data.sourceDate == ""){
+
+        if(data.formato == "0"){
+        sourceDate = new Date
+
+        }
+        if(data.formato == "1" || data.formato == "2"){
+        const datar =  moment(Date.parse(new Date))
+        sourceDate = parseFloat(datar.format("X")) + soma
+        }
+
+        } else {
+
+        if(data.formato == "0"){
+        sourceDate = this.evalMessage(data.sourceDate, cache)}
+        if(data.formato == "1"){
+            sourceDate = parseFloat(this.evalMessage(data.sourceDate, cache)) + soma
+        }
+        if(data.formato == "2"){
+            sourceDate = parseFloat(this.evalMessage(data.sourceDate, cache)) + soma*1000
+        }
+        }
+
         timezone = this.evalMessage(data.timezone, cache);
         timezonegat = "on"
         if(timezone == "" || timezone == "undefined" || timezone == undefined){timezonegat = "off"}
 
         if (data.formato == "0" || data.formato == undefined || data.formato == "undefined"){
         dateLanguage = this.evalMessage(data.dateLanguage, cache);
-        date = moment(Date.parse(this.evalMessage(data.sourceDate, cache)), "", dateLanguage === "" ? "en" : dateLanguage)
+        date = moment(Date.parse(sourceDate), "", dateLanguage === "" ? "en" : dateLanguage)
         
         if(timezonegat == "on"){
             moment = require("moment-timezone");
@@ -202,10 +243,14 @@ module.exports = {
         toDate = require('normalize-date')
 
         if(data.formato == "2"){
-            datafonte = parseFloat(this.evalMessage(data.sourceDate, cache))
-            date = Math.floor(datafonte/1000)
+
+            if(data.sourceDate == ""){
+            date = sourceDate
+            } else {
+            datafonte = parseFloat(sourceDate)
+            date = Math.floor(datafonte/1000)}
         } 
-        else { date = this.evalMessage(data.sourceDate, cache) }
+        else { date = sourceDate }
         
         if (/^\d+(?:\.\d*)?$/.exec(date)) { unix = toDate((+date).toFixed(3)) }
         else { unix = toDate(date) }
