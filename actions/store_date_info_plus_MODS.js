@@ -197,7 +197,7 @@ module.exports = {
         const data = cache.actions[cache.index];
         moment = require("moment");
 
-        const soma = parseFloat(this.evalMessage(data.soma, cache))
+        var soma = parseFloat(this.evalMessage(data.soma, cache))
         if(data.soma == "" || data.soma == undefined || data.soma == "undefined" || data.soma == "NaN" || data.soma == NaN){
         soma = 0
         }
@@ -206,9 +206,12 @@ module.exports = {
 
         if(data.formato == "0"){
         sourceDate = new Date
-
         }
-        if(data.formato == "1" || data.formato == "2"){
+        if(data.formato == "1"){
+        const datar =  moment(Date.parse(new Date))
+        sourceDate = parseFloat(datar.format("X")) + soma
+        }
+        if(data.formato == "2"){
         const datar =  moment(Date.parse(new Date))
         sourceDate = parseFloat(datar.format("X")) + soma
         }
@@ -216,12 +219,13 @@ module.exports = {
         } else {
 
         if(data.formato == "0"){
-        sourceDate = this.evalMessage(data.sourceDate, cache)}
+        sourceDate = this.evalMessage(data.sourceDate, cache)
+        }
         if(data.formato == "1"){
-            sourceDate = parseFloat(this.evalMessage(data.sourceDate, cache)) + soma
+        sourceDate = parseFloat(this.evalMessage(data.sourceDate, cache)) + soma
         }
         if(data.formato == "2"){
-            sourceDate = parseFloat(this.evalMessage(data.sourceDate, cache)) + soma*1000
+        sourceDate = parseFloat(this.evalMessage(data.sourceDate, cache)) + soma*1000
         }
         }
 
