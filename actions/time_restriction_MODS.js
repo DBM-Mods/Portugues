@@ -201,22 +201,26 @@ module.exports = {
 
         let result
         let result2
+        ignorar = 1
 
         calculo = parseInt(unix - bancodedados)
-
-        if(isNaN(calculo)){console.log(`Time Restriction Using Timestamp MOD: Alguma coisa saiu errada // Timestamp:${bancodedados} // Restrição acionada`)
-      calculo = 0
-      }
-
         result = parseInt(restriction - calculo)
 
-        if(isNaN(result)){console.log(`Time Restriction Using Timestamp MOD: Alguma coisa saiu errada // Restrição:${restriction} // Restrição acionada`)
-      result = 30
+        if(isNaN(calculo)){console.log(`Time Restriction Using Timestamp MOD: Alguma coisa saiu errada // Timestamp:${bancodedados} // Restrição removida`)
+        result = 0
+        result2 = true
+        ignorar = 2
+      }
+
+        if(isNaN(restriction)){console.log(`Time Restriction Using Timestamp MOD: Alguma coisa saiu errada // Restrição:${restriction} // Restrição removida`)
+      result = 0
+      result2 = true
+      ignorar = 2
       }
 
         if(result < 1){result = 0}
 
-        if(calculo >= restriction){
+        if(calculo >= restriction || ignorar == 2){
             result2 = true
 
             if(data.tipo == "2"){
