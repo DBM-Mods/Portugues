@@ -54,7 +54,7 @@ module.exports = {
 
         <div style="float: left; width: 35%">
         <span class="dbminputlabel">Armazenar tempo restante</span><br>
-            <select id="storage" class="round">
+            <select id="storage" class="round" onchange="glob.variableChange(this, 'varNameContainer')">
                 ${data.variables[0]}
             </select>
         </div>
@@ -112,6 +112,8 @@ module.exports = {
       }
 
       glob.onComparisonChanged(document.getElementById("tipo"));
+
+      glob.variableChange(document.getElementById('storage'), 'varNameContainer');
     
     },
        
