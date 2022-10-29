@@ -59,7 +59,7 @@ module.exports = {
             </select>
         </div>
         <div id="varNameContainer" style="float: right; width: 62%">
-        <span class="dbminputlabel">Nome da variável</span><br>
+        <span class="dbminputlabel">Nome da variável / Maior que 0 sempre será falso</span><br>
             <input id="varName" class="round" type="text">
         </div>
         <br><br><br>
