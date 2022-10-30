@@ -241,7 +241,7 @@ select.round:focus{outline-width:0;box-shadow:0 1px 0 #0059ff;}
 
     if(filtro == 0){channels = server.channels.cache;info = info1}
     if(filtro == 1){channels = server.channels.cache.filter((e) => e.type === 'GUILD_CATEGORY');info = info1}
-    if(filtro == 2){channels = server.channels.cache.filter((e) => e.type === "GUILD_TEXT" || c.type === "GUILD_NEWS");info = info2}
+    if(filtro == 2){channels = server.channels.cache.filter((e) => e.type === "GUILD_TEXT" || e.type === "GUILD_NEWS");info = info2}
     if(filtro == 3){channels = server.channels.cache.filter((e) => e.type === "GUILD_VOICE");info = info3}
     if(filtro == 4){channels = server.channels.cache.filter((e) => e.type === 'GUILD_PUBLIC_THREAD');info = info4}
     if(filtro == 5){channels = server.channels.cache.filter((e) => e.type === 'GUILD_PRIVATE_THREAD');info = info4}
