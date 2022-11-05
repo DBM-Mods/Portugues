@@ -15,12 +15,12 @@ module.exports = {
     return `${presets.getChannelText(data.channel, data.varName)}`;
   },
 
-  fields: ["channel", "varName", "member", "varName2", "reparticao", "state1", "state2","state3","state4","state5","state6","state7","state8","state9","state10","state11","state12","state13","state14","state15","state16","state17","state18","state19","state20","state21","state22","state23","state24","state25","state26","state27","state1v", "state2v","state3v","state4v","state5v","state6v","state7v","state8v","state9v","state10v","state11v","state12v","state13v","state14v","state15v","state16v","state17v","state18v","state19v","state20v","state21v","state22v","state23v","state24v","state25v","state26v","state27v", "reason"],
+  fields: ["channel", "varName", "member", "varName2", "reparticao", "state1", "state2","state3","state4","state5","state6","state7","state8","state9","state10","state11","state12","state13","state14","state15","state16","state17","state18","state19","state20","state21","state22","state23","state24","state25","state26","state27","state1v", "state2v","state3v","state4v","state5v","state6v","state7v","state8v","state9v","state10v","state11v","state12v","state13v","state14v","state15v","state16v","state17v","state18v","state19v","state20v","state21v","state22v","state23v","state24v","state25v","state26v","state27v", "reason", "iffalse", "iffalseVal"],
 
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <div style="height: calc(100vh - 170px);overflow:auto;padding:10px;">
@@ -278,6 +278,21 @@ Use 0 para Permitir, 1 para Herdar e 2 para Não permitir<br><br>
   <input id="reason" placeholder="Optional" class="round" type="text">
 </div>
 
+<br>
+
+<div style="float: left; width: 40%">
+<span class="dbminputlabel">Se ocorrer um erro</span><br>
+<select id="iffalse" class="round" onchange="glob.onComparisonChanged2(this)">
+<option value="0" selecionado>Continuar ações</option>
+<option value="1">Parar sequência de ação</option>
+<option value="2">Ir para a ação</option>
+<option value="3">Pular as próximas ações</option>
+<option value="4">Ir para a âncora de ação</option>
+</select>
+</div>
+<div id="iffalseContainer" style="display: none; float: right; width: 55%;"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+
+
 	
 </div>
 <style>
@@ -299,6 +314,26 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
     };
 
     glob.onComparisonChanged(document.getElementById("reparticao"));
+
+
+    glob.onComparisonChanged2 = function (event) {
+      if (event.value > "1") {
+        document.getElementById("iffalseContainer").style.display = null;
+      } else {
+        document.getElementById("iffalseContainer").style.display = "none";
+      }
+      if (event.value == "2") {
+      document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
+    }
+    if (event.value == "3") {
+      document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
+    }
+    if (event.value == "4") {
+      document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
+    }
+  }
+
+    glob.onComparisonChanged2(document.getElementById("iffalse"));
 
 
 
@@ -352,10 +387,14 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
             (member.id);
           }      
           else if (channel?.permissionOverwrites) {
-            channel.permissionOverwrites
+
+          try{await channel.permissionOverwrites
               .edit(member, options, { reason, type: 1 })
-              .then(() => this.callNextAction(cache))
-              .catch((err) => this.displayError(data, cache, err));
+              .then(() => this.callNextAction(cache))}
+              catch(err){ this.displayError(data, cache, err)
+                this.executeResults(false, data, cache)
+              };
+
           } else {
             this.callNextAction(cache);
           }
@@ -370,10 +409,11 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
             (member.id);
           }      
           else if (channel?.permissionOverwrites) {
-            channel.permissionOverwrites
+            try{await channel.permissionOverwrites
               .edit(member, options2, { reason, type: 1 })
               .then(() => this.callNextAction(cache))
-              .catch((err) => this.displayError(data, cache, err));
+            }
+              catch(err){this.displayError(data, cache, err)};
           } else {
             this.callNextAction(cache);
           }
