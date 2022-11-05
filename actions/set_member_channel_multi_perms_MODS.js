@@ -383,8 +383,11 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
       case 0:
         if (member?.id) {
           if (Array.isArray(channel)) {
-            channel.permissionOverwrites.edit
-            (member.id);
+            try{await channel.permissionOverwrites.edit
+            (member.id)}
+            catch(err){ this.displayError(data, cache, err)
+              this.executeResults(false, data, cache)
+            }
           }      
           else if (channel?.permissionOverwrites) {
 
@@ -405,8 +408,11 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
         case 1:
         if (member?.id) {
           if (Array.isArray(channel)) {
-            channel.permissionOverwrites.edit
-            (member.id);
+            try{await channel.permissionOverwrites.edit
+            (member.id)}
+            catch(err){ this.displayError(data, cache, err)
+              this.executeResults(false, data, cache)
+            }
           }      
           else if (channel?.permissionOverwrites) {
             try{await channel.permissionOverwrites
