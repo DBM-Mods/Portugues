@@ -281,7 +281,7 @@ Use 0 para Permitir, 1 para Herdar e 2 para Não permitir<br><br>
 <br>
 
 <div style="float: left; width: 40%">
-<span class="dbminputlabel">Se ocorrer um erro</span><br>
+<span class="dbminputlabel">Se a permissão não for set</span><br>
 <select id="iffalse" class="round" onchange="glob.onComparisonChanged2(this)">
 <option value="0" selecionado>Continuar ações</option>
 <option value="1">Parar sequência de ação</option>
@@ -396,10 +396,10 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
               };
 
           } else {
-            this.callNextAction(cache);
+            this.executeResults(false, data, cache);
           }
         } else {
-          this.callNextAction(cache);
+          this.executeResults(false, data, cache);
         }
         break;
         case 1:
@@ -416,10 +416,10 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
               catch(err){this.displayError(data, cache, err)
                 this.executeResults(false, data, cache)};
           } else {
-            this.callNextAction(cache);
+            this.executeResults(false, data, cache);
           }
         } else {
-          this.callNextAction(cache);
+          this.executeResults(false, data, cache);
         }
         break;
     }
