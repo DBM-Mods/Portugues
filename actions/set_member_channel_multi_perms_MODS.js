@@ -413,7 +413,8 @@ td{padding:5px;border:1px solid #777;background:rgba(255,255,255,0.1)}</style>`;
               .edit(member, options2, { reason, type: 1 })
               .then(() => this.callNextAction(cache))
             }
-              catch(err){this.displayError(data, cache, err)};
+              catch(err){this.displayError(data, cache, err)
+                this.executeResults(false, data, cache)};
           } else {
             this.callNextAction(cache);
           }
