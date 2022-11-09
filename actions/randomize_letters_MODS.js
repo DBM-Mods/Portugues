@@ -97,7 +97,7 @@ module.exports = {
       caracs += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     }
 
-    if(data.maiusculas) {
+    if(data.minusculas) {
       caracs += "abcdefghijklmnopqrstuvwxyz";
     }
 
