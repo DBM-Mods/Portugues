@@ -10,16 +10,22 @@ module.exports = {
   },
   
   subtitle(data) {
-    return data.description
-      ? `<font color="${data.color}">Âncora: ${data.anchorName} | ${data.description}</font>`
-      : `<font color="${data.color}">Âncora: ${data.anchorName}`},
+    if(data.descriptionx == true){
+      desccor = data.color
+      } else {
+        desccor = 'none'
+      }
 
-  fields: ['anchorName', 'color', 'description', 'config', 'actions'],
+    return data.description
+      ? `<font style="color:${desccor}">Âncora: ${data.anchorName} | ${data.description}</font>`
+      : `<font style="color:${desccor}">Âncora: ${data.anchorName}</font>`},
+
+  fields: ['anchorName', 'color', 'description', 'config', 'actions',"descriptionx"],
 
   html() {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.5</div>
 <tab-system>
 
     <tab label="Âncora" icon="anchor">
@@ -31,7 +37,7 @@ module.exports = {
 </div>
 
 <div style="float: right; width: 24%;text-align:center">
-<span class="dbminputlabel">Cor da descrição</span><br><input type="color" class="round" id="color">
+<div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" class="round" id="color">
 </div>
 
   <div style="float: left; width: 100%;">
@@ -56,6 +62,13 @@ module.exports = {
   </div>
   </div>
   </tab-system>
+
+  <style>
+
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+</style>
   `;
   },
 
@@ -63,7 +76,7 @@ module.exports = {
     const { glob, document } = this;
 
     glob.onComparisonChanged = function (event) {
-      if (event.value == 2 || event.value == 3) {
+      if (event.value == 1 || event.value == 2 || event.value == 3) {
         document.getElementById("containerxin").style.display = "block";
       }
       else {
@@ -73,6 +86,19 @@ module.exports = {
 
     glob.onComparisonChanged(document.getElementById("config"));
 
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+       xinelaslink.setAttribute('title', url);
+       xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
 
   },
 
