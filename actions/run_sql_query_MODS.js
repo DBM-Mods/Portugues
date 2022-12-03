@@ -18,23 +18,31 @@ module.exports = {
   subtitle (data) {
     let sub = ''
     if (data.store_source_conn_storage !== 0) {
-      sub += 'C: Stored '
+      sub += ''
     }
 
     if (data.query) {
-      sub += `Q: ${data.query}`
+      sub += `Ação(${data.query}) `
     }
 
     if (data.path) {
-      sub += `P: ${data.path}`
+      sub += `Path(${data.path}) `
     }
 
     if (data.storage > 0) {
-      const storage = ['', 'Temp', 'Server', 'Global']
-      sub += `${storage[parseInt(data.storage)]} :${data.varName}`
+      const storage = ['', 'Variavel Temporária', 'Variavel Servidor', 'Variavel Global']
+      sub += `${storage[parseInt(data.storage)]}(${data.varName}) `
     }
 
-    return sub
+     if(data.descriptionx == true){
+      desccor = data.descriptioncolor
+      } else {
+        desccor = 'none'
+      }
+
+    return data.description
+    ? `<font style="color:${desccor}">${data.description}</font>`
+    : `<font style="color:${desccor}">${sub}</font>`
   },
 
   fields: [
@@ -54,13 +62,15 @@ module.exports = {
   'source_conn_varName',
   'store_source_conn_storage',
   'store_source_conn_varName',
-  'debugMode'],
+  'debugMode',
+  'descriptioncolor',
+  'description',
+  'descriptionx'],
 
   html (isEvent, data) {
     return `
-
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.9</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.1</div>
 
     <tab-system>
 
@@ -73,13 +83,13 @@ module.exports = {
     <xinspace>
 
     <table><tr><td class="col3">
-    <span class="dbminputlabel">Nome da Coluna</span> 
+    <span class="dbminputlabel">Json Path / Nome da Coluna</span> 
     <input id="path" class="round"; style="width: 100%;" placeholder="Deixe em branco para armazenar tudo" type="text">
     </td>
     <td class="col4">
     <span class="dbminputlabel">Formato</span>
     <select id="formato" class="round">
-      <option value="0" selected>Padrão</option>
+      <option value="0" selected>Fonte</option>
       <option value="1">Número</option>
       <option value="2">Texto</option>
       <option value="3">Lista</option>
@@ -201,6 +211,13 @@ module.exports = {
     <tab label="Config" icon="settings">
     <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
 
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+    <table style="width:100%;"><tr>
+    <td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+    <td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+    </tr></table>
+    </div>
+
 
     <span class="dbminputlabel">Modo de depuração</span><br>
         <select id="debugMode" class="round">
@@ -230,17 +247,29 @@ module.exports = {
       <br><br>
 
       <center>
-      <tlt><b>Inserir coluna</b></tlt>
-      <tl>INSERT IGNORE  INTO nome_da_tabela(id) VALUES(\${member.id})</tl><br>
+      <tlt><b>Criar tabela</b></tlt>
+      <tl>CREATE TABLE <span style="color:green">nome_da_tabela</span> (<span style="color:gold">id</span> <span style="color:red">int</span>, <span style="color:gold">nome</span> <span style="color:red">varchar(255)</span>, <span style="color:gold">money</span> <span style="color:red">int</span>);</tl><br>
+
+      <tlt><b>Inserir coluna e ignorar a já existente</b></tlt>
+      <tl>INSERT IGNORE INTO <span style="color:green">nome_da_tabela</span>(<span style="color:gold">id</span>) VALUES(<span style="color:orange">\${member.id}</span>)</tl><br>
 
       <tlt><b>Consultar</b></tlt>
-      <tl>SELECT * FROM nome_da_tabela WHERE id = '\${member.id}'</tl><br>
+      <tl>SELECT * FROM <span style="color:green">nome_da_tabela</span> WHERE id = '<span style="color:orange">\${member.id}</span>'</tl><br>
 
       <tlt><b>Atualizar coluna</b></tlt>
-      <tl>UPDATE nome_da_tabela SET money = money + 1 WHERE id=\${member.id}</tl><br>
+      <tl>UPDATE <span style="color:green">nome_da_tabela</span> SET <span style="color:orange">money</span> = <span style="color:orange">money</span> + 1 WHERE <span style="color:gold">id</span>=<span style="color:orange">\${member.id}</span></tl><br>
+
+      <tlt><b>Deletar coluna</b></tlt>
+      <tl>DELETE FROM <span style="color:green">nome_da_tabela</span> WHERE <span style="color:gold">id</span>=<span style="color:orange">\${member.id}</span></tl><br>
+
+      <tlt><b>Somar todas as colunas da tabela [Use .SUM(money) em Json Path]</b></tlt>
+      <tl>SELECT SUM(<span style="color:gold">money</span>) FROM <span style="color:green">nome_da_tabela</span></tl><br>
+
+      <tlt><b>Contar colunas da tabela de usuários com mais de 100 de money [Use .COUNT(id) em Json Path]</b></tlt>
+      <tl>SELECT COUNT(<span style="color:gold">id</span>) FROM <span style="color:green">nome_da_tabela</span> WHERE <span style="color:gold">money</span> > 100</tl><br>
 
       <tlt><b>Ranking - Em saída converta para String JSON</b></tlt>
-      <tl>SELECT id, money, RANK() over(ORDER BY money DESC) AS rank FROM nome_da_tabela</tl><br>
+      <tl>SELECT <span style="color:gold">id</span>, <span style="color:gold">money</span>, RANK() over(ORDER BY <span style="color:gold">money</span> DESC) AS rank FROM <span style="color:green">nome_da_tabela</span></tl><br>
 
       <tlt><b>Comparadores</b></tlt>
       <tl><table>
@@ -260,10 +289,23 @@ module.exports = {
       
       </tl><br>
 
-      <tlt><b>Adicionar mais comparadores</b></tlt>
+      <tlt><b>Adicionar mais comparadores<br>SELECT * FROM nome_da_coluna WHERE nome_da_coluna ...</b></tlt>
       <tl><table>
       <tr><td class="cols">OR</td><td class="cols">OU</td><td class="cols">money = 100 OR money = 200</td></tr>
       <tr><td class="cols">AND</td><td class="cols">E</td><td class="cols">money > 0 AND mostrar = 1</td></tr>
+      <tr><td class="cols">IN</td><td class="cols">DENTRO</td><td class="cols">IN ('azul','verde');</td></tr>
+      <tr><td class="cols">BETWEEN</td><td class="cols">ENTRE</td><td class="cols">BETWEEN 500 AND 100</td></tr>
+      <tr><td class="cols">LIKE</td><td class="cols">Procura um padrão específico<br>O caractere curinga %, indica que depois de “Luiz” pode vir qualquer coisa</td><td class="cols">LIKE 'Luiz%'</td></tr>
+      </table>
+      </tl><br>
+
+      <tlt><b>Funções</b></tlt>
+      <tl><table>
+      <tr><td class="cols">COUNT()</td><td class="cols">Retorna o número de linhas</td></tr>
+      <tr><td class="cols">SUM()</td><td class="cols">Retorna a soma total de uma coluna numérica</td></tr>
+      <tr><td class="cols">AVG()</td><td class="cols">Retorna a média de um conjunto de valores</td></tr>
+      <tr><td class="cols">MIN()</td><td class="cols">Obtém o valor mínimo de uma coluna</td></tr>
+      <tr><td class="cols">MAX()</td><td class="cols">Obtém o valor máximo de uma coluna</td></tr>
       </table>
       </tl><br>
 
@@ -291,6 +333,9 @@ module.exports = {
     .xinelaslink {cursor:pointer}
     tl{background:rgba(0,0,0,0.1);border: 1px solid rgba(50,50,50,0.1);padding:5px;width:100%;display:block}
     tlt{background:rgba(0,0,0,0.2);border: 1px solid rgba(50,50,50,0.2);padding:2px;width:100%;display:block}
+   .dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+   .dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
 </style>`
   },
 
