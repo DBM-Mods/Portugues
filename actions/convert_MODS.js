@@ -17,7 +17,16 @@ module.exports = {
         const prse = parseInt(data.into);
         const info2 =[`Texto "${data.vAria}"`,`Texto EVAL "${data.vAriaeval}"`,`${storage[parseInt(data.storage0, 10)]} (${data.varName0})`]
         const prse2 = parseInt(data.tipo || 0);
-        return `Converter ${info2[prse2]} em "${info[prse]}"`;
+   
+        if(data.descriptionx == true){
+            desccor = data.descriptioncolor
+            } else {
+              desccor = 'none'
+            }
+  
+          return data.description
+          ? `<font style="color:${desccor}">${data.description}</font>`
+          : `<font style="color:${desccor}">Converter ${info2[prse2]} em "${info[prse]}"</font>`
     },
     
     
@@ -31,14 +40,22 @@ module.exports = {
     },
     
     
-    fields: ["vAriavar", "vAriaeval", "storage0", "varName0", "into", "vAria", "storage", "varName2", "valor", "tipo"],
+    fields: ["vAriavar", "vAriaeval", "storage0", "varName0", "into", "vAria", "storage", "varName2", "valor", "tipo","descriptioncolor","description","descriptionx"],
     
     html: function(isEvent, data) {
         return `
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.0</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+        <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+        <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.1</div>
 
-    <div style="padding: 8px;height: calc(100vh - 170px);overflow: auto;width:100%">
+        <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    
+        <div id="flutuador" style="padding:0px 0px 15px 0px">
+    <table style="width:100%;"><tr>
+    <td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+    <td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+    </tr></table>
+    </div>
        
     <span class="dbminputlabel">Tipo</span><br>
     <select id="tipo" class="round" onchange="glob.onChange2(this)">
@@ -160,8 +177,10 @@ module.exports = {
         .efeitoala ~ label{position: absolute; left: 0%; width: 100%; top: -21px; color: #aaa; transition: 0.3s; z-index: -1; letter-spacing: 0.5px;}
         .efeitoala:focus ~ label, .has-content.efeitoala ~ label{font-size: 12px; color: #4caf50; transition: 0.3s;}
     
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
 
-    </style>`
+</style>`
     },
     
     init: function() {
@@ -202,6 +221,20 @@ module.exports = {
           };
 
           glob.onChange2(document.getElementById('tipo'))
+
+          const xinelaslinks = document.getElementsByClassName('xinelaslink');
+          for (let x = 0; x < xinelaslinks.length; x++) {
+            const xinelaslink = xinelaslinks[x];
+            const url = xinelaslink.getAttribute('data-url');
+            if (url) {
+             xinelaslink.setAttribute('title', url);
+             xinelaslink.addEventListener('click', (e) => {
+                e.stopImmediatePropagation();
+                console.log(`Launching URL: [${url}] in your default browser.`);
+                require('child_process').execSync(`start ${url}`);
+              });
+            }
+          }
     
     },
     
