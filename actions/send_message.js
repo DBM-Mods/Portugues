@@ -49,9 +49,16 @@ module.exports = {
     if (data.storagewebhook > "0") {
       return `Enviar via Webhook: ${data.varwebhook}`;
     }
+
+    if(data.descriptionx == true){
+      desccor = data.descriptioncolor
+      } else {
+        desccor = 'none'
+      }
+
     return data.description
-      ? `<font color="${data.descriptioncolor}">${data.description}</font>`
-      : `<font color="${data.descriptioncolor}">${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}</font>`
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}</font>`
   },
 
   //---------------------------------------------------------------------
@@ -113,6 +120,7 @@ module.exports = {
     "iffalseVal",
     "descriptioncolor",
     "description",
+    "descriptionx",
     "storagewebhook",
     "varwebhook",
     "webhookname",
@@ -134,8 +142,8 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 2.5</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 2.6</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -152,7 +160,8 @@ module.exports = {
 
 
   <tab label="Texto" icon="align left">
-    <div style="padding: 8px;">
+  <div style="width: 100%; padding:8px;height: calc(100vh - 290px);overflow:auto">
+    
       <textarea id="message" class="dbm_monospace" rows="9" placeholder="Insira a mensagem aqui..." style="height: calc(100vh - 309px); white-space: nowrap;"></textarea>
     </div>
   </tab>
@@ -740,6 +749,13 @@ module.exports = {
 
   <tab label="Config" icon="cogs">
     <div style="padding: 8px;height: calc(100vh - 292px);overflow-y: scroll;overflow-x: hidden;width:100%">
+    <div style="padding-bottom: 12px;padding-top: 12px">
+    <table style="width:100%;"><tr>
+    <td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+    <td style="padding:0px 0px 0px 10px;width:55px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+    </tr></table>
+    </div>
+
     <div id="xincheck">
     <span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(0,0,0,0.2)">
       <dbm-checkbox id="reply" label="Responda à interação se possível" checked></dbm-checkbox>
@@ -810,13 +826,6 @@ module.exports = {
     <div id="iffalseContainer" style="display: none; float: right; width: 60%;"><span id="ifName" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
       <br><br><br>
 
-      <div style="padding-bottom: 12px;padding-top: 12px">
-      <table style="width:100%;"><tr>
-      <td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
-      <td style="padding:0px 0px 0px 10px;width:55px"><span class="dbminputlabel">Cor</span><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
-      </tr></table>
-      </div>
-
       </div>
 
     </div>
@@ -825,6 +834,8 @@ module.exports = {
 
 <style>
 xinspace{padding:5px 0px 0px 0px;display:block}
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
 </style>`;
   },
 
@@ -924,6 +935,19 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       return result;
     }
   
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+       xinelaslink.setAttribute('title', url);
+       xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
 
   },
   //---------------------------------------------------------------------
