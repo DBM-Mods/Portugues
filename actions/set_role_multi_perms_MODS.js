@@ -225,7 +225,7 @@ init: function() {
  async action(cache) {
     const data = cache.actions[cache.index];
 	  const { FLAGS, ALL } = this.getDBM().DiscordJS.Permissions;
-    const role = await this.getRoleFromData(data.role, data.varName2, cache);
+    const role = await this.getRoleFromData(data.role, data.varName, cache);
     const reason = this.evalMessage(data.reason, cache);
 
   var options = 0n
