@@ -91,7 +91,7 @@ module.exports = {
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
-  //---------------------------------------------------------------------
+  //--------------------------------------------------------------------
   // Action Fields
   //
   // These are the fields for the action. These fields are customized
