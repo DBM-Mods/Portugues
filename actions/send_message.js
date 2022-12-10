@@ -789,7 +789,9 @@ module.exports = {
       <span class="dbminputlabel">Enviar como Webhook</span><br>
       <select id="storagewebhook" class="round" onchange="glob.onComparisonChanged2(this)">
       <option value="0" selecionado>Não</option>
-      <option value="1">Sim</option>
+      <option value="1">Variavel Temporária</option>
+      <option value="2">Variavel Servidor</option>
+      <option value="3">Variavel Global</option>
     </select>
     </div>
     <div id="webhookdiv" style="display: none; float: right; width: 60%;"><span id="ifName" class="dbminputlabel">Nome da Variavel</span><br><input list="variableList" id="varwebhook" class="round" name="actionxinxyla" type="text"></div>
