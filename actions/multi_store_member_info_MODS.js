@@ -209,7 +209,7 @@ module.exports = {
     html(isEvent, data) {
         return `
   <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
   <style>
     .xin {
@@ -503,7 +503,7 @@ module.exports = {
                     result = member.id;
                     break;
                   case 2:
-                    result = member.user?.username;
+                    result = member.user?.username ?? member.username;
                     break;
                   case 3:
                     result = member.displayName;
@@ -554,7 +554,9 @@ module.exports = {
                     break;
                   case 16:
                     if (member.user) {
-                      result = member.user.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
+                        result = member.user.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
+                    } else {
+                        result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
                     }
                     break;
                   case 17:
@@ -567,16 +569,16 @@ module.exports = {
                     result = member.voice.channel;
                     break;
                   case 20:
-                    result = member.user?.discriminator;
+                    result = member.user?.discriminator ?? member.discriminator;
                     break;
                   case 21:
-                    result = member.user?.tag;
+                    result = member.user?.tag ?? member.tag;
                     break;
                   case 22:
-                    result = member.user?.createdAt;
+                    result = member.user?.createdAt ?? member.createdAt;
                     break;
                   case 23:
-                    result = member.user?.createdTimestamp;
+                    result = member.user?.createdTimestamp ?? member.createdTimestamp;
                     break;
                   case 24:
                     result = member.joinedAt;
@@ -588,7 +590,11 @@ module.exports = {
                     result = member.permissions.toArray();
                     break;
                   case 28:
-                    result = member.user?.flags?.toArray() ?? (await member.user?.fetchFlags())?.toArray();
+                    if (member.user) {
+                        result = member.user?.flags?.toArray() ?? (await member.user?.fetchFlags())?.toArray();
+                    } else {
+                        result = member.flags.toArray();
+                    }
                     break;
                   case 29:
                     const status = member.presence?.clientStatus;
@@ -598,7 +604,9 @@ module.exports = {
                     result = member.presence?.activities.find((s) => s.type === "CUSTOM")?.state;
                     break;
                   case 31:
-                    result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
+                    if(member.user) {
+                        result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
+                    }
                     break;
                   case 32:
                     result = member.communicationDisabledUntil;
