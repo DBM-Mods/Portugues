@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     version: '2.1.6',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -49,7 +49,16 @@ module.exports = {
       "ID do Servidor do Membro",
       "Timestamp do Impulso do Membro",
     ];
-    return `${presets.getMemberText(data.member, data.varName)} - ${info[parseInt(data.info, 10)]}`;
+
+    if (data.descriptionx) {
+      desccor = data.descriptioncolor;
+    } else {
+      desccor = "none";
+    }
+
+    return data.description
+    ? `<font style="color:${desccor}">${data.description}</font>`
+    : `<font style="color:${desccor}">${presets.getMemberText(data.member, data.varName)} - ${info[parseInt(data.info, 10)]}</font>`
   },
 
 
@@ -58,105 +67,179 @@ module.exports = {
     if (type !== varType) return;
     const info = parseInt(data.info, 10);
     let dataType = "Unknown Type";
+
     switch (info) {
       case 0:
-        dataType = "Server Member";
+        dataType = "Membro do servidor";
         break;
       case 1:
-        dataType = "Member ID";
+        dataType = "ID";
         break;
       case 2:
+        dataType = "Texto";
+        break;
       case 3:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 4:
-        dataType = "Color";
+        dataType = "Texto";
         break;
       case 5:
-        dataType = "Server";
+        dataType = "Texto";
+        break;
+      case 6:
+        dataType = "Texto";
         break;
       case 7:
+        dataType = "Cargo";
+        break;
       case 8:
+        dataType = "Cargo";
+        break;
       case 9:
-        dataType = "Role";
+        dataType = "Cargo";
         break;
       case 10:
+        dataType = "Verdadeiro/Falso";
+        break;
       case 11:
+        dataType = "Verdadeiro/Falso";
+        break;
       case 12:
+        dataType = "Verdadeiro/Falso";
+        break;
       case 13:
-        dataType = "Boolean";
+        dataType = "Verdadeiro/Falso";
         break;
       case 14:
+        dataType = "Texto";
+        break;
       case 15:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 16:
-      case 31:
-        dataType = "Image URL";
+        dataType = "URL"
         break;
       case 17:
-        dataType = "List of Roles";
+        dataType = "Lista";
         break;
       case 18:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 19:
-        dataType = "Voice Channel";
+        dataType = "Canal";
         break;
       case 20:
-        dataType = "Member Discriminator";
+        dataType = "Número";
         break;
       case 21:
-        dataType = "Member Tag";
+        dataType = "Texto";
         break;
       case 22:
-        dataType = "Date";
+        dataType = "Data";
         break;
       case 23:
         dataType = "Timestamp";
         break;
       case 24:
-        dataType = "Date";
+        dataType = "Data";
         break;
       case 25:
         dataType = "Timestamp";
         break;
+      case 26:
+        dataType = "ID";
+        break;
       case 27:
+        dataType = "Lista";
+        break;
       case 28:
+        dataType = "Lista";
+        break;
       case 29:
-        dataType = "List";
+        dataType = "Texto";
         break;
       case 30:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 31:
-        dataType = "Date";
+        dataType = "URL";
         break;
       case 32:
-        dataType = "Timestamp";
+        dataType = "Data";
         break;
       case 33:
-          dataType = "Timestamp";
-          break;
-          case 34:
-            dataType = "Image URL";
-            break;
-            case 35:
-              dataType = "Server ID";
-              break;
-              case 36:
-                dataType = "Timestamp";
-                break;
+        dataType = "Timestamp";
+        break;
+      case 34:
+        dataType = "URL";
+        break;
+      case 35:
+        dataType = "ID";
+        break;
+      case 36:
+        dataType = "Timestamp";
+        break;
     }
+    
     return [data.varName2, dataType];
   },
 
-  fields: ["member", "varName", "info", "storage", "varName2"],
+  fields: ["member", "varName", "info", "storage", "varName2", "description", "descriptionx", "descriptioncolor"],
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.1</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.2</div>
+
+    <style>
+    .xin {
+      padding: 5px;
+      border: 1px solid #777;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .dbmmodsbr1 {
+      position: absolute;
+      bottom: 0px;
+      border: 0px solid rgba(50,50,50,0.7);
+      background: rgba(0,0,0,0.7);
+      color: #999;
+      padding: 5px;
+      left: 0px;
+      z-index: 999999;
+      cursor: pointer;
+    }
+
+    .dbmmodsbr2 {
+      position: absolute;
+      bottom: 0px;
+      border: 0px solid rgba(50,50,50,0.7);
+      background: rgba(0,0,0,0.7);
+      color: #999;
+      padding: 5px;
+      right: 0px;
+      z-index: 999999;
+      cursor: pointer;
+    }
+  </style>
+
+  <div id="flutuador" style="padding:0px 0px 15px 0px">
+    <table style="width:100%;"><tr>
+        <td>
+        <span class="dbminputlabel">Descrição da Action</span>
+        <br>
+        <input type="text" class="round" id="description" placeholder="Deixe vazio para remover">
+        </td>
+        <td style="padding:0px 0px 0px 10px;width:70px">
+        <div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px">
+            <dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox>
+        </div>
+        <br>
+        <input type="color" value="#ffffff" class="round" id="descriptioncolor">
+        </td>
+    </table>
+  </div>
 
 <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
 
@@ -210,7 +293,21 @@ module.exports = {
 <store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>`;
   },
 
-  init() {},
+  init() {
+    const xinelaslinks = document.getElementsByClassName("xinelaslink");
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+  },
 
 
   async action(cache) {
@@ -219,7 +316,7 @@ module.exports = {
     const find = this.evalMessage(data.varName, cache);
     var member = await this.getMemberFromData(data.member, data.varName, cache);
 
-    if(memberfind == "100" || memberfind == "101"){
+    if (memberfind == "100" || memberfind == "101") {
 
       const server = cache.server;
       if (!server?.members) {
@@ -229,8 +326,8 @@ module.exports = {
       if (server.memberCount !== server.members.cache.size) server.members.fetch();
       const members = server.members.cache;
 
-      if(memberfind == "100"){member = members.find((m) => m.user?.username === find);}
-      if(memberfind == "101"){member = members.get(find)}
+      if (memberfind == "100") { member = members.find((m) => m.user?.username === find); }
+      if (memberfind == "101") { member = members.get(find) }
     }
 
     if (!member) {
@@ -249,7 +346,7 @@ module.exports = {
         result = member.id;
         break;
       case 2:
-        result = member.user?.username;
+        result = member.user?.username ?? member.username;
         break;
       case 3:
         result = member.displayName;
@@ -290,7 +387,7 @@ module.exports = {
       case 15:
         if (member.presence?.status) {
           const status = member.presence.status;
-          switch(status) {
+          switch (status) {
             case "online": { result = "Online"; break; }
             case "offline": { result = "Offline"; break; }
             case "idle": { result = "Ausente"; break; }
@@ -301,6 +398,8 @@ module.exports = {
       case 16:
         if (member.user) {
           result = member.user.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
+        } else {
+          result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
         }
         break;
       case 17:
@@ -313,16 +412,16 @@ module.exports = {
         result = member.voice.channel;
         break;
       case 20:
-        result = member.user?.discriminator;
+        result = member.user?.discriminator ?? member.discriminator;
         break;
       case 21:
-        result = member.user?.tag;
+        result = member.user?.tag ?? member.tag;
         break;
       case 22:
-        result = member.user?.createdAt;
+        result = member.user?.createdAt ?? member.createdAt;
         break;
       case 23:
-        result = member.user?.createdTimestamp;
+        result = member.user?.createdTimestamp ?? member.createdTimestamp;
         break;
       case 24:
         result = member.joinedAt;
@@ -334,7 +433,11 @@ module.exports = {
         result = member.permissions.toArray();
         break;
       case 28:
-        result = member.user?.flags?.toArray() ?? (await member.user?.fetchFlags())?.toArray();
+        if (member.user) {
+          result = member.user?.flags?.toArray() ?? (await member.user?.fetchFlags())?.toArray();
+        } else {
+          result = member.flags.toArray();
+        }
         break;
       case 29:
         const status = member.presence?.clientStatus;
@@ -344,7 +447,9 @@ module.exports = {
         result = member.presence?.activities.find((s) => s.type === "CUSTOM")?.state;
         break;
       case 31:
-        result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
+        if (member.user) {
+          result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
+        }
         break;
       case 32:
         result = member.communicationDisabledUntil;
@@ -354,14 +459,14 @@ module.exports = {
         break;
       case 34:
         const user = await member.user.fetch();
-        result = member.user.bannerURL({ fomart: "png", size: 4096, dynamic: true });
+        result = member.user.bannerURL({ format: "png", size: 4096, dynamic: true });
         break;
-        case 35:
-          result = member.guild.id;
-          break;
-          case 36:
-            result = member.premiumSinceTimestamp;
-            break;
+      case 35:
+        result = member.guild.id;
+        break;
+      case 36:
+        result = member.premiumSinceTimestamp;
+        break;
       default:
         break;
     }
@@ -376,5 +481,5 @@ module.exports = {
   },
 
 
-  mod() {},
+  mod() { },
 };
