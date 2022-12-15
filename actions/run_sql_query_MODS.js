@@ -243,8 +243,8 @@ module.exports = {
       <div style="float: left; width: 40%">
       <span class="dbminputlabel">Se ocorrer um erro</span><br>
       <select id="iffalse" class="round" onchange="glob.onComparisonChanged2(this)">
-      <option value="0" selecionado>Continuar ações</option>
-      <option value="1">Parar sequência de ação</option>
+      <option value="0">Continuar ações</option>
+      <option value="1" selecionado>Parar sequência de ação</option>
       <option value="2">Ir para a ação</option>
       <option value="3">Pular as próximas ações</option>
       <option value="4">Ir para a âncora de ação</option>
