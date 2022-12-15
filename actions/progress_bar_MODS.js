@@ -159,17 +159,28 @@ table{width:100%}
 
     type = parseInt(data.type)
 
-    vazioi = this.evalMessage(data.vazioi, cache);
     vazio = this.evalMessage(data.vazio, cache);
+    vazioi = this.evalMessage(data.vazioi, cache);
     vaziof = this.evalMessage(data.vaziof, cache);
+
+    if(type == 1){
+      vazioi = this.evalMessage(data.vaziof, cache);
+      vaziof = this.evalMessage(data.vazioi, cache);
+    }
 
     if(vazio == ""){vazio = "▱"}
     if(vazioi == ""){vazioi = vazio}
     if(vaziof == ""){vaziof = vazio}
 
-    cheioi = this.evalMessage(data.cheioi, cache);
     cheio = this.evalMessage(data.cheio, cache);
+
+    cheioi = this.evalMessage(data.cheioi, cache);
     cheiof = this.evalMessage(data.cheiof, cache);
+
+    if(type == 1){
+      cheioi = this.evalMessage(data.cheiof, cache);
+      cheiof = this.evalMessage(data.cheioi, cache);
+    }
 
     if(cheio == ""){cheio = "▰"}
     if(cheioi == ""){cheioi = cheio}
