@@ -65,12 +65,14 @@ module.exports = {
   'debugMode',
   'descriptioncolor',
   'description',
-  'descriptionx'],
+  'descriptionx',
+  'iffalse',
+  'iffalseVal'],
 
   html (isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.0</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.1</div>
 
     <tab-system>
 
@@ -234,6 +236,22 @@ module.exports = {
         <option value="0" selected="selected">Normal</option>
         <option value="1">Converter para String JSON</option>
       </select>
+
+      <br>
+
+
+      <div style="float: left; width: 40%">
+      <span class="dbminputlabel">Se ocorrer um erro</span><br>
+      <select id="iffalse" class="round" onchange="glob.onComparisonChanged2(this)">
+      <option value="0" selecionado>Continuar ações</option>
+      <option value="1">Parar sequência de ação</option>
+      <option value="2">Ir para a ação</option>
+      <option value="3">Pular as próximas ações</option>
+      <option value="4">Ir para a âncora de ação</option>
+      </select>
+      </div>
+      <div id="iffalseContainer" style="display: none; float: right; width: 55%;"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+      
     
 
       </div>
@@ -356,6 +374,25 @@ module.exports = {
           return 'mysql'
       }
     }
+
+    glob.onComparisonChanged2 = function (event) {
+      if (event.value > "1") {
+        document.getElementById("iffalseContainer").style.display = null;
+      } else {
+        document.getElementById("iffalseContainer").style.display = "none";
+      }
+      if (event.value == "2") {
+      document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
+      }
+      if (event.value == "3") {
+      document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
+      }
+      if (event.value == "4") {
+      document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
+      }
+    }
+
+    glob.onComparisonChanged2(document.getElementById("iffalse"));
 
     try {
       const type = document.getElementById('otype').value
@@ -594,7 +631,7 @@ module.exports = {
             if (err && err.original) {
               this.storeValue({ message: err.original, error: err.original }, storage, varName, cache)
               console.error(err.original)
-              this.callNextAction(cache)
+              this.executeResults(false, data, cache)
             }
           })
         } else {
@@ -603,9 +640,11 @@ module.exports = {
       }).catch((err) => {
         console.log('Não foi possível conectar ao banco de dados')
         console.error(err)
+        this.executeResults(false, data, cache)
       })
     } catch (error) {
       console.log(`SQL Mod Error: ${error.stack ? error.stack : error}`)
+      this.executeResults(false, data, cache)
     }
   },
 
