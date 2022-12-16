@@ -12,24 +12,34 @@ module.exports = {
 
 
   subtitle(data, presets) {
-    const info = [
-      "Objeto do canal de voz",
-      "ID do canal de voz",
-      "Nome do canal de voz",
-      "Posição do canal de voz",
-      "Limite de usuários do canal de voz",
-      "Bitrate do canal de voz",
-      "Membros conectados no canal de voz",
-      "Quantidade de membros no canal de voz",
-      "Pode falar?",
-      "Pode entrar?",
-      "È deletable?",
-      "Data de criação do canal de voz",
-      "Timestamp de criação do canal de voz",
-      "Nome da categoria do canal de voz",
-      "Lista de convites do canal de voz",
-    ];
-    return `${presets.getVoiceChannelText(data.channel, data.varName)} - ${info[parseInt(data.info, 10)]}`;
+    if(data.descriptionx == true){
+      desccor = data.descriptioncolor
+      } else {
+        desccor = 'none'
+      }
+
+      const info = [
+        "Objeto do canal de voz",
+        "ID do canal de voz",
+        "Nome do canal de voz",
+        "Posição do canal de voz",
+        "Limite de usuários do canal de voz",
+        "Bitrate do canal de voz",
+        "Membros conectados no canal de voz",
+        "Quantidade de membros no canal de voz",
+        "Pode falar?",
+        "Pode entrar?",
+        "È deletable?",
+        "Data de criação do canal de voz",
+        "Timestamp de criação do canal de voz",
+        "Nome da categoria do canal de voz",
+        "Lista de convites do canal de voz",
+        "Região definida no canal de voz",
+      ];
+
+    return data.description
+    ? `<font style="color:${desccor}">${data.description}</font>`
+    : `<font style="color:${desccor}">${presets.getVoiceChannelText(data.channel, data.varName)} - ${info[parseInt(data.info, 10)]}</font>`
   },
 
 
@@ -37,27 +47,27 @@ module.exports = {
     const type = parseInt(data.storage, 10);
     if (type !== varType) return;
     const info = parseInt(data.info, 10);
-    let dataType = "Unknown Type";
+    let dataType = "Desconhecido";
     switch (info) {
       case 0:
-        dataType = "Voice Channel";
+        dataType = "Objeto";
         break;
       case 1:
-        dataType = "Voice Channel ID";
+        dataType = "ID";
         break;
       case 2:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 3:
       case 4:
       case 5:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 6:
-        dataType = "List";
+        dataType = "Lista";
           break;
       case 7:
-          dataType = "Number";
+          dataType = "Número";
             break;
       case 8:
           dataType = "True or False";
@@ -69,29 +79,41 @@ module.exports = {
           dataType = "True or False";
                   break;
       case 11:
-          dataType = "Date";
+          dataType = "Data";
                     break;
       case 12:
           dataType = "Timestamp";
                       break;
       case 13:
-          dataType = "Text";
+          dataType = "Texto";
                         break;
       case 14:
-          dataType = "List";
+          dataType = "Lista";
                           break;
+                          case 15:
+                            dataType = "Número";
+                            break;
     }
     return [data.varName2, dataType];
   },
 
 
-  fields: ["channel", "varName", "info", "storage", "varName2"],
+  fields: ["channel", "varName", "info", "storage", "varName2","descriptioncolor","description","descriptionx"],
 
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.6</div>
+
+    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
 
 <voice-channel-input dropdownLabel="Canal de origem" selectId="channel" variableContainerId="varNameContainer" variableInputId="varName" selectWidth="45%" variableInputWidth="50%"></voice-channel-input>
 
@@ -115,17 +137,43 @@ module.exports = {
     <option value="12">Timestamp de criação do canal de voz</option>
     <option value="13">Nome da categoria do canal de voz</option>
     <option value="14">Lista de convites do canal de voz</option>
-    
+    <option value="15">Região definida do canal de voz</option>
 	</select>
 </div>
 
 <br>
 
-<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>`;
+<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
+
+</div>
+
+<style>
+
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+</style>`;
   },
 
 
-  init() {},
+  init() {
+    const { glob, document } = this;
+
+  const xinelaslinks = document.getElementsByClassName('xinelaslink');
+  for (let x = 0; x < xinelaslinks.length; x++) {
+    const xinelaslink = xinelaslinks[x];
+    const url = xinelaslink.getAttribute('data-url');
+    if (url) {
+     xinelaslink.setAttribute('title', url);
+     xinelaslink.addEventListener('click', (e) => {
+        e.stopImmediatePropagation();
+        console.log(`Launching URL: [${url}] in your default browser.`);
+        require('child_process').execSync(`start ${url}`);
+      });
+    }
+  }
+
+},
 
 
 
@@ -192,6 +240,9 @@ module.exports = {
 					result = invites.filter(code => code).map(code => code).join(", ");
 				}
 				break;
+        case 15:
+          result = targetChannel.rtcRegion;
+          break;
       default:
         break;
     }
