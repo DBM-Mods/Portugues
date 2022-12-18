@@ -93,8 +93,19 @@ module.exports = {
       "Lista de IDs das categorias do servidor",
       "Lista de Bots do servidor",
       "Lista de IDs de Bots do servidor",
+      "Lista de membros do servidor em ordem de entrada",
+      "Lista de IDs de membros do servidor em ordem de entrada",
     ];
-    return `${presets.getServerText(data.server, data.varName)} - ${info[parseInt(data.info, 10)]}`;
+
+    if (data.descriptionx) {
+      desccor = data.descriptioncolor;
+    } else {
+      desccor = "none";
+    }
+
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${presets.getServerText(data.server, data.varName)} - ${info[parseInt(data.info, 10)]}</font>`
   },
 
   variableStorage(data, varType) {
@@ -104,145 +115,181 @@ module.exports = {
     let dataType = "Unknown Type";
     switch (info) {
       case 0:
-        dataType = "Server";
+        dataType = "Servidor";
         break;
       case 1:
-        dataType = "Server ID";
+        dataType = "ID Servidor";
         break;
       case 2:
+        dataType = "Texto";
+        break;
       case 3:
+        dataType = "Texto";
+        break;
       case 4:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 5:
         dataType = "Icon URL";
         break;
       case 6:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 7:
+        dataType = "Canal";
+        break;
       case 8:
+        dataType = "Canal";
+        break;
       case 9:
-        dataType = "Channel";
+        dataType = "Canal";
         break;
       case 10:
-        dataType = "Role";
+        dataType = "Cargo";
         break;
       case 11:
-        dataType = "Server Member";
+        dataType = "Membro do Servidor";
         break;
       case 12:
-        dataType = "Server Member";
+        dataType = "Membro do Servidor";
         break;
       case 13:
-        dataType = "Channels List";
+        dataType = "Lista";
         break;
       case 14:
-        dataType = "Roles List";
+        dataType = "Lista";
         break;
       case 15:
-        dataType = "Members List";
+        dataType = "Lista";
         break;
       case 16:
-        dataType = "Emojis List";
+        dataType = "Lista";
         break;
       case 17:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 18:
-        dataType = "Date";
+        dataType = "Data";
         break;
       case 19:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 20:
+        dataType = "Verdadeiro/Falso";
+        break;
       case 21:
-        dataType = "Boolean";
+        dataType = "Verdadeiro/Falso";
         break;
       case 22:
-        dataType = "Date";
+        dataType = "Data";
         break;
       case 23:
+        dataType = "Número";
+        break;
       case 24:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 25:
-        dataType = "Boolean";
+        dataType = "Verdadeiro/Falso";
         break;
       case 26:
+        dataType = "Número";
+        break;
       case 27:
+        dataType = "Número";
+        break;
       case 28:
+        dataType = "Número";
+        break;
       case 29:
+        dataType = "Número";
+        break;
       case 30:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 31:
+        dataType = "Lista";
+        break;
       case 32:
+        dataType = "Lista";
+        break;
       case 33:
-        dataType = "IDs List";
+        dataType = "Lista";
         break;
       case 35:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 37:
+        dataType = "Número";
+        break;
       case 38:
+        dataType = "Número";
+        break;
       case 39:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 40:
-        dataType = "Boolean";
+        dataType = "Verdadeiro/Falso";
         break;
       case 41:
-        dataType = "Bans List";
+        dataType = "Lista";
         break;
       case 42:
-        dataType = "Invites List";
+        dataType = "Lista";
         break;
       case 43:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 44:
+        dataType = "Número";
+        break;
       case 45:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 46:
         dataType = "Banner URL";
         break;
       case 47:
-        dataType = "Server Features List";
+        dataType = "Lista";
         break;
       case 48:
+        dataType = "ID";
+        break;
       case 49:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 50:
+        dataType = "ID";
+        break;
       case 51:
-        dataType = "Channel ID";
+        dataType = "ID";
         break;
       case 52:
-        dataType = "Boolean";
+        dataType = "Verdadeiro/Falso";
         break;
       case 53:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 54:
-        dataType = "Boolean";
+        dataType = "Verdadeiro/Falso";
         break;
       case 55:
-        dataType = "Channel";
+        dataType = "Canal";
         break;
       case 56:
-        dataType = "Channel ID";
+        dataType = "ID";
         break;
       case 57:
-        dataType = "Channel";
+        dataType = "Canal";
         break;
       case 58:
-        dataType = "Channel ID";
+        dataType = "ID";
         break;
       case 59:
+        dataType = "Texto";
+        break;
       case 60:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 61:
         dataType = "Timestamp";
@@ -251,19 +298,19 @@ module.exports = {
         dataType = "URL";
         break;
       case 63:
-        dataType = "Code";
+        dataType = "Código";
         break;
       case 64:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 65:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 66:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 67:
-        dataType = "ID User";
+        dataType = "ID";
         break;
       case 68:
         dataType = "Timestamp";
@@ -272,47 +319,102 @@ module.exports = {
         dataType = "Timestamp";
         break;
       case 70:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 71:
-        dataType = "List";
+        dataType = "Lista";
         break;
       case 72:
-        dataType = "List";
+        dataType = "Lista";
         break;
       case 73:
-        dataType = "List";
+        dataType = "Lista";
         break;
       case 74:
-        dataType = "List";
+        dataType = "Lista";
         break;
       case 75:
-        dataType = "List";
+        dataType = "Lista";
         break;
       case 76:
-        dataType = "List";
+        dataType = "Lista";
         break;
       case 77:
-        dataType = "List";
+        dataType = "Lista";
         break;
       case 78:
-        dataType = "List";
+        dataType = "Lista";
         break;
-
+      case 79:
+        dataType = "Lista";
+        break;
+      case 80:
+        dataType = "Lista";
+        break;
+      case 81:
+        dataType = "Lista";
+        break;
+      case 82:
+        dataType = "Lista";
+        break;
     }
+
     return [data.varName2, dataType];
   },
 
 
 
-  fields: ["server", "varName", "info", "storage", "varName2"],
+  fields: ["server", "varName", "info", "storage", "varName2", "description", "descriptionx", "descriptioncolor"],
 
 
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.3</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.4</div>
+
+    <style>
+      .dbmmodsbr1 {
+        position: absolute;
+        bottom: 0px;
+        border: 0px solid rgba(50,50,50,0.7);
+        background: rgba(0,0,0,0.7);
+        color: #999;
+        padding: 5px;
+        left: 0px;
+        z-index: 999999;
+        cursor: pointer
+      }
+
+      .dbmmodsbr2 {
+        position: absolute;
+        bottom: 0px;
+        border: 0px solid rgba(50,50,50,0.7);
+        background: rgba(0,0,0,0.7);
+        color: #999;
+        padding: 5px;
+        right: 0px;
+        z-index: 999999;
+        cursor: pointer
+      }
+    </style>
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+      <table style="width:100%;"><tr>
+        <td>
+          <span class="dbminputlabel">Descrição da Action</span>
+          <br>
+          <input type="text" class="round" id="description" placeholder="Deixe vazio para remover">
+        </td>
+        <td style="padding:0px 0px 0px 10px;width:70px">
+          <div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px">
+            <dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox>
+          </div>
+          <br>
+          <input type="color" value="#ffffff" class="round" id="descriptioncolor">
+        </td>
+      </table>
+    </div>
 
 <server-input dropdownLabel="Servidor" selectId="server" variableContainerId="varNameContainer" variableInputId="varName"></server-input>
 
@@ -397,11 +499,13 @@ module.exports = {
       <option value="76">Lista de IDs dos canais de voz do servidor</options>
       <option value="16">Lista de emojis do servidor</options>
       <option value="14">Lista de Cargos do servidor</options>
-      <option value="32">Lista de IDs de funções de servidor</options>
+      <option value="32">Lista de IDs de cargos de servidor</options>
       <option value="41">Lista de banidos do servidor</options>
       <option value="42">Lista de convites do servidor</options>
       <option value="71">Lista de membros por ID presentes nos canais de voz</options>
       <option value="72">Lista de membros presentes nos canais de voz</options>
+      <option value="81">Lista de membros do servidor em ordem de entrada</option>
+      <option value="82">Lista de IDs de membros do servidor em ordem de entrada</option>
       </optgroup>
       <optgroup label="Informações do Dono do servidor">
       <option value="48">ID do Dono do servidor</options>
@@ -432,7 +536,21 @@ module.exports = {
 <store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>`;
   },
 
-  init() { },
+  init() {
+    const xinelaslinks = document.getElementsByClassName("xinelaslink");
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+  },
 
   async action(cache) {
     const data = cache.actions[cache.index];
@@ -707,6 +825,12 @@ module.exports = {
       case 80:
         result = targetServer.members.cache.filter((m) => m.user?.bot).map((m) => m.id);
         break;
+      case 81:
+        result = targetServer.members.cache.sort((a, b) => parseFloat(a.joinedTimestamp) - parseFloat(b.joinedTimestamp)).map((m) => m);
+        break;
+      case 82:
+        result = targetServer.members.cache.sort((a, b) => parseFloat(a.joinedTimestamp) - parseFloat(b.joinedTimestamp)).map((m) => m.id);
+        break;
       default:
         break;
     }
@@ -720,5 +844,5 @@ module.exports = {
 
 
 
-  mod() { },
+  mod() {},
 };
