@@ -636,7 +636,7 @@ module.exports = {
                 "Lista de IDs de membros do servidor em ordem de entrada",
             ];
 
-            result += `${infos[info]} > ${storage[parseInt(data.storage, 10)]} (${data.varName})`;
+            result += `${infos[info]} > ${storage[parseInt(data.storage, 10)]} (${data.varName})</div>`;
             return result;
         };
     },
