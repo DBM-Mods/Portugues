@@ -29,21 +29,21 @@ module.exports = {
         }
 
         return data.description
-        ? `<font style="color:${desccor}">${data.description}</font>`
-        : `<font style="color:${desccor}">Obter ${data.branches.length == 1 ? data.branches.length + " item" : data.branches.length + " itens"}</font>`
+            ? `<font style="color:${desccor}">${data.description}</font>`
+            : `<font style="color:${desccor}">Obter ${data.branches.length == 1 ? data.branches.length + " item" : data.branches.length + " itens"}</font>`
     },
 
     variableStorage(data, varType) {
         let vars = [];
 
-        for(var i = 0; i < data.branches.length; i++) {
+        for (var i = 0; i < data.branches.length; i++) {
             const type = parseInt(data.branches[i].storage, 10);
             const varName = data.branches[i].varName;
 
-            if(type == varType && varName) {
+            if (type == varType && varName) {
                 let tipo;
 
-                switch(parseInt(data.branches[i].info)) {
+                switch (parseInt(data.branches[i].info)) {
                     case 0:
                         tipo = "Membro do servidor";
                         break;
@@ -212,12 +212,6 @@ module.exports = {
   <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
   <style>
-    .xin {
-      padding: 5px;
-      border: 1px solid #777;
-      background: rgba(255,255,255,0.1);
-    }
-
     .dbmmodsbr1 {
       position: absolute;
       bottom: 0px;
@@ -341,21 +335,22 @@ module.exports = {
 
         const xinelaslinks = document.getElementsByClassName("xinelaslink");
         for (let x = 0; x < xinelaslinks.length; x++) {
-          const xinelaslink = xinelaslinks[x];
-          const url = xinelaslink.getAttribute('data-url');
-          if (url) {
-            xinelaslink.setAttribute('title', url);
-            xinelaslink.addEventListener('click', (e) => {
-              e.stopImmediatePropagation();
-              console.log(`Launching URL: [${url}] in your default browser.`);
-              require('child_process').execSync(`start ${url}`);
-            });
-          }
+            const xinelaslink = xinelaslinks[x];
+            const url = xinelaslink.getAttribute('data-url');
+            if (url) {
+                xinelaslink.setAttribute('title', url);
+                xinelaslink.addEventListener('click', (e) => {
+                    e.stopImmediatePropagation();
+                    console.log(`Launching URL: [${url}] in your default browser.`);
+                    require('child_process').execSync(`start ${url}`);
+                });
+            }
         }
 
         glob.formatItem = function (data) {
-            let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">Armazenar "';
+            let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
             const info = parseInt(data.info);
+            const storage = ["Easter Egg", "Variável Temporária", "Variável Servidor", "Variável Global"];
 
             switch (info) {
                 case 0:
@@ -471,7 +466,7 @@ module.exports = {
                     break;
             }
 
-            result += `" em "${data.varName}" </div>`;
+            result += ` > ${storage[parseInt(data.storage, 10)]} (${data.varName}) </div>`;
             return result;
         };
     },
@@ -490,138 +485,138 @@ module.exports = {
 
         const branches = data.branches;
 
-        for(var i = 0; i < branches.length; i++) {
+        for (var i = 0; i < branches.length; i++) {
             const branch = branches[i];
             const info = parseInt(branch.info);
             let result;
 
-            switch(info) {
+            switch (info) {
                 case 0:
                     result = member;
                     break;
-                  case 1:
+                case 1:
                     result = member.id;
                     break;
-                  case 2:
+                case 2:
                     result = member.user?.username ?? member.username;
                     break;
-                  case 3:
+                case 3:
                     result = member.displayName;
                     break;
-                  case 4:
+                case 4:
                     result = member.displayHexColor;
                     break;
-                  case 5:
+                case 5:
                     result = member.guild;
                     break;
-                  case 7:
+                case 7:
                     result = member.roles.highest;
                     break;
-                  case 8:
+                case 8:
                     result = member.roles.hoist;
                     break;
-                  case 9:
+                case 9:
                     result = member.roles.color;
                     break;
-                  case 10:
+                case 10:
                     result = member.id === member.guild?.ownerId;
                     break;
-                  case 11:
+                case 11:
                     result = member.voice.mute;
                     break;
-                  case 12:
+                case 12:
                     result = member.voice.deaf;
                     break;
-                  case 13:
+                case 13:
                     result = member.bannable;
                     break;
-                  case 14:
+                case 14:
                     if (member.presence?.activities.length) {
-                      const status = member.presence.activities.filter((s) => s.type !== "CUSTOM");
-                      result = status[0]?.name;
+                        const status = member.presence.activities.filter((s) => s.type !== "CUSTOM");
+                        result = status[0]?.name;
                     }
                     break;
-                  case 15:
+                case 15:
                     if (member.presence?.status) {
-                      const status = member.presence.status;
-                      switch (status) {
-                        case "online": { result = "Online"; break; }
-                        case "offline": { result = "Offline"; break; }
-                        case "idle": { result = "Ausente"; break; }
-                        case "dnd": { result = "Ocupado"; break; }
-                      }
+                        const status = member.presence.status;
+                        switch (status) {
+                            case "online": { result = "Online"; break; }
+                            case "offline": { result = "Offline"; break; }
+                            case "idle": { result = "Ausente"; break; }
+                            case "dnd": { result = "Ocupado"; break; }
+                        }
                     }
                     break;
-                  case 16:
+                case 16:
                     if (member.user) {
                         result = member.user.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
                     } else {
                         result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
                     }
                     break;
-                  case 17:
+                case 17:
                     result = [...member.roles.cache.values()];
                     break;
-                  case 18:
+                case 18:
                     result = member.roles.cache.size;
                     break;
-                  case 19:
+                case 19:
                     result = member.voice.channel;
                     break;
-                  case 20:
+                case 20:
                     result = member.user?.discriminator ?? member.discriminator;
                     break;
-                  case 21:
+                case 21:
                     result = member.user?.tag ?? member.tag;
                     break;
-                  case 22:
+                case 22:
                     result = member.user?.createdAt ?? member.createdAt;
                     break;
-                  case 23:
+                case 23:
                     result = member.user?.createdTimestamp ?? member.createdTimestamp;
                     break;
-                  case 24:
+                case 24:
                     result = member.joinedAt;
                     break;
-                  case 25:
+                case 25:
                     result = member.joinedTimestamp;
                     break;
-                  case 27:
+                case 27:
                     result = member.permissions.toArray();
                     break;
-                  case 28:
+                case 28:
                     if (member.user) {
                         result = member.user?.flags?.toArray() ?? (await member.user?.fetchFlags())?.toArray();
                     } else {
                         result = member.flags.toArray();
                     }
                     break;
-                  case 29:
+                case 29:
                     const status = member.presence?.clientStatus;
                     result = status && Object.keys(status);
                     break;
-                  case 30:
+                case 30:
                     result = member.presence?.activities.find((s) => s.type === "CUSTOM")?.state;
                     break;
-                  case 31:
-                    if(member.user) {
+                case 31:
+                    if (member.user) {
                         result = member.displayAvatarURL({ dynamic: true, format: "png", size: 4096 });
                     }
                     break;
-                  case 32:
+                case 32:
                     result = member.communicationDisabledUntil;
                     break;
-                  case 33:
+                case 33:
                     result = member.communicationDisabledUntilTimestamp;
                     break;
-                  case 34:
+                case 34:
                     const user = await member.user.fetch();
                     result = member.user.bannerURL({ format: "png", size: 4096, dynamic: true });
                     break;
-                  case 35:
+                case 35:
                     result = member.guild.id;
                     break;
-                  case 36:
+                case 36:
                     result = member.premiumSinceTimestamp;
                     break;
             }
