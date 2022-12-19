@@ -1869,5 +1869,5 @@ xinspace{padding:5px 0px 0px 0px;display:block}
   // functions you wish to overwrite.
   //---------------------------------------------------------------------
 
-  mod() { },
+  mod() {},
 };
