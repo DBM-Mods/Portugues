@@ -194,16 +194,8 @@ module.exports = {
     const data = cache.actions[cache.index];
     const moment = require("moment");
     const saida = parseInt(data.saida, 10);
-    const toDate = require("normalize-date")
     const modo = parseInt(data.modo);
-    let time = this.evalMessage(data.date, cache);
-
-    if (time && modo == 0) {
-      time = toDate(time);
-    } else if (!time) {
-      time = new Date();
-    }
-
+    const time = this.evalMessage(data.date, cache) || new Date();
     let date;
 
     switch (modo) {
