@@ -341,7 +341,7 @@ module.exports = {
     html(isEvent, data) {
         return `
   <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
   <style>
     .dbmmodsbr1 {
@@ -580,7 +580,7 @@ module.exports = {
                 "Contagem de membros ocupados do servidor",
                 "Contagem de membros online do servidor",
                 "Contagem de membros offline do servidor",
-                "Contagem de membros ociosos do servidor",
+                "Contagem de membros ausentes do servidor",
                 "Contagem de bots do servidor",
                 "Lista de IDs de Canais do Servidor",
                 "Lista de IDs de Cargos de servidor",
@@ -740,19 +740,15 @@ module.exports = {
                     result = !!targetServer.widgetEnabled;
                     break;
                 case 26:
-                    await fetchMembers(true);
                     result = targetServer.members.cache.filter((m) => m.presence?.status === "dnd").size;
                     break;
                 case 27:
-                    await fetchMembers(true);
                     result = targetServer.members.cache.filter((m) => m.presence?.status === "online").size;
                     break;
                 case 28:
-                    await fetchMembers(true);
                     result = targetServer.members.cache.filter((m) => m.presence?.status === "offline").size;
                     break;
                 case 29:
-                    await fetchMembers(true);
                     result = targetServer.members.cache.filter((m) => m.presence?.status === "idle").size;
                     break;
                 case 30:
@@ -765,11 +761,9 @@ module.exports = {
                     result = [...targetServer.roles.cache.keys()];
                     break;
                 case 33:
-                    await fetchMembers();
                     result = [...targetServer.members.cache.keys()];
                     break;
                 case 35:
-                    await fetchMembers();
                     result = targetServer.members.cache.filter((m) => !m.user?.bot).size;
                     break;
                 case 37:
