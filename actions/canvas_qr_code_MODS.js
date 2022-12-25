@@ -35,7 +35,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -51,17 +51,18 @@ module.exports = {
     <tab label="Tamanho & Cores" icon="align left">
       <div style="padding:8px">
    
-    <div style="float: left; width: 50%;">
+      <table><tr><td style="width:50%;padding:0px 4px 0px 0px">
     <span class="dbminputlabel">Largura (px)</span><br>
-      <input id="largura" class="round" type="text" placeholder="Requerido"><br>
-    </div>
-    <div style="padding-left: 3px; float: left; width: 50%;">
-    <span class="dbminputlabel">Altura (px)</span><br>
-      <input id="altura" class="round" type="text" placeholder="Requerido"><br>
-    </div>
-  <br><br><br>
 
-   
+      <input id="largura" class="round" type="text" placeholder="Opcional">
+      </td><td style="padding:0px 0px 0px 4px">
+
+    <span class="dbminputlabel">Altura (px)</span><br>
+      <input id="altura" class="round" type="text" placeholder="Opcional">
+    
+   </td></tr></table>
+   <br>
+  
 
     <table><tr><td>
     <div id="Solid" style="float: left; width: 100%;">
@@ -94,12 +95,16 @@ module.exports = {
         })()"><button class="tiny compact ui icon button">Texto</button></a><td></tr></table>
   </div>
 
-  </tr></table>
+  </td></tr></table>
 
   <br>
 
   <span class="dbminputlabel">Margem</span><br>
-  <input id="margem" class="round" value="0" type="text">
+  <input id="margem" class="round" value="0" type="text" placeholder="Opcional">
+
+
+<br>
+
   
   </div>
   </tab>
@@ -199,12 +204,17 @@ table{width:100%}
   async action(cache) {
     const data = cache.actions[cache.index]
     const Canvas = require('canvas')
-    const largura = parseInt(this.evalMessage(data.largura, cache))
-    const altura = parseInt(this.evalMessage(data.altura, cache))
-    const margem = parseInt(this.evalMessage(data.margem, cache))
+    var largura = parseInt(this.evalMessage(data.largura, cache))
+    if(this.evalMessage(data.largura, cache) == ""){largura = 256}
+    var altura = parseInt(this.evalMessage(data.altura, cache))
+    if(this.evalMessage(data.altura, cache) == ""){altura = 256}
+    var margem = parseInt(this.evalMessage(data.margem, cache))
+    if(this.evalMessage(data.margem, cache) == ""){margem = 0}
     const draw = this.evalMessage(data.draw, cache)
-    const fcolor = this.evalMessage(data.fcolor, cache)
-    const color = this.evalMessage(data.color, cache)
+    var fcolor = this.evalMessage(data.fcolor, cache)
+    if(this.evalMessage(data.fcolor, cache) == ""){fcolor = "#ffffff"}
+    var color = this.evalMessage(data.color, cache)
+    if(this.evalMessage(data.color, cache) == ""){color = "#000000"}
     const canvas = Canvas.createCanvas(largura, altura)
     const ctx = canvas.getContext('2d')
     const _this = this
@@ -212,9 +222,11 @@ table{width:100%}
 
     var opts = {
       errorCorrectionLevel: 'H',
-      type: 'image/png',
+      type: 'image/jpeg',
       quality: 1,
+      width: largura,
       margin: margem,
+      scale: 3,
       color: {
         dark: color,
         light: fcolor
