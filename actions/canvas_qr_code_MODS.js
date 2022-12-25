@@ -222,11 +222,10 @@ table{width:100%}
 
     var opts = {
       errorCorrectionLevel: 'H',
-      type: 'image/jpeg',
+      type: 'image/png',
       quality: 1,
       width: largura,
       margin: margem,
-      scale: 3,
       color: {
         dark: color,
         light: fcolor
