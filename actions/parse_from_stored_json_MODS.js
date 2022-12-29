@@ -24,7 +24,7 @@ module.exports = {
 
   html(_isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
 <table><tr><td class="sep1">
@@ -140,7 +140,7 @@ table{width:100%}
   },
 
   async action(cache) {
-    const Mods = this.getMods();
+    const Mods = this.getdbmmods();
     const data = cache.actions[cache.index];
     const varName = this.evalMessage(data.varName, cache);
     const storage = parseInt(data.storage, 10);
@@ -149,11 +149,13 @@ table{width:100%}
     const path = this.evalMessage(data.path, cache);
     const jsonRaw = this.getVariable(type, jsonObjectVarName, cache);
     const DEBUG = data.debugMode;
-    let jsonData = jsonRaw;
+
     let deuerro
     
-    if (typeof jsonRaw !== 'object') {
-      jsonData = JSON.parse(jsonRaw);
+    if (typeof jsonRaw !== "object") {
+      var jsonData = JSON.parse(jsonRaw);
+    } else {
+      var jsonData = jsonRaw;
     }
 
     try {
