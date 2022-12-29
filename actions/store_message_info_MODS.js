@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     version: '2.1.6',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
