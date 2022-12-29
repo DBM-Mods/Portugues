@@ -19,7 +19,7 @@ module.exports = {
       "Timestamp da mensagem",
       "A mensagem está fixada?",
       "A mensagem é TTS?",
-      "Lista de anexos da mensagem",
+      "Lista de anexos da mensagem [Objeto]",
       "Edições da mensagem",
       "ID do servidor da mensagem",
       "",
@@ -73,8 +73,18 @@ module.exports = {
       "Mínimo de valores do Menu",
       "Máximo de valores do Menu",
       "Opções do Menu",
+      "Lista de anexos da mensagem [URL]",
     ];
-    return `${presets.getMessageText(data.message, data.varName)} - ${info[parseInt(data.info, 10)]}`;
+
+    if (data.descriptionx) {
+      desccor = data.descriptioncolor;
+    } else {
+      desccor = "none";
+    }
+
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${presets.getMessageText(data.message, data.varName)} - ${info[parseInt(data.info, 10)]}</font>`
   },
 
   variableStorage(data, varType) {
@@ -84,190 +94,237 @@ module.exports = {
     let dataType = "Unknown Type";
     switch (info) {
       case 0:
-        dataType = "Message";
+        dataType = "Mensagem";
         break;
       case 1:
-        dataType = "Message ID";
+        dataType = "ID";
         break;
       case 2:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 3:
-        dataType = "Server Member";
+        dataType = "Membro";
         break;
       case 4:
-        dataType = "Channel";
+        dataType = "Canal";
         break;
       case 5:
-        dataType = "Text";
+        dataType = "Texto";
         break;
       case 6:
+        dataType = "Verdadeiro/Falso";
+        break;
       case 7:
-        dataType = "Boolean";
+        dataType = "Verdadeiro/Falso";
         break;
       case 8:
-        dataType = "Date";
+        dataType = "Data";
       case 9:
-        dataType = "Messages List";
+        dataType = "Lista";
       case 12:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 13:
-        dataType = "Array";
+        dataType = "Lista";
         break;
       case 14:
-        dataType = "Number";
+        dataType = "Número";
         break;
       case 15:
         dataType = "URL";
         break;
       case 16:
-        dataType = "Date";
+        dataType = "Data";
         break;
       case 17:
-      case 18:
-        dataType = "Number";
+        dataType = "Número"
         break;
-case 19:
-dataType = "Guild";
-break;
-case 20:
-dataType = "Message Type";
-break;
-case 21:
-dataType = "Webhook ID";
-break;
-case 22:
-dataType = "Embed Message";
-break;
-case 23:
-dataType = "Embed Message";
-break;
-case 24:
-dataType = "Embed Message";
-break;
-case 25:
-dataType = "Embed Message";
-break;
-case 26:
-dataType = "Embed Message";
-break;
-case 27:
-dataType = "Embed Message";
-break;
-case 28:
-dataType = "Embed Message";
-break;
-case 29:
-dataType = "Embed Message";
-break;
-case 30:
-dataType = "Embed Message";
-break;
-case 31:
-dataType = "Embed Message";
-break;
-case 32:
-dataType = "Embed Message";
-break;
-case 33:
-dataType = "Embed Message";
-break;
-case 34:
-dataType = "Embed Message";
-break;
-case 35:
-dataType = "Embed Message";
-break;
-case 36:
-dataType = "Embed Message";
-break;
-case 37:
-dataType = "Embed Message";
-break;
-case 38:
-dataType = "Embeds Number";
-break;
-case 39:
-dataType = "Fields Number";
-break;
-case 40:
-dataType = "Interaction";
-break;
-case 41:
-dataType = "Interaction";
-break;
-case 42:
-dataType = "Interaction";
-break;
-case 43:
-dataType = "Interaction";
-break;
-case 44:
-dataType = "Interaction User";
-break;
-case 45:
-dataType = "Interaction User";
-break;
-case 46:
-dataType = "Interaction User";
-break;
-case 47:
-dataType = "Interaction User";
-break;
-case 48:
-dataType = "Interaction User";
-break;
-case 49:
-dataType = "Component";
-break;
-case 50:
-dataType = "Component";
-break;
-case 51:
-dataType = "Component";
-break;
-case 52:
-dataType = "Component";
-break;
-case 53:
-dataType = "Component";
-break;
-case 54:
-dataType = "Component";
-break;
-case 55:
-dataType = "Component";
-break;
-case 56:
-dataType = "Component";
-break;
-case 57:
-dataType = "Component";
-break;
-case 58:
-dataType = "Component";
-break;
-case 59:
-dataType = "Component";
-break;
-case 60:
-dataType = "Component";
-break;
-case 61:
-dataType = "Component";
-break;
+      case 18:
+        dataType = "Número";
+        break;
+      case 19:
+        dataType = "Servidor";
+        break;
+      case 20:
+        dataType = "Texto";
+        break;
+      case 21:
+        dataType = "ID";
+        break;
+      case 22:
+        dataType = "Mensagem Embed";
+        break;
+      case 23:
+        dataType = "Mensagem Embed";
+        break;
+      case 24:
+        dataType = "Mensagem Embed";
+        break;
+      case 25:
+        dataType = "Mensagem Embed";
+        break;
+      case 26:
+        dataType = "Mensagem Embed";
+        break;
+      case 27:
+        dataType = "Mensagem Embed";
+        break;
+      case 28:
+        dataType = "Mensagem Embed";
+        break;
+      case 29:
+        dataType = "Mensagem Embed";
+        break;
+      case 30:
+        dataType = "Mensagem Embed";
+        break;
+      case 31:
+        dataType = "Mensagem Embed";
+        break;
+      case 32:
+        dataType = "Mensagem Embed";
+        break;
+      case 33:
+        dataType = "Mensagem Embed";
+        break;
+      case 34:
+        dataType = "Mensagem Embed";
+        break;
+      case 35:
+        dataType = "Mensagem Embed";
+        break;
+      case 36:
+        dataType = "Mensagem Embed";
+        break;
+      case 37:
+        dataType = "Mensagem Embed";
+        break;
+      case 38:
+        dataType = "Número";
+        break;
+      case 39:
+        dataType = "Número";
+        break;
+      case 40:
+        dataType = "Interação";
+        break;
+      case 41:
+        dataType = "Interação";
+        break;
+      case 42:
+        dataType = "Interação";
+        break;
+      case 43:
+        dataType = "Interação";
+        break;
+      case 44:
+        dataType = "Usuário da Interação";
+        break;
+      case 45:
+        dataType = "Usuário da Interação";
+        break;
+      case 46:
+        dataType = "Usuário da Interação";
+        break;
+      case 47:
+        dataType = "Usuário da Interação";
+        break;
+      case 48:
+        dataType = "Usuário da Interação";
+        break;
+      case 49:
+        dataType = "Componente";
+        break;
+      case 50:
+        dataType = "Componente";
+        break;
+      case 51:
+        dataType = "Componente";
+        break;
+      case 52:
+        dataType = "Componente";
+        break;
+      case 53:
+        dataType = "Componente";
+        break;
+      case 54:
+        dataType = "Componente";
+        break;
+      case 55:
+        dataType = "Componente";
+        break;
+      case 56:
+        dataType = "Componente";
+        break;
+      case 57:
+        dataType = "Componente";
+        break;
+      case 58:
+        dataType = "Componente";
+        break;
+      case 59:
+        dataType = "Componente";
+        break;
+      case 60:
+        dataType = "Componente";
+        break;
+      case 61:
+        dataType = "Componente";
+        break;
     }
     return [data.varName2, dataType];
   },
 
-  fields: ["message", "varName", "info", "embednumero", "field", "comp1", "comp2", "storage", "varName2"],
+  fields: ["message", "varName", "info", "embednumero", "field", "comp1", "comp2", "storage", "varName2", "description", "descriptionx", "descriptioncolor"],
 
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 1.5</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.6</div>
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+      <table style="width:100%;"><tr>
+        <td>
+          <span class="dbminputlabel">Descrição da Action</span>
+          <br>
+          <input type="text" class="round" id="description" placeholder="Deixe vazio para remover">
+        </td>
+        <td style="padding:0px 0px 0px 10px;width:70px">
+          <div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px">
+            <dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox>
+          </div>
+          <br>
+          <input type="color" value="#ffffff" class="round" id="descriptioncolor">
+        </td>
+      </table>
+    </div>
+
+    <style>
+      .dbmmodsbr1 {
+        position: absolute;
+        bottom: 0px;
+        border: 0px solid rgba(50,50,50,0.7);
+        background: rgba(0,0,0,0.7);
+        color: #999;
+        padding: 5px;
+        left: 0px;
+        z-index: 999999;
+        cursor: pointer
+      }
+
+      .dbmmodsbr2 {
+        position: absolute;
+        bottom: 0px;
+        border: 0px solid rgba(50,50,50,0.7);
+        background: rgba(0,0,0,0.7);
+        color: #999;
+        padding: 5px;
+        right: 0px;
+        z-index: 999999;
+        cursor: pointer
+      }
+    </style>
 
 <message-input dropdownLabel="Mensagem" selectId="message" variableContainerId="varNameContainer" variableInputId="varName"></message-input>
 
@@ -284,7 +341,8 @@ break;
 		<option value="5">Timestamp da mensagem</option>
 		<option value="6">A mensagem está fixada?</option>
     <option value="7">A mensagem é TTS?</option>
-    <option value="8">Lista de anexos da mensagem</option>
+    <option value="8">Lista de anexos da mensagem [Objeto]</option>
+    <option value="62">Lista de anexos da mensagem [URL]</option>
 		<option value="9">Edições da mensagem</option>
 		<option value="12">Contagem de reações de mensagens</option>
 		<option value="13">Lista de usuários mencionados na mensagem</option>
@@ -369,11 +427,25 @@ break;
   init() {
     const { glob, document } = this;
 
+    const xinelaslinks = document.getElementsByClassName("xinelaslink");
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+
     glob.onComparisonChanged = function (event) {
       if (event.value > 21) {
         document.getElementById("containerxin2").style.display = "block";
-         document.getElementById("containerxin3").style.display = "none";
-         document.getElementById("containerxin4").style.display = "none";
+        document.getElementById("containerxin3").style.display = "none";
+        document.getElementById("containerxin4").style.display = "none";
       }
       if (event.value < 22) {
         document.getElementById("containerxin2").style.display = "none";
@@ -411,6 +483,11 @@ break;
         document.getElementById("containerxin").style.display = "none";
         document.getElementById("containerxin2").style.display = "none";
         document.getElementById("containerxin3").style.display = "block";
+        document.getElementById("containerxin4").style.display = "none";
+      }
+      if (event.value == 62) {
+        document.getElementById("containerxin2").style.display = "none";
+        document.getElementById("containerxin3").style.display = "none";
         document.getElementById("containerxin4").style.display = "none";
       }
     };
@@ -469,8 +546,8 @@ break;
         result = msg.edits;
         break;
       case 10:
-          result = msg.guild.id;
-          break;
+        result = msg.guild.id;
+        break;
       case 12:
         result = msg.reactions.cache.size;
         break;
@@ -502,311 +579,366 @@ break;
         result = msg.webhookId;
         break;
       case 22:
-        if(msg.embeds.length <= embednumero) {
+        if (msg.embeds.length <= embednumero) {
           result = undefined;
         } else {
-        result = msg.embeds[embednumero];}
-      break;        
-        case 23:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].title;}
-        break;
-        case 24:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].description;}
-        break;
-        case 25:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].url;}
-        break;
-        case 26:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].color;}
-        break;
-        case 27:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].timestamp;}
-        break;
-        case 28:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].thumbnail.url;}
-        break;
-        case 29:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].image.url;}
-        break;
-        case 30:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].author.name;}
-        break;
-        case 31:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].author.iconURL;}
-        break;
-        case 32:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].author.url;}
-        break;
-        case 33:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].footer.text;}
-        break;
-        case 34:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-          result = msg.embeds[embednumero].footer.iconURL;}
-        break;
-        case 35:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-            if(msg.embeds[embednumero].fields.length <= field) {
-            result = "";}
-           else {
-          result = msg.embeds[embednumero].fields[field].name;}
+          result = msg.embeds[embednumero];
         }
         break;
-        case 36:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-            if(msg.embeds[embednumero].fields.length <= field) {
-            result = "";}
-           else {
-          result = msg.embeds[embednumero].fields[field].value;}
+      case 23:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].title;
         }
         break;
-        case 37:
-          if(msg.embeds.length <= embednumero) {
-            result = "";
-          } else {
-            if(msg.embeds[embednumero].fields.length <= field) {
-            result = "";}
-           else {
-          result = msg.embeds[embednumero].fields[field].inline;}
+      case 24:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].description;
         }
         break;
-        case 38:
-          if(msg.embeds.length == undefined) {
-            result = 0;
-          } else {
-          result = msg.embeds.length;}
+      case 25:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].url;
+        }
         break;
-        case 39:
-          if(msg.embeds.length <= embednumero) {
-            result = 0;
-          } else {
-          result = msg.embeds[embednumero].fields.length}
-        break;   
-        case 40:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction}
+      case 26:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].color;
+        }
         break;
-        case 41:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.id}
-        break;  
-        case 42:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.commandName}
-        break;  
-        case 43:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.type}
+      case 27:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].timestamp;
+        }
         break;
-        case 44:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.user.id}
-        break; 
-        case 45:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.user.username}
-        break; 
-        case 46:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.user.discriminator}
-        break; 
-        case 47:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.user.tag}
-        break; 
-        case 48:
-          if(msg.interaction == undefined) {
-            result = null;
-          } else {
-          result = msg.interaction.user.displayAvatarURL({ dynamic: true, format: "png", size: 4096 })}
-        break; 
+      case 28:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].thumbnail.url;
+        }
+        break;
+      case 29:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].image.url;
+        }
+        break;
+      case 30:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].author.name;
+        }
+        break;
+      case 31:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].author.iconURL;
+        }
+        break;
+      case 32:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].author.url;
+        }
+        break;
+      case 33:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].footer.text;
+        }
+        break;
+      case 34:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          result = msg.embeds[embednumero].footer.iconURL;
+        }
+        break;
+      case 35:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          if (msg.embeds[embednumero].fields.length <= field) {
+            result = "";
+          }
+          else {
+            result = msg.embeds[embednumero].fields[field].name;
+          }
+        }
+        break;
+      case 36:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          if (msg.embeds[embednumero].fields.length <= field) {
+            result = "";
+          }
+          else {
+            result = msg.embeds[embednumero].fields[field].value;
+          }
+        }
+        break;
+      case 37:
+        if (msg.embeds.length <= embednumero) {
+          result = "";
+        } else {
+          if (msg.embeds[embednumero].fields.length <= field) {
+            result = "";
+          }
+          else {
+            result = msg.embeds[embednumero].fields[field].inline;
+          }
+        }
+        break;
+      case 38:
+        if (msg.embeds.length == undefined) {
+          result = 0;
+        } else {
+          result = msg.embeds.length;
+        }
+        break;
+      case 39:
+        if (msg.embeds.length <= embednumero) {
+          result = 0;
+        } else {
+          result = msg.embeds[embednumero].fields.length
+        }
+        break;
+      case 40:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction
+        }
+        break;
+      case 41:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.id
+        }
+        break;
+      case 42:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.commandName
+        }
+        break;
+      case 43:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.type
+        }
+        break;
+      case 44:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.user.id
+        }
+        break;
+      case 45:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.user.username
+        }
+        break;
+      case 46:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.user.discriminator
+        }
+        break;
+      case 47:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.user.tag
+        }
+        break;
+      case 48:
+        if (msg.interaction == undefined) {
+          result = null;
+        } else {
+          result = msg.interaction.user.displayAvatarURL({ dynamic: true, format: "png", size: 4096 })
+        }
+        break;
 
-        case 49:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-          result = msg.components.length}
+      case 49:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          result = msg.components.length
+        }
         break;
 
-        case 50:
-         if(msg.components.length == 0) {
+      case 50:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
             result = null;
           } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components.length}}
-        break;
-        
-        case 51:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2]}}
-        break;    
-            
-        case 52:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].customId}}
+            result = msg.components[comp1].components.length
+          }
+        }
         break;
 
-        case 53:
-                  if(msg.components.length == 0) {
+      case 51:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
             result = null;
           } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].type}}
+            result = msg.components[comp1].components[comp2]
+          }
+        }
         break;
 
-        case 54:
-          if(msg.components.length == 0) {
+      case 52:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
             result = null;
           } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].label}}
-        break; 
-
-        case 55:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].style}}
-        break; 
-
-        case 56:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].url}}
-        break; 
-
-        case 57:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].disabled}}
-        break;
-        
-        case 58:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].placeholder}}
+            result = msg.components[comp1].components[comp2].customId
+          }
+        }
         break;
 
-        case 59:
-          if(msg.components.length == 0) {
+      case 53:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
             result = null;
           } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].minValues}}
+            result = msg.components[comp1].components[comp2].type
+          }
+        }
         break;
 
-        case 60:
-          if(msg.components.length == 0) {
+      case 54:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
             result = null;
           } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].maxValues}}
+            result = msg.components[comp1].components[comp2].label
+          }
+        }
         break;
-        
-        case 61:
-          if(msg.components.length == 0) {
-            result = null;
-          } else {
-            if(msg.components.length <= comp1) {
-              result = null;
-            } else {
-          result = msg.components[comp1].components[comp2].options}}
-        break;  
 
-      default:
+      case 55:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
+            result = null;
+          } else {
+            result = msg.components[comp1].components[comp2].style
+          }
+        }
         break;
-    } 
-    
+
+      case 56:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
+            result = null;
+          } else {
+            result = msg.components[comp1].components[comp2].url
+          }
+        }
+        break;
+
+      case 57:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
+            result = null;
+          } else {
+            result = msg.components[comp1].components[comp2].disabled
+          }
+        }
+        break;
+
+      case 58:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
+            result = null;
+          } else {
+            result = msg.components[comp1].components[comp2].placeholder
+          }
+        }
+        break;
+
+      case 59:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
+            result = null;
+          } else {
+            result = msg.components[comp1].components[comp2].minValues
+          }
+        }
+        break;
+
+      case 60:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
+            result = null;
+          } else {
+            result = msg.components[comp1].components[comp2].maxValues
+          }
+        }
+        break;
+
+      case 61:
+        if (msg.components.length == 0) {
+          result = null;
+        } else {
+          if (msg.components.length <= comp1) {
+            result = null;
+          } else {
+            result = msg.components[comp1].components[comp2].options
+          }
+        }
+        break;
+      case 62:
+        result = msg.attachments.map((t) => t.attachment);
+        break;
+    }
+
     if (result !== undefined) {
       const storage = parseInt(data.storage, 10);
       const varName2 = this.evalMessage(data.varName2, cache);
