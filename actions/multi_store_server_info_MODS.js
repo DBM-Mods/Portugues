@@ -287,6 +287,9 @@ module.exports = {
                     case 82:
                         tipo = "Lista";
                         break;
+                    case 83:
+                        tipo = "Lista";
+                        break;
                 }
 
                 vars.push(varName);
@@ -341,7 +344,7 @@ module.exports = {
     html(isEvent, data) {
         return `
   <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
 
   <style>
     .dbmmodsbr1 {
@@ -478,6 +481,7 @@ module.exports = {
             <option value="72">Lista de membros presentes nos canais de voz</options>
             <option value="81">Lista de membros do servidor em ordem de entrada</option>
             <option value="82">Lista de IDs de membros do servidor em ordem de entrada</option>
+            <option value="83">Lista de Webhooks do servidor</option>
             </optgroup>
             <optgroup label="Informações do Dono do servidor">
             <option value="48">ID do Dono do servidor</options>
@@ -634,6 +638,7 @@ module.exports = {
                 "Lista de IDs de Bots do servidor",
                 "Lista de membros do servidor em ordem de entrada",
                 "Lista de IDs de membros do servidor em ordem de entrada",
+                "Lista de Webhooks do servidor",
             ];
 
             result += `${infos[info]} > ${storage[parseInt(data.storage, 10)]} (${data.varName})</div>`;
@@ -915,6 +920,10 @@ module.exports = {
                     break;
                 case 82:
                     result = targetServer.members.cache.sort((a, b) => parseFloat(a.joinedTimestamp) - parseFloat(b.joinedTimestamp)).map((m) => m.id);
+                    break;
+                case 83:
+                    const webhooks = await targetServer.fetchWebhooks();
+                    result = webhooks.map((w) => w);
                     break;
             }
 
