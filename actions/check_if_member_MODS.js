@@ -7,40 +7,60 @@ module.exports = {
     author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
-    },
+  },
 
-    subtitle(data, presets) {
-      const info = [
-        "É um Bot?",
-        "Pode ser banido?",
-        "Pode ser kickado?",
-        "",
-        "Está em um canal de voz?",
-        "É gerenciável pelo usuário?",
-        "É o proprietário do bot?",
-        "Está mutado?",
-        "Está ensurrecido?",
-        "É o autor do comando?",
-        "É o proprietário atual do servidor?",
-        "Está no canal AFK?",
-        "Impulsionou o servidor?",
-        "É um usuário?",
-        "Está no servidor atual?"
-      ];
-      return `${info[parseInt(data.info, 10)]} > ${presets.getConditionsText(data)}`;
-    },
+  subtitle(data, presets) {
 
-  fields: ['member', 'varName', 'info', 'varName2', "comparison", "branch"],
+    if (data.descriptionx == true) {
+      desccor = data.descriptioncolor
+    } else {
+      desccor = 'none'
+    }
+
+    const info = [
+      "É um Bot?",
+      "Pode ser banido?",
+      "Pode ser kickado?",
+      "",
+      "Está em um canal de voz?",
+      "É gerenciável pelo usuário?",
+      "É o proprietário do bot?",
+      "Está mutado?",
+      "Está ensurrecido?",
+      "É o autor do comando?",
+      "É o proprietário atual do servidor?",
+      "Está no canal AFK?",
+      "Impulsionou o servidor?",
+      "É um usuário?",
+      "Está no servidor atual?"
+    ];
+
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${info[parseInt(data.info, 10)]} > ${presets.getConditionsText(data)}</font>`
+  },
+
+  fields: ['member', 'varName', 'info', 'varName2', "comparison", "branch", "descriptioncolor", "description", "descriptionx"],
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.5</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.6</div>
+
+    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
+
 <div>
 <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
-</div><br><br><br><br>
+</div><br><br><br>
 <div>
-  <div style="float: left; width: 100%;">
+  <div style="float: left; width: 100%;padding-top:8px">
   <span class="dbminputlabel">Verifique se o membro</span><br>
     <select id="info" class="round">
       <option value="0" selected>É um Bot?</option>
@@ -61,14 +81,39 @@ module.exports = {
   </div>
 </div><br><br><br><br>
 <hr class="subtlebar"><br>
-<conditional-input id="branch" style="padding-top: 8px;"></conditional-input>`;
+<conditional-input id="branch" style="padding-top: 8px;"></conditional-input>
+
+</div>
+<style>
+
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+</style>
+`;
   },
 
   preInit(data, formatters) {
     return formatters.compatibility_2_0_0_iftruefalse_to_branch(data);
   },
 
-  init() {},
+  init() {
+    const { glob, document } = this;
+
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+  },
 
   async action(cache) {
     const data = cache.actions[cache.index];
@@ -79,7 +124,7 @@ module.exports = {
     const targetServer = await this.getServerFromData(0, data.varName, cache);
     const info = parseInt(data.info, 10);
     const { Files } = this.getDBM();
-    
+
     if (!member) {
       console.error('Você precisa fornecer um membro de algum tipo para a ação "Verificar se membro"');
       return this.executeResults(false, data, cache);
@@ -133,12 +178,12 @@ module.exports = {
         result = Boolean(member.premiumSinceTimestamp);
         break;
       case 13:
-          if(member.user?.bot || member.bot) {
-            result = false;
-          } else {
-            result = true;
-          }
-          break;
+        if (member.user?.bot || member.bot) {
+          result = false;
+        } else {
+          result = true;
+        }
+        break;
       case 14:
         const server = cache.server;
 
@@ -169,5 +214,5 @@ module.exports = {
   },
 
 
-  mod() {},
+  mod() { },
 };
