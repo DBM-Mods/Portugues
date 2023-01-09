@@ -9,9 +9,19 @@ module.exports = {
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
-  subtitle(data) {
-    const storage = ['', 'Variavel temporaria', 'Variavel Servidor', 'Variavel Global'];
-    return `${storage[parseInt(data.storage, 10)]} (${data.varName})`;
+  subtitle(data, presets) {
+
+    if(data.descriptionx == true){
+      desccor = data.descriptioncolor
+      } else {
+        desccor = 'none'
+      }
+
+    const storage = presets.variables;
+
+    return data.description
+    ? `<font style="color:${desccor}">${data.description}</font>`
+    : `<font style="color:${desccor}">${storage[parseInt(data.storage, 10)]} (${data.varName})</font>`
   },
 
   variableStorage(data, varType) {
@@ -53,13 +63,24 @@ module.exports = {
     'fieldName',
     'fieldDescription',
     'fieldInline',
+    , 'descriptioncolor', 'description', 'descriptionx',
   ],
 
   html(_isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
-<div style="width: 100%; height: 350px; overflow-y: scroll;padding:5px">
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
+
+    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
+
+
   <div style="padding-top: 8px;">
     <div style="float: left; width: 40%;">
     <span class="dbminputlabel">Embed Objeto</span><br>
@@ -222,33 +243,33 @@ module.exports = {
     </div>
   </div><br><br><br>
   <div style="padding-top: 8px;">
-    <div style="width: 40%;">
-    <span class="dbminputlabel">Editar Footer</span><br>
-      <select id="Edit9" class="round" onchange="glob.onChange9(this)">
-        <option value=0 selected>Manter conteúdo</option>
-        <option value=1>Editar conteúdo</option>
-        <option value=2>Limpar conteúdo</option>
-      </select>
-    </div><br>
-    <div id="Input9" style="display: none; width: 100%;">
-    <span class="dbminputlabel">Footer</span><br>
-      <textarea id="footer" rows="3" style="width: 100%; font-family: monospace; white-space: nowrap; resize: yes;"></textarea><br>
-    </div>
+  <div style="width: 40%;">
+  <span class="dbminputlabel">Editar Footer</span><br>
+    <select id="Edit9" class="round" onchange="glob.onChange9(this)">
+      <option value=0 selected>Manter conteúdo</option>
+      <option value=1>Editar conteúdo</option>
+      <option value=2>Limpar conteúdo</option>
+    </select>
+  </div><br>
+  <div id="Input9" style="display: none; width: 100%;">
+  <span class="dbminputlabel">Footer</span><br>
+    <textarea id="footer" rows="3" style="width: 100%; font-family: monospace; white-space: nowrap; resize: yes;"></textarea><br>
   </div>
-  <div style="padding-top: 8px;">
-    <div style="float: left; width: 40%;">
-    <span class="dbminputlabel">Editar Icone URL do Footer</span><br>
-      <select id="Edit10" class="round" onchange="glob.onChange10(this)">
-        <option value=0 selected>Manter conteúdo</option>
-        <option value=1>Editar conteúdo</option>
-        <option value=2>Limpar conteúdo</option>
-      </select>
-    </div>
-    <div id="Input10" style="display: none; float: right; width: 55%;">
-    <span class="dbminputlabel">Footer Icone URL</span><br>
-      <input id="footerIcon" class="round" type="text">
-    </div>
-  </div><br><br><br>
+</div>
+<div style="padding-top: 8px;">
+  <div style="float: left; width: 40%;">
+  <span class="dbminputlabel">Editar Icone URL do Footer</span><br>
+    <select id="Edit10" class="round" onchange="glob.onChange10(this)">
+      <option value=0 selected>Manter conteúdo</option>
+      <option value=1>Editar conteúdo</option>
+      <option value=2>Limpar conteúdo</option>
+    </select>
+  </div>
+  <div id="Input10" style="display: none; float: right; width: 55%;">
+  <span class="dbminputlabel">Footer Icone URL</span><br>
+    <input id="footerIcon" class="round" type="text">
+  </div>
+</div><br><br><br>
   <div style="padding-top: 8px;">
     <div style="float: left; width: 40%;">
     <span class="dbminputlabel">Editar Timestamp</span><br>
@@ -299,11 +320,36 @@ module.exports = {
     </div>
   
   </div>
-</div>`;
+
+
+</div>
+
+<style>
+
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+</style>`;
   },
 
   init() {
     const { glob, document } = this;
+
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+       xinelaslink.setAttribute('title', url);
+       xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+
+
     const Input0 = document.getElementById('Input0');
     const Input1 = document.getElementById('Input1');
     const Input2 = document.getElementById('Input2');
@@ -547,221 +593,232 @@ module.exports = {
     const embed = this.getVariable(storage, varName, cache);
     if (!embed) return this.callNextAction(cache);
 
-    const Edit0 = parseInt(data.Edit0, 10);
-    const Edit1 = parseInt(data.Edit1, 10);
-    const Edit2 = parseInt(data.Edit2, 10);
-    const Edit3 = parseInt(data.Edit3, 10);
-    const Edit4 = parseInt(data.Edit4, 10);
-    const Edit5 = parseInt(data.Edit5, 10);
-    const Edit6 = parseInt(data.Edit6, 10);
-    const Edit7 = parseInt(data.Edit7, 10);
-    const Edit8 = parseInt(data.Edit8, 10);
-    const Edit9 = parseInt(data.Edit9, 10);
-    const Edit10 = parseInt(data.Edit10, 10);
-    const Edit11 = parseInt(data.Edit11, 10);
-    const Edit12 = parseInt(data.Edit12, 10);
-    const title = this.evalMessage(data.title, cache);
-    const url = this.evalMessage(data.url, cache);
-    const description = this.evalMessage(data.description, cache);
-    const color = this.evalMessage(data.color, cache);
-    const imageUrl = this.evalMessage(data.imageUrl, cache);
-    const imageUrl2 = this.evalMessage(data.imageUrl2, cache);
-    const thumbUrl = this.evalMessage(data.thumbUrl, cache);
-    const thumbUrl2 = this.evalMessage(data.thumbUrl2, cache);
-    const author = this.evalMessage(data.author, cache);
-    const authorUrl = this.evalMessage(data.authorUrl, cache);
-    const authorIcon = this.evalMessage(data.authorIcon, cache);
-    const footer = this.evalMessage(data.footer, cache);
-    const footerIcon = this.evalMessage(data.footerIcon, cache);
-    const timestamp = this.evalMessage(data.timestamp, cache);
-    const fieldNum = parseInt(this.evalMessage(data.fieldNum, cache), 10);
-    const fieldName = this.evalMessage(data.fieldName, cache) || '\u200B';
-    const fieldDescription = this.evalMessage(data.fieldDescription, cache) || '\u200B';
-    const fieldInline = parseInt(data.fieldInline, 10);
-    switch (Edit0) {
-      case 1:
-        embed.setTitle(title);
-        break;
-      case 2:
-        embed.title = undefined;
-        break;
-      default:
-        break;
-    }
-    switch (Edit1) {
-      case 1:
-        embed.setURL(url);
-        break;
-      case 2:
-        embed.url = undefined;
-        break;
-      default:
-        break;
-    }
-    switch (Edit2) {
-      case 1:
-        embed.setDescription(description);
-        break;
-      case 2:
-        embed.description = undefined;
-        break;
-      default:
-        break;
-    }
-    switch (Edit3) {
-      case 1:
-        embed.setColor(color);
-        break;
-      case 2:
-        embed.color = undefined;
-        break;
-      default:
-        break;
-    }
-    switch (Edit4) {
-      case 1:
-        embed.setImage(imageUrl);
-        break;
-      case 2:
-        embed.image = undefined;
-        break;
-      case 3:
-        embed.attachFiles([`${imageUrl}/${imageUrl2}`]);
-        embed.setImage(`attachment://${imageUrl2}`);
-        break;
-      default:
-        break;
-    }
-    switch (Edit5) {
-      case 1:
-        embed.setThumbnail(thumbUrl);
-        break;
-      case 2:
-        embed.thumbnail = undefined;
-        break;
-      case 3:
-        embed.attachFiles([`${thumbUrl}/${thumbUrl2}`]);
-        embed.setImage(`attachment://${thumbUrl2}`);
-        break;
-      default:
-        break;
-    }
-    if (embed.author === undefined) {
-      if (Edit6 === 1 && author !== undefined) {
-        embed.setAuthor(author);
-        if (Edit7 === 1 && authorUrl !== undefined) {
+    try {
+
+      const Edit0 = parseInt(data.Edit0, 10);
+      const Edit1 = parseInt(data.Edit1, 10);
+      const Edit2 = parseInt(data.Edit2, 10);
+      const Edit3 = parseInt(data.Edit3, 10);
+      const Edit4 = parseInt(data.Edit4, 10);
+      const Edit5 = parseInt(data.Edit5, 10);
+      const Edit6 = parseInt(data.Edit6, 10);
+      const Edit7 = parseInt(data.Edit7, 10);
+      const Edit8 = parseInt(data.Edit8, 10);
+      const Edit9 = parseInt(data.Edit9, 10);
+      const Edit10 = parseInt(data.Edit10, 10);
+      const Edit11 = parseInt(data.Edit11, 10);
+      const Edit12 = parseInt(data.Edit12, 10);
+      const title = this.evalMessage(data.title, cache);
+      const url = this.evalMessage(data.url, cache);
+      const description = this.evalMessage(data.description, cache);
+      const color = this.evalMessage(data.color, cache);
+      const imageUrl = this.evalMessage(data.imageUrl, cache);
+      const imageUrl2 = this.evalMessage(data.imageUrl2, cache);
+      const thumbUrl = this.evalMessage(data.thumbUrl, cache);
+      const thumbUrl2 = this.evalMessage(data.thumbUrl2, cache);
+      const author = this.evalMessage(data.author, cache);
+      const authorUrl = this.evalMessage(data.authorUrl, cache);
+      const authorIcon = this.evalMessage(data.authorIcon, cache);
+      var footer = this.evalMessage(data.footer, cache);
+      var footerIcon = this.evalMessage(data.footerIcon, cache) || null;
+      const timestamp = this.evalMessage(data.timestamp, cache);
+      const fieldNum = parseInt(this.evalMessage(data.fieldNum, cache), 10);
+      const fieldName = this.evalMessage(data.fieldName, cache) || '\u200B';
+      const fieldDescription = this.evalMessage(data.fieldDescription, cache) || '\u200B';
+      const fieldInline = parseInt(data.fieldInline, 10);
+      switch (Edit0) {
+        case 1:
+          embed.setTitle(title);
+          break;
+        case 2:
+          embed.title = undefined;
+          break;
+        default:
+          break;
+      }
+      switch (Edit1) {
+        case 1:
+          embed.setURL(url);
+          break;
+        case 2:
+          embed.url = undefined;
+          break;
+        default:
+          break;
+      }
+      switch (Edit2) {
+        case 1:
+          embed.setDescription(description);
+          break;
+        case 2:
+          embed.description = undefined;
+          break;
+        default:
+          break;
+      }
+      switch (Edit3) {
+        case 1:
+          embed.setColor(color);
+          break;
+        case 2:
+          embed.color = undefined;
+          break;
+        default:
+          break;
+      }
+      switch (Edit4) {
+        case 1:
+          embed.setImage(imageUrl);
+          break;
+        case 2:
+          embed.image = undefined;
+          break;
+        case 3:
+          embed.attachFiles([`${imageUrl}/${imageUrl2}`]);
+          embed.setImage(`attachment://${imageUrl2}`);
+          break;
+        default:
+          break;
+      }
+      switch (Edit5) {
+        case 1:
+          embed.setThumbnail(thumbUrl);
+          break;
+        case 2:
+          embed.thumbnail = undefined;
+          break;
+        case 3:
+          embed.attachFiles([`${thumbUrl}/${thumbUrl2}`]);
+          embed.setImage(`attachment://${thumbUrl2}`);
+          break;
+        default:
+          break;
+      }
+      if (embed.author === undefined) {
+        if (Edit6 === 1 && author !== undefined) {
+          embed.setAuthor({name: author});
+          if (Edit7 === 1 && authorUrl !== undefined) {
+            embed.author.url = authorUrl;
+          }
+          if (Edit8 === 1 && authorIcon !== undefined) {
+            embed.author.iconURL = authorIcon;
+          }
+        }
+      } else {
+        if (author !== undefined && Edit6 === 1) {
+          embed.setAuthor({name: author});
+        } else if (Edit6 === 2) {
+          embed.author.name = undefined;
+        }
+        if (authorUrl !== undefined && Edit7 === 1 && embed.author !== undefined) {
           embed.author.url = authorUrl;
+        } else if (Edit7 === 2) {
+          embed.author.url = undefined;
         }
-        if (Edit8 === 1 && authorIcon !== undefined) {
+        if (authorIcon !== undefined && Edit8 === 1 && embed.author !== undefined) {
           embed.author.iconURL = authorIcon;
+        } else if (Edit8 === 2) {
+          embed.author.iconURL = undefined;
         }
       }
-    } else {
-      if (author !== undefined && Edit6 === 1) {
-        embed.author.name = author;
-      } else if (Edit6 === 2) {
-        embed.author.name = undefined;
-      }
-      if (authorUrl !== undefined && Edit7 === 1 && embed.author !== undefined) {
-        embed.author.url = authorUrl;
-      } else if (Edit7 === 2) {
-        embed.author.url = undefined;
-      }
-      if (authorIcon !== undefined && Edit8 === 1 && embed.author !== undefined) {
-        embed.author.iconURL = authorIcon;
-      } else if (Edit8 === 2) {
-        embed.author.iconURL = undefined;
-      }
-    }
-    if (embed.footer === undefined) {
-      if (Edit9 === 1 && footer !== undefined) {
-        embed.setFooter(footer);
-        if (Edit10 === 1 && footerIcon !== undefined) {
+
+
+
+      if (embed.footer === undefined) {
+        if (Edit9 === 1 && footer !== undefined) {
+          embed.setFooter({text: footer});
+          if (Edit10 === 1 && footerIcon !== undefined) {
+            embed.footer.iconURL = footerIcon;
+          }
+        }
+      } else {
+        if (footer !== undefined && Edit9 === 1) {
+          embed.setFooter({text: footer})
+        } else if (Edit9 !== 0) {
+          embed.footer.text = undefined;
+        }
+        if (footerIcon !== undefined && Edit10 === 1) {
           embed.footer.iconURL = footerIcon;
+        } else if (Edit10 !== 0) {
+          embed.footer.iconURL = undefined;
         }
       }
-    } else {
-      if (footer !== undefined && Edit9 === 1) {
-        embed.footer.text = footer;
-      } else if (Edit9 !== 0) {
-        embed.footer.text = undefined;
+      switch (Edit10) {
+        case 1:
+          embed.footer.iconURL = footerIcon;
+          break;
+        case 2:
+          embed.footer.iconURL = undefined;
+          break;
+        default:
+          break;
       }
-      if (footerIcon !== undefined && Edit10 === 1) {
-        embed.footer.iconURL = footerIcon;
-      } else if (Edit10 !== 0) {
-        embed.footer.iconURL = undefined;
+
+
+      switch (Edit11) {
+        case 1:
+          embed.setTimestamp(new Date());
+          break;
+        case 2:
+          if (isNaN(timestamp)) {
+            embed.setTimestamp(new Date(timestamp));
+          } else {
+            embed.setTimestamp(new Date(parseInt(timestamp, 10)));
+          }
+          break;
+        case 3:
+          embed.timestamp = undefined;
+          break;
+        default:
+          break;
       }
-    }
-    switch (Edit10) {
-      case 1:
-        embed.footer.iconURL = footerIcon;
-        break;
-      case 2:
-        embed.footer.iconURL = undefined;
-        break;
-      default:
-        break;
-    }
-    switch (Edit11) {
-      case 1:
-        embed.setTimestamp(new Date());
-        break;
-      case 2:
-        if (isNaN(timestamp)) {
-          embed.setTimestamp(new Date(timestamp));
-        } else {
-          embed.setTimestamp(new Date(parseInt(timestamp, 10)));
-        }
-        break;
-      case 3:
-        embed.timestamp = undefined;
-        break;
-      default:
-        break;
-    }
-    switch (Edit12) {
-      case 1:
-        if (embed.fields.length > fieldNum) {
-          embed.fields[fieldNum].name = fieldName;
-          embed.fields[fieldNum].value = fieldDescription;
+      switch (Edit12) {
+        case 1:
+          if (embed.fields.length > fieldNum) {
+            embed.fields[fieldNum].name = fieldName;
+            embed.fields[fieldNum].value = fieldDescription;
+            switch (fieldInline) {
+              case 1:
+                embed.fields[fieldNum].inline = true;
+                break;
+              case 2:
+                embed.fields[fieldNum].inline = false;
+                break;
+              default:
+                break;
+            }
+          }
+          break;
+        case 2:
+          embed.fields.splice(fieldNum, 1);
+          break;
+        case 3:
+          embed.fields = [];
+          break;
+        case 4: {
+          const field = {};
+          field.name = fieldName;
+          field.value = fieldDescription;
+          field.inline = fieldInline;
           switch (fieldInline) {
             case 1:
-              embed.fields[fieldNum].inline = true;
+              field.inline = true;
               break;
             case 2:
-              embed.fields[fieldNum].inline = false;
+              field.inline = false;
               break;
             default:
               break;
           }
+          embed.fields.splice(fieldNum, 0, field);
+          break;
         }
-        break;
-      case 2:
-        embed.fields.splice(fieldNum, 1);
-        break;
-      case 3:
-        embed.fields = [];
-        break;
-      case 4: {
-        const field = {};
-        field.name = fieldName;
-        field.value = fieldDescription;
-        field.inline = fieldInline;
-        switch (fieldInline) {
-          case 1:
-            field.inline = true;
-            break;
-          case 2:
-            field.inline = false;
-            break;
-          default:
-            break;
-        }
-        embed.fields.splice(fieldNum, 0, field);
-        break;
+        default:
+          break;
       }
-      default:
-        break;
+
+    } catch (e) {
+      this.callNextAction(cache);
     }
     this.storeValue(embed, storage, varName, cache);
     this.callNextAction(cache);
