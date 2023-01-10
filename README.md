@@ -4,4 +4,5 @@
 <p align="center">O <a href="https://discord.gg/HBc9u9tktd">DBM BRAZIL MODS {Multi-Language}</a> é uma comunidade de código aberto destinado a modificar, estender e melhorar o <a href="https://store.steampowered.com/app/682130/Discord_Bot_Maker">Discord Bot Maker</a>, também temos o objetivo de unir a comunidade de todos os países.</p>
 <br><br>
 <p align="center"><a href="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">BAIXAR MODS</a></p>
-<br><br><b>Instalação dos MODS:</b> Pegue todos os arquivos do ZIP e substitua para a pasta do seu Projeto
+<br><br><b>Instalação dos MODS:</b> Pegue todos os arquivos do ZIP e substitua para a pasta do seu Projeto<br><br>
+É requerido que instale a versão 17 do NodeJS = https://nodejs.org/dist/v17.4.0/
