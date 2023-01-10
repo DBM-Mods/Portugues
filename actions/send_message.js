@@ -143,7 +143,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 2.7</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 2.8</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -170,13 +170,13 @@ module.exports = {
   <tab label="Embeds" icon="book image">
     <div style="padding: 8px;">
 
-      <dialog-list id="embeds" fields='["title", "url", "color", "colorrandom", "timestamp", "timestampper", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl"]' dialogTitle="Embed Info" dialogWidth="540" dialogHeight="460" listLabel="Embeds" listStyle="height: calc(100vh - 350px);" itemName="Embed" itemCols="1" itemHeight="30px;" itemTextFunction="data.title + ' - ' + data.description" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="embeds" fields='["title", "url", "color", "colorrandom", "timestamp", "timestampper", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl"]' dialogTitle="Embed Info" dialogResizable dialogWidth="540" dialogHeight="460" listLabel="Embeds" listStyle="height: calc(100vh - 350px);" itemName="Embed" itemCols="1" itemHeight="30px;" itemTextFunction="data.title + ' - ' + data.description" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 16px 16px 0px 16px;">
 
           <tab-system>
 
             <tab label="Geral" icon="certificate">
-              <div style="padding: 8px">
+              <div style="padding: 8px;height: calc(100vh - 130px);overflow:auto">
                 <div style="float: left; width: calc(50% - 12px);">
                   <span class="dbminputlabel">Título</span><br>
                   <input id="title" class="round" type="text">
@@ -204,7 +204,7 @@ module.exports = {
 
                   <br>
 
-                  <span class="dbminputlabel">Usar Timestamp</span><div style="float:right;margin-top:-5px"><dbm-checkbox id="timestamp" label="Sim" checked></dbm-checkbox></div><br>
+                  <span class="dbminputlabel">Usar Timestamp</span><div style="float:right;margin-top:-5px"><dbm-checkbox id="timestamp" label="Sim"></dbm-checkbox></div><br>
                   <input id="timestampper" class="round" type="text" placeholder="Deixe em branco para o atual">
                 </div>
 
@@ -225,19 +225,19 @@ module.exports = {
             </tab>
 
             <tab label="Descrição" icon="file image">
-              <div style="padding: 8px">
+              <div style="padding: 8px;height: calc(100vh - 130px);overflow:auto">
                 <textarea id="description" class="dbm_monospace" rows="10" placeholder="Insira a descrição aqui..." style="height: calc(100vh - 149px); white-space: nowrap; resize: none;"></textarea>
                 </div>
             </tab>
 
             <tab label="Fields" icon="list">
-              <div style="padding: 8px">
-                <dialog-list id="fields" fields='["name", "value", "inline", "val1", "val2", "comparar", "formula"]' dialogTitle="Field Info" dialogWidth="540" dialogHeight="500" listLabel="Fields" listStyle="height: calc(100vh - 190px);" itemName="Field" itemCols="1" itemHeight="30px;" itemTextFunction="data.name + '<br>' + data.value" itemStyle="text-align: left; line-height: 30px;">
-                                  
+              <div style="padding: 8px;height: calc(100vh - 130px);overflow:auto">
+                <dialog-list id="fields" fields='["name", "value", "inline", "val1", "val2", "comparar", "formula"]' dialogTitle="Field Info" dialogResizable dialogWidth="540" dialogHeight="500" listLabel="Fields" listStyle="height: calc(100vh - 190px);" itemName="Field" itemCols="1" itemHeight="50px;" itemTextFunction="'Nome: ' + data.name + '<br/>' + 'Valor: '+ data.value" itemStyle="text-align: left; line-height: 25px;">
+                                  <div style="height: calc(100vh - 60px);overflow:auto">
 
                   <div style="padding: 16px;background:rgba(0,0,0,0.3)">
 
-                  <span class="dbminputlabel">Exibir</span><br>
+                  <span class="dbminputlabel">Exibição da Field</span><br>
                   <select id="formula" class="round">
                   <option value="0" selected>Sempre exibir a field / Ignorar o comparador abaixo</option>
                   <option value="1">Exibir a field somente se o comparador for falso</option>
@@ -308,13 +308,13 @@ module.exports = {
                     <span class="dbminputlabel">Field Valor</span><br>
                     <textarea id="value" class="dbm_monospace" rows="7" placeholder="Insira o texto do Field aqui..." style="height: calc(100vh - 320px); white-space: nowrap;"></textarea>
 
-                  </div>
+                  </div></div>
                 </dialog-list>
               </div>
             </tab>
 
             <tab label="Autor" icon="user circle">
-              <div style="padding: 8px">
+              <div style="padding: 8px;height: calc(100vh - 130px);overflow:auto">
                 <span class="dbminputlabel">Autor Texto</span>
                 <input id="author" class="round" type="text" placeholder="Deixe em branco para nenhum....">
 
@@ -331,7 +331,7 @@ module.exports = {
             </tab>
 
             <tab label="Footer" icon="map outline">
-              <div style="padding: 8px;">
+              <div style="padding: 8px;height: calc(100vh - 130px);overflow:auto">
                 <span class="dbminputlabel">Footer Icone URL / Nome do Anexo</span><br>
                 <input id="footerIconUrl" class="round" type="text" placeholder="Deixe em branco para nenhum...">
 
@@ -354,7 +354,7 @@ module.exports = {
   <div style="padding: 16px;text-align:center"id="xin4n">Webhook não suporta Botões</div>
     <div style="padding: 8px;" id="xin4">
 
-      <dialog-list id="buttons" fields='["name", "typeper", "type", "id", "row", "url", "emoji", "disabled", "mode", "time", "actions", "val1", "val2", "comparar", "formula"]' dialogResizable dialogTitle="Button Info" dialogWidth="600" dialogHeight="600" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemHeight="40px;" itemTextFunction="glob.formatItem2(data)" itemStyle="text-align: left; line-height: 40px;">
+      <dialog-list id="buttons" fields='["name", "typeper", "type", "id", "row", "url", "emoji", "mode", "time", "actions", "val1", "val2", "comparar", "formula"]' dialogResizable dialogTitle="Button Info" dialogWidth="600" dialogHeight="600" listLabel="Botões" listStyle="height: calc(100vh - 350px);" itemName="Button" itemHeight="40px;" itemTextFunction="glob.formatItem2(data)" itemStyle="text-align: left; line-height: 40px;">
         <div style="padding: 16px;">
 
         <tab-system>
@@ -368,12 +368,15 @@ module.exports = {
         <div style="height: calc(100vh - 138px);overflow-y: scroll;overflow-x: hidden;width:100%">
 
         <div style="padding: 16px;background:rgba(0,0,0,0.3)">
-        <span class="dbminputlabel">Exibir</span><br>
+        <span class="dbminputlabel">Exibição do botão</span><br>
         <select id="formula" class="round">
        
         <option value="0" selected>Sempre exibir o botão / Ignorar o comparador abaixo</option>
         <option value="1">Exibir o botão somente se o comparador for falso</option>
         <option value="2">Exibir o botão somente se o comparador for verdadeiro</option>
+        <option value="3">Desabilitar o botão somente se o comparador for falso</option>
+        <option value="4">Desabilitar o botão somente se o comparador for verdadeiro</option>
+        <option value="5">Desabilitar o botão</option>
       </select>
 
       <br>
@@ -484,9 +487,6 @@ module.exports = {
             
             </div>
             </div>
-            <center>
-              <dbm-checkbox id="disabled" style="margin-top: -30px;" label="Criar botão desativado"></dbm-checkbox>
-            <center>
           </tab>
           </tab-system>
 
@@ -1113,7 +1113,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         const embedData = embedDatas[i];
         const embed = new MessageEmbed();
         if (embedData.title) embed.setTitle(this.evalMessage(embedData.title, cache));
-        if (embedData.url) embed.setURL(this.evalMessage(embedData.url, cache));
+        if (this.evalMessage(embedData.url, cache)) embed.setURL(this.evalMessage(embedData.url, cache));
         if (embedData.colorrandom == true) {
           embed.setColor("RANDOM");
         }
@@ -1265,6 +1265,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         }
 
         var authorIcon = this.evalMessage(embedData.authorIcon, cache) || null;
+        var authorURL = this.evalMessage(embedData.authorUrl, cache) || null;
 
         if (!authorIcon?.toString().startsWith("http")) {
           authorIcon = "attachment://" + authorIcon;
@@ -1274,7 +1275,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           embed.setAuthor({
             name: this.evalMessage(embedData.author, cache),
             iconURL: authorIcon,
-            url: embedData.authorUrl ? this.evalMessage(embedData.authorUrl, cache) : null,
+            url: authorURL,
           });
         }
 
@@ -1322,7 +1323,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         val2 = this.evalMessage(fbot.val2, cache);
         result = true;
 
-        if (fbot.formula == "1" || fbot.formula == "2") {
+        if (fbot.formula == "1" || fbot.formula == "2" || fbot.formula == "3" || fbot.formula == "4") {
           const compare = parseInt(fbot.comparar, 10);
           if (compare !== 6) {
             val1 = this.evalIfPossible(val1, cache)
@@ -1420,14 +1421,43 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         }
 
 
-        if (result == true) {
+        if (result == true || fbot.formula == "3" || fbot.formula == "4" || fbot.formula == "5") {
 
           if (!data.buttons[i].name) data.buttons[i].name = "\u200b";
 
-          if (data.buttons[i]?.disabled) {
-            data.buttons[i].disabled = true;
-          } else {
-            data.buttons[i].disabled = false;
+
+          data.buttons[i].disabled = false
+
+          if (fbot.formula == "3") {
+
+            if (result == false) {
+              result = true;
+            } else {
+              result = false;
+            }
+
+            if (result == true) {
+              data.buttons[i].disabled = true
+            } else {
+              data.buttons[i].disabled = false
+            }
+
+          }
+          if (fbot.formula == "4") {
+
+
+            if (result == true) {
+              data.buttons[i].disabled = true
+            } else {
+              data.buttons[i].disabled = false
+            }
+
+          }
+
+          if (fbot.formula == "5") {
+
+            data.buttons[i].disabled = true
+
           }
 
           const button = data.buttons[i];
@@ -1869,5 +1899,5 @@ xinspace{padding:5px 0px 0px 0px;display:block}
   // functions you wish to overwrite.
   //---------------------------------------------------------------------
 
-  mod() {},
+  mod() { },
 };
