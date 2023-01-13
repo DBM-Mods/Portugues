@@ -13,7 +13,7 @@ module.exports = {
 
     subtitle: function (data, presets) {
         const storage = presets.variables;
-        const info = ['Número inteiro (Arredondado)', 'Número inteiro (Para cima)', 'Número inteiro (Para baixo)', 'Texto', 'Texto maiúsculo', 'Texto minúsculo', 'Texto sem espaços', 'Texto (Sem espaços de ambos os lados)', 'Número com pontuações', 'Número resumido', 'Formato de dinheiro R$', 'Formato de dinheiro U$', 'Formato de dinheiro €', 'Texto sem acentos', 'Texto começando com a letra maiuscula', 'Texto espaçado', 'Número resumido com pontuação', 'Número resumido para número', 'JSON', 'Formato de dinheiro ₽', 'Número inteiro mais próximo', 'Número absoluto'];
+        const info = ['Número inteiro (Arredondado)', 'Número inteiro (Para cima)', 'Número inteiro (Para baixo)', 'Texto', 'Texto maiúsculo', 'Texto minúsculo', 'Texto sem espaços', 'Texto (Sem espaços de ambos os lados)', 'Número com pontuações', 'Número resumido', 'Formato de dinheiro R$', 'Formato de dinheiro U$', 'Formato de dinheiro €', 'Texto sem acentos', 'Texto começando com a letra maiuscula', 'Texto espaçado', 'Número resumido com pontuação', 'Número resumido para número', 'Texto para JSON', 'Formato de dinheiro ₽', 'Número inteiro mais próximo', 'Número absoluto', 'Lista', 'JSON para texto', 'Número quebrado', 'Número'];
         const prse = parseInt(data.into);
         const info2 = [`Texto "${data.vAria}"`, `Texto EVAL "${data.vAriaeval}"`, `${storage[parseInt(data.storage0, 10)]} (${data.varName0})`]
         const prse2 = parseInt(data.tipo || 0);
@@ -34,7 +34,7 @@ module.exports = {
     variableStorage: function (data, varType) {
         const type = parseInt(data.storage);
         const prse2 = parseInt(data.into);
-        const info2 = ['Número', 'Número', 'Número', 'Texto', 'Texto', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'Dinheiro', 'Dinheiro', 'Dinheiro', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'JSON', 'Dinheiro', 'Número', 'Número'];
+        const info2 = ['Número', 'Número', 'Número', 'Texto', 'Texto', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'Dinheiro', 'Dinheiro', 'Dinheiro', 'Texto', 'Texto', 'Texto', 'Número', 'Número', 'JSON', 'Dinheiro', 'Número', 'Número', 'Lista', 'Texto', 'Número', 'Número'];
         if (type !== varType) return;
         return ([data.varName2, info2[prse2]]);
     },
@@ -45,7 +45,7 @@ module.exports = {
     html: function (isEvent, data) {
         return `
         <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-        <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.2</div>
+        <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.3</div>
 
         <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -106,8 +106,10 @@ module.exports = {
                     <option value="1">Número inteiro (Para cima - Ex: 5.52 = 6)</option>
                     <option value="2">Número inteiro (Para baixo - Ex: 5.52 = 5)</option>
                     <option value="20">Número inteiro mais próximo (Ex: 5.52 = 6)</option>
-                    <option value="21">Número absoluto (Ex: -50 = 50)</option>
+                    <option value="21">Número absoluto (Ex: -50.5 = 50.5)</option>
                     <option value="17">Número resumido para número (Ex: 1k = 1000)</option>
+                    <option value="25">Número</option>
+                    <option value="24">Número quebrado (Ex: 50.554554542 = 50.5 indicando as casas decimais)</option>
                     </optgroup>
                     <optgroup label="Números em String">
                     <option value="8">Número com pontuações (Ex: 1000 = 1.000)</option>
@@ -119,7 +121,8 @@ module.exports = {
                     <option value="11">Formato de dinheiro U$ (Dollar)</option>
                     <option value="12">Formato de dinheiro € (Euro)</option>
                     <option value="19">Formato de dinheiro ₽ (Ruble)</option>
-                    <option value="18">JSON</option>
+                    <option value="18">Texto para JSON</option>
+                    <option value="23">JSON para Texto</option>
                     <option value="22">Lista (Usar separador)</option>
                     </optgroup>
                     <optgroup label="Converter para String">
@@ -148,7 +151,7 @@ module.exports = {
             <br>
                 <div class="col-3 input-effect" style="width: 100%;">
                     <input id="separador" class="efeitoala" type="text" value="," style="padding:0px 5px;width: 100%;">
-                    <label><span name="alternador" class="dbminputlabel">Separador</span></label>
+                    <label><span name="alternador2" class="dbminputlabel">Separador</span></label>
                     <span class="focus-border"></span>
                 </div><br>
                 <br>
@@ -202,7 +205,7 @@ module.exports = {
             const dom = document.getElementById('xinxa')
             const dom2 = document.getElementById('xinxa2')
 
-            if (value == 0 || value == 1 || value == 2 || value == 20 || value == 21 || value == 17) {
+            if (value == 0 || value == 1 || value == 2 || value == 20 || value == 21 || value == 17 || value == 24 || value == 25) {
                 dom.style.display = null,
                     document.querySelector("[name='alternador']").innerText = (`Caso retorne NaN coloque`);
             } else {
@@ -211,6 +214,11 @@ module.exports = {
             if (value == 22) {
                 dom2.style.display = null
             } else { dom2.style.display = "none" }
+
+            if (value == 24) {
+                dom2.style.display = null,
+                    document.querySelector("[name='alternador2']").innerText = (`Casas decimais`);
+            }
 
         };
         glob.onChange1(document.getElementById('into'))
@@ -589,6 +597,27 @@ module.exports = {
                 break;
             case 22:
                 result = theVar.toString().split(new RegExp(separador))
+                break;
+            case 23:
+                result = JSON.stringify(theVar)
+                break;
+            case 24:
+                result = theVar.toFixed(parseFloat(separador))
+
+                if (valor) {
+                    if (result.toString() == "NaN") {
+                        result = parseFloat(valor)
+                    }
+                }
+                break;
+            case 25:
+                result = parseFloat(theVar)
+
+                if (valor) {
+                    if (result.toString() == "NaN") {
+                        result = parseFloat(valor)
+                    }
+                }
                 break;
         }
         if (result !== undefined) {
