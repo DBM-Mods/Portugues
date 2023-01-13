@@ -256,14 +256,16 @@ module.exports = {
         result = isUrl(val1);
       case 26:
         _this = this
+        
         const mail = require("email-existence");
         ignorar = 2
-        mail.check(val1, function(error, response){
+        mail.check(val1, function (error, response) {
           _this.executeResults(response, data?.branch ?? data, cache)
-      });
+        });
     }
-if(ignorar !== 2){
-    this.executeResults(result, data?.branch ?? data, cache)}
+    if (ignorar !== 2) {
+      this.executeResults(result, data?.branch ?? data, cache)
+    }
   },
 
 
