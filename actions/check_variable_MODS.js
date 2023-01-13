@@ -11,25 +11,25 @@ module.exports = {
   },
 
   subtitle(data, presets) {
-    if(data.descriptionx == true){
-    desccor = data.descriptioncolor
+    if (data.descriptionx == true) {
+      desccor = data.descriptioncolor
     } else {
       desccor = 'none'
     }
 
     return data.description
-    ? `<font style="color:${desccor}">${data.description}</font>`
-    : `<font style="color:${desccor}">${presets.getConditionsText(data)}</font>`
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${presets.getConditionsText(data)}</font>`
 
   },
 
-  fields: ["storage", "varName", "comparison", "value", "value2","branch","descriptioncolor","description","descriptionx"],
+  fields: ["storage", "varName", "comparison", "value", "value2", "branch", "descriptioncolor", "description", "descriptionx"],
 
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.5</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.6</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -74,6 +74,7 @@ module.exports = {
       <option value="22">É uma lista?</option>
       <option value="23">É um URL de imagem?</option>
       <option value="25">É um URL?</option>
+      <option value="26">O email existe?</option>
 		</select>
 	</div>
 	<table style="float: right;width: 65%;"><tr><td style="padding:0px 0px 0px 22px"><div style="width: 100%" id="directValue">
@@ -125,7 +126,7 @@ module.exports = {
         document.getElementById("directValue").style.display = null;
         document.getElementById("containerxin").style.display = null;
       }
-      if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21" || event.value === "22" || event.value === "23" || event.value == "24" || event.value === "25") {
+      if (event.value === "16" || event.value === "19" || event.value === "20" || event.value === "21" || event.value === "22" || event.value === "23" || event.value == "24" || event.value === "25" || event.value === "26") {
         document.getElementById("directValue").style.display = "none";
         document.getElementById("containerxin").style.display = "none";
       }
@@ -139,15 +140,15 @@ module.exports = {
       const xinelaslink = xinelaslinks[x];
       const url = xinelaslink.getAttribute('data-url');
       if (url) {
-       xinelaslink.setAttribute('title', url);
-       xinelaslink.addEventListener('click', (e) => {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
           e.stopImmediatePropagation();
           console.log(`Launching URL: [${url}] in your default browser.`);
           require('child_process').execSync(`start ${url}`);
         });
       }
     }
-  
+
 
   },
 
@@ -158,6 +159,7 @@ module.exports = {
     const varName = this.evalMessage(data.varName, cache);
     const variable = this.getVariable(type, varName, cache);
     let result = false;
+    let ignorar
 
     const val1 = variable;
     const compare = parseInt(data.comparison, 10);
@@ -185,75 +187,83 @@ module.exports = {
           result = val1.toString().includes(val2);
         }
         break;
-        case 6:
-          result = Boolean(val1.toString().match(new RegExp('^' + val2 + '$', 'i')));
-          break;
-        case 7:
-          result = Boolean(val1.toString().length > val2);
-          break;
-        case 8:
-          result = Boolean(val1.toString().length < val2);
-          break;
-        case 9:
-          result = Boolean(val1.toString().length == val2);
-          break;
-        case 10:
-          result = val1.toString().startsWith(val2);
-          break;
-        case 11:
-          result = val1.toString().endsWith(val2);
-          break;
-          case 12:
-          result = Boolean(val1 >= val2);
-          break;
-          case 13:
-          result = Boolean(val1 <= val2);
-          break;
-          case 14:
-          result = Boolean(val1.toString().match(new RegExp(val2)))
-          break;
-          case 15:
-          var numberj = val1.toString();
-          if(numberj >= val2 && val1 <= val3) {
-          result = numberj}
-          break;
-          case 16:
-          const conditions = ["Ä","Å","Á","Â","À","Ã","Ā","Ă","Ą","ā","ă","ą","ä","á","â","à","ã","É","Ê","Ë","È","Ė","Ę","Ě","Ĕ","Ē","ė","ę","ě","ĕ","ē","é","ê","ë","è","Í","Î","Ï","Ì","İ","Į","Ī","ı","į","ī","í","î","ï","ì","Ö","Ó","Ô","Ò","Õ","Ő","Ō","ő","ō","ö","ó","ô","ò","õ","Ü","Ú","Û","Ų","Ű","Ů","Ū","ų","ű","ů","ū","ü","ú","û","ù","Ç","Ć","Č","ç","ć","č","Ñ","Ň","Ņ","Ń","ñ","ň","ņ","ń","Ÿ","Ý","ý","Ź","Ż","Ž","ź","ż","ž","Ł","Ľ","Ļ","Ĺ","ł","ľ","ĺ","Ķ","ķ","Ģ","Ğ","ģ","ğ","Ď","ď","Ś","Š","Ş","ś","š","ş","Ť","Ț","Ţ","ť","ț","ţ","Ŕ","Ř","ŕ","ř"]
-          result = conditions.some(el => val1.includes(el));
-          break;
-          case 17:
-          const conditionsX = val2
-          result = conditionsX.some(els => val1.includes(els));
+      case 6:
+        result = Boolean(val1.toString().match(new RegExp('^' + val2 + '$', 'i')));
         break;
-        case 18:
-          const conditionsZ = val2
-          result = conditionsZ.some(elz => val1 == (elz));
+      case 7:
+        result = Boolean(val1.toString().length > val2);
         break;
-        case 19:
-          result = val1 % 2 == 0
+      case 8:
+        result = Boolean(val1.toString().length < val2);
         break;
-        case 20:
-          result = val1 % 2 == 1
+      case 9:
+        result = Boolean(val1.toString().length == val2);
         break;
-	case 21:
-          result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
-          break;
-        case 22:
-          result = Boolean(Array.isArray(val1));
-          break;
-	case 23:
-          const isImageUrl = require('is-image-url');
-          result = isImageUrl(val1);
-          break;
-        case 24:
-          result = typeof val1 === "string";
-          break;
-        case 25:
-          const isUrl = require("is-url");
-          result = isUrl(val1);
+      case 10:
+        result = val1.toString().startsWith(val2);
+        break;
+      case 11:
+        result = val1.toString().endsWith(val2);
+        break;
+      case 12:
+        result = Boolean(val1 >= val2);
+        break;
+      case 13:
+        result = Boolean(val1 <= val2);
+        break;
+      case 14:
+        result = Boolean(val1.toString().match(new RegExp(val2)))
+        break;
+      case 15:
+        var numberj = val1.toString();
+        if (numberj >= val2 && val1 <= val3) {
+          result = numberj
+        }
+        break;
+      case 16:
+        const conditions = ["Ä", "Å", "Á", "Â", "À", "Ã", "Ā", "Ă", "Ą", "ā", "ă", "ą", "ä", "á", "â", "à", "ã", "É", "Ê", "Ë", "È", "Ė", "Ę", "Ě", "Ĕ", "Ē", "ė", "ę", "ě", "ĕ", "ē", "é", "ê", "ë", "è", "Í", "Î", "Ï", "Ì", "İ", "Į", "Ī", "ı", "į", "ī", "í", "î", "ï", "ì", "Ö", "Ó", "Ô", "Ò", "Õ", "Ő", "Ō", "ő", "ō", "ö", "ó", "ô", "ò", "õ", "Ü", "Ú", "Û", "Ų", "Ű", "Ů", "Ū", "ų", "ű", "ů", "ū", "ü", "ú", "û", "ù", "Ç", "Ć", "Č", "ç", "ć", "č", "Ñ", "Ň", "Ņ", "Ń", "ñ", "ň", "ņ", "ń", "Ÿ", "Ý", "ý", "Ź", "Ż", "Ž", "ź", "ż", "ž", "Ł", "Ľ", "Ļ", "Ĺ", "ł", "ľ", "ĺ", "Ķ", "ķ", "Ģ", "Ğ", "ģ", "ğ", "Ď", "ď", "Ś", "Š", "Ş", "ś", "š", "ş", "Ť", "Ț", "Ţ", "ť", "ț", "ţ", "Ŕ", "Ř", "ŕ", "ř"]
+        result = conditions.some(el => val1.includes(el));
+        break;
+      case 17:
+        const conditionsX = val2
+        result = conditionsX.some(els => val1.includes(els));
+        break;
+      case 18:
+        const conditionsZ = val2
+        result = conditionsZ.some(elz => val1 == (elz));
+        break;
+      case 19:
+        result = val1 % 2 == 0
+        break;
+      case 20:
+        result = val1 % 2 == 1
+        break;
+      case 21:
+        result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
+        break;
+      case 22:
+        result = Boolean(Array.isArray(val1));
+        break;
+      case 23:
+        const isImageUrl = require('is-image-url');
+        result = isImageUrl(val1);
+        break;
+      case 24:
+        result = typeof val1 === "string";
+        break;
+      case 25:
+        const isUrl = require("is-url");
+        result = isUrl(val1);
+      case 26:
+        _this = this
+        const mail = require("email-existence");
+        ignorar = 2
+        mail.check(val1, function(error, response){
+          _this.executeResults(response, data?.branch ?? data, cache)
+      });
     }
-
-    this.executeResults(result, data?.branch ?? data, cache);
+if(ignorar !== 2){
+    this.executeResults(result, data?.branch ?? data, cache)}
   },
 
 
@@ -264,5 +274,5 @@ module.exports = {
   },
 
 
-  mod() {},
+  mod() { },
 };
