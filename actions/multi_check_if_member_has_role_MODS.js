@@ -67,17 +67,11 @@ module.exports = {
         "description",
         "descriptionx",
         "descriptioncolor",
+        "info",
         "branches",
-        "iffalse1",
-        "iffalse2",
-        "iffalse3",
-        "iffalse4",
-        "iffalse5",
-        "iffalseVal1",
-        "iffalseVal2",
-        "iffalseVal3",
-        "iffalseVal4",
-        "iffalseVal5",
+        "branch",
+        "iffalse",
+        "iffalseVal",
     ],
 
     //---------------------------------------------------------------------
@@ -94,7 +88,7 @@ module.exports = {
     html(isEvent, data) {
         return `
   <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
   <style>
     .dbmmodsbr1 {
@@ -126,80 +120,19 @@ module.exports = {
 
     <tab label="Condições" icon="list alternate">
 
-    <div style="height: calc(100vh - 200px); overflow: auto;">
-        <div style="margin-top: 10px;">
-            <span class="dbminputlabel">Caso o membro tenha todos os cargos</span>
-            <select id="iffalse1" class="round" onchange="glob.onComparisonChanged(this, 1)">
-                <option value="0" selecionado>Continuar ações</option>
-                <option value="1">Parar sequência de ação</option>
-                <option value="2">Ir para a ação</option>
-                <option value="3">Pular as próximas ações</option>
-                <option value="4">Ir para a âncora de ação</option>
-            </select>
-        </div>
+    <div style="margin-top: 10px;">
 
-        <div id="iffalseContainer1" style="display: none; margin-top: 10px;">
-            <span id="xinelas1" class="dbminputlabel">Para</span>
-            <br>
-            <input id="iffalseVal1" class="round" name="actionxinxyla" type="text">
-        </div>
+        <span class="dbminputlabel">Caso o membro</span>
+        <select id="info" class="round">
+            <option value="0">Tenha todos os cargos</option>
+            <option value="1">Não tenha todos os cargos</option>
+            <option value="2">Tenha um dos cargos</option>
+            <option value="3">Não tenha um dos cargos</option>
+        </select>
 
         <br>
 
-        <div style="margin-top: 10px;">
-            <span class="dbminputlabel">Caso o membro NÃO tenha todos os cargos</span>
-            <select id="iffalse2" class="round" onchange="glob.onComparisonChanged(this, 2)">
-                <option value="0" selecionado>Continuar ações</option>
-                <option value="1">Parar sequência de ação</option>
-                <option value="2">Ir para a ação</option>
-                <option value="3">Pular as próximas ações</option>
-                <option value="4">Ir para a âncora de ação</option>
-            </select>
-        </div>
-
-        <div id="iffalseContainer2" style="display: none; margin-top: 10px;">
-            <span id="xinelas2" class="dbminputlabel">Para</span>
-            <br>
-            <input id="iffalseVal2" class="round" name="actionxinxyla" type="text">
-        </div>
-
-        <br>
-
-        <div style="margin-top: 10px;">
-            <span class="dbminputlabel">Caso o membro tenha um dos cargos</span>
-            <select id="iffalse3" class="round" onchange="glob.onComparisonChanged(this, 3)">
-                <option value="0" selecionado>Continuar ações</option>
-                <option value="1">Parar sequência de ação</option>
-                <option value="2">Ir para a ação</option>
-                <option value="3">Pular as próximas ações</option>
-                <option value="4">Ir para a âncora de ação</option>
-            </select>
-        </div>
-
-        <div id="iffalseContainer3" style="display: none; margin-top: 10px;">
-            <span id="xinelas3" class="dbminputlabel">Para</span>
-            <br>
-            <input id="iffalseVal3" class="round" name="actionxinxyla" type="text">
-        </div>
-
-        <br>
-
-        <div style="margin-top: 10px;">
-            <span class="dbminputlabel">Caso o membro NÃO tenha um dos cargos</span>
-            <select id="iffalse4" class="round" onchange="glob.onComparisonChanged(this, 4)">
-                <option value="0" selecionado>Continuar ações</option>
-                <option value="1">Parar sequência de ação</option>
-                <option value="2">Ir para a ação</option>
-                <option value="3">Pular as próximas ações</option>
-                <option value="4">Ir para a âncora de ação</option>
-            </select>
-        </div>
-
-        <div id="iffalseContainer4" style="display: none; margin-top: 10px;">
-            <span id="xinelas4" class="dbminputlabel">Para</span>
-            <br>
-            <input id="iffalseVal4" class="round" name="actionxinxyla" type="text">
-        </div>
+        <conditional-input id="branch"></conditional-input>
     </div>
 
     </tab>
@@ -247,7 +180,7 @@ module.exports = {
 
         <div style="float: left; width: 40%;">
             <span class="dbminputlabel">Caso falhe</span>
-            <select id="iffalse5" class="round" onchange="glob.onComparisonChanged(this, 5)">
+            <select id="iffalse" class="round" onchange="glob.onComparisonChanged(this)">
                 <option value="0" selecionado>Continuar ações</option>
                 <option value="1">Parar sequência de ação</option>
                 <option value="2">Ir para a ação</option>
@@ -256,10 +189,10 @@ module.exports = {
             </select>
         </div>
 
-        <div id="iffalseContainer5" style="display: none; float: right; width: 55%;">
-            <span id="xinelas5" class="dbminputlabel">Para</span>
+        <div id="iffalseContainer" style="display: none; float: right; width: 55%;">
+            <span id="xinelas" class="dbminputlabel">Para</span>
             <br>
-            <input id="iffalseVal5" class="round" name="actionxinxyla" type="text">
+            <input id="iffalseVal" class="round" name="actionxinxyla" type="text">
         </div>
 
     </tab>
@@ -275,6 +208,10 @@ module.exports = {
     // is also run. This helps add modifications or setup reactionary
     // functions for the DOM elements.
     //---------------------------------------------------------------------
+
+    preInit(data, formatters) {
+        return formatters.compatibility_2_0_0_iftruefalse_to_branch(data);
+    },
 
     init() {
         const { glob, document } = this;
@@ -293,31 +230,27 @@ module.exports = {
             }
         }
 
-        glob.onComparisonChanged = function (event, number) {
+        glob.onComparisonChanged = function (event) {
             if (event.value > "1") {
-                document.getElementById("iffalseContainer" + number).style.display = null;
+                document.getElementById("iffalseContainer").style.display = null;
             } else {
-                document.getElementById("iffalseContainer" + number).style.display = "none";
+                document.getElementById("iffalseContainer").style.display = "none";
             }
 
             if (event.value == "2") {
-                document.querySelector(`[id='xinelas${number}']`).innerText = (`Número da ação`);
+                document.querySelector(`[id='xinelas']`).innerText = (`Número da ação`);
             }
 
             if (event.value == "3") {
-                document.querySelector(`[id='xinelas${number}']`).innerText = (`Pular ações`);
+                document.querySelector(`[id='xinelas']`).innerText = (`Pular ações`);
             }
 
             if (event.value == "4") {
-                document.querySelector(`[id='xinelas${number}']`).innerText = (`Nome da âncora`);
+                document.querySelector(`[id='xinelas']`).innerText = (`Nome da âncora`);
             }
         }
 
-        glob.onComparisonChanged(document.getElementById("iffalse1"), 1);
-        glob.onComparisonChanged(document.getElementById("iffalse2"), 2);
-        glob.onComparisonChanged(document.getElementById("iffalse3"), 3);
-        glob.onComparisonChanged(document.getElementById("iffalse4"), 4);
-        glob.onComparisonChanged(document.getElementById("iffalse5"), 5);
+        glob.onComparisonChanged(document.getElementById("iffalse"));
 
         glob.formatItem = function (data) {
             let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
@@ -369,6 +302,7 @@ module.exports = {
     async action(cache) {
         const data = cache.actions[cache.index];
         const _this = this;
+        const info = parseInt(data.info);
         var member = await this.getMemberFromData(data.member, data.varName, cache);
         const memberfind = this.evalMessage(data.member, cache);
         const find = this.evalMessage(data.varName, cache);
@@ -392,6 +326,7 @@ module.exports = {
 
         const branches = data.branches;
         let results = [];
+        let resultado = false;
 
         for (var i = 0; i < branches.length; i++) {
             const branch = branches[i];
@@ -403,48 +338,22 @@ module.exports = {
             results.push(result);
         }
 
-        function execute(number) {
-            const info = parseInt(data[`iffalse${number}`]);
-            const val = _this.evalMessage(data[`iffalseVal${number}`], cache);
-
-            switch (info) {
-                case 0:
-                    _this.callNextAction(cache);
-                    break;
-                case 1:
-                    _this.endActions(cache);
-                    break;
-                case 2:
-                    const index = Math.max(val - 1, 0);
-                    if (cache.actions[index]) {
-                        cache.index = index - 1;
-                        _this.callNextAction(cache);
-                    }
-                    break;
-                case 3:
-                    const index2 = cache.index + parseInt(val) + 1;
-                    if (cache.actions[index2]) {
-                        cache.index = index2 - 1;
-                        _this.callNextAction(cache);
-                    }
-                    break;
-                case 4:
-                    cache.goToAnchor(val);
-                    break;
-            }
+        switch (info) {
+            case 0:
+                resultado = results.every((r) => r == true);
+                break;
+            case 1:
+                resultado = results.every((r) => r == false);
+                break;
+            case 2:
+                resultado = results.some((r) => r == true);
+                break;
+            case 3:
+                resultado = results.some((r) => r == false);
+                break;
         }
 
-        if (results.every((r) => r == true)) {
-            execute(1);
-        } else if (results.every((r) => r == false)) {
-            execute(2);
-        } else if (results.some((r) => r == false)) {
-            execute(4);
-        } else if (results.some((r) => r == true)) {
-            execute(3);
-        } else {
-            execute(5);
-        }
+        this.executeResults(resultado, data?.branch ?? data, cache);
     },
 
     //---------------------------------------------------------------------
@@ -455,6 +364,11 @@ module.exports = {
     // In order to reduce conflicts between mods, be sure to alias
     // functions you wish to overwrite.
     //---------------------------------------------------------------------
+
+    modInit(data) {
+        this.prepareActions(data.branch?.iftrueActions);
+        this.prepareActions(data.branch?.iffalseActions);
+    },
 
     mod() { },
 };
