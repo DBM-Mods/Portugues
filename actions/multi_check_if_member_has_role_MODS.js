@@ -328,14 +328,18 @@ module.exports = {
         let results = [];
         let resultado = false;
 
-        for (var i = 0; i < branches.length; i++) {
-            const branch = branches[i];
-            const cargo = await this.getRoleFromData(branch.role, branch.varName, cache);
-            let result;
+        try {
+            for (var i = 0; i < branches.length; i++) {
+                const branch = branches[i];
+                const cargo = await this.getRoleFromData(branch.role, branch.varName, cache);
+                let result;
 
-            result = Boolean(member.roles.cache.has(cargo.id));
+                result = Boolean(member.roles.cache.has(cargo.id));
 
-            results.push(result);
+                results.push(result);
+            }
+        } catch {
+            return this.executeResults(false, data, cache);
         }
 
         switch (info) {
