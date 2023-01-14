@@ -292,27 +292,27 @@ module.exports = {
                 });
             }
         }
-        
+
         glob.onComparisonChanged = function (event, number) {
             if (event.value > "1") {
-              document.getElementById("iffalseContainer" + number).style.display = null;
+                document.getElementById("iffalseContainer" + number).style.display = null;
             } else {
-              document.getElementById("iffalseContainer" + number).style.display = "none";
+                document.getElementById("iffalseContainer" + number).style.display = "none";
             }
-      
+
             if (event.value == "2") {
-              document.querySelector(`[id='xinelas${number}']`).innerText = (`Número da ação`);
+                document.querySelector(`[id='xinelas${number}']`).innerText = (`Número da ação`);
             }
-      
+
             if (event.value == "3") {
-              document.querySelector(`[id='xinelas${number}']`).innerText = (`Pular ações`);
+                document.querySelector(`[id='xinelas${number}']`).innerText = (`Pular ações`);
             }
-      
+
             if (event.value == "4") {
-              document.querySelector(`[id='xinelas${number}']`).innerText = (`Nome da âncora`);
+                document.querySelector(`[id='xinelas${number}']`).innerText = (`Nome da âncora`);
             }
         }
-      
+
         glob.onComparisonChanged(document.getElementById("iffalse1"), 1);
         glob.onComparisonChanged(document.getElementById("iffalse2"), 2);
         glob.onComparisonChanged(document.getElementById("iffalse3"), 3);
@@ -323,7 +323,7 @@ module.exports = {
             let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
             const cargo = parseInt(data.role);
 
-            switch(cargo) {
+            switch (cargo) {
                 case 0:
                     result += "Checar Cargo Mencionado";
                     break;
@@ -372,21 +372,21 @@ module.exports = {
         var member = await this.getMemberFromData(data.member, data.varName, cache);
         const memberfind = this.evalMessage(data.member, cache);
         const find = this.evalMessage(data.varName, cache);
-    
-        if(memberfind == "100" || memberfind == "101") {
-    
-          const server = cache.server;
-    
-          if (!server?.members) {
-            return this.callNextAction(cache);
-          }
-    
-          if (server.memberCount !== server.members.cache.size) server.members.fetch();
-    
-          const members = server.members.cache;
-    
-          if(memberfind == "100") member = members.find((m) => m.user?.username === find);
-          if(memberfind == "101") member = members.get(find);
+
+        if (memberfind == "100" || memberfind == "101") {
+
+            const server = cache.server;
+
+            if (!server?.members) {
+                return this.callNextAction(cache);
+            }
+
+            if (server.memberCount !== server.members.cache.size) server.members.fetch();
+
+            const members = server.members.cache;
+
+            if (memberfind == "100") member = members.find((m) => m.user?.username === find);
+            if (memberfind == "101") member = members.get(find);
         }
 
 
@@ -407,7 +407,7 @@ module.exports = {
             const info = parseInt(data[`iffalse${number}`]);
             const val = _this.evalMessage(data[`iffalseVal${number}`], cache);
 
-            switch(info) {
+            switch (info) {
                 case 0:
                     _this.callNextAction(cache);
                     break;
@@ -417,15 +417,15 @@ module.exports = {
                 case 2:
                     const index = Math.max(val - 1, 0);
                     if (cache.actions[index]) {
-                      cache.index = index - 1;
-                      _this.callNextAction(cache);
+                        cache.index = index - 1;
+                        _this.callNextAction(cache);
                     }
                     break;
                 case 3:
                     const index2 = cache.index + parseInt(val) + 1;
                     if (cache.actions[index2]) {
-                      cache.index = index2 - 1;
-                      _this.callNextAction(cache);
+                        cache.index = index2 - 1;
+                        _this.callNextAction(cache);
                     }
                     break;
                 case 4:
@@ -434,14 +434,14 @@ module.exports = {
             }
         }
 
-        if(results.every((r) => r == true)) {
+        if (results.every((r) => r == true)) {
             execute(1);
-        } else if(results.every((r) => r == false)) {
+        } else if (results.every((r) => r == false)) {
             execute(2);
-        } else if(results.some((r) => r == true)) {
-            execute(3);
-        } else if(results.some((r) => r == false)) {
+        } else if (results.some((r) => r == false)) {
             execute(4);
+        } else if (results.some((r) => r == true)) {
+            execute(3);
         } else {
             execute(5);
         }
