@@ -22,7 +22,15 @@ module.exports = {
   //---------------------------------------------------------------------
 
   subtitle(data, presets) {
-    return `${presets.getConditionsText(data)}`;
+    if (data.descriptionx) {
+      desccor = data.descriptioncolor;
+    } else {
+      desccor = "none";
+    }
+
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${presets.getConditionsText(data)}</font>`
   },
 
   //---------------------------------------------------------------------
@@ -51,7 +59,7 @@ module.exports = {
   // are also the names of the fields stored in the action's JSON data.
   //---------------------------------------------------------------------
 
-  fields: ["member", "varName", "role", "varName2", "branch"],
+  fields: ["member", "varName", "role", "varName2", "branch", "description", "descriptionx", "descriptioncolor"],
 
   //---------------------------------------------------------------------
   // Command HTML
@@ -66,9 +74,51 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-<div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
-<div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
-      
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+      <table style="width:100%;"><tr>
+        <td>
+          <span class="dbminputlabel">Descrição da Action</span>
+          <br>
+          <input type="text" class="round" id="description" placeholder="Deixe vazio para remover">
+        </td>
+        <td style="padding:0px 0px 0px 10px;width:70px">
+          <div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px">
+            <dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox>
+          </div>
+          <br>
+          <input type="color" value="#ffffff" class="round" id="descriptioncolor">
+        </td>
+      </table>
+    </div>
+
+    <style>
+      .dbmmodsbr1 {
+        position: absolute;
+        bottom: 0px;
+        border: 0px solid rgba(50,50,50,0.7);
+        background: rgba(0,0,0,0.7);
+        color: #999;
+        padding: 5px;
+        left: 0px;
+        z-index: 999999;
+        cursor: pointer
+      }
+
+      .dbmmodsbr2 {
+        position: absolute;
+        bottom: 0px;
+        border: 0px solid rgba(50,50,50,0.7);
+        background: rgba(0,0,0,0.7);
+        color: #999;
+        padding: 5px;
+        right: 0px;
+        z-index: 999999;
+        cursor: pointer
+      }
+    </style>
 
 <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
 
@@ -106,7 +156,21 @@ module.exports = {
   // functions for the DOM elements.
   //---------------------------------------------------------------------
 
-  init() {},
+  init() {
+    const xinelaslinks = document.getElementsByClassName("xinelaslink");
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+  },
 
   //---------------------------------------------------------------------
   // Action Bot Function
@@ -124,7 +188,7 @@ module.exports = {
     const memberfind = this.evalMessage(data.member, cache);
     const find = this.evalMessage(data.varName, cache);
 
-    if(memberfind == "100" || memberfind == "101"){
+    if(memberfind == "100" || memberfind == "101") {
 
       const server = cache.server;
 
