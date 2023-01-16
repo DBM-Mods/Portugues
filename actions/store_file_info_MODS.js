@@ -9,7 +9,16 @@ module.exports = {
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
-  subtitle(data) {
+  subtitle(data, presets) {
+
+    if (data.descriptionx == true) {
+      desccor = data.descriptioncolor
+    } else {
+      desccor = 'none'
+    }
+
+    const storage = presets.variables;
+
     const info = [
       'Tamanho do arquivo (bytes)',
       'Formato do arquivo',
@@ -21,12 +30,15 @@ module.exports = {
       'Nome do arquivo',
       'Timestamp da criação do arquivo',
       'Data da criação do arquivo',
+      'Duração total da musica',
     ];
-    const storage = ['', 'Variavel Temporária', 'Variavel Servidor', 'Variavel Global'];
-    return `${info[parseInt(data.info, 10)]} - ${storage[parseInt(data.storage, 10)]} (${data.varName})`;
+
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${info[parseInt(data.info, 10)]} - ${storage[parseInt(data.storage, 10)]} (${data.varName})</font>`
   },
 
-  fields: ['filePath', 'info', 'storage', 'varName'],
+  fields: ['filePath', 'info', 'storage', 'varName', 'descriptioncolor', 'description', 'descriptionx'],
 
   variableStorage(data, varType) {
     if (parseInt(data.storage, 10) !== varType) return;
@@ -44,8 +56,8 @@ module.exports = {
       case 3:
         dataType = 'Timestamp';
         break;
-        case 4:
-          dataType = 'Data';
+      case 4:
+        dataType = 'Data';
         break;
       case 5:
         dataType = 'true/false';
@@ -62,14 +74,26 @@ module.exports = {
       case 9:
         dataType = 'Data';
         break;
+      case 10:
+        dataType = 'Numero';
+        break;
     }
     return [data.varName, dataType];
   },
 
   html(_isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.1</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+
+    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
 
 <span class="dbminputlabel">Local do Arquivo</span><br>
 <input class='round' id='filePath' placeholder='./resources/teste.txt' /><br>
@@ -86,6 +110,7 @@ module.exports = {
   <option value='7'>Nome do arquivo</option>
   <option value='8'>Timestamp da criação do arquivo</option>
   <option value='9'>Data da criação do arquivo</option>
+  <option value='10'>Duração total da musica</option>
 </select><br>
 <table>
 <tr>
@@ -98,14 +123,36 @@ module.exports = {
 </tr>
 
 </table>
+</div>
+
 <style>
+
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
 table{width:100%}
 .sep1{padding:0px 8px 0px 0px}
 .sep2{padding:0px 0px 0px 0px}
 </style>`;
   },
 
-  init() {},
+  init() {
+    const { glob, document } = this;
+
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+  },
 
   async action(cache) {
     const data = cache.actions[cache.index];
@@ -150,10 +197,18 @@ table{width:100%}
       case 9:
         result = fs.statSync(filePath).birthtime;
         break;
+      case 10:
+        const fs = require('fs');
+        const getMP3Duration = require('get-mp3-duration')
+
+        const buffer = fs.readFileSync(filePath)
+        result = getMP3Duration(buffer)
+
+        break;
     }
     this.storeValue(result, storage, varName, cache);
     this.callNextAction(cache);
   },
 
-  mod() {},
+  mod() { },
 };
