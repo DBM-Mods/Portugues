@@ -198,7 +198,6 @@ table{width:100%}
         result = fs.statSync(filePath).birthtime;
         break;
       case 10:
-        const fs = require('fs');
         const getMP3Duration = require('get-mp3-duration')
 
         const buffer = fs.readFileSync(filePath)
