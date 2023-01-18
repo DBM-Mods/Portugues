@@ -250,7 +250,7 @@ table{width:100%}
         break;
       case 10:
         var resultx = subscription.previouslist.map((s) => s.url)
-        result = resultx[0]
+        result = resultx[1]
         break;
       case 11:
         var resultx = subscription.queue.map((m) => m.url)
