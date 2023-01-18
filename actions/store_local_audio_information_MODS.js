@@ -20,14 +20,18 @@ module.exports = {
     const storage = presets.variables;
 
     const info = [
-      'Status do audio',
-      'Tempo atual do audio',
+      'Status do Audio',
+      'Tempo atual do Audio',
       'Volume do Audio',
       'Bitrate do Audio',
-      'Fila de audios',
+      'Fila de Audios',
       'Objeto',
-      'Total de musicas na fila',
-      'URL da música atual',
+      'Total de audios na fila',
+      'URL do audio atual',
+      'Total de audios na fila anterior',
+      'Fila de audios anteriores',
+      'Audio anterior',
+      'Próximo Audio',
     ];
 
     return data.description
@@ -65,6 +69,18 @@ module.exports = {
       case 7:
         dataType = 'Texto';
         break;
+      case 8:
+        dataType = 'lista';
+        break;
+      case 9:
+        dataType = 'Numero';
+        break;
+      case 10:
+        dataType = 'Texto';
+        break;
+      case 11:
+        dataType = 'Texto';
+        break;
     }
     return [data.varName, dataType];
   },
@@ -73,7 +89,7 @@ module.exports = {
     return `
 
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -88,13 +104,17 @@ module.exports = {
 	<span class="dbminputlabel">Informação</span><br>
 	<select id="info" class="round">
   <option value="5">Objeto</option>
-		<option value="0" selected>Status do audio</option>
-		<option value="1">Tempo atual do audio</option>
+		<option value="0" selected>Status do Audio</option>
+		<option value="1">Tempo atual do Audio</option>
 		<option value="2">Volume do Audio</option>
     <option value="3">Bitrate do Audio</option>
-    <option value="4">Fila de audios</option>
-    <option value="6">Total de musicas na fila</option>
-    <option value="7">URL da música atual [Requer bot.js modificado]</option>
+    <option value="4">Fila de Audios</option>
+    <option value="6">Total de audios na fila</option>
+    <option value="7">URL do audio atual</option>
+    <option value="8">Total de audios na fila anterior</option>
+    <option value="9">Fila de audios anteriores</option>
+    <option value="10">Audio anterior</option>
+    <option value="11">Próximo Audio</option>
 	</select>
 </div><br>
 
@@ -128,6 +148,10 @@ module.exports = {
 </tr>
 
 </table>
+<br><br>
+Esta action requer o bot.js modificado!<br>
+
+
 </div>
 <style>
 
@@ -217,6 +241,20 @@ table{width:100%}
         break;
       case 7:
         result = subscription.currentsong
+        break;
+      case 8:
+        result = subscription.previouslist.length
+        break;
+      case 9:
+        result = subscription.previouslist.map((s) => s.url)
+        break;
+      case 10:
+        var resultx = subscription.previouslist.map((s) => s.url)
+        result = resultx[0]
+        break;
+      case 11:
+        var resultx = subscription.queue.map((m) => m.url)
+        result = resultx[0]
         break;
     }
     if (result !== undefined) {
