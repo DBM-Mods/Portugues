@@ -2992,6 +2992,8 @@ Audio.Subscription = class {
     this.volume = 0.5;
     this.bitrate = 96;
     this.currentsong = null
+    this.currentsongobj = null
+    this.previouslist = []
 
     this.voiceConnection.on("stateChange", async (_, newState) => {
       if (newState.status === Audio.voice.VoiceConnectionStatus.Disconnected) {
@@ -3093,6 +3095,11 @@ Audio.Subscription = class {
     this.currentsong = this.queue[0].url
 
     const nextTrack = this.queue.shift();
+
+    this.currentsongobj = nextTrack
+
+    this.previouslist.unshift(nextTrack)
+
     try {
       const resource = await nextTrack.createAudioResource();
       if (Audio.inlineVolume && typeof resource?.volume?.volume === "number") {
