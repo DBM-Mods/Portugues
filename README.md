@@ -12,9 +12,12 @@ Coloque o arquivo "Português.json" na pasta do seu DBM "DISCO:\Steam\steamapps\
 
 # NODE JS Requerido
 
-| Informação    |                                                        Download Link                                                         |
-| ---------- | :--------------------------------------------------------------------------------------------------------------------------: |
-| Versão entre 17.4.0 a 17.9.4    |  [Download](https://nodejs.org/dist/v17.4.0/)   |
+Versão entre 17.4.0 a 17.9.1
+
+| Informação    |                      Site           |     Download Link           |
+| ---------- | :--------------------------------------------: |   :-------------------------------------------------: |
+| 17.4.0  |  [Site](https://nodejs.org/dist/v17.4.0/)   | [Download Windows](https://nodejs.org/dist/v17.4.0/node-v17.4.0-x64.msi)   |
+| 17.9.1  |  [Site](https://nodejs.org/dist/v17.9.1/)   | [Download Windows](https://nodejs.org/dist/v17.9.1/node-v17.9.1-x64.msi)   |
 
 
 # <b>Modulos requeridos e suas versões para que tudo funcione bem:</b><br>
