@@ -8,7 +8,7 @@
 
 # Instalação dos MODS
 Pegue todos os arquivos do ZIP e substitua para a pasta do seu Projeto<br>
-Coloque o arquivo "<br>
+Coloque o arquivo "Português.json" na pasta do seu DBM "DISCO:\Steam\steamapps\common\Discord Bot Maker\translations"<br>
 
 # NODE JS Requerido
 
