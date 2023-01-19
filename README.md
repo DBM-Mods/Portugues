@@ -27,6 +27,7 @@ canvas<br>
 qrcode<br>
 opentype.js<br>
 imagedata-filters<br>
+tesseract.js<br>
 libsodium-wrappers<br>
 @discordjs/voice<br>
 ffmpeg-static<br>
