@@ -35,6 +35,7 @@ request<br>
 fs<br>
 fs-extra<br>
 jsonpath<br>
+jsonpath-plus<br>
 path<br>
 moment<br>
 moment-timezone<br>
