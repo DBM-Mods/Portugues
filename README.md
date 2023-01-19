@@ -23,37 +23,5 @@ Versão entre 17.4.0 a 17.9.1
 
 
 # <b>Modulos requeridos e suas versões para que tudo funcione bem:</b><br>
-chalk@4.1.2<br>
-chart.js@3.9.1<br>
-canvas<br>
-qrcode<br>
-opentype.js<br>
-imagedata-filters<br>
-tesseract.js<br>
-libsodium-wrappers<br>
-@discordjs/voice<br>
-ffmpeg-static<br>
-request<br>
-fs<br>
-fs-extra<br>
-jsonpath<br>
-jsonpath-plus<br>
-path<br>
-moment<br>
-moment-timezone<br>
-weather-js<br>
-https<br>
-normalize-date<br>
-email-existence<br>
-is-image-url<br>
-is-url<br>
-valid-url<br>
-get-mp3-duration<br>
-sequelize<br>
-google-it<br>
-fast-sort<br>
-scrape-yt<br>
+> npm i chalk@4.1.2 chart.js@3.9.1 canvas qrcode opentype.js imagedata-filters tesseract.js libsodium-wrappers @discordjs/voice ffmpeg-static request fs fs-extra jsonpath jsonpath-plus path moment moment-timezone weather-js https normalize-date email-existence is-image-url is-url valid-url get-mp3-duration sequelize google-it fast-sort scrape-yt
 
-<br>
-
-> Use npm i nome do modulo
