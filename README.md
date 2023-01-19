@@ -19,6 +19,8 @@ Versão entre 17.4.0 a 17.9.1
 | 17.4.0  |  [Site](https://nodejs.org/dist/v17.4.0/)   | [Download Windows](https://nodejs.org/dist/v17.4.0/node-v17.4.0-x64.msi)   |
 | 17.9.1  |  [Site](https://nodejs.org/dist/v17.9.1/)   | [Download Windows](https://nodejs.org/dist/v17.9.1/node-v17.9.1-x64.msi)   |
 
+> Caso você tenha cometido o erro de instalar outra versão, instale a versão correta e depois apague a pasta "node_modules" do projeto do seu bot e instale todos os modulos requeridos pelos MODS
+
 
 # <b>Modulos requeridos e suas versões para que tudo funcione bem:</b><br>
 chalk@4.1.2<br>
