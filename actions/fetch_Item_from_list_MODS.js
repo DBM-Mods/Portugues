@@ -22,15 +22,15 @@ module.exports = {
       'Variável Servidor',
       'Variável Global',
     ];
-    if(data.descriptionx == true){
+    if (data.descriptionx == true) {
       desccor = data.descriptioncolor
-      } else {
-        desccor = 'none'
-      }
-    const info = ['exatamente igual a', 'inclua', 'matches regex','menor que', 'menor ou igual a', 'maior que', 'maior ou igual a', 'comprimento maior que', 'comprimento menor que', 'comprimento igual a', 'começa com', 'termina com','possui acentuações','É um URL de imagem','É um URL','Não é um URL de imagem','Não é um URL','É um número','É um texto','Que inclua ~ Ignorar Minúscula/Maiúscula'];
+    } else {
+      desccor = 'none'
+    }
+    const info = ['exatamente igual a', 'inclua', 'matches regex', 'menor que', 'menor ou igual a', 'maior que', 'maior ou igual a', 'comprimento maior que', 'comprimento menor que', 'comprimento igual a', 'começa com', 'termina com', 'possui acentuações', 'É um URL de imagem', 'É um URL', 'Não é um URL de imagem', 'Não é um URL', 'É um número', 'É um texto', 'Que inclua ~ Ignorar Minúscula/Maiúscula', 'Que inclua ~ Ignorar acentuações','Que inclua ~ Ignorar acentuações & Minúscula e Maiúscula</option'];
     return data.description
-    ? `<font style="color:${desccor}">${data.description}</font>`
-    : `<font style="color:${desccor}">Buscar ${info[parseInt(data.buscadoxin)]} "${data.item}" em "${data.varName}"</font>`;
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">Buscar ${info[parseInt(data.buscadoxin)]} "${data.item}" em "${data.varName}"</font>`;
   },
 
   variableStorage(data, varType) {
@@ -39,12 +39,12 @@ module.exports = {
     return [data.varName2, 'Number'[prse2]];
   },
 
-  fields: ['list', 'varName', 'buscadoxin', 'item', 'storage', 'varName2','iffalse', 'iffalseVal', 'descriptioncolor', 'description', 'descriptionx'],
+  fields: ['list', 'varName', 'buscadoxin', 'item', 'storage', 'varName2', 'iffalse', 'iffalseVal', 'descriptioncolor', 'description', 'descriptionx'],
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.7</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.8</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -72,6 +72,8 @@ module.exports = {
 				<option value="0" selected>Exatamente igual a</option>
 				<option value="1">Que inclua</option>
         <option value="19">Que inclua ~ Ignorar Minúscula/Maiúscula</option>
+        <option value="20">Que inclua ~ Ignorar acentuações</option>
+        <option value="21">Que inclua ~ Ignorar acentuações & Minúscula e Maiúscula</option>
         <option value="2">Matches Regex</option>
         <option value="7">O comprimento é maior que</option>
         <option value="8">O comprimento é menor que</option>
@@ -147,26 +149,26 @@ table{width:100%}
         document.getElementById("iffalseContainer").style.display = "none";
       }
       if (event.value == "2") {
-      document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
+        document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
+      }
+      if (event.value == "3") {
+        document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
+      }
+      if (event.value == "4") {
+        document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
+      }
     }
-    if (event.value == "3") {
-      document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
-    }
-    if (event.value == "4") {
-      document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
-    }
-  }
 
     glob.onComparisonChanged(document.getElementById("iffalse"));
 
 
     glob.onComparisonChanged2 = function (event) {
-      if (event.value <= 11 || event.value == 19) {
+      if (event.value <= 11 || event.value >= 19) {
         document.getElementById("xingoxyla").style.display = null;
       } else {
         document.getElementById("xingoxyla").style.display = "none";
       }
-  }
+    }
 
     glob.onComparisonChanged2(document.getElementById("buscadoxin"));
 
@@ -188,8 +190,8 @@ table{width:100%}
       const xinelaslink = xinelaslinks[x];
       const url = xinelaslink.getAttribute('data-url');
       if (url) {
-       xinelaslink.setAttribute('title', url);
-       xinelaslink.addEventListener('click', (e) => {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
           e.stopImmediatePropagation();
           console.log(`Launching URL: [${url}] in your default browser.`);
           require('child_process').execSync(`start ${url}`);
@@ -199,7 +201,7 @@ table{width:100%}
 
   },
 
-    async action(cache) {
+  async action(cache) {
     const data = cache.actions[cache.index];
     const storage = parseInt(data.list, 10);
     const varName = this.evalMessage(data.varName, cache);
@@ -208,17 +210,17 @@ table{width:100%}
     const item = this.evalMessage(data.item, cache);
 
     let result;
-    
-		switch (buscadoxin) {
-			case 0:
-				result = list.findIndex((i) => i === item);
-				break;
-			case 1:
-				result = list.findIndex((i) => i.includes(item));
-				break;
-			case 2:
-				result = list.findIndex((i) => Boolean(i.match(new RegExp('^' + item + '$', 'i'))));
-				break;
+
+    switch (buscadoxin) {
+      case 0:
+        result = list.findIndex((i) => i === item);
+        break;
+      case 1:
+        result = list.findIndex((i) => i.includes(item));
+        break;
+      case 2:
+        result = list.findIndex((i) => Boolean(i.match(new RegExp('^' + item + '$', 'i'))));
+        break;
       case 3:
         result = list.findIndex((i) => parseFloat(i) < parseFloat(item));
         break;
@@ -245,56 +247,70 @@ table{width:100%}
         break;
       case 11:
         result = list.findIndex((i) => i.endsWith(item));
-        case 12:
-          const conditions = ["Ä","Å","Á","Â","À","Ã","Ā","Ă","Ą","ā","ă","ą","ä","á","â","à","ã","É","Ê","Ë","È","Ė","Ę","Ě","Ĕ","Ē","ė","ę","ě","ĕ","ē","é","ê","ë","è","Í","Î","Ï","Ì","İ","Į","Ī","ı","į","ī","í","î","ï","ì","Ö","Ó","Ô","Ò","Õ","Ő","Ō","ő","ō","ö","ó","ô","ò","õ","Ü","Ú","Û","Ų","Ű","Ů","Ū","ų","ű","ů","ū","ü","ú","û","ù","Ç","Ć","Č","ç","ć","č","Ñ","Ň","Ņ","Ń","ñ","ň","ņ","ń","Ÿ","Ý","ý","Ź","Ż","Ž","ź","ż","ž","Ł","Ľ","Ļ","Ĺ","ł","ľ","ĺ","Ķ","ķ","Ģ","Ğ","ģ","ğ","Ď","ď","Ś","Š","Ş","ś","š","ş","Ť","Ț","Ţ","ť","ț","ţ","Ŕ","Ř","ŕ","ř"]
+      case 12:
+        const conditions = ["Ä", "Å", "Á", "Â", "À", "Ã", "Ā", "Ă", "Ą", "ā", "ă", "ą", "ä", "á", "â", "à", "ã", "É", "Ê", "Ë", "È", "Ė", "Ę", "Ě", "Ĕ", "Ē", "ė", "ę", "ě", "ĕ", "ē", "é", "ê", "ë", "è", "Í", "Î", "Ï", "Ì", "İ", "Į", "Ī", "ı", "į", "ī", "í", "î", "ï", "ì", "Ö", "Ó", "Ô", "Ò", "Õ", "Ő", "Ō", "ő", "ō", "ö", "ó", "ô", "ò", "õ", "Ü", "Ú", "Û", "Ų", "Ű", "Ů", "Ū", "ų", "ű", "ů", "ū", "ü", "ú", "û", "ù", "Ç", "Ć", "Č", "ç", "ć", "č", "Ñ", "Ň", "Ņ", "Ń", "ñ", "ň", "ņ", "ń", "Ÿ", "Ý", "ý", "Ź", "Ż", "Ž", "ź", "ż", "ž", "Ł", "Ľ", "Ļ", "Ĺ", "ł", "ľ", "ĺ", "Ķ", "ķ", "Ģ", "Ğ", "ģ", "ğ", "Ď", "ď", "Ś", "Š", "Ş", "ś", "š", "ş", "Ť", "Ț", "Ţ", "ť", "ț", "ţ", "Ŕ", "Ř", "ŕ", "ř"]
 
-          result = list.findIndex((i) => conditions.some(el => i.includes(el)));
+        result = list.findIndex((i) => conditions.some(el => i.includes(el)));
         break;
-      	case 13:
-          isImageUrl = require('is-image-url');
-          result = list.findIndex((i) => isImageUrl(i));
-          break;
-        case 14:
-          isUrl = require("is-url");
-          result = list.findIndex((i) => isUrl(i));
+      case 13:
+        isImageUrl = require('is-image-url');
+        result = list.findIndex((i) => isImageUrl(i));
         break;
-      	case 15:
-          isImageUrl = require('is-image-url');
-          not = false
-          for(var ix = 0; ix < list.length; ix++){
-            if(isImageUrl(list[ix]) == false && not == false){
+      case 14:
+        isUrl = require("is-url");
+        result = list.findIndex((i) => isUrl(i));
+        break;
+      case 15:
+        isImageUrl = require('is-image-url');
+        not = false
+        for (var ix = 0; ix < list.length; ix++) {
+          if (isImageUrl(list[ix]) == false && not == false) {
+            result = [ix]
+            not = true
+          }
+        }
+        break;
+      case 16:
+        isUrl = require("is-url");
+        not = false
+        for (var ix = 0; ix < list.length; ix++) {
+          if (isUrl(list[ix]) == false && not == false) {
+            result = [ix]
+            not = true
+          }
+        }
+        break;
+      case 17:
+        result = list.findIndex((i) => Boolean(!isNaN(parseFloat(i.toString().replace(",", ".")))));
+        break;
+      case 18:
+        result = list.findIndex((i) => typeof (i) == "string");
+        not = false
+        for (var ix = 0; ix < list.length; ix++) {
+          if (not == false) {
+            itens = Math.floor(list[ix])
+            if (itens.toString() == "NaN") {
+              not = true
               result = [ix]
-              not = true
-          }}
-          break;
-        case 16:
-          isUrl = require("is-url");
-          not = false
-          for(var ix = 0; ix < list.length; ix++){
-            if(isUrl(list[ix]) == false && not == false){
-              result = [ix]
-              not = true
-          }}
+            }
+          }
+        }
         break;
-        case 17:
-          result = list.findIndex((i) => Boolean(!isNaN(parseFloat(i.toString().replace(",", ".")))));
-          break;
-        case 18:
-          result = list.findIndex((i) => typeof(i) == "string");
-          not = false
-          for(var ix = 0; ix < list.length; ix++){
-            if(not == false){
-              itens = Math.floor(list[ix])
-              if(itens.toString() == "NaN"){ 
-              not = true
-              result = [ix]}
-          }}
+      case 19:
+        result = list.findIndex((i) => i.toLowerCase().includes(item.toLowerCase()));
         break;
-        case 19:
-          result = list.findIndex((i) => i.toLowerCase().includes(item.toLowerCase()));
-          break;
-		}
-    
+      case 20:
+        var listarem = list.map(item => item.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+        tratar = item.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        result = listarem.findIndex((i) => i.includes(tratar));
+        break;
+      case 21:
+        var listarem = list.map(item => item.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+        tratar = item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        result = listarem.findIndex((i) => i.toLowerCase().includes(tratar));
+        break;
+    }
+
 
     if (result !== undefined) {
       const varName2 = this.evalMessage(data.varName2, cache);
@@ -302,9 +318,10 @@ table{width:100%}
       this.storeValue(result, storage2, varName2, cache);
     }
 
-    if(result == -1){this.executeResults(false, data, cache)}else{
-    this.callNextAction(cache)}
+    if (result == -1) { this.executeResults(false, data, cache) } else {
+      this.callNextAction(cache)
+    }
   },
 
-  mod() {},
+  mod() { },
 };
