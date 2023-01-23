@@ -84,7 +84,7 @@ module.exports = {
   html(_isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -110,7 +110,7 @@ module.exports = {
   <option value='7'>Nome do arquivo</option>
   <option value='8'>Timestamp da criação do arquivo</option>
   <option value='9'>Data da criação do arquivo</option>
-  <option value='10'>Duração total da musica</option>
+  <option value='10'>Duração total da musica em segundos</option>
 </select><br>
 <table>
 <tr>
@@ -162,6 +162,7 @@ table{width:100%}
     const fs = require('fs');
     const varName = this.evalMessage(data.varName, cache);
     const filePath = this.evalMessage(data.filePath, cache);
+    var sincronizar = 0
 
     if (!filePath) return this.displayError('Insert a file path!');
 
@@ -198,14 +199,39 @@ table{width:100%}
         result = fs.statSync(filePath).birthtime;
         break;
       case 10:
-        const getMP3Duration = require('get-mp3-duration')
+        const fs = require('fs');
+        const child_process = require('child_process');
 
-        const buffer = fs.readFileSync(filePath)
-        result = getMP3Duration(buffer)
+        sincronizar = 1
+
+        async function getDuration(filePath) {
+          return new Promise((resolve, reject) => {
+            child_process.execFile('ffprobe.exe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', filePath], (err, stdout, stderr) => {
+              if (err) {
+                reject(err);
+              } else {
+                const duration = parseInt(stdout);
+                console.log(duration)
+                resolve(duration);
+              }
+            });
+          });
+        }
+
+        try {
+          result = await getDuration(filePath);
+          this.storeValue(result, storage, varName, cache);
+        } catch (err) {
+          console.error(err);
+        }
 
         break;
     }
-    this.storeValue(result, storage, varName, cache);
+
+    if (sincronizar == 0) {
+      this.storeValue(result, storage, varName, cache)
+    }
+
     this.callNextAction(cache);
   },
 
