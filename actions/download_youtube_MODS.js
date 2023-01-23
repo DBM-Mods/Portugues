@@ -19,15 +19,22 @@ module.exports = {
 
     return data.description
       ? `<font style="color:${desccor}">${data.description}</font>`
-      : `<font style="color:${desccor}">Baixar "${data.url}" para "${data.filePath}${data.fileName}</font>`
+      : `<font style="color:${desccor}">Baixar "${data.url}" para "${data.filePath}</font>`
   },
 
-  fields: ["url", "addType", "fileName", "tit", "filePath", "iffalse", "iffalseVal", "descriptioncolor", "description", "descriptionx"],
+  variableStorage(data, varType) {
+    const type = parseInt(data.storage, 10);
+    if (type !== varType) return;
+    let dataType = "Texto";
+    return [data.varName, dataType];
+  },
 
-  html() {
+  fields: ["url", "addType", "fileName", "tit", "filePath", "iffalse", "iffalseVal", "descriptioncolor", "description", "descriptionx", "storage", "varName"],
+
+  html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -75,6 +82,21 @@ module.exports = {
 <input id="fileName" class="round" type="text" placeholder="musica.mp3">
 </td>
 </tr></table>
+
+<br>
+
+<table><tr><td class="col1">
+  <span class="dbminputlabel">Armazenar local em</span><br>
+    <select id="storage" class="round">
+      ${data.variables[1]}
+    </select>
+    </td>
+    <td class="col2">
+  <div id="varNameContainer2">
+  <span class="dbminputlabel">Nome da variavel</span><br>
+    <input id="varName" class="round" type="text">
+  </div>
+  </td></tr></table>
  
 
 <br>
@@ -97,7 +119,9 @@ module.exports = {
 </div>
 
 <style>
-
+table{width:100%}
+.col1{width:38%;padding:0px 10px 0px 0px}
+.col2{width:60%}
 .dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
 .dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
 
@@ -123,7 +147,7 @@ module.exports = {
       }
     }
 
-    
+
     glob.onChange1 = function (event) {
       const value = parseInt(event.value, 10);
       if (value == 0) {
@@ -190,15 +214,15 @@ module.exports = {
         title = title.replaceAll("/", "")
         title = title.replaceAll("/\/", "")
         title = title.replaceAll('.', '')
-        title = title.replaceAll('.', '')
-        title = title.replaceAll(':', '')
+        title = title.replaceAll(':', '-')
         title = title.replaceAll('*', '')
         title = title.replaceAll('?', '')
         title = title.replaceAll('"', '')
         title = title.replaceAll('<', '')
-        title = title.replaceAll('|', '')
+        title = title.replaceAll('>', '')
+        title = title.replaceAll('|', '-')
 
-        if(title.length == 0){title = "audio"}
+        if (title.length == 0) { title = "audio" }
 
         if (tit == 1) {
           title = title + '.mp3'
@@ -208,12 +232,20 @@ module.exports = {
         }
 
       }
+      
 
       ytdl.getInfo(url).then(info => {
-
-        ytdl(url, { filter: `${filtermenu}` }).pipe(fs.createWriteStream(savePath + title));
-        this.callNextAction(cache);
-      }).catch(function (error) {
+        const writeStream = fs.createWriteStream(savePath + title);
+        ytdl(url, { filter: `${filtermenu}` }).pipe(writeStream);
+    
+        writeStream.on("close", () => {
+            const storage = parseInt(data.storage, 10);
+            const varName = this.evalMessage(data.varName, cache);
+            this.storeValue(savePath + title, storage, varName, cache);
+    
+            this.callNextAction(cache);
+        });
+    }).catch(function (error) {
         console.log(error);
         _this.executeResults(false, data, cache)
       });
