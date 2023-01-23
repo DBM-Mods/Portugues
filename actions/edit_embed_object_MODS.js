@@ -20,7 +20,7 @@ module.exports = {
     const storage = presets.variables;
 
     return data.description
-    ? `<font style="color:${desccor}">${data.description}</font>`
+    ? `<font style="color:${desccor}">${data.descriptionsub}</font>`
     : `<font style="color:${desccor}">${storage[parseInt(data.storage, 10)]} (${data.varName})</font>`
   },
 
@@ -63,19 +63,19 @@ module.exports = {
     'fieldName',
     'fieldDescription',
     'fieldInline',
-    , 'descriptioncolor', 'description', 'descriptionx',
+    , 'descriptioncolor', 'descriptionsub', 'descriptionx',
   ],
 
   html(_isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.5</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
     <div id="flutuador" style="padding:0px 0px 15px 0px">
 <table style="width:100%;"><tr>
-<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="descriptionsub" placeholder="Deixe vazio para remover"></td>
 <td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
 </tr></table>
 </div>
