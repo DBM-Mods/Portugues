@@ -211,7 +211,6 @@ table{width:100%}
                 reject(err);
               } else {
                 const duration = parseInt(stdout);
-                console.log(duration)
                 resolve(duration);
               }
             });
