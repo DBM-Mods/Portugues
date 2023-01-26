@@ -30,7 +30,7 @@ module.exports = {
     return [data.varName, 'String'];
   },
 
-  fields: ["text", "acao", "key", "storage", "varName", "storage2", "varName2", "descriptioncolor", "description", "descriptionx"],
+  fields: ["text", "acao", "key", "storage", "varName", "descriptioncolor", "description", "descriptionx"],
 
 
   html(isEvent, data) {
