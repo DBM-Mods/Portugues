@@ -14,7 +14,7 @@ module.exports = {
   subtitle(data, presets) {
 
     if (data.descriptionx == true) {
-      desccor = data.color
+      desccor = data.descriptioncolor
     } else {
       desccor = 'none'
     }
