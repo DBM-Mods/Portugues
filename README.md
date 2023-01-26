@@ -23,5 +23,5 @@ Versão entre 17.4.0 a 17.9.1
 
 
 # <b>Modulos requeridos e suas versões para que tudo funcione bem:</b><br>
-> npm i chalk@4.1.2 chart.js@3.9.1 canvas qrcode opentype.js imagedata-filters tesseract.js libsodium-wrappers @discordjs/voice ffmpeg-static request fs fs-extra jsonpath jsonpath-plus path moment moment-timezone weather-js https normalize-date email-existence is-image-url is-url valid-url get-mp3-duration sequelize google-it fast-sort scrape-yt
+> npm i chalk@4.1.2 chart.js@3.9.1 canvas qrcode opentype.js imagedata-filters tesseract.js libsodium-wrappers @discordjs/voice ffmpeg-static request fs fs-extra jsonpath jsonpath-plus path moment moment-timezone weather-js https normalize-date email-existence is-image-url is-url valid-url get-mp3-duration sequelize google-it fast-sort scrape-yt crypto-js
 
