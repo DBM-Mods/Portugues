@@ -64,7 +64,7 @@ module.exports = {
 <select id="tit" class="round" onchange="glob.onChange1(this)">
 			<option value="0">Colocar nome no arquivo</option>
 			<option value="1" selected>Usar título como nome + mp3</option>
-      <option value="2" selected>Usar título como nome + mp4</option>
+      <option value="2">Usar título como nome + mp4</option>
 		</select>
 </td>
 </tr></table>
