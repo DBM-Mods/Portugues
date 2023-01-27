@@ -1,7 +1,6 @@
 module.exports = {
   name: "Control Audio MOD",
   section: "Audio Control",
-
   meta: {
     version: '2.1.6',
     preciseCheck: true,
