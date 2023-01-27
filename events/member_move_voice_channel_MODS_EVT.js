@@ -14,7 +14,6 @@ module.exports = {
     DBM.Events.memberMoveVoiceChannelmod = function memberMoveVoiceChannel(oldVoiceState, newVoiceState) {
       if (!Bot.$evts['Member Move Voice Channel MOD']) return;
 
-      console.log(newVoiceState)
       const oldChannel = oldVoiceState.channel;
       const newChannel = newVoiceState.channel;
       if (!oldChannel || !newChannel || !oldChannel.id || !newChannel.id || oldChannel.id === newChannel.id) return;
