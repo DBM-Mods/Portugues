@@ -2,6 +2,14 @@ module.exports = {
   name: "Control Audio MOD",
   section: "Audio Control",
 
+  meta: {
+    version: '2.1.6',
+    preciseCheck: true,
+    author: '[XinXyla - 172782058396057602]',
+    authorUrl: 'https://github.com/DBM-Mods/Portugues',
+    downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
+  },
+
   subtitle(data, presets) {
 
     if (data.descriptionx == true) {
