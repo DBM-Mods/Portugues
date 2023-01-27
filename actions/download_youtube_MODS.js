@@ -34,7 +34,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -194,6 +194,12 @@ table{width:100%}
     const type = parseInt(data.addType, 10);
     const tit = parseInt(data.tit, 10);
     let filtermenu
+
+    if (!fs.existsSync(savePath)) {
+      fs.mkdirSync(savePath, {
+          recursive: true
+      });
+  }
 
 
     switch (type) {
