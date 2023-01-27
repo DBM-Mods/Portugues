@@ -144,7 +144,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 2.9</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.0</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -655,7 +655,7 @@ module.exports = {
   <tab label="Arquivos" icon="file image">
     <div style="padding: 8px;">
 
-      <dialog-list id="attachments" fields='["tipo", "url", "canvasvar", "canvasnome", "compress", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="400" dialogHeight="480" listLabel="Arquivos" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="glob.formatItem(data)" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="attachments" fields='["tipo", "url", "canvasvar", "canvasnome", "compress", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="500" dialogHeight="480" listLabel="Arquivos" listStyle="height: calc(100vh - 350px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="glob.formatItem(data)" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 16px;" onmouseover="(function(){
 
           var aselect = document.getElementById('tipo');
@@ -672,7 +672,7 @@ module.exports = {
           document.getElementById('xinxyla3').style.display = 'block';
     }   
     
-    if (avalue == 2) {
+    if (avalue == 2 || avalue == 3) {
       document.getElementById('xinxyla2').style.display = 'none';
       document.getElementById('xinxyla1').style.display = 'block';
       document.getElementById('xinxyla3').style.display = 'none';
@@ -698,7 +698,7 @@ module.exports = {
           document.getElementById('xinxyla3').style.display = 'block';
     }   
     
-    if (avalue == 2) {
+    if (avalue == 2 || avalue == 3) {
       document.getElementById('xinxyla2').style.display = 'none';
       document.getElementById('xinxyla1').style.display = 'block';
       document.getElementById('xinxyla3').style.display = 'none';
@@ -708,6 +708,7 @@ module.exports = {
           <option value="0">Anexo Local/Web URL</option>
           <option value="1">Canvas</option>
           <option value="2">DBM Imagens</option>
+          <option value="3">Enviar Variavel</option>
         </select>
         <br><div id="xinxyla2">
           <span class="dbminputlabel">Anexo Local/Web URL</span>
@@ -923,6 +924,9 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           break;
         case "2":
           result += "DBM Imagens: " + data.canvasnome;
+          break;
+        case "3":
+          result += "Enviar variavel: " + data.canvasnome;
           break;
       }
       result += "</div>";
@@ -1742,6 +1746,22 @@ xinspace{padding:5px 0px 0px 0px;display:block}
             }
             messageOptions.files.push(msgAttachment);
           }
+        }
+        if (data.attachments[i].tipo == "3") {
+          const attachment = data.attachments[i];
+          const varnamer = this.evalMessage(attachment?.canvasnome, cache);
+          const varid = this.evalMessage(attachment?.canvasvar, cache);
+          const conteudodata = this.getVariable(varid, varnamer, cache)
+          const spoiler = !!attachment?.spoiler;
+          var name = this.evalMessage(attachment?.name, cache)
+          if(name == ""){name = "texto.txt"}
+          const buffer = Buffer.from(conteudodata)
+          const msgAttachment = new MessageAttachment(buffer, name);
+          if (spoiler) {
+            msgAttachment.setSpoiler(true);
+          }
+          messageOptions.files.push(msgAttachment);
+
         }
       }
     }
