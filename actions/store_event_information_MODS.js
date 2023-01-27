@@ -38,7 +38,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
    
     <div id="xinxyla001">
 <dialog-list id="branches" fields='["info", "storage", "varName"]' dialogResizable dialogTitle="Armazenar informações do evento" dialogWidth="500" dialogHeight="220" listLabel="Armazenar informações do evento" listStyle="height: calc(100vh - 200px);" itemName="Item" itemHeight="28px;" itemTextFunction="glob.formatItem(data)" itemStyle="line-height: 28px;">
@@ -50,6 +50,15 @@ module.exports = {
         <option value="0" selected>Membro que entrou no canal</option>
         <option value="1">Canal ao qual o membro ingressou</option>
         <option value="2">Canal ao qual o membro estava anteriormente</option>
+        </optgroup>
+        <optgroup label="Delete Bulk Messages MOD">
+        <option value="10">Lista de objetos das mensagens apagadas</option>
+        <option value="11">Total de mensagens apagadas</option>
+        <option value="12">Lista de timestamp das mensagens apagadas</option>
+        <option value="13">Lista de conteúdos das mensagens apagadas</option>
+        <option value="14">Lista dos autores das mensagens apagadas</option>
+        <option value="15">Lista de IDs dos autores das mensagens apagadas</option>
+        <option value="16">Data - Autor : Mensagem apagada</option>
         </optgroup>
       </select>
       
@@ -115,6 +124,27 @@ module.exports = {
         case 2:
           result += `Canal ao qual o membro estava anteriormente`;
           break;
+        case 10:
+          result += "Lista de objetos das mensagens apagadas";
+          break;
+        case 11:
+          result += "Total de mensagens apagadas";
+          break;
+        case 12:
+          result += `Lista de timestamp das mensagens apagadas`;
+          break;
+        case 13:
+          result += "Lista de conteúdos das mensagens apagadas";
+          break;
+        case 14:
+          result += "Lista dos autores das mensagens apagadas";
+          break;
+        case 15:
+          result += `Lista de IDs dos autores das mensagens apagadas`;
+          break;
+        case 16:
+          result += `Data - Autor : Mensagem apagada`;
+          break;
       }
 
       result += ` > ${storage[parseInt(data.storage, 10)]} (${data.varName}) </div>`;
@@ -126,6 +156,7 @@ module.exports = {
   action(cache) {
     const data = cache.actions[cache.index];
     const branches = data.branches;
+    let not
 
     eventogate = this.getVariable(1, "EVENTOvarGATE", cache)
 
@@ -139,24 +170,89 @@ module.exports = {
           if (eventogate == "100") {
             result = this.getVariable(1, "EVENTOvar1", cache)
           } else {
-            console.log(`ERRO ${cache.index}# > Store Event Information MOD: Coloque a action no evento correto`)
+            not = 1
           }
           break;
         case 1:
           if (eventogate == "100") {
             result = this.getVariable(1, "EVENTOvar2", cache)
           } else {
-            console.log(`ERRO ${cache.index}# > Store Event Information MOD: Coloque a action no evento correto`)
+            not = 1
           }
           break;
         case 2:
           if (eventogate == "100") {
             result = this.getVariable(1, "EVENTOvar3", cache)
           } else {
-            console.log(`ERRO ${cache.index}# > Store Event Information MOD: Coloque a action no evento correto`)
+            not = 1
+          }
+          break;
+        case 10:
+          if (eventogate == "101") {
+            coletar = this.getVariable(1, "EVENTOvar1", cache)
+            result = coletar.map(v => v)
+          } else {
+            not = 1
+          }
+          break;
+        case 11:
+          if (eventogate == "101") {
+            coletar = this.getVariable(1, "EVENTOvar1", cache)
+            result = coletar.map(v => v).length
+          } else {
+            not = 1
+          }
+          break;
+        case 12:
+          if (eventogate == "101") {
+            coletar = this.getVariable(1, "EVENTOvar1", cache)
+            result = coletar.map(v => v.createdTimestamp)
+          } else {
+            not = 1
+          }
+          break;
+        case 13:
+          if (eventogate == "101") {
+            coletar = this.getVariable(1, "EVENTOvar1", cache)
+            result = coletar.map(v => v.content)
+          } else {
+            not = 1
+          }
+          break;
+        case 14:
+          if (eventogate == "101") {
+            coletar = this.getVariable(1, "EVENTOvar1", cache)
+            result = coletar.map(v => v.author)
+          } else {
+            not = 1
+          }
+          break;
+        case 15:
+          if (eventogate == "101") {
+            coletar = this.getVariable(1, "EVENTOvar1", cache)
+            result = coletar.map(v => v.author.id)
+          } else {
+            not = 1
+          }
+          break;
+        case 16:
+          if (eventogate == "101") {
+            moment = require("moment-timezone");
+            coletar = this.getVariable(1, "EVENTOvar1", cache)
+            result = coletar.map(v =>
+              v = (
+
+                moment(v.createdTimestamp).tz('America/Sao_Paulo').format("DD/MM/YYYY HH:mm:ss")
+
+                + ' - ' + v.author.username + '#' + v.author.discriminator + ' : ' + v.content)
+            ).reverse().join('\n');
+          } else {
+            not = 1
           }
           break;
       }
+
+      if (not == 1) { console.log(`ERRO ${cache.index}# > Store Event Information MOD: Coloque a action no evento correto`) }
 
       let varName = this.evalMessage(branch.varName, cache);
       let storage = parseInt(branch.storage, 10);
