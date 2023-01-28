@@ -22,21 +22,25 @@ module.exports = {
       : `<font style="color:${desccor}">${presets.getMemberText(data.member, data.varName)}</font>`
   },
 
-  fields: ["opcao", "member", "varName", "tempo", "time", "reason", "iffalse", "iffalseVal", "descriptioncolor", "description", "descriptionx"],
+  variableStorage(data, varType) {
+    const type = parseInt(data.errs, 10);
+    if (type !== varType) return;
+    return [data.errv, "Texto ~ Erro" ];
+  },
+
+  fields: ["opcao", "member", "varName", "tempo", "time", "reason", "iffalse", "iffalseVal", "descriptioncolor", "description", "descriptionx", "errcmd", "errs", "errv", "actionserr"],
 
   html(isEvent, data) {
     return `
+    
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
 
-    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+    <div style="width: 100%; padding:1px 5px;height: calc(100vh - 160px);overflow:auto">
 
-    <div id="flutuador" style="padding:0px 0px 15px 0px">
-<table style="width:100%;"><tr>
-<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
-<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
-</tr></table>
-</div>
+    <tab-system style="margin-top: 5px;">
+    <tab label="Ação" icon="align left">
+    <div style="padding: 8px;height: calc(100vh - 210px);overflow-y: auto;overflow-x: hidden;width:100%">
 
     <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
 
@@ -71,8 +75,25 @@ module.exports = {
 
 <br>
 
-    <div>
-<div style="float: left; width: 38%">
+</div>
+</tab>
+<tab label="Config" icon="settings">
+<div style="padding: 8px;height: calc(100vh - 210px);overflow-y: auto;overflow-x: hidden;width:100%">
+
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+<br>
+
+<span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(0,0,0,0.2)">
+<dbm-checkbox id="errcmd" label="Exibir o erro no console" checked></dbm-checkbox>
+</div>
+
+<br>
+
+<div>
+<div style="float: left; width: 38%" id="xinext">
 <span class="dbminputlabel">Se ocorrer um erro</span><br>
 <select id="iffalse" class="round" onchange="glob.onComparisonChanged(this)">
 <option value="0" selected>Continuar ações</option>
@@ -80,15 +101,36 @@ module.exports = {
 <option value="2">Ir para a ação</option>
 <option value="3">Pular as próximas ações</option>
 <option value="4">Ir para a âncora de ação</option>
+<option value="5">Realizar ações e parar</option>
+<option value="6">Realizar ações e continuar</option>
 </select>
+<br>
+</div>
+<div id="iffalseContainer" style="display: none; float: right; width: 60%;"><div id="xincontrol"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+</div><br></div>
+<div id="containerxin" style="width:100%">
+<br><br>
+<action-list-input id="actionserr" height="calc(100vh - 450px)"></action-list-input>
 </div>
 
-<div id="iffalseContainer" style="display: none; float: right; width: 60%;"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+<div style="padding-top:8px">
+<table>
+  <tr>
+  <td class="col1"><span class="dbminputlabel">Mensagem de erro em</span><br>
+  <select id="errs" value="0" class="round" onchange="glob.variableChange(this, 'varNameContainer2')">
+    ${data.variables[0]}
+  </select></td>
+  <td class="col2"><div id="varNameContainer2"><span class="dbminputlabel">Nome da Variavel</span><br>
+  <input id="errv" class="round" type="text"></div></td>
+  </tr>
+  </table>
 </div>
-
-</div>
-
     
+    </div>
+
+    </tab>
+    </tab-system>
+
     </div>
 
 <style>
@@ -135,6 +177,15 @@ table{width:100%}
       } else {
         document.getElementById("iffalseContainer").style.display = "none";
       }
+      if (event.value == "5" || event.value == "6") {
+        document.getElementById("containerxin").style.display = null;
+        document.getElementById("xincontrol").style.display = "none";
+        document.getElementById("xinext").style.width = "100%";
+      } else {
+        document.getElementById("containerxin").style.display = "none";
+        document.getElementById("xincontrol").style.display = null;
+        document.getElementById("xinext").style.width = "38%";
+      }
       if (event.value == "2") {
         document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
       }
@@ -147,6 +198,7 @@ table{width:100%}
     }
 
     glob.onComparisonChanged(document.getElementById("iffalse"));
+    glob.variableChange(document.getElementById('errs'), 'varNameContainer2');
 
   },
 
@@ -184,7 +236,21 @@ table{width:100%}
 
       const server = cache.server;
       if (!server?.members) {
-        this.callNextAction(cache);
+
+        this.storeValue("Cache do Servidor não encontrado", data.errs, this.evalMessage(data.errv, cache), cache)
+        if(data.iffalse == "5" || data.iffalse == "6"){
+
+          if(data.iffalse == "5"){
+            this.executeSubActions(data.actionserr, cache)
+            } else 
+            {
+            this.executeSubActionsThenNextAction(data.actionserr, cache)
+            }
+
+        } else {
+          this.executeResults(false, data, cache);
+        }
+
         return;
       }
       if (server.memberCount !== server.members.cache.size) server.members.fetch();
@@ -197,11 +263,47 @@ table{width:100%}
     if (Array.isArray(member)) {
       this.callListFunc(member, "disableCommunicationUntil", [time, reason])
         .then(() => this.callNextAction(cache))
-        .catch((err) => this.displayError(data, cache, err) + this.executeResults(false, data, cache));
+        .catch((err) => {
+
+          if (data.errcmd === true){this.displayError(data, cache, err)}
+
+          this.storeValue(err, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+          if(data.iffalse == "5" || data.iffalse == "6"){
+
+            if(data.iffalse == "5"){
+            this.executeSubActions(data.actionserr, cache)
+            } else 
+            {
+            this.executeSubActionsThenNextAction(data.actionserr, cache)
+            }
+
+          } else {
+            this.executeResults(false, data, cache);
+          }
+        });
     } else if (member?.disableCommunicationUntil) {
       member.disableCommunicationUntil(time, reason)
         .then(() => this.callNextAction(cache))
-        .catch((err) => this.displayError(data, cache, err) + this.executeResults(false, data, cache));
+        .catch((err) => {
+          
+          if (data.errcmd === true){this.displayError(data, cache, err)}
+
+          this.storeValue(err, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+          if(data.iffalse == "5" || data.iffalse == "6"){
+
+            if(data.iffalse == "5"){
+              this.executeSubActions(data.actionserr, cache)
+              } else 
+              {
+              this.executeSubActionsThenNextAction(data.actionserr, cache)
+              }
+
+          } else {
+            this.executeResults(false, data, cache);
+          }
+        });
     } else {
       this.callNextAction(cache);
     }
