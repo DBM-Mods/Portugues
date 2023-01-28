@@ -7,15 +7,30 @@ module.exports = {
     author: '[XinXyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
-    },
-
-  variableStorage (data, varType) {
-    const type = parseInt(data.storage)
-    if (type !== varType) return
-    return ([data.varName, 'JSON Object'])
   },
 
-  subtitle (data) {
+
+  variableStorage(data, varType) {
+    const type = parseInt(data.storage)
+    const type2 = parseInt(data.errs)
+    let vars = []
+
+    if (type == varType) {
+      vars.push(data.varName);
+      vars.push("JSON Object");
+    }
+
+    if (type2 == varType) {
+      vars.push(data.errv);
+      vars.push("Texto ~ Erro");
+    }
+
+    if (vars.length > 0) {
+      return vars;
+    }
+  },
+
+  subtitle(data) {
     let sub = ''
     if (data.store_source_conn_storage !== 0) {
       sub += ''
@@ -34,45 +49,50 @@ module.exports = {
       sub += `${storage[parseInt(data.storage)]}(${data.varName}) `
     }
 
-     if(data.descriptionx == true){
+    if (data.descriptionx == true) {
       desccor = data.descriptioncolor
-      } else {
-        desccor = 'none'
-      }
+    } else {
+      desccor = 'none'
+    }
 
     return data.description
-    ? `<font style="color:${desccor}">${data.description}</font>`
-    : `<font style="color:${desccor}">${sub}</font>`
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${sub}</font>`
   },
 
   fields: [
-  'storage',
-  'stringifyOutput',
-  'formato',
-  'varName',
-  'hostname',
-  'port',
-  'username',
-  'password',
-  'database',
-  'query',
-  'path',
-  'otype',
-  'source_conn_storage',
-  'source_conn_varName',
-  'store_source_conn_storage',
-  'store_source_conn_varName',
-  'debugMode',
-  'descriptioncolor',
-  'description',
-  'descriptionx',
-  'iffalse',
-  'iffalseVal'],
+    'storage',
+    'stringifyOutput',
+    'formato',
+    'varName',
+    'hostname',
+    'port',
+    'username',
+    'password',
+    'database',
+    'query',
+    'path',
+    'otype',
+    'source_conn_storage',
+    'source_conn_varName',
+    'store_source_conn_storage',
+    'store_source_conn_varName',
+    'debugMode',
+    'descriptioncolor',
+    'description',
+    'descriptionx',
+    'iffalse',
+    'iffalseVal',
+    'errcmd',
+    'errs',
+    'errv',
+    'actionserr'
+  ],
 
-  html (isEvent, data) {
+  html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.2</div>
 
     <tab-system>
 
@@ -80,10 +100,18 @@ module.exports = {
     <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
 
    <span class="dbminputlabel">Sequência de consulta / Ação</span>
-   <textarea id="query" class="round" placeholder="SELECT * FROM 'users'" style="width: 100%;" type="textarea" rows="6" cols="19"></textarea>
+   <textarea id="query" class="round" placeholder="SELECT * FROM 'users'" style="width: 100%;" type="textarea" rows="5" cols="19"></textarea>
+
+    <xinspace>
+    <span class="dbminputlabel">Resultado da Ação ~ Saída</span><br>
+    <select id="stringifyOutput" class="round" onchange="glob.onComparisonChanged3(this)">
+      <option value="0" selected>Tudo ou Json Path / Nome da Coluna</option>
+      <option value="1">Converter para String JSON</option>
+    </select>
 
     <xinspace>
 
+    <div id="seppath">
     <table><tr><td class="col3">
     <span class="dbminputlabel">Json Path / Nome da Coluna</span> 
     <input id="path" class="round"; style="width: 100%;" placeholder="Deixe em branco para armazenar tudo" type="text">
@@ -98,7 +126,7 @@ module.exports = {
     </select>
     </td></tr></table>
 
-    <xinspace>
+    <xinspace></div>
 
     <table><tr><td class="col1">
     <span class="dbminputlabel">Resultados em</span><br />
@@ -189,6 +217,16 @@ module.exports = {
 
 
       <div id="storeSource"><br />
+
+      <span class="dbminputlabel">Modo de depuração</span><br>
+        <select id="debugMode" class="round">
+          <option value="0" selected="selected">Desabilitado</option>
+          <option value="1">Habilitar todos</option>
+          <option value="2">Habilitar somente dados da conexão</option>
+          <option value="3">Habilitar somente dados da Consulta/Ação</option>
+          <option value="4">Habilitar somente o resultado do Nome da Coluna</option>
+        </select>
+<br>
       
       <table><tr><td class="col1">
       <span class="dbminputlabel">Armazenar conexão</span><br />
@@ -221,37 +259,48 @@ module.exports = {
     </div>
 
 
-    <span class="dbminputlabel">Modo de depuração</span><br>
-        <select id="debugMode" class="round">
-          <option value="0" selected="selected">Desabilitado</option>
-          <option value="1">Habilitar todos</option>
-          <option value="2">Habilitar somente dados da conexão</option>
-          <option value="3">Habilitar somente dados da Consulta/Ação</option>
-          <option value="4">Habilitar somente o resultado do Nome da Coluna</option>
-        </select>
+    
+
+<span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(0,0,0,0.2)">
+<dbm-checkbox id="errcmd" label="Exibir o erro no console" checked></dbm-checkbox>
+</div>
+
 <br>
-      
-      <span class="dbminputlabel">Saída do resultado</span><br>
-      <select id="stringifyOutput" class="round">
-        <option value="0" selected="selected">Normal</option>
-        <option value="1">Converter para String JSON</option>
-      </select>
-
-      <br>
 
 
-      <div style="float: left; width: 40%">
+      <div>
+      <div style="float: left; width: 38%" id="xinext">
       <span class="dbminputlabel">Se ocorrer um erro</span><br>
       <select id="iffalse" class="round" onchange="glob.onComparisonChanged2(this)">
-      <option value="0">Continuar ações</option>
-      <option value="1" selecionado>Parar sequência de ação</option>
+      <option value="0" selected>Continuar ações</option>
+      <option value="1">Parar sequência de ação</option>
       <option value="2">Ir para a ação</option>
       <option value="3">Pular as próximas ações</option>
       <option value="4">Ir para a âncora de ação</option>
+      <option value="5">Realizar ações e parar</option>
+      <option value="6">Realizar ações e continuar</option>
       </select>
+      <br>
       </div>
-      <div id="iffalseContainer" style="display: none; float: right; width: 55%;"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+      <div id="iffalseContainer" style="display: none; float: right; width: 60%;"><div id="xincontrol"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+      </div><br></div>
+      <div id="containerxin" style="width:100%">
+      <br><br>
+      <action-list-input id="actionserr" height="calc(100vh - 450px)"></action-list-input>
+      </div>
       
+      <div style="padding-top:8px">
+      <table>
+        <tr>
+        <td class="col1"><span class="dbminputlabel">Mensagem de erro em</span><br>
+        <select id="errs" value="0" class="round" onchange="glob.variableChange(this, 'varerrsv')">
+          ${data.variables[0]}
+        </select></td>
+        <td class="col2"><div id="varerrsv"><span class="dbminputlabel">Nome da Variavel</span><br>
+        <input id="errv" class="round" type="text"></div></td>
+        </tr>
+        </table>
+      </div>
     
 
       </div>
@@ -357,10 +406,10 @@ module.exports = {
 </style>`
   },
 
-  init () {
+  init() {
     const { glob, document } = this
 
-    function getType (key) {
+    function getType(key) {
       switch (key) {
         case '0':
           return 'mysql'
@@ -381,18 +430,40 @@ module.exports = {
       } else {
         document.getElementById("iffalseContainer").style.display = "none";
       }
+      if (event.value == "5" || event.value == "6") {
+        document.getElementById("containerxin").style.display = null;
+        document.getElementById("xincontrol").style.display = "none";
+        document.getElementById("xinext").style.width = "100%";
+      } else {
+        document.getElementById("containerxin").style.display = "none";
+        document.getElementById("xincontrol").style.display = null;
+        document.getElementById("xinext").style.width = "38%";
+      }
       if (event.value == "2") {
-      document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
+        document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
       }
       if (event.value == "3") {
-      document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
+        document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
       }
       if (event.value == "4") {
-      document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
+        document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
       }
     }
 
     glob.onComparisonChanged2(document.getElementById("iffalse"));
+    glob.variableChange(document.getElementById('errs'), 'varerrsv');
+
+
+
+    glob.onComparisonChanged3 = function (event) {
+      if (event.value == "0") {
+        document.getElementById("seppath").style.display = null;
+      } else {
+        document.getElementById("seppath").style.display = "none";
+      }
+    }
+
+    glob.onComparisonChanged3(document.getElementById("stringifyOutput"));
 
     try {
       const type = document.getElementById('otype').value
@@ -423,7 +494,7 @@ module.exports = {
         document.getElementById('checkConnection_lbl').setAttribute('class', 'ui basic label yellow')
         document.getElementById('checkConnection_lbl').innerHTML = 'Checando...'
 
-        function isValid (bool, message = false) {
+        function isValid(bool, message = false) {
           document.getElementById('checkConnection_lbl').setAttribute('class', `ui basic label ${bool ? 'green' : 'red'}`)
           document.getElementById('checkConnection_lbl').innerHTML = ((bool ? 'Válido' : 'Inválido') + (message ? `: ${message}` : ''))
         }
@@ -442,21 +513,21 @@ module.exports = {
       }
       document.getElementById('database').setAttribute('placeholder', document.getElementById('otype').value === '3' ? './mydb.sql' : 'dbm')
 
-       // interactive links
-       const xinelaslinks = document.getElementsByClassName('xinelaslink');
-       for (let x = 0; x < xinelaslinks.length; x++) {
-         const xinelaslink = xinelaslinks[x];
-         const url = xinelaslink.getAttribute('data-url');
-         if (url) {
+      // interactive links
+      const xinelaslinks = document.getElementsByClassName('xinelaslink');
+      for (let x = 0; x < xinelaslinks.length; x++) {
+        const xinelaslink = xinelaslinks[x];
+        const url = xinelaslink.getAttribute('data-url');
+        if (url) {
           xinelaslink.setAttribute('title', url);
           xinelaslink.addEventListener('click', (e) => {
-             e.stopImmediatePropagation();
-             console.log(`Launching URL: [${url}] in your default browser.`);
-             require('child_process').execSync(`start ${url}`);
-           });
-         }
-       }
-     } catch (error) {
+            e.stopImmediatePropagation();
+            console.log(`Launching URL: [${url}] in your default browser.`);
+            require('child_process').execSync(`start ${url}`);
+          });
+        }
+      }
+    } catch (error) {
       // write any init errors to errors.txt in dbm's main directory
       // eslint-disable-next-line no-undef
       alert(`[Run SQL Query] Error: \n\n ${error.message}\n\n Check \n ''${require('path').resolve('dbmmods_dbm_errors.txt')}' for more details.`)
@@ -471,7 +542,7 @@ module.exports = {
         document.getElementById("varNameContainer2").style.display = null;
         document.getElementById("authSection").style.display = "none";
       }
-  }
+    }
 
     glob.onComparisonChanged(document.getElementById("source_conn_storage"));
 
@@ -481,11 +552,11 @@ module.exports = {
     glob.variableChange(document.getElementById('store_source_conn_storage'), 'varNameContainer3')
 
 
-   
+
 
   },
 
-  action (cache) {
+  action(cache) {
     // fields: ["storage", "varName", "hostname", "port", "username", "password", "database", "query", "otype",
     // "source_conn_storage", "storage_conn_varName", "store_source_conn_storage", "store_storage_conn_varName", "debugMode"],
 
@@ -505,7 +576,7 @@ module.exports = {
     const password = this.evalMessage(data.password, cache)
     const database = this.evalMessage(data.database, cache)
     const query = this.evalMessage(data.query, cache)
-    const path = this.evalMessage(data.path, cache)
+    var path = this.evalMessage(data.path, cache)
     const varName = this.evalMessage(data.varName, cache)
 
     const storage = parseInt(data.storage)
@@ -513,9 +584,10 @@ module.exports = {
     const DEBUG = parseInt(data.debugMode)
 
     const stringifyOutput = parseInt(data.stringifyOutput)
+    if (stringifyOutput == 1) { path = "" }
 
     const Mods = this.getMods()
-    function getType (key) {
+    function getType(key) {
       let res
       switch (key) {
         case '0':
@@ -599,7 +671,7 @@ module.exports = {
                 if (DEBUG == 1 || DEBUG == 4) console.dir(jsonOut)
               }
             }
-            if (DEBUG == 1 || DEBUG == 3 ) {
+            if (DEBUG == 1 || DEBUG == 3) {
               console.log('Run SQL Query MOD: Dados da consulta/ação')
               for (let i = 0; i < results.length; i++) {
                 console.log(`[${i}] = ${JSON.stringify(results[i])}`)
@@ -610,43 +682,101 @@ module.exports = {
             }
             out = jsonOut || results
 
-            if(data.formato == "0" || data.formato == "undefined" || data.formato == undefined){
-              this.storeValue(stringifyOutput ? JSON.stringify(out) : out, storage, varName, cache)
+            if (stringifyOutput == 1) {
+              out = JSON.stringify(out)
             }
-            if(data.formato == "1"){
-            out = parseFloat(out)
-            this.storeValue(out, storage, varName, cache)
+
+            if (data.formato == "0" || data.formato == "undefined" || data.formato == undefined) {
+              this.storeValue(out, storage, varName, cache)
             }
-            if(data.formato == "2"){
+            if (data.formato == "1") {
+              out = parseFloat(out)
+              this.storeValue(out, storage, varName, cache)
+            }
+            if (data.formato == "2") {
               out = out.toString()
               this.storeValue(out, storage, varName, cache)
-              }
-            if(data.formato == "3"){
+            }
+            if (data.formato == "3") {
               out = out.toString().split(new RegExp(','))
               this.storeValue(out, storage, varName, cache)
-              }
+            }
 
-             this.callNextAction(cache)
+            this.callNextAction(cache)
           }).catch((err) => {
             if (err && err.original) {
-              this.storeValue({ message: err.original, error: err.original }, storage, varName, cache)
-              console.error(err.original)
-              this.executeResults(false, data, cache)
+
+              if (data.errcmd === true) {
+                console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name)
+                console.log(err.original)
+              }
+
+              this.storeValue(err.original, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+              if (data.iffalse == "5" || data.iffalse == "6") {
+
+                if (data.iffalse == "5") {
+                  this.executeSubActions(data.actionserr, cache)
+                } else {
+                  this.executeSubActionsThenNextAction(data.actionserr, cache)
+                }
+
+              } else {
+                this.executeResults(false, data, cache);
+              }
+
+
             }
           })
         } else {
           this.callNextAction(cache)
         }
       }).catch((err) => {
-        console.log('Não foi possível conectar ao banco de dados')
-        console.error(err)
-        this.executeResults(false, data, cache)
+
+        if (data.errcmd === true) {
+          console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name)
+          console.log(err)
+        }
+
+        this.storeValue(err, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+        if (data.iffalse == "5" || data.iffalse == "6") {
+
+          if (data.iffalse == "5") {
+            this.executeSubActions(data.actionserr, cache)
+          } else {
+            this.executeSubActionsThenNextAction(data.actionserr, cache)
+          }
+
+        } else {
+          this.executeResults(false, data, cache);
+        }
+
+
       })
     } catch (error) {
-      console.log(`SQL Mod Error: ${error.stack ? error.stack : error}`)
-      this.executeResults(false, data, cache)
+
+      if (data.errcmd === true) {
+        console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name)
+        console.log(`${error.stack ? error.stack : error}`)
+      }
+
+      this.storeValue(error, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+      if (data.iffalse == "5" || data.iffalse == "6") {
+
+        if (data.iffalse == "5") {
+          this.executeSubActions(data.actionserr, cache)
+        } else {
+          this.executeSubActionsThenNextAction(data.actionserr, cache)
+        }
+
+      } else {
+        this.executeResults(false, data, cache);
+      }
+
     }
   },
 
-  mod () {}
+  mod() { }
 }
