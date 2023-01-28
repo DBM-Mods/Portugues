@@ -103,7 +103,7 @@ module.exports = {
    <textarea id="query" class="round" placeholder="SELECT * FROM 'users'" style="width: 100%;" type="textarea" rows="5" cols="19"></textarea>
 
     <xinspace>
-    <span class="dbminputlabel">Resultado da Ação ~ Saída</span><br>
+    <span class="dbminputlabel">Resultado da Consulta ~ Saída</span><br>
     <select id="stringifyOutput" class="round" onchange="glob.onComparisonChanged3(this)">
       <option value="0" selected>Tudo ou Json Path / Nome da Coluna</option>
       <option value="1">Converter para String JSON</option>
