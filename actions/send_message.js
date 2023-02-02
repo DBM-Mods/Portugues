@@ -1110,7 +1110,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
   //---------------------------------------------------------------------
 
   async action(cache) {
-
+    const _this = this;
     const data = cache.actions[cache.index];
     var messageoff = data.messageoff;
     if (messageoff == undefined) { messageoff = true }
@@ -1954,16 +1954,13 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       this.callNextAction(cache);
     }
 
-
-    const _this = this;
-
     function erro(err) {
       if(data.errcmd) _this.displayError(data, cache, err);
 
-      _this.storeValue(err, parseInt(data.storage), _this.evalMessage(data.varName, cache), cache);
+      _this.storeValue(err, parseInt(data.storageError), _this.evalMessage(data.varNameError, cache), cache);
 
-      if(data.iffalse == "5") return _this.executeSubActions(data.actions, cache);
-      if(data.iffalse == "99") return _this.executeSubActionsThenNextAction(data.actions, cache);
+      if(data.iffalse == "5") return _this.executeSubActions(data.actionsError, cache);
+      if(data.iffalse == "99") return _this.executeSubActionsThenNextAction(data.actionsError, cache);
       
       return _this.executeResults(false, data, cache);
     }
