@@ -600,7 +600,6 @@ Bot.registerButtonInteraction = function (interactionId, data) {
   }
 };
 
-//aqui
 Bot.registerTempButtonInteraction = function (interactionId, data) {
   if (interactionId) {
     if (!this.$tempButton[interactionId]) {
