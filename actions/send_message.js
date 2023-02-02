@@ -144,7 +144,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.0</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.1</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -1307,8 +1307,8 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
     if (data.mentions == false) {
       messageOptions.allowedMentions = {};
-      messageOptions.allowedMentions.repliedUser = []
-      messageOptions.allowedMentions.repliedUser = data.mentions
+      messageOptions.allowedMentions.repliedUser = [];
+      messageOptions.allowedMentions.repliedUser = data.mentions;
     }
 
     let componentsArr = [];
@@ -1450,9 +1450,9 @@ xinspace{padding:5px 0px 0px 0px;display:block}
             }
 
             if (result == true) {
-              data.buttons[i].disabled = true
+              data.buttons[i].disabled = true;
             } else {
-              data.buttons[i].disabled = false
+              data.buttons[i].disabled = false;
             }
 
           }
@@ -1908,6 +1908,8 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         const button = data.buttons[i];
         if (button.mode === "PERSISTENT") {
           this.registerButtonInteraction(button.id, button);
+        } else {
+          this.registerTempButtonInteraction(button.id, button);
         }
         this.prepareActions(button.actions);
       }
@@ -1917,6 +1919,8 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         const select = data.selectMenus[i];
         if (select.mode === "PERSISTENT") {
           this.registerSelectMenuInteraction(select.id, select);
+        } else {
+          this.registerTempSelectMenuInteraction(select.id, select);
         }
         this.prepareActions(select.actions);
       }
