@@ -128,6 +128,10 @@ module.exports = {
     "webhookavatar",
     "messageoff",
     "mentions",
+    "actionsError",
+    "storageError",
+    "varNameError",
+    "errcmd"
   ],
 
   //---------------------------------------------------------------------
@@ -144,7 +148,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.2</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -820,18 +824,51 @@ module.exports = {
       <hr class="subtlebar" style="margin-top: 4px; margin-bottom: 4px">
       <br>
       <div>
-      <div style="float: left; width: 35%">
-      <span class="dbminputlabel">Se a mensagem falhar</span><br>
-      <select id="iffalse" class="round" onchange="glob.onComparisonChanged(this)">
-      <option value="0">Continuar ações</option>
-      <option value="1" selecionado>Parar sequência de ação</option>
-      <option value="2">Ir para a ação</option>
-      <option value="3">Pular as próximas ações</option>
-      <option value="4">Ir para a âncora de ação</option>
-    </select>
+
+      <span class="dbminputlabel">Opções</span>
+      <br>
+    <div style="padding: 10px; background: rgba(0,0,0,0.2);">
+      <dbm-checkbox id="errcmd" label="Exibir o erro no console" checked></dbm-checkbox>
     </div>
-    <div id="iffalseContainer" style="display: none; float: right; width: 60%;"><span id="ifName" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
-      <br><br><br>
+
+    <br>
+
+    <div id="divValueError2" style="float: left; width: 35%">
+      <span class="dbminputlabel">Se ocorrer um erro</span><br>
+      <select id="iffalse" class="round" onchange="glob.onComparisonChanged(this)">
+        <option value="0">Continuar ações</option>
+        <option value="1" selecionado>Parar sequência de ação</option>
+        <option value="2">Ir para a ação</option>
+        <option value="3">Pular as próximas ações</option>
+        <option value="4">Ir para a âncora de ação</option>
+        <option value="5">Realizar ações e parar</option>
+        <option value="99">Realizar ações e continuar</option>
+      </select>
+    </div>
+
+    <div id="iffalseContainer" style="display: none; float: right; width: 55%;">
+      <span id="xinelasT" class="dbminputlabel">Para</span>
+      <input id="iffalseVal" class="round" type="text">
+    </div>
+
+    <action-list-input id="actionsError" style="margin-top: 50px;" height="calc(100vh - 430px)"></action-list-input>
+              
+
+    <br><br><br>
+
+    <div id="divValueError" style="margin-top: 10px;">
+      <div style="float: left; width: 35%;">
+        <span class="dbminputlabel">Armazenar erro em</span>
+        <select id="storageError" class="round" onchange="glob.variableChangeError(this, 'varNameContainer')">
+          ${data.variables[0]}
+        </select>
+      </div>
+    
+      <div id="varNameContainerError" style="float: right; display: none; width: 60%;">
+        <span class="dbminputlabel">Nome da Variável</span>
+        <input id="varNameError" class="round" type="text">
+      </div>
+    </div>
 
       </div>
 
@@ -859,15 +896,43 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
 
     glob.onComparisonChanged = function (event) {
-      if (event.value > "1") {
-        document.getElementById("iffalseContainer").style.display = null;
-      } else {
+      if(event.value == "0" || event.value == "1" || event.value == "7") {
         document.getElementById("iffalseContainer").style.display = "none";
+        document.getElementById("actionsError").style.display = "none";
+      } else if(event.value == "5" || event.value == "99") {
+        document.getElementById("iffalseContainer").style.display = "none";
+        document.getElementById("actionsError").style.display = null;
+      } else {
+        document.getElementById("iffalseContainer").style.display = null;
+        document.getElementById("actionsError").style.display = "none";
+      }
+
+      if(event.value > "4") {
+        document.getElementById("divValueError").style.marginTop = "-50px";
+      } else {
+        document.getElementById("divValueError").style.marginTop = "10px";
+      }
+
+      if (event.value == "2") {
+        document.querySelector("[id='xinelasT']").innerText = "Número da ação";
+      }
+
+      if (event.value == "3") {
+        document.querySelector("[id='xinelasT']").innerText = "Pular ações";
+      }
+
+      if (event.value == "4") {
+        document.querySelector("[id='xinelasT']").innerText = "Nome da âncora";
       }
     }
 
-    glob.onComparisonChanged(document.getElementById("iffalse"));
-
+    glob.variableChangeError = function (event) {
+      if(event.value == "0") {
+        document.getElementById("varNameContainerError").style.display = "none";
+      } else {
+        document.getElementById("varNameContainerError").style.display = null;
+      }
+    }
 
     glob.onComparisonChanged2 = function (event) {
       if (event.value > "0") {
@@ -910,7 +975,9 @@ xinspace{padding:5px 0px 0px 0px;display:block}
     }
 
     glob.onComparisonChanged2(document.getElementById("storagewebhook"));
+    glob.onComparisonChanged(document.getElementById("iffalse"));
 
+    glob.variableChangeError(document.getElementById("storageError"));
 
     glob.formatItem = function (data) {
       let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
@@ -1832,7 +1899,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       if (promise) {
         promise
           .then(onComplete)
-          .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+          .catch((err) => erro(err));
       }
     }
 
@@ -1840,14 +1907,14 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       target
         .edit(messageOptions)
         .then(onComplete)
-        .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));;
+        .catch((err) => erro(err));
     }
 
     else if (isMessageTarget && target?.reply) {
       target
         .reply(messageOptions)
         .then(onComplete)
-        .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+        .catch((err) => erro(err));
     }
 
     else if (data.reply === true && canReply) {
@@ -1871,12 +1938,12 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         webhook
           .send(messageOptions)
           .then(onComplete)
-          .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+          .catch((err) => erro(err));
       } else {
         target
           .send(messageOptions)
           .then(onComplete)
-          .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+          .catch((err) => erro(err));
       }
 
     }
@@ -1885,6 +1952,20 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
     else {
       this.callNextAction(cache);
+    }
+
+
+    const _this = this;
+
+    function erro(err) {
+      if(data.errcmd) _this.displayError(data, cache, err);
+
+      _this.storeValue(err, parseInt(data.storage), _this.evalMessage(data.varName, cache), cache);
+
+      if(data.iffalse == "5") return _this.executeSubActions(data.actions, cache);
+      if(data.iffalse == "99") return _this.executeSubActionsThenNextAction(data.actions, cache);
+      
+      return _this.executeResults(false, data, cache);
     }
 
   },
@@ -1909,7 +1990,9 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         if (button.mode === "PERSISTENT") {
           this.registerButtonInteraction(button.id, button);
         } else {
-          this.registerTempButtonInteraction(button.id, button);
+          try {
+            this.registerTempButtonInteraction(button.id, button);
+          } catch {}
         }
         this.prepareActions(button.actions);
       }
@@ -1920,7 +2003,9 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         if (select.mode === "PERSISTENT") {
           this.registerSelectMenuInteraction(select.id, select);
         } else {
-          this.registerTempSelectMenuInteraction(select.id, select);
+          try {
+            this.registerTempSelectMenuInteraction(select.id, select);
+          } catch {}
         }
         this.prepareActions(select.actions);
       }
