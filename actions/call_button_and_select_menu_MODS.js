@@ -398,7 +398,7 @@ module.exports = {
       _this.storeValue(err, parseInt(data.storage), _this.evalMessage(data.varName, cache), cache);
 
       if(data.iffalse == "5") return _this.executeSubActions(data.actions, cache);
-      if(data.iffalse == "6") return _this.executeSubActionsThenNextAction(data.actions, cache);
+      if(data.iffalse == "99") return _this.executeSubActionsThenNextAction(data.actions, cache);
       
       return _this.executeResults(false, data, cache);
     }
