@@ -9,11 +9,21 @@ module.exports = {
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
-  subtitle (data) {
-    const storeTypes = ['', 'Variavel Temporaria', 'Variavel Servidor', 'Variavel Global']
-    const type = ['Basica', 'Circulo']
-    const index = parseInt(data.type)
-    return `Barra de progresso ${type[index]} - ${storeTypes[parseInt(data.storage)]} (${data.varName})`
+  subtitle(data) {
+
+    if(data.descriptionx == true){
+      desccor = data.descriptioncolor
+      } else {
+        desccor = 'none'
+      }
+
+      const storeTypes = ['', 'Variavel Temporaria', 'Variavel Servidor', 'Variavel Global']
+      const type = ['Reta', 'Circulo']
+      const index = parseInt(data.type)
+
+    return data.description
+    ? `<font style="color:${desccor}">${data.description}</font>`
+    : `<font style="color:${desccor}">Barra de progresso ${type[index]} - ${storeTypes[parseInt(data.storage)]} (${data.varName})</font>`
   },
 
   variableStorage (data, varType) {
@@ -21,12 +31,12 @@ module.exports = {
     if (type !== varType) return
     return ([data.varName, 'Image'])
   },
-  fields: ['storage', 'varName', 'type', 'width', 'height', 'lineWidth', 'lineCap', 'percent', 'color', "tipocor2", "gradiente2" , 'colorfundo', "tipocor", "gradiente" , "blur", "shadowcor" ,  "blur2", "shadowcor2" , "rotacao"],
+  fields: ['storage', 'varName', 'type', 'width', 'height', 'lineWidth', 'lineCap', 'percent', 'color', "tipocor2", "gradiente2" , 'colorfundo', "tipocor", "gradiente" , "blur", "shadowcor" ,  "blur2", "shadowcor2" , "rotacao","descriptioncolor","description","descriptionx"],
 
   html (isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
 
     <table style="width:100%;">
 		<tr>
@@ -44,13 +54,13 @@ module.exports = {
 	</table><br>
     <tab-system style="margin-top: 0">
 		<tab label="Barra" icon="align left">
-				<div style="padding:8px">
+				<div style="padding:0px 4px;padding-top:8px;height: calc(100vh - 280px);overflow:auto">
         <table style="width:100%">
         <tr>
         <td style="width:50% !important">
         <span class="dbminputlabel">Tipo</span><br>
         <select id="type" class="round" onchange="glob.onChange1(this)">
-          <option value="0" selected>Basico</option>
+          <option value="0" selected>Reta</option>
           <option value="1">Circulo</option><br>
         </select>
         </td>
@@ -68,12 +78,12 @@ module.exports = {
 <span class="dbminputlabel"><span id="Change1text">Largura</span></span><br>
 <input id="width" class="round" type="text">
 </td>
-<td style="width:33% !important">
+<td style="width:33% !important" id="quadratico">
 <span class="dbminputlabel"><span id="Change2text">Altura</span></span><br>
     <input id="height" class="round" type="text">
 </td>
-<td style="width:33% !important">
-<span class="dbminputlabel">Espessura</span><br>
+<td style="width:33% !important" id="circulatico">
+<span class="dbminputlabel">Altura da barra</span><br>
     <input id="lineWidth" class="round" type="text">
 </td>
 </tr></table>
@@ -90,7 +100,7 @@ module.exports = {
 
 </tab>
 <tab label="Cor" icon="align left">
-<div style="padding:2px">
+<div style="padding:0px 4px;padding-top:8px;height: calc(100vh - 280px);overflow:auto">
 <table style="width:100%;height:250px"><tr><td style="width:50%;vertical-align:top">
 <span class="dbminputlabel">Cor da Barra</span><br>
 <div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:6px">
@@ -154,7 +164,7 @@ module.exports = {
 </tab>
 
 <tab label="Sombra" icon="align left">
-<div style="padding:2px">
+<div style="padding:0px 4px;padding-top:8px;height: calc(100vh - 280px);overflow:auto">
 <table style="width:100%"><tr><td style="width:50%;vertical-align:top">
 <span class="dbminputlabel">Sombra da Barra</span><br>
 <div style="width:100%;background:rgba(50,50,50,0.5);-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding:8px">
@@ -197,10 +207,23 @@ module.exports = {
 
 </div>
 </tab>
+
+<tab label="Config" icon="cogs">
+<div style="padding:0px 4px;padding-top:8px;height: calc(100vh - 280px);overflow:auto">
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
+</tab>
 </tab-system>
 
 <style>
-td{padding:5px}</style>`
+td{padding:5px}
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+</style>`
   },
 
   init () {
@@ -241,17 +264,38 @@ td{padding:5px}</style>`
     glob.onChange1 = function (event) {
       const Change1text = document.getElementById('Change1text')
       const Change2text = document.getElementById('Change2text')
+      const Change3text = document.getElementById('quadratico')
+      const Change4text = document.getElementById('circulatico')
       if (event.value === '0') {
         Change1text.innerHTML = 'Largura'
         Change2text.innerHTML = 'Altura'
         conteudo2g.style.display = 'none'
+        Change3text.style.display = null
+        Change4text.style.display = 'none'
       } else if (event.value === '1') {
         Change1text.innerHTML = 'Raio'
         Change2text.innerHTML = 'Tamanho'
         conteudo2g.style.display = null
+        Change3text.style.display = 'none'
+        Change4text.style.display = null
       }
     }
     glob.onChange1(document.getElementById('type'))
+
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+       xinelaslink.setAttribute('title', url);
+       xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+
   },
 
   action (cache) {
@@ -262,11 +306,12 @@ td{padding:5px}</style>`
     const tipocor = parseInt(data.tipocor);
     const tipocor2 = parseInt(data.tipocor2);
     const type = parseInt(data.type)
-    const width = parseInt(data.width)
-    const height = parseInt(data.height)
-    const rotacao = this.evalMessage(data.rotacao, cache)
-    const percent = this.evalMessage(data.percent, cache)
-    const shadowcor = this.evalMessage(data.shadowcor, cache);
+    var width = parseInt(this.evalMessage(data.width, cache))
+    if(width > 0){} else {width = 100}
+    var height = parseInt(this.evalMessage(data.height, cache))
+    if(height > 0){} else {height = 10}
+    var lineWidth = parseInt(this.evalMessage(data.lineWidth, cache))
+    var percent = this.evalMessage(data.percent, cache)
     let blur = parseInt(this.evalMessage(data.blur, cache));
     if (isNaN(blur)) {
       blur = 0;
@@ -276,7 +321,18 @@ td{padding:5px}</style>`
     if (isNaN(blur2)) {
       blur2 = 0;
     }
-    const lineWidth = parseInt(data.lineWidth)
+
+    var max = blur2
+    if(blur2 > blur){max = blur}
+   
+    if(type == 1){height = (width * 2) + lineWidth + (max * 2)}
+    if(type == 0){
+      lineWidth = height - (max * 2)
+    }
+    
+
+    const rotacao = this.evalMessage(data.rotacao, cache)
+    const shadowcor = this.evalMessage(data.shadowcor, cache);
     const lineCap = parseInt(data.lineCap)
     let Cap
     switch (lineCap) {
@@ -291,14 +347,15 @@ td{padding:5px}</style>`
     const colorfundo = this.evalMessage(data.colorfundo, cache)
     let canvas
     if (type === 0) {
-      canvas = Canvas.createCanvas(width, height)
+      canvas = Canvas.createCanvas(width + max, height + (max / 2))
     } else if (type === 1) {
       canvas = Canvas.createCanvas(height, height)
     }
     const ctx = canvas.getContext('2d')
+
     ctx.lineWidth = lineWidth
+    
     if (type === 0) {
-      ctx.lineCap = Cap
       ctx.stroke()
       ctx.beginPath()
           if(tipocor2 > 0){
@@ -328,14 +385,14 @@ td{padding:5px}</style>`
           }
           ctx.shadowColor = shadowcor2
           ctx.shadowBlur = blur2
-          ctx.moveTo(0, height / 2)
-          ctx.lineTo(width * 100 / 100, height / 2)
-          ctx.lineCap = Cap
+          ctx.moveTo(max, height / 2)
+          ctx.lineTo(width, height / 2)
           ctx.stroke()
       
         }
 
           ctx.beginPath()
+          ctx.translate(max, 0)
           if(tipocor == 1) {
             eval(String(this.evalMessage(data.gradiente, cache)))
             ctx.strokeStyle = gradient;
@@ -344,8 +401,15 @@ td{padding:5px}</style>`
           ctx.moveTo(0, height / 2)
           ctx.shadowColor = shadowcor
           ctx.shadowBlur = blur;
-          ctx.lineTo(width * percent / 100, height / 2)
-          ctx.lineCap = Cap
+
+          if(lineCap == 1) {
+            ctx.lineTo((width * percent) / 100 - (height / 2), height / 2)
+          } else {
+
+          ctx.lineTo(((width - max) * percent) / 100, height / 2)
+          
+          }
+          
           ctx.stroke()
     } else if (type === 1) {
       ctx.translate(height / 2, height / 2)
@@ -360,7 +424,6 @@ td{padding:5px}</style>`
         ctx.shadowBlur = blur2
       ctx.beginPath()
       ctx.arc(0, 0, width, 0, Math.PI * 2 * 100 / 100, false)
-      ctx.lineCap = Cap
       ctx.stroke()}
 
       ctx.beginPath()
@@ -374,7 +437,7 @@ td{padding:5px}</style>`
       ctx.beginPath()
       ctx.arc(0, 0, width, 0, Math.PI * 2 * percent / 100, false)
     }
-    ctx.lineCap = Cap
+    if(lineCap == 1){ctx.lineCap = Cap}
     ctx.stroke()
     const result = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
     this.storeValue(result, storage, varName, cache)
