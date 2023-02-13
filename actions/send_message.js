@@ -42,24 +42,26 @@ module.exports = {
       text = `Nada (Pode ocasionar erro)`;
     }
     if (data.dontSend) {
-      return `Store Data: ${text}`;
+      text =  `Armazenar Data: ${text}`;
+    } else {
+      text = `${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}`;
     }
     if (data.descriptioncolor == undefined) {
-      data.descriptioncolor = "#ffffff"
+      data.descriptioncolor = "#ffffff";
     }
     if (data.storagewebhook > "0") {
       return `Enviar via Webhook: ${data.varwebhook}`;
     }
 
     if (data.descriptionx == true) {
-      desccor = data.descriptioncolor
+      desccor = data.descriptioncolor;
     } else {
-      desccor = 'none'
+      desccor = "none";
     }
 
     return data.description
       ? `<font style="color:${desccor}">${data.description}</font>`
-      : `<font style="color:${desccor}">${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}</font>`
+      : `<font style="color:${desccor}">${text}</font>`
   },
 
   //---------------------------------------------------------------------
@@ -69,9 +71,22 @@ module.exports = {
   //---------------------------------------------------------------------
 
   variableStorage(data, varType) {
+    let vars = [];
+
     const type = parseInt(data.storage, 10);
-    if (type !== varType) return;
-    return [data.varName2, data.dontSend ? "Message Options" : "Message"];
+    const typeError = parseInt(data.storageError, 10);
+
+    if(type == varType) {
+      vars.push(data.varName2);
+      vars.push(data.dontSend ? "Opções da Mensagem" : "Mensagem");
+    }
+
+    if(typeError == varType) {
+      vars.push(data.varNameError);
+      vars.push("Texto ~ Erro");
+    }
+
+    if(vars.length > 0) return vars;
   },
 
   //---------------------------------------------------------------------
@@ -148,7 +163,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.3</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -1948,8 +1963,6 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
     }
 
-
-
     else {
       this.callNextAction(cache);
     }
@@ -1986,10 +1999,6 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         const button = data.buttons[i];
         if (button.mode === "PERSISTENT") {
           this.registerButtonInteraction(button.id, button);
-        } else {
-          try {
-            this.registerTempButtonInteraction(button.id, button);
-          } catch {}
         }
         this.prepareActions(button.actions);
       }
@@ -1999,10 +2008,6 @@ xinspace{padding:5px 0px 0px 0px;display:block}
         const select = data.selectMenus[i];
         if (select.mode === "PERSISTENT") {
           this.registerSelectMenuInteraction(select.id, select);
-        } else {
-          try {
-            this.registerTempSelectMenuInteraction(select.id, select);
-          } catch {}
         }
         this.prepareActions(select.actions);
       }
