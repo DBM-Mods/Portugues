@@ -222,9 +222,7 @@ Bot.$user = {}; // User commands
 Bot.$msge = {}; // Message commands
 
 Bot.$button = {}; // Button interactions
-Bot.$tempButton = {};
 Bot.$select = {}; // Select interactions
-Bot.$tempSelect = {};
 
 Bot.$cmds = {}; // Normal commands
 Bot.$icds = []; // Includes word commands
@@ -600,30 +598,10 @@ Bot.registerButtonInteraction = function (interactionId, data) {
   }
 };
 
-Bot.registerTempButtonInteraction = function (interactionId, data) {
-  if (interactionId) {
-    if (!this.$tempButton[interactionId]) {
-      this.$tempButton[interactionId] = data;
-    } else {
-      PrintError(MsgType.DUPLICATE_BUTTON_ID, interactionId);
-    }
-  }
-};
-
 Bot.registerSelectMenuInteraction = function (interactionId, data) {
   if (interactionId) {
     if (!this.$select[interactionId]) {
       this.$select[interactionId] = data;
-    } else {
-      PrintError(MsgType.DUPLICATE_SELECT_ID, interactionId);
-    }
-  }
-};
-
-Bot.registerTempSelectMenuInteraction = function (interactionId, data) {
-  if (interactionId) {
-    if (!this.$tempSelect[interactionId]) {
-      this.$tempSelect[interactionId] = data;
     } else {
       PrintError(MsgType.DUPLICATE_SELECT_ID, interactionId);
     }
