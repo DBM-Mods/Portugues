@@ -17,9 +17,12 @@ module.exports = {
       desccor = 'none'
     }
 
+    const list1 = presets.lists;
+    const list2 = presets.lists;
+
     return data.description
-      ? `<font style="color:${desccor}">${data.description}</font>`
-      : `<font style="color:${desccor}">Adicionar ${data.branches.length == 1 ? data.branches.length + " item" : data.branches.length + " opções"}</font>`
+  ? `<font style="color:${desccor}">${data.description}</font>`
+  : (data.acao == 0 || data.acao == 1) ? `<font style="color:${desccor}">Adicionar ${data.branches.length == 1 ? data.branches.length + " item" : data.branches.length + " opções"}</font>` : `Usando a lista Nome "${list1[parseInt(data.listanome, 10)]}" e Valor "${list2[parseInt(data.listavalor, 10)]}"`;
   },
 
   variableStorage(data, varType) {
@@ -28,18 +31,19 @@ module.exports = {
   },
 
 
-  fields: ["message", "messageVarName", "type", "searchValue", "acao", "descriptioncolor", "description", "descriptionx", "iffalse", "iffalseVal", "errs", "errv", "errcmd", "actionserr", "branches"],
+  fields: ["message", "messageVarName", "type", "searchValue", "acao", "newname", "listanome", "listanomevar","listavalor", "listavalorvar", "ondesc", "listadesc", "listadescvar", "onemoji", "listaemoji", "listaemojivar", "pagina", "porpag", "descriptioncolor", "description", "descriptionx", "iffalse", "iffalseVal", "errs", "errv", "errcmd", "actionserr", "branches"],
 
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
     <tab-system>
 
     <tab label="Opções" icon="wizard">
     <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
 
+    <div id="xinxylaacao1">
     <dialog-list id="branches" fields='["label", "description", "value", "emoji", "val1", "val2", "comparar", "formula"]' dialogResizable dialogTitle="Opção" dialogWidth="600" dialogHeight="400" listLabel="Opções" listStyle="height: calc(100vh - 280px);" itemName="Item" itemHeight="28px;" itemTextFunction="glob.formatItem(data)" itemStyle="line-height: 28px;">
     <div style="padding: 16px;background:rgba(0,0,0,0.3)">
     <span class="dbminputlabel">Exibir</span><br>
@@ -115,6 +119,77 @@ module.exports = {
     </div>
 </dialog-list>
 </div>
+
+<div id="xinxylaacao2">
+
+      <table><tr><td class="col">
+     <span class="dbminputlabel">Lista ~ Nome</span><br>
+      <select id="listanome" class="round" value="7" onchange="glob.listChange(this, 'varNameContainer10')">
+        ${data.lists[isEvent ? 1 : 0]}
+      </select>
+    </td>
+    <td class="col">
+    <div id="varNameContainer10">
+    <span class="dbminputlabel">Nome da Varivavel</span><br>
+      <input id="listanomevar" class="round" type="text" list="variableList"></div>
+    </td></tr></table>
+
+    <xinspace2>
+
+      <table><tr><td class="col">
+      <span class="dbminputlabel">Lista ~ Valor</span><br>
+       <select id="listavalor" class="round" value="7" onchange="glob.listChange(this, 'varNameContainer20')">
+         ${data.lists[isEvent ? 1 : 0]}
+       </select>
+     </td>
+     <td class="col">
+     <div id="varNameContainer20">
+     <span class="dbminputlabel">Nome da Varivavel</span><br>
+       <input id="listavalorvar" class="round" type="text" list="variableList"></div>
+     </td></tr></table>
+
+     <xinspace2>
+
+     <table><tr><td class="col">
+     <span class="dbminputlabel">Lista ~ Descrição</span><div style="float:right;margin-top:-5px"><dbm-checkbox id="ondesc" label="Ativar"></dbm-checkbox></div><br>
+      <select id="listadesc" class="round" value="7" onchange="glob.listChange(this, 'varNameContainer30')">
+        ${data.lists[isEvent ? 1 : 0]}
+      </select>
+    </td>
+    <td class="col">
+    <div id="varNameContainer30">
+    <span class="dbminputlabel">Nome da Varivavel</span><br>
+      <input id="listadescvar" class="round" type="text" list="variableList"></div>
+    </td></tr></table>
+
+    <xinspace2>
+
+    <table><tr><td class="col">
+    <span class="dbminputlabel">Lista ~ Emojis</span><div style="float:right;margin-top:-5px"><dbm-checkbox id="onemoji" label="Ativar"></dbm-checkbox></div><br>
+     <select id="listaemoji" class="round" value="7" onchange="glob.listChange(this, 'varNameContainer40')">
+       ${data.lists[isEvent ? 1 : 0]}
+     </select>
+   </td>
+   <td class="col">
+   <div id="varNameContainer40">
+   <span class="dbminputlabel">Nome da Varivavel</span><br>
+     <input id="listaemojivar" class="round" type="text" list="variableList"></div>
+   </td></tr></table>
+
+   <xinspace2>
+
+   <table><tr><td class="col">
+   <span class="dbminputlabel">Página</span><br>
+   <input id="pagina" class="round" type="text" value="1">
+   </td>
+   <td class="col">
+   <span class="dbminputlabel">Opções por Página</span><br>
+   <input id="porpag" class="round" type="text" value="25">
+   </td></tr></table>
+
+</div>
+
+</div>
     </tab>
     <tab label="Menu" icon="align left">
     <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
@@ -143,10 +218,17 @@ module.exports = {
 <br><br><br><xinspace>
 
 <span class="dbminputlabel">Ação</span><br>
-<select id="acao" class="round">
+<select id="acao" class="round" onchange="glob.onComparisonChanged3(this)">
   <option value="0" selected>Adicionar opções ao menu</option>
   <option value="1">Usar somente as opções no menu</option>
+  <option value="2">Adicionar opções ao menu via listas</option>
+  <option value="3">Usar somente as opções no menu via listas</option>
 </select>
+
+<br>
+
+<span class="dbminputlabel">Alterar Nome do Menu</span><br>
+<input id="newname" class="round" placeholder="Deixe em branco para não alterar" type="text">
 
 <br>
 
@@ -211,11 +293,13 @@ module.exports = {
 </tab-system>
 <style>
     xinspace{padding:5px 0px 0px 0px;display:block}
+    xinspace2{padding:14px 0px 0px 0px;display:block}
     table{width:100%}
 .dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
 .dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
 .col1{width:35%;padding:0px 10px 0px 0px}
 .col2{width:65%}
+.col{padding:0px 5px;width:50%}
 </style>
 `;
   },
@@ -223,6 +307,11 @@ module.exports = {
 
   init() {
     const { glob, document } = this;
+
+    glob.listChange(document.getElementById("listanome"), "varNameContainer10");
+    glob.listChange(document.getElementById("listavalor"), "varNameContainer20");
+    glob.listChange(document.getElementById("listadesc"), "varNameContainer30");
+    glob.listChange(document.getElementById("listaemoji"), "varNameContainer40");
 
     const xinelaslinks = document.getElementsByClassName('xinelaslink');
     for (let x = 0; x < xinelaslinks.length; x++) {
@@ -278,11 +367,27 @@ module.exports = {
 
     glob.onComparisonChanged2(document.getElementById("iffalse"));
 
+    glob.onComparisonChanged3 = function (event) {
+      if (event.value == "0" || event.value == "1") {
+        document.getElementById("xinxylaacao1").style.display = null;
+        document.getElementById("xinxylaacao2").style.display = "none";
+      } else {
+        document.getElementById("xinxylaacao1").style.display = "none";
+        document.getElementById("xinxylaacao2").style.display = null;
+      }
+    }
+
+    glob.onComparisonChanged3(document.getElementById("acao"));
+
   },
 
   async action(cache) {
     const data = cache.actions[cache.index];
     const message = await this.getMessageFromData(data.message, data.messageVarName, cache);
+    var listanome = await this.getListFromData(data.listanome, data.listanomevar, cache);
+    var listavalor = await this.getListFromData(data.listavalor, data.listavalorvar, cache);
+    var listadesc = await this.getListFromData(data.listadesc, data.listadescvar, cache);
+    var listaemoji = await this.getListFromData(data.listaemoji, data.listaemojivar, cache);
 
     const type = data.type;
 
@@ -297,14 +402,18 @@ module.exports = {
 
     var onSelectMenuFound = (select) => {
       if (select) {
+
+        if(this.evalMessage(data.newname, cache) !== ""){select.placeholder = this.evalMessage(data.newname, cache)}
+
         if (!select.options) select.options = [];
         if (select) {
 
           const branches = data.branches
           if (!select.options) select.options = [];
 
-          if (data.acao == "1") select.options = [];
+          if (data.acao == "1" || data.acao == "3") select.options = [];
 
+        if (data.acao == "0" || data.acao == "1"){
           for (var i = 0; i < branches.length; i++) {
             const optionChange = branches[i];
 
@@ -426,6 +535,40 @@ module.exports = {
             select.options.push({ ...newOptionData })};
 
           }
+        }
+
+        if (data.acao == "2" || data.acao == "3"){
+
+          var paginatotal = Math.ceil(listavalor.length / 25)
+          var pagina = parseInt(this.evalMessage(data.pagina, cache))
+          var porpag = parseInt(this.evalMessage(data.porpag, cache))
+          if(porpag > 25 || porpag == NaN || porpag == "NaN" || porpag == ""){porpag = 25}
+          if(porpag < 1){porpag = 1}
+          if(pagina < 1 || pagina == NaN || pagina == "NaN" || pagina == ""){pagina = 1}
+          if(pagina > paginatotal){pagina = paginatotal}
+          sessao = (pagina * porpag) - porpag
+
+          for (var i = 0; i < listavalor.length; i++) {
+            
+            if(i < porpag && listavalor.length > sessao){
+            let newOptionData = {
+              label: listanome[sessao],
+              value: listavalor[sessao],
+              default: false,
+            };
+            if (data.ondesc == true) {
+              newOptionData.description = listadesc[sessao]
+            }
+            if (data.onemoji == true) {
+              newOptionData.emoji = listaemoji[sessao]
+            }
+
+            var sessao = sessao + 1
+            select.options.push({ ...newOptionData })};
+          }
+
+
+        }
 
         }
       }
