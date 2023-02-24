@@ -96,6 +96,16 @@ module.exports = {
       "Lista de membros do servidor em ordem de entrada",
       "Lista de IDs de membros do servidor em ordem de entrada",
       "Lista de Webhooks do servidor",
+      "Lista de nomes das categorias do servidor",
+      "Lista de nomes dos canais do servidor",
+      "Lista de nomes dos canais de texto do servidor",
+      "Lista de nomes dos canais de voz do servidor",
+      "Lista de nomes dos emojis do servidor",
+      "Lista de nomes dos Cargos do servidor",
+      "Lista de tags dos membros do servidor",
+      "Lista de nomes dos membros do servidor",
+      "Lista dos discriminadores dos membros do servidor",
+      "Lista de tags de membros do servidor em ordem de entrada",
     ];
 
     if (data.descriptionx) {
@@ -324,41 +334,7 @@ module.exports = {
         break;
       case 71:
         dataType = "Lista";
-        break;
-      case 72:
-        dataType = "Lista";
-        break;
-      case 73:
-        dataType = "Lista";
-        break;
-      case 74:
-        dataType = "Lista";
-        break;
-      case 75:
-        dataType = "Lista";
-        break;
-      case 76:
-        dataType = "Lista";
-        break;
-      case 77:
-        dataType = "Lista";
-        break;
-      case 78:
-        dataType = "Lista";
-        break;
-      case 79:
-        dataType = "Lista";
-        break;
-      case 80:
-        dataType = "Lista";
-        break;
-      case 81:
-        dataType = "Lista";
-        break;
-      case 82:
-        dataType = "Lista";
-        break;
-      case 83:
+      case 92:
         dataType = "Lista";
         break;
     }
@@ -375,7 +351,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.5</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.6</div>
 
     <style>
       .dbmmodsbr1 {
@@ -490,25 +466,35 @@ module.exports = {
       </optgroup>
       <optgroup label="Informações da Lista de Servidores">
       <option value="15">Lista de membros do servidor</options>
+      <option value="90">Lista de tags dos membros do servidor</options>
+      <option value="91">Lista de nomes dos membros do servidor</options>
+      <option value="92">Lista dos discriminadores dos membros do servidor</options>
       <option value="33">Lista de IDs de membros do servidor</options>
       <option value="79">Lista de Bots do servidor</options>
       <option value="80">Lista de IDs de Bots do servidor</options>
       <option value="77">Lista de categorias do servidor</options>
+      <option value="84">Lista de nomes das categorias do servidor</options>
       <option value="78">Lista de IDs das categorias do servidor</options>
       <option value="13">Lista de canais do servidor</options>
+      <option value="85">Lista de nomes dos canais do servidor</options>
       <option value="31">Lista de IDs de canais de servidor</options>
       <option value="73">Lista de canais de texto do servidor</options>
+      <option value="86">Lista de nomes dos canais de texto do servidor</options>
       <option value="74">Lista de IDs dos canais de texto do servidor</options>
       <option value="75">Lista de canais de voz do servidor</options>
+      <option value="87">Lista de nomes dos canais de voz do servidor</options>
       <option value="76">Lista de IDs dos canais de voz do servidor</options>
       <option value="16">Lista de emojis do servidor</options>
+      <option value="88">Lista de nomes dos emojis do servidor</options>
       <option value="14">Lista de Cargos do servidor</options>
+      <option value="89">Lista de nomes dos Cargos do servidor</options>
       <option value="32">Lista de IDs de cargos de servidor</options>
       <option value="41">Lista de banidos do servidor</options>
       <option value="42">Lista de convites do servidor</options>
       <option value="71">Lista de membros por ID presentes nos canais de voz</options>
       <option value="72">Lista de membros presentes nos canais de voz</options>
       <option value="81">Lista de membros do servidor em ordem de entrada</option>
+      <option value="93">Lista de tags de membros do servidor em ordem de entrada</option>
       <option value="82">Lista de IDs de membros do servidor em ordem de entrada</option>
       <option value="83">Lista de Webhooks do servidor</option>
       </optgroup>
@@ -840,7 +826,35 @@ module.exports = {
         const webhooks = await targetServer.fetchWebhooks();
         result = webhooks.map((w) => w);
         break;
-      default:
+      case 84:
+        result = targetServer.channels.cache.filter((c) => c.type === "GUILD_CATEGORY").map(channels => channels.name);
+        break;
+      case 85:
+        result = targetServer.channels.cache.map(channels => channels.name);
+        break;
+      case 86:
+        result = targetServer.channels.cache.filter((c) => ["GUILD_TEXT", "GUILD_NEWS"].includes(c.type)).map(channels => channels.name);
+        break;
+      case 87:
+        result = targetServer.channels.cache.filter((c) => c.type === "GUILD_VOICE").map(channels => channels.name);
+        break;
+      case 88:
+        result = targetServer.emojis.cache.map(emoji => emoji.name);
+        break;
+      case 89:
+        result = targetServer.roles.cache.map(roles => roles.name);
+        break;
+      case 90:
+        result = targetServer.members.cache.filter((m) => m).map((m) => m.user.tag);
+        break;
+      case 91:
+        result = targetServer.members.cache.filter((m) => m).map((m) => m.user.username);
+        break;
+      case 92:
+        result = targetServer.members.cache.filter((m) => m).map((m) => m.user.discriminator);
+        break;
+      case 93:
+        result = targetServer.members.cache.sort((a, b) => parseFloat(a.joinedTimestamp) - parseFloat(b.joinedTimestamp)).map((m) => m.user.tag);
         break;
     }
     if (result !== undefined) {
@@ -851,5 +865,5 @@ module.exports = {
     this.callNextAction(cache);
   },
 
-  mod() {},
+  mod() { },
 };
