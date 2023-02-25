@@ -37,7 +37,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
     <tab-system>
 
     <tab label="Opções" icon="wizard">
@@ -539,12 +539,13 @@ module.exports = {
 
         if (data.acao == "2" || data.acao == "3"){
 
-          var paginatotal = Math.ceil(listavalor.length / 25)
+      
           var pagina = parseInt(this.evalMessage(data.pagina, cache))
           var porpag = parseInt(this.evalMessage(data.porpag, cache))
           if(porpag > 25 || porpag == NaN || porpag == "NaN" || porpag == ""){porpag = 25}
           if(porpag < 1){porpag = 1}
           if(pagina < 1 || pagina == NaN || pagina == "NaN" || pagina == ""){pagina = 1}
+          var paginatotal = Math.ceil(listavalor.length / porpag)
           if(pagina > paginatotal){pagina = paginatotal}
           sessao = (pagina * porpag) - porpag
 
