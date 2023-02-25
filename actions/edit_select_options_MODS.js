@@ -545,7 +545,9 @@ module.exports = {
           if(porpag > 25 || porpag == NaN || porpag == "NaN" || porpag == ""){porpag = 25}
           if(porpag < 1){porpag = 1}
           if(pagina < 1 || pagina == NaN || pagina == "NaN" || pagina == ""){pagina = 1}
+          
           var paginatotal = Math.ceil(listavalor.length / porpag)
+
           if(pagina > paginatotal){pagina = paginatotal}
           sessao = (pagina * porpag) - porpag
 
