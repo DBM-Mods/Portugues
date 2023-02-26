@@ -18,7 +18,7 @@ module.exports = {
 
   html (isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 
     <table style="width:100%;">
@@ -109,7 +109,7 @@ module.exports = {
 		<div style="padding:8px">
 	<table style="width:100%"><tr>
 	<td style="width:100px">
-	<span class="dbminputlabel">Borrar Sombra</span><br>
+	<span class="dbminputlabel">Borrar Sombra interna</span><br>
 	<input id="blur" class="round" type="text" value="0" placeholder="Opcional">
 	</td>
 	<td style="width:100px"><span class="dbminputlabel">+ Arrastar Sombra X</span><br>
@@ -268,7 +268,7 @@ module.exports = {
 
     function circle () {
       ctx.beginPath()
-      ctx.arc(imagew / 2, imageh / 2, (imagew-borda + imageh-borda) / 4, 0, Math.PI * 2)
+      ctx.arc(imagew / 2, imageh / 2, (imagew + imageh) / 4, 0, Math.PI * 2)
       ctx.closePath()
       ctx.clip()
     }
