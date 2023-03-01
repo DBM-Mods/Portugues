@@ -163,7 +163,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.4</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -1170,15 +1170,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
     }
 
     let content;
-
-    if (messageoff == true) {
-      if (message.length > 0) {
-        content = this.evalMessage(message, cache);
-      } else {
-        content = this.evalMessage("", cache);
-      }
-    }
-
+    if (messageoff == true) content = message.length > 0 ? message : "";
 
     if (content) {
       if (messageOptions.content && !overwrite) {
