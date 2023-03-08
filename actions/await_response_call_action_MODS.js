@@ -26,12 +26,18 @@ module.exports = {
     'descriptioncolor',
     'description',
     'descriptionx',
-
   ],
 
-  subtitle({ max, time }) {
+  subtitle(data) {
+    if (data.descriptionx == true) {
+      desccor = data.descriptioncolor
+    } else {
+      desccor = 'none'
+    }
     const getPlural = (n) => (n !== '1' ? 'ns' : 'm');
-    return `Aguardar ${max} mensage${getPlural(max)} para ${time} milissegundos`;
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">Aguardar ${data.max} mensage${getPlural(data.max)} para ${data.time} milissegundos</font>`
   },
 
   variableStorage(data, varType) {
@@ -136,6 +142,19 @@ module.exports = {
       <br><br><br>
     </div>
   </div>
+
+    </div>
+    </tab>
+
+    <tab label="Config" icon="settings">
+    <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+    <table style="width:100%;"><tr>
+    <td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+    <td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+    </tr></table>
+    </div>
 
     </div>
     </tab>
