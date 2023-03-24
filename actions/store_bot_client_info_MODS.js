@@ -9,7 +9,16 @@ module.exports = {
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
-  subtitle(data) {
+  subtitle(data, presets) {
+
+    if (data.descriptionx == true) {
+      desccor = data.descriptioncolor
+    } else {
+      desccor = 'none'
+    }
+
+    const storage = presets.variables;
+
     const info = [
       'Tempo de atividade em milissegundos',
       'Pronto em?',
@@ -46,7 +55,7 @@ module.exports = {
       'Quantidade Total de Comandos',
       'Quantidade Total de Eventos',
       'Pronto em? [timestamp]',
-      'Contagem de núcleos de CPU',
+      'Contagem de núcleos da CPU',
       'Memória Total (GB)',
       'Memória Total (MB)',
       'Memória disponível (GB)',
@@ -58,15 +67,23 @@ module.exports = {
       'ID do proprietário do bot',
       'Os comandos diferenciam maiúsculas de minúsculas?',
       'ID da última mensagem',
-      'Média de CPU (1m, 5m, 15m)',
-      'Uso atual da CPU',
+      'Uso Médio da CPU em % (1 minuto, 5 minutos, 15 minutos)',
+      'Uso Médio da CPU em % dos últimos 60 segundos',
+      'Tempo de atividade em segundos',
+      'Uso atual da CPU em %',
+      'Uso de memória (RAM) arredondado',
+      'CPU livre em %',
+      'Velocidade da CPU em GHz',
     ];
-    return `Bot Client - ${info[parseInt(data.info, 10)]}`;
+
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${info[parseInt(data.info, 10)]} - ${storage[parseInt(data.storage, 10)]} (${data.varName2})</font>`
   },
 
   variableStorage(data, varType) {
     if (parseInt(data.storage, 10) !== varType) return;
-    let dataType = 'Unknown Type';
+    let dataType = 'Texto';
     switch (parseInt(data.info, 10)) {
       case 0: // Uptime in Milliseconds
       case 22: // Uptime in Hours
@@ -95,28 +112,28 @@ module.exports = {
       case 10: // Total Amount of Channels
       case 11: // Total Amount of Emojis
       case 15: // Memory (Ram) Usage
-        dataType = 'Number';
+        dataType = 'Numero';
         break;
       case 1: // Ready At
-        dataType = 'Date';
+        dataType = 'Data';
         break;
       case 8: // Bots' Token
         dataType = 'Token';
         break;
       case 16: // Bot Guilds Objects
-        dataType = 'Guild';
+        dataType = 'Objeto';
         break;
       case 17: // Bot Guilds Names
-        dataType = 'Guild Name';
+        dataType = 'Texto';
         break;
       case 18: // Bot Guilds IDs
-        dataType = 'Guild ID';
+        dataType = 'ID';
         break;
       case 19: // Bot Current Prefix
-        dataType = 'Bot Tag';
+        dataType = 'Texto';
         break;
       case 20: // Bot Client ID
-        dataType = 'Bot ID';
+        dataType = 'ID';
         break;
       case 13: // Uptime in Days
       case 14: // Uptime in Days (Rounded)
@@ -124,41 +141,68 @@ module.exports = {
       case 24: // Refreshing Uptime in Hours
       case 25: // Refreshing Uptime in Minutes
       case 26: // Refreshing Uptime in Seconds
-        dataType = 'Time';
+        dataType = 'Numero';
         break;
       case 28: // Bots' OS (Process Platform)
-        dataType = 'OS Name';
+        dataType = 'Texto';
         break;
       case 30: // Bots' Directory
-        dataType = 'Directory';
+        dataType = 'Texto';
         break;
       case 21: // Discord JS Version
       case 31: // Node JS Version
-        dataType = 'Version Number';
+        dataType = 'Numero';
         break;
       case 44: // Bot Owner ID
-        dataType = 'Bot Owner ID';
+        dataType = 'ID';
         break;
-      case 45: // Are Commands Case Sensitive?
+      case 45:
         dataType = 'Boolean';
         break;
-      case 46: // Last Message ID
-        dataType = 'Last Message ID';
+      case 46:
+        dataType = 'ID';
         break;
-      case 47: // CPU Load Average
-        dataType = 'Average CPU Usage Array';
+      case 47:
+        dataType = 'Lista';
+        break;
+      case 48:
+        dataType = 'Numero';
+        break;
+      case 49:
+        dataType = 'Numero';
+        break;
+      case 50:
+        dataType = 'Numero';
+        break;
+      case 51:
+        dataType = 'Numero';
+        break;
+      case 52:
+        dataType = 'Numero';
+        break;
+      case 53:
+        dataType = 'Numero';
         break;
     }
     return [data.varName2, dataType];
   },
 
-  fields: ['info', 'storage', 'varName2'],
+  fields: ['info', 'storage', 'varName2', 'descriptioncolor', 'description', 'descriptionx'],
 
   html(_isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.4</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
-<div style="float: left; width: 100%; padding-top: 8px;">
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.5</div>
+
+    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
+
 <span class="dbminputlabel">Informação</span><br>
   <select id="info" class="round">
     <optgroup label="Uptimes">
@@ -192,10 +236,14 @@ module.exports = {
     <option value="46">ID da última mensagem</option>
   </optgroup>
   <optgroup label="Medidas do Sistema">
+    <option value="49">Tempo de atividade do sistema em segundos</option>
     <option value="29">Uso da CPU (MB)</option>
-    <option value="47">Uso médio da CPU [1m, 5m, 15m] (%)</option>
-    <option value="48">Uso da CPU (%)</option>
-    <option value="35">Contagem de núcleos de CPU</option>
+    <option value="47">Uso médio da CPU em % [1 minuto, 5 minutos, 15 minutos]</option>
+    <option value="48">Uso Médio da CPU em % dos últimos 60 segundos</option>
+    <option value="50">Uso atual da CPU em % (Requer o modulo: os-utils)</option>
+    <option value="52">CPU livre em % (Requer o modulo: os-utils)</option>
+    <option value="53">Velocidade da CPU em GHz</option>
+    <option value="35">Contagem de núcleos da CPU</option>
     <option value="36">Memória total (GB)</option>
     <option value="37">Memória total (MB)</option>
     <option value="38">Memória disponível (GB)</option>
@@ -207,6 +255,7 @@ module.exports = {
   </optgroup>
   <optgroup label="Medidas do bot">
     <option value="27">Uso de memória (RAM) em MB</option>
+    <option value="51">Uso de memória (RAM) em MB arredondado</option>
     <option value="1">Bot iniciado em</option>
     <option value="34">Bot iniciado em [timestamp unix]</option>
     <option value="2">Ping</option>
@@ -217,22 +266,49 @@ module.exports = {
   <option value="31">Versão do Node JS</option>
     </optgroup>
   </select>
-</div><br><br><br>
+
+<br>
+
 <div>
-  <div style="float: left; width: 35%; padding-top: 8px;">
+  <div style="float: left; width: 35%;">
   <span class="dbminputlabel">Armazenar em</span><br>
     <select id="storage" class="round">
       ${data.variables[1]}
     </select>
   </div>
-  <div id="varNameContainer2" style="float: right; width: 60%; padding-top: 8px;">
+  <div id="varNameContainer2" style="float: right; width: 60%;">
   <span class="dbminputlabel">Nome da variavel</span><br>
     <input id="varName2" class="round" type="text"><br>
   </div>
-</div>`;
+</div>
+
+</div>
+
+<style>
+
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+</style>`;
   },
 
-  init() {},
+  init() {
+    const { glob, document } = this;
+
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
+  },
 
   async action(cache) {
     const botClient = this.getDBM().Bot.bot;
@@ -245,7 +321,7 @@ module.exports = {
     const msToDay = 1000 * 60 * 60 * 24;
 
     if (!botClient) return this.callNextAction(cache);
-
+    let desabilitar = 1
     let result;
     switch (info) {
       case 0: // Uptime in Milliseconds //Deprecated in 1.8.5
@@ -327,7 +403,7 @@ module.exports = {
         result = Math.round(process.uptime() % 60);
         break;
       case 27: // Memory (RAM) Usage in MB
-        result = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
+        result = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(3);
         break;
       case 28: // Bots' OS (Process Platform)
         if (process.platform) {
@@ -378,7 +454,7 @@ module.exports = {
         result = Math.floor((os.freemem() / os.totalmem()) * 100);
         break;
       case 41: // Used Memory (GB)
-        result = ((os.totalmem() - os.freemem() / 1024) / 1024 / 1024).toFixed(2);
+        result = ((os.totalmem() - os.freemem()) / 1024 / 1024 / 1024).toFixed(0);
         break;
       case 42: // Used Memory (MB)
         result = ((os.totalmem() - os.freemem()) / 1024 / 1024).toFixed(0);
@@ -395,23 +471,63 @@ module.exports = {
       case 46: // Last Message ID
         result = botClient.user.lastMessageID;
         break;
-      case 47: // CPU Usage Average [1m, 5m, 15m]
-        result = os.loadavg();
+      case 47:
+        result = Math.ceil(os.loadavg()[0] * 10) + "," + Math.ceil(os.loadavg()[1] * 10) + "," + Math.ceil(os.loadavg()[2] * 10)
         break;
-      case 48: // Current CPU Usage
-        result = os.loadavg[0];
+      case 48:
+        result = Math.ceil(os.loadavg()[0] * 10);
+        break;
+      case 49:
+        result = parseFloat(os.uptime());
+        break;
+      case 50:
+        desabilitar = 2
+        const osu = require('os-utils');
+        osu.cpuUsage((value) => {
+          result = Math.ceil(value * 100);
+          if (result !== undefined) {
+            const storage = parseInt(data.storage, 10);
+            const varName2 = this.evalMessage(data.varName2, cache);
+            this.storeValue(result, storage, varName2, cache);
+          }
+          this.callNextAction(cache);
+        });
+        break;
+      case 51:
+        result = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(0);
+        break;
+      case 52:
+        desabilitar = 2
+        const ost = require('os-utils');
+        ost.cpuFree((value) => {
+          result = Math.ceil(value * 100);
+          if (result !== undefined) {
+            const storage = parseInt(data.storage, 10);
+            const varName2 = this.evalMessage(data.varName2, cache);
+            this.storeValue(result, storage, varName2, cache);
+          }
+          this.callNextAction(cache);
+        });
+        break;
+      case 53:
+        const cpuInfo = os.cpus()[0];
+        const cpuSpeedGHz = cpuInfo.speed / 1000;
+
+        result = cpuSpeedGHz.toFixed(2);
         break;
       default:
         break;
     }
 
-    if (result !== undefined) {
-      const storage = parseInt(data.storage, 10);
-      const varName2 = this.evalMessage(data.varName2, cache);
-      this.storeValue(result, storage, varName2, cache);
+    if (desabilitar == 1) {
+      if (result !== undefined) {
+        const storage = parseInt(data.storage, 10);
+        const varName2 = this.evalMessage(data.varName2, cache);
+        this.storeValue(result, storage, varName2, cache);
+      }
+      this.callNextAction(cache);
     }
-    this.callNextAction(cache);
   },
 
-  mod() {},
+  mod() { },
 };
