@@ -74,7 +74,7 @@ module.exports = {
 </div>
 
 <br>
-<span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(255,255,255,0.2)">
+<span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(0,0,0,0.4)">
 <dbm-checkbox id="errcmd" label="Exibir o erro no console" checked></dbm-checkbox>
 </div>
 
