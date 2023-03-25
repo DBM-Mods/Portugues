@@ -39,16 +39,13 @@ module.exports = {
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
     <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
-    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+    <div style="width: 100%; padding:1px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    <tab-system style="margin-top: 5px;">
+    <tab label="Ação" icon="align left">
+    <div style="padding: 8px;height: calc(100vh - 210px);overflow-y: auto;overflow-x: hidden;width:100%">
 
     
-    <div id="flutuador" style="padding:0px 0px 15px 0px">
-<table style="width:100%;"><tr>
-<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
-<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
-</tr></table>
-</div>
-
 <role-input dropdownLabel="Cargo" selectId="role" variableContainerId="varNameContainer" variableInputId="varName"></role-input>
 
 <br><br><br>
@@ -62,6 +59,20 @@ module.exports = {
   <input id="reason" placeholder="Opcional" class="round" type="text">
   
 </div>
+<br>
+
+</div>
+</tab>
+<tab label="Config" icon="settings">
+<div style="padding: 8px;height: calc(100vh - 210px);overflow-y: auto;overflow-x: hidden;width:100%">
+
+<div>
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
+
 <br>
 
 <span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(255,255,255,0.2)">
@@ -104,6 +115,9 @@ module.exports = {
 <br><br>
 <action-list-input id="actionserr" height="calc(100vh - 450px)"></action-list-input>
 </div>
+
+</tab>
+</tab-system>
 
 </div>
 
