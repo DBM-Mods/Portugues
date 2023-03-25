@@ -86,7 +86,7 @@ module.exports = {
 
 <div>
 <div style="float: left; width: 38%" id="xinext">
-<span class="dbminputlabel">Se ocorrer um erro</span><br>
+<span class="dbminputlabel">Se o cargo não for entregue</span><br>
 <select id="iffalse" class="round" onchange="glob.onComparisonChanged(this)">
 <option value="0" selected>Continuar ações</option>
 <option value="1">Parar sequência de ação</option>
