@@ -24,13 +24,20 @@ module.exports = {
     : `<font style="color:${desccor}">${presets.getMemberText(data.member, data.varName2)} - ${presets.getRoleText(data.role, data.varName)}</font>`
   },
 
+  variableStorage(data, varType) {
+    const type = parseInt(data.errs, 10);
+    if (type !== varType) return;
+    return [data.errv, "Texto ~ Erro" ];
+  },
 
-  fields: ["member", "varName2", "role", "varName", "reason" , "iffalse", "iffalseVal","descriptioncolor","description","descriptionx"],
+
+
+  fields: ["member", "varName2", "role", "varName", "reason" , "iffalse", "iffalseVal","descriptioncolor","description","descriptionx", "errcmd", "errs", "errv", "actionserr"],
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -57,24 +64,53 @@ module.exports = {
 </div>
 <br>
 
-<div style="padding-top: 8px;">
-<div style="float: left; width: 40%">
-<span class="dbminputlabel">Se o cargo não for entregue</span><br>
+<span class="dbminputlabel">Opções</span><br><div style="padding:10px;background:rgba(255,255,255,0.2)">
+<dbm-checkbox id="errcmd" label="Exibir o erro no console" checked></dbm-checkbox>
+</div>
+
+<div>
+<br>
+<table>
+  <tr>
+  <td class="col1"><span class="dbminputlabel">Mensagem de erro em</span><br>
+  <select id="errs" value="0" class="round" onchange="glob.variableChange(this, 'varNameContainer2')">
+    ${data.variables[0]}
+  </select></td>
+  <td class="col2"><div id="varNameContainer2"><span class="dbminputlabel">Nome da Variavel</span><br>
+  <input id="errv" class="round" type="text"></div></td>
+  </tr>
+  </table>
+</div>
+
+<br>
+
+<div>
+<div style="float: left; width: 38%" id="xinext">
+<span class="dbminputlabel">Se ocorrer um erro</span><br>
 <select id="iffalse" class="round" onchange="glob.onComparisonChanged(this)">
-<option value="0" selecionado>Continuar ações</option>
+<option value="0" selected>Continuar ações</option>
 <option value="1">Parar sequência de ação</option>
 <option value="2">Ir para a ação</option>
 <option value="3">Pular as próximas ações</option>
 <option value="4">Ir para a âncora de ação</option>
+<option value="5">Realizar ações e parar</option>
+<option value="6">Realizar ações e continuar</option>
 </select>
+<br>
 </div>
-<div id="iffalseContainer" style="display: none; float: right; width: 55%;"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
-<br><br><br>
+<div id="iffalseContainer" style="display: none; float: right; width: 60%;"><div id="xincontrol"><span id="xinelas" class="dbminputlabel">Para</span><br><input id="iffalseVal" class="round" name="actionxinxyla" type="text"></div>
+</div><br></div>
+<div id="containerxin" style="width:100%">
+<br><br>
+<action-list-input id="actionserr" height="calc(100vh - 450px)"></action-list-input>
+</div>
 
 </div>
 
 <style>
-
+table{width:100%}
+.col1{width:38%;padding:0px 10px 0px 0px}
+.col2{width:60%}
 .dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
 .dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
 
@@ -92,18 +128,31 @@ module.exports = {
       } else {
         document.getElementById("iffalseContainer").style.display = "none";
       }
+      if (event.value == "5" || event.value == "6") {
+        document.getElementById("containerxin").style.display = null;
+        document.getElementById("xincontrol").style.display = "none";
+        document.getElementById("xinext").style.width = "100%";
+      } else {
+        document.getElementById("containerxin").style.display = "none";
+        document.getElementById("xincontrol").style.display = null;
+        document.getElementById("xinext").style.width = "38%";
+      }
       if (event.value == "2") {
-      document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
+        document.querySelector("[id='xinelas']").innerText = (`Número da ação`);
+      }
+      if (event.value == "3") {
+        document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
+      }
+      if (event.value == "4") {
+        document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
+      }
     }
-    if (event.value == "3") {
-      document.querySelector("[id='xinelas']").innerText = (`Pular ações`);
-    }
-    if (event.value == "4") {
-      document.querySelector("[id='xinelas']").innerText = (`Nome da âncora`);
-    }
-  }
 
     glob.onComparisonChanged(document.getElementById("iffalse"));
+    glob.variableChange(document.getElementById('errs'), 'varNameContainer2');
+
+
+
 
     const xinelaslinks = document.getElementsByClassName('xinelaslink');
     for (let x = 0; x < xinelaslinks.length; x++) {
@@ -134,7 +183,22 @@ module.exports = {
 
       const server = cache.server;
       if (!server?.members) {
-        this.callNextAction(cache);
+      
+        if (data.errcmd === true){console.log("Cache do Servidor não encontrado")}
+        this.storeValue("Cache do Servidor não encontrado", data.errs, this.evalMessage(data.errv, cache), cache)
+        if(data.iffalse == "5" || data.iffalse == "6"){
+
+          if(data.iffalse == "5"){
+            this.executeSubActions(data.actionserr, cache)
+            } else 
+            {
+            this.executeSubActionsThenNextAction(data.actionserr, cache)
+            }
+
+        } else {
+          this.executeResults(false, data, cache);
+        }
+
         return;
       }
       if (server.memberCount !== server.members.cache.size) server.members.fetch();
@@ -151,14 +215,66 @@ module.exports = {
         [role, reason],
       )
         .then(() => this.callNextAction(cache))
-        .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+        .catch((err) => {
+
+          if (data.errcmd === true){this.displayError(data, cache, err)}
+
+          this.storeValue(err, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+          if(data.iffalse == "5" || data.iffalse == "6"){
+
+            if(data.iffalse == "5"){
+              this.executeSubActions(data.actionserr, cache)
+              } else 
+              {
+              this.executeSubActionsThenNextAction(data.actionserr, cache)
+              }
+
+          } else {
+            this.executeResults(false, data, cache);
+          }
+        }       
+        );
     } else if (member?.roles) {
       member.roles
         .add(role, reason)
         .then(() => this.callNextAction(cache))
-        .catch((err) => this.displayError(data, cache, err) || this.executeResults(false, data, cache));
+        .catch((err) => {
+          
+          if (data.errcmd === true){this.displayError(data, cache, err)}
+
+          this.storeValue(err, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+          if(data.iffalse == "5" || data.iffalse == "6"){
+
+            if(data.iffalse == "5"){
+              this.executeSubActions(data.actionserr, cache)
+              } else 
+              {
+              this.executeSubActionsThenNextAction(data.actionserr, cache)
+              }
+
+          } else {
+            this.executeResults(false, data, cache);
+          }
+          
+    }
+    );
     } else {
-      this.callNextAction(cache);
+
+      if(data.iffalse == "5" || data.iffalse == "6"){
+
+        if(data.iffalse == "5"){
+          this.executeSubActions(data.actionserr, cache)
+          } else 
+          {
+          this.executeSubActionsThenNextAction(data.actionserr, cache)
+          }
+
+      } else {
+        this.executeResults(false, data, cache);
+      }
+      
     }
   },
 
