@@ -1210,7 +1210,7 @@ Actions.eval = function (content, cache, logError = true) {
   const server = cache.server;
   const client = DBM.Bot.bot;
   const bot = DBM.Bot.bot;
-  const me = server?.me ?? null;
+  const me = server?.members?.me ?? null;
   let user = "",
     member = "",
     channel = "",
