@@ -163,7 +163,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.6</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.7</div>
 
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
     <br><br><br>
@@ -1697,7 +1697,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
             }
 
             if (result == true) {
-              embed.addField(this.evalMessage(f.name || '\u200B', cache), this.evalMessage(f.value || '\u200B', cache), f.inline === "true")
+              embed.addFields({ name: this.evalMessage(f.name || '\u200B', cache), value: this.evalMessage(f.value || '\u200B', cache), inline: f.inline === "true"})
             };
           }
         }
