@@ -37,7 +37,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
     <tab-system>
 
     <tab label="Opções" icon="wizard">
@@ -417,18 +417,6 @@ module.exports = {
           for (var i = 0; i < branches.length; i++) {
             const optionChange = branches[i];
 
-            let newOptionData = {
-              label: this.evalMessage(optionChange.label, cache),
-              value: this.evalMessage(optionChange.value, cache),
-              default: false,
-            };
-            if (optionChange.description) {
-              newOptionData.description = this.evalMessage(optionChange.description, cache);
-            }
-            if (optionChange.emoji) {
-              newOptionData.emoji = this.evalMessage(optionChange.emoji, cache)
-            }
-
             val1 = this.evalMessage(optionChange.val1, cache);
             val2 = this.evalMessage(optionChange.val2, cache);
             result = true;
@@ -532,6 +520,17 @@ module.exports = {
             }
 
             if(result == true){
+              let newOptionData = {
+                label: this.evalMessage(optionChange.label, cache),
+                value: this.evalMessage(optionChange.value, cache),
+                default: false,
+              };
+              if (optionChange.description) {
+                newOptionData.description = this.evalMessage(optionChange.description, cache);
+              }
+              if (optionChange.emoji) {
+                newOptionData.emoji = this.evalMessage(optionChange.emoji, cache)
+              }
             select.options.push({ ...newOptionData })};
 
           }
