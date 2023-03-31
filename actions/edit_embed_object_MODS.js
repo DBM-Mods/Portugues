@@ -2,7 +2,7 @@ module.exports = {
   name: 'Edit Embed Object MOD',
   section: 'Embed Message',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: true,
     author: '[XinXyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',

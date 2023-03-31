@@ -3,7 +3,7 @@ module.exports = {
   name: 'Check Parameters MOD',
   section: 'Conditions',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: true,
     author: '[Pocky - 213946899034537986]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',

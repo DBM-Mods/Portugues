@@ -2,7 +2,7 @@ module.exports = {
   name: 'Create Timestamp Discord MOD',
   section: 'Other Stuff',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: true,
     author: '[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
