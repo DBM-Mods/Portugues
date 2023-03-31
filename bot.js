@@ -1610,6 +1610,7 @@ Actions.getParameterFromParameterData = function (option) {
       case "ATTACHMENT": {
         return option.attachment?.url ?? "";
       }
+      return option.value;
     }
   }
   return null;
