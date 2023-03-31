@@ -2,7 +2,7 @@ module.exports = {
   name: 'Store Bot Client Info MOD',
   section: 'Bot Client Control',
   meta: {
-    version: '2.1.6',
+    version: '2.1.7',
     preciseCheck: true,
     author: '[Snull - 612775910449610763]<br>[XinXyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
