@@ -11,10 +11,23 @@ module.exports = {
 
 
   subtitle(data, presets) {
+
     const list = presets.lists;
     let lista
-    if(data.list == 7 || data.list == 8 || data.list == 9){lista = `${list[parseInt(data.list, 10)]}(${data.varName})`}else{lista = `"${list[parseInt(data.list, 10)]}"`}
-    return `Obter item de ${lista}`;
+    if (data.list == 7 || data.list == 8 || data.list == 9) { lista = `${list[parseInt(data.list, 10)]}(${data.varName})` } else { lista = `"${list[parseInt(data.list, 10)]}"` }
+
+
+    if (data.descriptionx == true) {
+      desccor = data.descriptioncolor
+    } else {
+      desccor = 'none'
+    }
+
+    const storage = presets.variables;
+
+    return data.description
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">Obter item de ${lista} e armazenar em ${storage[parseInt(data.storage, 10)]} (${data.varName2})</font>`
   },
 
 
@@ -33,40 +46,50 @@ module.exports = {
       case 2:
         dataType = "Cargo";
         break;
-        case 3:
-          dataType = "Emoji";
-          break;
-        case 4:
+      case 3:
+        dataType = "Emoji";
+        break;
+      case 4:
         dataType = "Servidor";
-        break;    
+        break;
       case 5:
       case 6:
         dataType = "Cargo";
         break;
-        case 7:
-          dataType = "Variavel = " +data.varName;
-          break;
-          case 8:
-            dataType = "Variavel = " +data.varName;
-            break;
-            case 9:
-              dataType = "Variavel = " +data.varName;
-              break;
+      case 7:
+        dataType = "Variavel = " + data.varName;
+        break;
+      case 8:
+        dataType = "Variavel = " + data.varName;
+        break;
+      case 9:
+        dataType = "Variavel = " + data.varName;
+        break;
     }
 
     const type2 = parseInt(data.storage3, 10);
-    if (type2 > 0){montagem = [data.varName2, dataType, data.varName3, "Posição"]}else{montagem = [data.varName2, dataType]}
+    if (type2 > 0) { montagem = [data.varName2, dataType, data.varName3, "Posição"] } else { montagem = [data.varName2, dataType] }
     return montagem
   },
 
 
-  fields: ["list", "varName", "getType", "position", "escolher", "storage3", "varName3", "storage", "varName2"],
+  fields: ["list", "varName", "getType", "position", "escolher", "storage3", "varName3", "storage", "varName2", "descriptioncolor", "description", "descriptionx", "convert"],
 
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+    <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+
+    <div style="width: 100%; padding:5px 0px;height: calc(100vh - 160px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+    <table style="width:100%;"><tr>
+    <td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+    <td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+    </tr></table>
+    </div>
+
 <div>
 	<div style="float: left; width: 35%;">
   <span class="dbminputlabel">Lista</span><br>
@@ -125,11 +148,28 @@ module.exports = {
 		${data.variables[1]}
 		</select>
 	</div>
-	<div style="float: right; width: 60%;">
+	<div style="float: left; width: 40%;padding:0px 6px">
 	<span class="dbminputlabel">Nome da Variável</span><br>
 		<input id="varName2" class="round" type="text">
+    </div>
+    <div style="float: right; width: 25%;">
+    <span class="dbminputlabel">Converter</span><br>
+		<select id="convert" class="round">
+			<option value="0" selected>Não converter</option>
+			<option value="1">Número</option>
+      <option value="2">Texto</option>
+		</select>
 	</div>
 
+
+  </div>
+
+<style>
+
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+</style>
 `
   },
 
@@ -168,6 +208,20 @@ module.exports = {
     glob.listChange(document.getElementById("list"), "varNameContainer");
     glob.onChange1(document.getElementById("getType"));
     glob.onChange2(document.getElementById("storage3"));
+
+    const xinelaslinks = document.getElementsByClassName('xinelaslink');
+    for (let x = 0; x < xinelaslinks.length; x++) {
+      const xinelaslink = xinelaslinks[x];
+      const url = xinelaslink.getAttribute('data-url');
+      if (url) {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
+          e.stopImmediatePropagation();
+          console.log(`Launching URL: [${url}] in your default browser.`);
+          require('child_process').execSync(`start ${url}`);
+        });
+      }
+    }
   },
 
 
@@ -204,38 +258,40 @@ module.exports = {
           result2 = Math.floor(position);
         }
         break;
-        case 4:
-          calc1 = Math.floor(list.length / 2);
-          calc2 = Math.floor(Math.random() * calc1);
-          calc3 = Math.floor(calc2 * 2);
-          result2 = Math.floor(calc3 + 1)
-          result = list[result2];
-          break;
-        case 5:
-          calc1 = Math.ceil(list.length / 2);
-          calc2 = Math.floor(Math.random() * calc1);
-          result2 = Math.floor(calc2 * 2);
-          result = list[result2];
-          break;
-          case 6:
-          calc1 = Math.floor(list.length / 2);
-          result2 = Math.floor(calc1);
-          result = list[result2];
-          break;
-          case 7:
-            const escolher = parseInt(this.evalMessage(data.escolher, cache), 10);
-            calc1 = Math.floor(list.length / escolher);
-            calc2 = Math.floor(Math.random() * calc1);
-            calc3 = Math.floor(escolher * calc2);
-            result2 = Math.floor(calc3)
-            result = list[result2];
+      case 4:
+        calc1 = Math.floor(list.length / 2);
+        calc2 = Math.floor(Math.random() * calc1);
+        calc3 = Math.floor(calc2 * 2);
+        result2 = Math.floor(calc3 + 1)
+        result = list[result2];
+        break;
+      case 5:
+        calc1 = Math.ceil(list.length / 2);
+        calc2 = Math.floor(Math.random() * calc1);
+        result2 = Math.floor(calc2 * 2);
+        result = list[result2];
+        break;
+      case 6:
+        calc1 = Math.floor(list.length / 2);
+        result2 = Math.floor(calc1);
+        result = list[result2];
+        break;
+      case 7:
+        const escolher = parseInt(this.evalMessage(data.escolher, cache), 10);
+        calc1 = Math.floor(list.length / escolher);
+        calc2 = Math.floor(Math.random() * calc1);
+        calc3 = Math.floor(escolher * calc2);
+        result2 = Math.floor(calc3)
+        result = list[result2];
     }
 
-    if (result) {
-      const varName2 = this.evalMessage(data.varName2, cache);
-      const storage2 = parseInt(data.storage, 10);
-      this.storeValue(result, storage2, varName2, cache);
-    }
+    const varName2 = this.evalMessage(data.varName2, cache);
+    const storage2 = parseInt(data.storage, 10);
+
+    if (data.convert == "1") { result = parseFloat(result) }
+    if (data.convert == "2") { result = result.toString() }
+
+    this.storeValue(result, storage2, varName2, cache);
 
     if (result2 !== undefined) {
       const varName3 = this.evalMessage(data.varName3, cache);
@@ -247,5 +303,5 @@ module.exports = {
   },
 
 
-  mod() {},
+  mod() { },
 };
