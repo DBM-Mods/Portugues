@@ -12,11 +12,20 @@ module.exports = {
       },
    
     subtitle: function(data) {
+
+        if(data.descriptionx == true){
+            desccor = data.descriptioncolor
+            } else {
+              desccor = 'none'
+            }
+
         const info = ['Dia da semana', 'Dia (número)', 'Dia do ano', 'Semana do ano', 'Mês do ano', 'Mês (número)', 'Ano', 'Hora', 'Minutos', 'Segundos', 'Milissegundos', 'Fuso horário', 'Unix Timestamp', 'Data completa']
         const storage = ['', 'Variável Temporária', 'Variável Servidor', 'Variável Global']
         const formato = ['uma Data', 'um timestamp', 'um timestamp milissegundos']
-        return `${data.modeStorage === "0" ? '"' + info[data.info] + '"' : data.buildInput === "" ? '"Não configurado"' : '"' + data.buildInput + '"'} de ${formato[data.formato]||'uma data'} ~ ${storage[data.storage]}`;
-    },
+        return data.description
+        ? `<font style="color:${desccor}">${data.description}</font>`
+        : `<font style="color:${desccor}">${data.modeStorage === "0" ? '"' + info[data.info] + '"' : data.buildInput === "" ? '"Não configurado"' : '"' + data.buildInput + '"'} de ${formato[data.formato]||'uma data'} ~ ${storage[data.storage]}</font>`
+      },
     
  
     short_description: "Armazena algo de uma data de forma mais completa!",
@@ -28,31 +37,45 @@ module.exports = {
         return ([data.varName, dataType]);
     },
         
-    fields: ["formato", "timezone", "soma", "sourceDate", "dateLanguage", "modeStorage", "info", "buildInput", "storage", "varName"],
+    fields: ["formato", "timezone", "soma", "sourceDate", "dateLanguage", "format", "modeStorage", "info", "buildInput", "storage", "varName","descriptioncolor","description","descriptionx"],
     
         html: function(isEvent, data) {
         return `
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.6</div>
-        <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
+        <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.7</div>
 
-        <div style="float: left; width: 62%;" id="manipulador">
+    <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
+
+    <div id="flutuador" style="padding:0px 0px 15px 0px">
+<table style="width:100%;"><tr>
+<td><span class="dbminputlabel">Descrição da Action</span><br><input type="text" class="round" id="description" placeholder="Deixe vazio para remover"></td>
+<td style="padding:0px 0px 0px 10px;width:70px"><div style="float:left;padding:0px 0px 0px 7px;margin-top:-5px"><dbm-checkbox id="descriptionx" label="Cor"></dbm-checkbox></div><br><input type="color" value="#ffffff" class="round" id="descriptioncolor"></td>
+</tr></table>
+</div>
+
+        <div style="float: left; width: 50%;" id="manipulador">
         <span class="dbminputlabel">Formato</span><br>
         <select id="formato" class="round" onchange="glob.onChangeMode2(this)">
             <option value="0" selected>Data</option>
             <option value="1">Timestamp</option>
             <option value="2">Timestamp milissegundos</option>
+            <option value="3">Data em um formato</option>
         </select>
         </div>
-        <div style="float: right; width: 35%" id="dataxin">
+        <div style="float: right; width: 48%" id="dataxin">
         <span class="dbminputlabel">Idioma da data (iniciais)</span><br>
-           <input id="dateLanguage" class="round" placeholder='O padrão é "en" (Inglês)'>
+        <input id="dateLanguage" class="round" placeholder='O padrão é "en" (Inglês)'>
         </div>
 <br><br><br>
-        <div style="float: left;width: 62%" id="manipulador2">
+        <div style="float: left;width: 50%" id="manipulador2">
         <span class="dbminputlabel" name="xinelas">Data de origem</span><br>
             <input id="sourceDate" class="round" type="text" placeholder="Deixe em branco para a data atual">
         </div>
-        <div style="float: right; width: 35%" id="dataxin2">
+        <div style="float: right;width: 48%" id="dataxin3">
+        <span class="dbminputlabel">Formato da Data</span><br>
+        <input id="format" class="round" value="DD/MM/YYYY HH:mm:ss" placeholder='DD/MM/YYYY HH:mm:ss'>
+        </div>
+        <div style="float: right; width: 48%" id="dataxin2">
         <span class="dbminputlabel">Adicionar segundos</span><br>
            <input id="soma" class="round" value="0" placeholder='Ex: 86400 para +1 dia'>
         </div>
@@ -84,10 +107,10 @@ module.exports = {
             </select>
         </div>
         <div id="buildMode" style="display: none; float: right; width: 62%">
-        <span class="dbminputlabel">Construir (<span class="xinxylalink" data-url="https://momentjs.com/docs/#/displaying/format/">Documento</span>)</span><br>
+        <span class="dbminputlabel">Construir (<span class="xinelaslink" data-url="https://momentjs.com/docs/#/displaying/format/">Documento</span>)</span><br>
             <input id="buildInput" class="round" placeholder="Ex: DD/MM/YYYY [às] HH:mm:ss">
         </div><br><br><br>
-        <span class="dbminputlabel">Timezone (<span class="xinxylalink" data-url="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">Timezones</span>)</span><br>
+        <span class="dbminputlabel">Timezone (<span class="xinelaslink" data-url="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">Timezones</span>)</span><br>
         <input id="timezone" class="round" type="text" value="America/Sao_Paulo" placeholder="Ex: America/Sao_Paulo ou deixe vazio para o local">
         <br>
 
@@ -104,6 +127,8 @@ module.exports = {
         <div id="noteContainer" style="display: none; padding-top: 16px">
             <b>Nota:</b> Você pode usar colchetes para colocar o texto em <b>Construir</b><br>
             <b>Ex:</b> <span id="code">DD/MM/YYYY [ás] HH:mm:ss</span> = <span id="code">30/01/2022 ás 13:38:20</span>
+        </div>
+
         </div>
         <style>
              span.xinxylalink {
@@ -123,6 +148,9 @@ module.exports = {
                 font-size: 12px;
                 border-radius: 2px
               }
+.dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
+.dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
         </style>
         `
     },
@@ -154,41 +182,51 @@ module.exports = {
                 document.querySelector("[name='xinelas']").innerText = (`Data de origem`);
                 document.getElementById("dataxin").style.display = null;
                 document.getElementById("dataxin2").style.display = "none";
-                document.getElementById("manipulador").style.width = "62%";
+                document.getElementById("manipulador").style.width = "50%";
                 document.getElementById("manipulador2").style.width = "100%";
+                document.getElementById("dataxin3").style.display = "none";
             }
             if (value == 1) {
                 document.querySelector("[name='xinelas']").innerText = (`Timestamp`);
                 document.getElementById("dataxin").style.display = "none";
                 document.getElementById("dataxin2").style.display = null;
                 document.getElementById("manipulador").style.width = "100%";
-                document.getElementById("manipulador2").style.width = "62%";
+                document.getElementById("manipulador2").style.width = "50%";
+                document.getElementById("dataxin3").style.display = "none";
             }
             if (value == 2) {
                 document.querySelector("[name='xinelas']").innerText = (`Timestamp milissegundos`);
                 document.getElementById("dataxin").style.display = "none";
                 document.getElementById("dataxin2").style.display = null;
                 document.getElementById("manipulador").style.width = "100%";
-                document.getElementById("manipulador2").style.width = "62%";
+                document.getElementById("manipulador2").style.width = "50%";
+                document.getElementById("dataxin3").style.display = "none";
+            }
+            if (value == 3) {
+                document.querySelector("[name='xinelas']").innerText = (`Data de origem`);
+                document.getElementById("dataxin").style.display = null;
+                document.getElementById("dataxin2").style.display = "none";
+                document.getElementById("manipulador").style.width = "50%";
+                document.getElementById("manipulador2").style.width = "50%";
+                document.getElementById("dataxin3").style.display = null;
             }
             }
 
         glob.onChangeMode2(document.getElementById("formato"));
 
-        var xinxylalinks = document.getElementsByClassName("xinxylalink")
-        for(var x = 0; x < xinxylalinks.length; x++) {
-          
-          const xinxylalink = xinxylalinks[x];
-          const url = xinxylalink.getAttribute('data-url');   
+        const xinelaslinks = document.getElementsByClassName('xinelaslink');
+        for (let x = 0; x < xinelaslinks.length; x++) {
+          const xinelaslink = xinelaslinks[x];
+          const url = xinelaslink.getAttribute('data-url');
           if (url) {
-            xinxylalink.setAttribute("title", url);
-            xinxylalink.addEventListener("click", function(e){
+           xinelaslink.setAttribute('title', url);
+           xinelaslink.addEventListener('click', (e) => {
               e.stopImmediatePropagation();
-              console.log("Launching URL: [" + url + "] in your default browser.")
-              require('child_process').execSync('start ' + url);
+              console.log(`Launching URL: [${url}] in your default browser.`);
+              require('child_process').execSync(`start ${url}`);
             });
-          }   
-        }  
+          }
+        }
     },
     
 
@@ -196,6 +234,8 @@ module.exports = {
     action: function(cache) {
         const data = cache.actions[cache.index];
         moment = require("moment");
+
+        const format = this.evalMessage(data.format, cache) || "DD/MM/YYYY HH:mm:ss";
 
         var soma = parseFloat(this.evalMessage(data.soma, cache))
         if(data.soma == "" || data.soma == undefined || data.soma == "undefined" || data.soma == "NaN" || data.soma == NaN){
@@ -215,6 +255,9 @@ module.exports = {
         const datar =  moment(Date.parse(new Date))
         sourceDate = parseFloat(datar.format("X")) + soma
         }
+        if(data.formato == "3"){
+        sourceDate = new Date
+        }
 
         } else {
 
@@ -226,6 +269,9 @@ module.exports = {
         }
         if(data.formato == "2"){
         sourceDate = parseFloat(this.evalMessage(data.sourceDate, cache)) + soma*1000
+        }
+        if(data.formato == "3"){
+        sourceDate = this.evalMessage(data.sourceDate, cache)
         }
         }
 
@@ -265,6 +311,15 @@ module.exports = {
             date.tz(timezone)}
 
         }
+
+        if (data.formato == "3"){
+            dateLanguage = this.evalMessage(data.dateLanguage, cache);
+            date = moment(sourceDate, format, dateLanguage === "" ? "en" : dateLanguage)
+            
+            if(timezonegat == "on"){
+                moment = require("moment-timezone");
+                date.tz(timezone)}
+            }
 
 
         const buildInput = this.evalMessage(data.buildInput, cache);
