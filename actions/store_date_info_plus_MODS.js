@@ -131,13 +131,13 @@ module.exports = {
 
         </div>
         <style>
-             span.xinxylalink {
+             span.xinelaslink {
 		color: #99b3ff;
 		text-decoration: underline;
                 cursor: pointer
             }
 
-	     span.xinxylalink:hover { 
+	     span.xinelaslink:hover { 
                 color:#4676b9
             }
 
