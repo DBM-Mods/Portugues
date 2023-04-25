@@ -38,7 +38,7 @@ module.exports = {
       : `<font style="color:${desccor}">${info[parseInt(data.info, 10)]} - ${storage[parseInt(data.storage, 10)]} (${data.varName})</font>`
   },
 
-  fields: ['filePath', 'info', 'storage', 'varName', 'descriptioncolor', 'description', 'descriptionx'],
+  fields: ['filePath', 'info', 'storage', 'varName', 'error', 'descriptioncolor', 'description', 'descriptionx'],
 
   variableStorage(data, varType) {
     if (parseInt(data.storage, 10) !== varType) return;
@@ -84,7 +84,7 @@ module.exports = {
   html(_isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -112,6 +112,10 @@ module.exports = {
   <option value='9'>Data da criação do arquivo</option>
   <option value='10'>Duração total da musica em segundos</option>
 </select><br>
+
+<center><dbm-checkbox id="error" label="Exibir o erro no console" checked></dbm-checkbox></center>
+
+<br>
 <table>
 <tr>
 <td class="sep1"><span class="dbminputlabel">Armazenar em</span><br>
@@ -169,37 +173,77 @@ table{width:100%}
     let result;
     switch (info) {
       case 0:
+        try{
         result = fs.statSync(filePath).size;
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 1:
+        try{
         result = path.extname(/[^/]*$/.exec(filePath)[0]);
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 2:
+        try{
         result = fs.readFileSync(filePath).toString().length;
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 3:
+        try{
         result = Math.round(fs.statSync(filePath).mtimeMs / 1000);
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 4:
+        try{
         result = fs.statSync(filePath).mtime;
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 5:
+        try{
         result = fs.existsSync(filePath);
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 6:
+        try{
         result = fs.readFileSync(filePath).toString();
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 7:
+        try{
         result = path.basename(filePath);
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 8:
+        try{
         result = Math.round(fs.statSync(filePath).birthtimeMs / 1000);
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 9:
+        try{
         result = fs.statSync(filePath).birthtime;
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
         break;
       case 10:
-        const fs = require('fs');
+        try{
         const child_process = require('child_process');
 
         sincronizar = 1
@@ -216,12 +260,15 @@ table{width:100%}
             });
           });
         }
+      } catch (e) {
+        if(data.error == true){console.log(e)}
+      }
 
         try {
           result = await getDuration(filePath);
           this.storeValue(result, storage, varName, cache);
         } catch (err) {
-          console.error(err);
+          if(data.error == true){ console.error(err)}
         }
 
         break;
