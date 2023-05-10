@@ -5,8 +5,8 @@
 <br><br>
 
 <p align="center">
-  <a href="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip"</a>
-  <img src="https://github.com/DBM-Mods/Portugues/assets/43226244/cf144a7b-5158-4f39-a108-c4a842c53bdf" width="200">
+  <a href="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">
+  <img src="https://github.com/DBM-Mods/Portugues/assets/43226244/cf144a7b-5158-4f39-a108-c4a842c53bdf" width="200"></a>
 </p>
 
 # Instalação dos MODS
