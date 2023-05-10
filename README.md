@@ -3,8 +3,11 @@
  
 <p align="center">O <a href="https://discord.gg/HBc9u9tktd">DBM MODS {Multi-Language}</a> é uma comunidade de código aberto destinado a modificar, estender e melhorar o <a href="https://store.steampowered.com/app/682130/Discord_Bot_Maker">Discord Bot Maker</a>, também temos o objetivo de unir a comunidade de todos os países.</p>
 <br><br>
-<p align="center"><a href="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">BAIXAR MODS</a></p>
 
+<p align="center">
+  <a href="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip"</a>
+  <img src="https://github.com/DBM-Mods/Portugues/assets/43226244/cf144a7b-5158-4f39-a108-c4a842c53bdf" width="200">
+</p>
 
 # Instalação dos MODS
 Pegue todos os arquivos do ZIP e substitua para a pasta do seu Projeto<br>
@@ -26,4 +29,6 @@ Versão entre 17.4.0 a 17.9.1
 1 - Clique na barra de endereço do seu projeto<br>
 2 - Digite cmd<br>
 3 - Coloque...<br>
-> npm i chalk@4.1.2 chart.js@3.9.1 canvas@2.9.1 qrcode opentype.js imagedata-filters tesseract.js libsodium-wrappers @discordjs/voice ffmpeg-static request fs fs-extra jsonpath jsonpath-plus path moment moment-timezone weather-js https normalize-date email-existence is-image-url is-url valid-url get-mp3-duration sequelize google-it fast-sort scrape-yt crypto-js os-utils os
+```md
+npm i chalk@4.1.2 chart.js@3.9.1 canvas@2.9.1 qrcode opentype.js imagedata-filters tesseract.js libsodium-wrappers @discordjs/voice ffmpeg-static request fs fs-extra jsonpath jsonpath-plus path moment moment-timezone weather-js https normalize-date email-existence is-image-url is-url valid-url get-mp3-duration sequelize google-it fast-sort scrape-yt crypto-js os-utils os
+```
