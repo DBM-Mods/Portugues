@@ -2,10 +2,9 @@
  <p align="center"><img height="200" src="https://user-images.githubusercontent.com/108380983/229547060-f69c3089-d3c7-4f77-843e-3aa37edc6973.png"></p>
  
 <p align="center">O <a href="https://discord.gg/HBc9u9tktd">DBM MODS {Multi-Language}</a> é uma comunidade de código aberto destinado a modificar, estender e melhorar o <a href="https://store.steampowered.com/app/682130/Discord_Bot_Maker">Discord Bot Maker</a>, também temos o objetivo de unir a comunidade de todos os países.</p>
-<br><br>
-
+<br>
 <p align="center">
-  <big><a href="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">BAIXAR MODS</a></big>
+  <big><big><a href="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">BAIXAR MODS</a></big></big>
 </p>
 
 # Instalação dos MODS
@@ -31,3 +30,7 @@ Versão entre 17.4.0 a 17.9.1
 ```md
 npm i chalk@4.1.2 chart.js@3.9.1 canvas@2.9.1 qrcode opentype.js imagedata-filters tesseract.js libsodium-wrappers @discordjs/voice ffmpeg-static request fs fs-extra jsonpath jsonpath-plus path moment moment-timezone weather-js https normalize-date email-existence is-image-url is-url valid-url get-mp3-duration sequelize google-it fast-sort scrape-yt crypto-js os-utils os
 ```
+<br>
+> Desative a opção "Atualizar automaticamente o bot.js"
+![Sem título](https://github.com/DBM-Mods/Portugues/assets/43226244/c95f81c7-fcd6-4049-9823-88358a164665)
+
