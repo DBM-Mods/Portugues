@@ -33,5 +33,6 @@ npm i chalk@4.1.2 chart.js@3.9.1 canvas@2.9.1 qrcode opentype.js imagedata-filte
 <br>
 > Desative a opção "Atualizar automaticamente o bot.js"
 <br>
+
 ![Sem título](https://github.com/DBM-Mods/Portugues/assets/43226244/c95f81c7-fcd6-4049-9823-88358a164665)
 
