@@ -37,7 +37,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 150px);overflow:auto">
 
@@ -108,7 +108,8 @@ module.exports = {
   },
 
 
-  modInit() {
+  modInit(data) {
+    this.prepareActions(data.actions);
   },
 
 
