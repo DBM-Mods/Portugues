@@ -18,7 +18,7 @@ module.exports = {
 
     let source;
     if (parseInt(data.sourcetype, 10) === 3) {
-      source = 'Mesmo comando/evento';
+      source = 'Mesmo comando';
     }
     if (parseInt(data.sourcetype, 10) === 2) {
       source = 'Nome do comando: ' + data.source3.toString();
@@ -92,7 +92,7 @@ module.exports = {
     <option value="0" selected>Escolha da lista</option>
     <option value="1">Inserir o ID do comando/evento</option>
     <option value="2">Inserir o nome do comando/evento</option>
-    <option value="3">Mesmo comando/evento</option>
+    <option value="3">Mesmo comando</option>
   </select>
 
 <div id="info1"; style="float: left; width: 100%; padding-top: 20px; display: none;">
