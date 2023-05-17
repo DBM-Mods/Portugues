@@ -192,7 +192,7 @@ module.exports = {
   html(_isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.5</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.6</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -204,7 +204,7 @@ module.exports = {
 </div>
 
 <span class="dbminputlabel">Informação</span><br>
-  <select id="info" class="round">
+  <select id="info" class="round2">
     <optgroup label="Uptimes">
     <option value="23">Atualizando o tempo de atividade em dias</option>
     <option value="24">Atualizando o tempo de atividade em horas</option>
@@ -266,7 +266,7 @@ module.exports = {
   <option value="31">Versão do Node JS</option>
     </optgroup>
   </select>
-
+  <input type="text" id="filtrodoxinxyla" class="round" placeholder="Filtrar opções...">
 <br>
 
 <div>
@@ -278,7 +278,7 @@ module.exports = {
   </div>
   <div id="varNameContainer2" style="float: right; width: 60%;">
   <span class="dbminputlabel">Nome da variavel</span><br>
-    <input id="varName2" class="round" type="text"><br>
+    <input id="varName2" class="round" type="text">
   </div>
 </div>
 
@@ -288,6 +288,38 @@ module.exports = {
 
 .dbmmodsbr1{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;left:0px;z-index:999999;cursor:pointer}
 .dbmmodsbr2{position:absolute;bottom:0px;border: 0px solid rgba(50,50,50,0.7);background:rgba(0,0,0,0.7);color:#999;padding:5px;right:0px;z-index:999999;cursor:pointer}
+
+.round2{width:100%;height:30px;outline:0}
+.round2 option{padding:3px 8px;text-align:left}
+.round2 optgroup{text-align:center;padding:4px 0px;}
+
+.abrir {
+  height: 30px;
+  animation: abrir .5s forwards;
+}
+
+@keyframes abrir {
+  from {
+    height: 30px;
+  }
+  to {
+    height: 190px;
+  }
+}
+
+.fechar {
+  height: 190px;
+  animation: fechar .5s forwards;
+}
+
+@keyframes fechar {
+  from {
+    height: 190px;
+  }
+  to {
+    height: 30px;
+  }
+}
 
 </style>`;
   },
@@ -308,6 +340,53 @@ module.exports = {
         });
       }
     }
+
+    document.getElementById("info").addEventListener("click", function () {
+      document.getElementById("info").classList.add("abrir");
+      document.getElementById("info").classList.remove("fechar");
+      this.size = this.options.length;
+    });
+
+    document.getElementById("info").addEventListener("blur", function () {
+      this.size = 1;
+      document.getElementById("info").classList.remove("abrir");
+      document.getElementById("info").classList.add("fechar");
+      document.getElementById("info").style.height = "30px";
+    });
+    
+    document.getElementById("filtrodoxinxyla").addEventListener("keyup", function () {
+      var select = document.getElementById("info");
+      var optgroups = select.getElementsByTagName("optgroup");
+      var filter = this.value.toLowerCase();
+      var options = document.getElementById("info").options;
+      for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+        if (option.text.toLowerCase().indexOf(filter) === -1) {
+          option.style.display = "none";
+        } else {
+          option.style.display = "";
+        }
+      }
+
+      for (var i = 0; i < optgroups.length; i++) {
+        var optgroup = optgroups[i];
+        var options = optgroup.getElementsByTagName("option");
+        var visibleOptions = 0;
+        for (var j = 0; j < options.length; j++) {
+          if (options[j].style.display !== "none") {
+            visibleOptions++;
+          }
+        }
+        if (visibleOptions === 0) {
+          optgroup.style.display = "none";
+        } else {
+          optgroup.style.display = "";
+        }
+      }
+
+      document.getElementById("info").dispatchEvent(new Event("click"));
+    });
+
   },
 
   async action(cache) {
