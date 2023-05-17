@@ -17,6 +17,9 @@ module.exports = {
       }
 
     let source;
+    if (parseInt(data.sourcetype, 10) === 4) {
+      source = 'Mesmo evento';
+    }
     if (parseInt(data.sourcetype, 10) === 3) {
       source = 'Mesmo comando';
     }
@@ -93,6 +96,7 @@ module.exports = {
     <option value="1">Inserir o ID do comando/evento</option>
     <option value="2">Inserir o nome do comando/evento</option>
     <option value="3">Mesmo comando</option>
+    <option value="4">Mesmo evento</option>
   </select>
 
 <div id="info1"; style="float: left; width: 100%; padding-top: 20px; display: none;">
@@ -320,14 +324,23 @@ module.exports = {
         idsave = jp.query(command, '$.._id')
         id = idsave.toString()
       }
-    
+
+      if (data.sourcetype == "4") {
+        const jp2 = this.getMods().require('jsonpath');
+        command2 = jp2.query(
+          this.getDBM().Files.data.events,
+          `$..[?(@.name=="${cache.meta.name}")]`,
+        );
+        idsave2 = jp2.query(command2, '$.._id')
+        id = idsave2.toString()
+      }
 
     let actions;
 
     const allData = Files.data.commands.concat(Files.data.events);
     for (let i = 0; i < allData.length; i++) {
 
-      if (data.sourcetype == "0" || data.sourcetype == "1" || data.sourcetype == "3" || data.sourcetype == undefined) {
+      if (data.sourcetype == "0" || data.sourcetype == "1" || data.sourcetype == "3" || data.sourcetype == "4" || data.sourcetype == undefined) {
         if (allData[i] && allData[i]._id === id) {
           actions = allData[i].actions;
           break;
