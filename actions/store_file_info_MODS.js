@@ -84,7 +84,7 @@ module.exports = {
   html(_isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.5</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -248,7 +248,7 @@ table{width:100%}
 
         sincronizar = 1
 
-        async function getDuration(filePath) {
+        function getDuration(filePath) {
           return new Promise((resolve, reject) => {
             child_process.execFile('ffprobe.exe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', filePath], (err, stdout, stderr) => {
               if (err) {
