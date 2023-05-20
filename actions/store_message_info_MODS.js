@@ -281,7 +281,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.7</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.8</div>
 
     <div id="flutuador" style="padding:0px 0px 15px 0px">
       <table style="width:100%;"><tr>
@@ -332,7 +332,7 @@ module.exports = {
 
 <div style="padding-top: 8px;">
 	<span class="dbminputlabel">Informação</span><br>
-	<select id="info" class="round" onchange="glob.onComparisonChanged(this)">
+	<select id="info" class="round2" onchange="glob.onComparisonChanged(this)">
 		<option value="0" selected>Objeto da mensagem</option>
 		<option value="1">ID da mensagem</option>
 		<option value="2">Texto da mensagem</option>
@@ -400,6 +400,7 @@ module.exports = {
     <option value="61">Opções do Menu</options>
     </optgroup>
 	</select>
+  <input type="text" id="filtrodoxinxyla" class="round" placeholder="Filtrar opções...">
 </div><br><div style="width: 100%;display:none" id="containerxin2">
 <table style="width:100%"><tr><td style="padding:5px">
 <span class="dbminputlabel">Número da Embed</span><br>
@@ -420,7 +421,43 @@ module.exports = {
 <br></div>
 </td></tr></table></div>
 
-<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>`;
+<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
+
+<style>
+.round2{width:100%;height:30px;outline:0}
+.round2 option{padding:3px 8px;text-align:left}
+.round2 optgroup{text-align:center;padding:4px 0px;}
+
+.abrir {
+  height: 30px;
+  animation: abrir .5s forwards;
+}
+
+@keyframes abrir {
+  from {
+    height: 30px;
+  }
+  to {
+    height: 130px;
+  }
+}
+
+.fechar {
+  height: 130px;
+  animation: fechar .5s forwards;
+}
+
+@keyframes fechar {
+  from {
+    height: 130px;
+  }
+  to {
+    height: 30px;
+  }
+}
+
+</style>
+`;
   },
 
 
@@ -440,6 +477,52 @@ module.exports = {
         });
       }
     }
+
+    document.getElementById("info").addEventListener("click", function () {
+      document.getElementById("info").classList.add("abrir");
+      document.getElementById("info").classList.remove("fechar");
+      this.size = this.options.length;
+    });
+
+    document.getElementById("info").addEventListener("blur", function () {
+      this.size = 1;
+      document.getElementById("info").classList.remove("abrir");
+      document.getElementById("info").classList.add("fechar");
+      document.getElementById("info").style.height = "30px";
+    });
+    
+    document.getElementById("filtrodoxinxyla").addEventListener("keyup", function () {
+      var select = document.getElementById("info");
+      var optgroups = select.getElementsByTagName("optgroup");
+      var filter = this.value.toLowerCase();
+      var options = document.getElementById("info").options;
+      for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+        if (option.text.toLowerCase().indexOf(filter) === -1) {
+          option.style.display = "none";
+        } else {
+          option.style.display = "";
+        }
+      }
+
+      for (var i = 0; i < optgroups.length; i++) {
+        var optgroup = optgroups[i];
+        var options = optgroup.getElementsByTagName("option");
+        var visibleOptions = 0;
+        for (var j = 0; j < options.length; j++) {
+          if (options[j].style.display !== "none") {
+            visibleOptions++;
+          }
+        }
+        if (visibleOptions === 0) {
+          optgroup.style.display = "none";
+        } else {
+          optgroup.style.display = "";
+        }
+      }
+
+      document.getElementById("info").dispatchEvent(new Event("click"));
+    });
 
     glob.onComparisonChanged = function (event) {
       if (event.value > 21) {
