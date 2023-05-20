@@ -108,12 +108,12 @@ module.exports = {
       "Lista de tags de membros do servidor em ordem de entrada",
       "Lista de figurinhas do servidor",
       "Lista de nomes de figurinhas do servidor",
-      "Lista de descrição das figurinhas do servidor<",
+      "Lista de descrição das figurinhas do servidor",
       "Lista de id das figurinhas do servidor",
       "Total de figurinhas do servidor",
       "Lista de eventos do servidor",
       "Lista de nome de eventos do servidor",
-      "Total de eventos do servidor<",
+      "Total de eventos do servidor",
       "Lista de ids de eventos do servidor",
     ];
 
