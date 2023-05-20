@@ -57,8 +57,8 @@ module.exports = {
     }
 
     return data.description
-    ? `<font style="color:${desccor}">${data.description}</font>`
-    : `<font style="color:${desccor}">${presets.getMemberText(data.member, data.varName)} - ${info[parseInt(data.info, 10)]}</font>`
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${presets.getMemberText(data.member, data.varName)} - ${info[parseInt(data.info, 10)]}</font>`
   },
 
 
@@ -181,7 +181,7 @@ module.exports = {
         dataType = "Timestamp";
         break;
     }
-    
+
     return [data.varName2, dataType];
   },
 
@@ -190,7 +190,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.3</div>
 
     <style>
     .xin {
@@ -247,7 +247,7 @@ module.exports = {
 
 <div style="padding-top: 8px;">
 	<span class="dbminputlabel">Informação</span><br>
-	<select id="info" class="round">
+	<select id="info" class="round2">
   <option value="0" selecionado>Objeto Membro</option>
   <option value="1">ID do membro</option>
   <option value="2">Nome de usuário do membro</option>
@@ -286,11 +286,49 @@ module.exports = {
   <option value="33">Timestamp do membro expirado</option>
   <option value="36">Timestamp do Impulso do Membro</option>
 	</select>
-</div>
+  <input type="text" id="filtrodoxinxyla" class="round" placeholder="Filtrar opções...">
+  </div>
 
 <br>
 
-<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>`;
+<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
+
+<style>
+.round2{width:100%;height:30px;outline:0}
+.round2 option{padding:3px 8px;}
+.abrir {
+  height: 30px;
+  animation: abrir .5s forwards;
+}
+
+@keyframes abrir {
+  from {
+    height: 30px;
+  }
+  to {
+    height: 140px;
+  }
+}
+
+.fechar {
+  height: 140px;
+  animation: fechar .5s forwards;
+}
+
+@keyframes fechar {
+  from {
+    height: 140px;
+  }
+  to {
+    height: 30px;
+  }
+}
+
+select {
+  max-height: 140px;
+}
+</style>
+`;
   },
 
   init() {
@@ -307,6 +345,37 @@ module.exports = {
         });
       }
     }
+
+    document.getElementById("info").addEventListener("click", function () {
+      this.size = this.options.length;
+      document.getElementById("info").classList.add("abrir");
+      document.getElementById("info").classList.remove("fechar");
+      document.getElementById("info").style.display = "block";
+    });
+
+    document.getElementById("info").addEventListener("blur", function () {
+      this.size = 1;
+      document.getElementById("info").classList.remove("abrir");
+      document.getElementById("info").classList.add("fechar");
+      document.getElementById("info").style.height = "30px";
+    });
+    document.getElementById("filtrodoxinxyla").addEventListener("keyup", function () {
+      var filter = this.value.toLowerCase();
+      var options = document.getElementById("info").options;
+      for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+        if (option.text.toLowerCase().indexOf(filter) === -1) {
+          option.style.display = "none";
+        } else {
+          option.style.display = "";
+        }
+      }
+      document.getElementById("info").dispatchEvent(new Event('click'));
+    });
+
+
+
+
   },
 
 
