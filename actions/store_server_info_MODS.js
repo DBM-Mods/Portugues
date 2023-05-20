@@ -29,34 +29,34 @@ module.exports = {
       "Lista de Cargos do servidor",
       "Lista de Membros do Servidor",
       "Lista de emojis do servidor",
-      "Contagem de membros do servidor",
+      "Total de membros do servidor",
       "Servidor criado em",
       "Tempo limite do servidor AFK",
       "Servidor disponível",
       "Servidor Grande",
       "Servidor conectado em",
-      "Contagem de Canais do Servidor",
-      "Contagem de emojis do servidor",
+      "Total de Canais do Servidor",
+      "Total de emojis do servidor",
       "Incorporação de servidor habilitada",
-      "Contagem de membros ocupados do servidor",
-      "Contagem de membros online do servidor",
-      "Contagem de membros offline do servidor",
-      "Contagem de membros ociosos do servidor",
-      "Contagem de bots do servidor",
+      "Total de membros ocupados do servidor",
+      "Total de membros online do servidor",
+      "Total de membros offline do servidor",
+      "Total de membros ociosos do servidor",
+      "Total de bots do servidor",
       "Lista de IDs de Canais do Servidor",
       "Lista de IDs de Cargos de servidor",
       "Lista de IDs de membros do servidor",
       "",
-      "Contagem Humana do Servidor",
+      "Total de humanos no Servidor",
       "",
-      "Contagem de Cargos do Servidor",
-      "Contagem de canais de texto do servidor",
-      "Contagem de Canais de Voz do Servidor",
+      "Total de Cargos do Servidor",
+      "Total de canais de texto do servidor",
+      "Total de Canais de Voz do Servidor",
       "Servidor verificado",
       "Lista de banidos do servidor",
       "Lista de convites do servidor",
       "Filtro de conteúdo explícito do servidor",
-      "Contagem de reforços do servidor",
+      "Contagem de impulsos do servidor",
       "Nível de aumento de servidor",
       "URL do banner do servidor",
       "Lista de recursos do servidor",
@@ -106,6 +106,15 @@ module.exports = {
       "Lista de nomes dos membros do servidor",
       "Lista dos discriminadores dos membros do servidor",
       "Lista de tags de membros do servidor em ordem de entrada",
+      "Lista de figurinhas do servidor",
+      "Lista de nomes de figurinhas do servidor",
+      "Lista de descrição das figurinhas do servidor<",
+      "Lista de id das figurinhas do servidor",
+      "Total de figurinhas do servidor",
+      "Lista de eventos do servidor",
+      "Lista de nome de eventos do servidor",
+      "Total de eventos do servidor<",
+      "Lista de ids de eventos do servidor",
     ];
 
     if (data.descriptionx) {
@@ -351,7 +360,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.7</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.8</div>
 
     <style>
       .dbmmodsbr1 {
@@ -403,7 +412,7 @@ module.exports = {
 <div>
 	<div style="padding-top: 8px; width: 100%;">
 		<span class="dbminputlabel">Informações</span><br>
-		<select id="info" class="round">
+		<select id="info" class="round2">
       <optgroup label="Informações Gerais do Servidor">
       <option value="0">Servidor (Objeto)</options>
       <option value="1">ID do servidor</options>
@@ -426,19 +435,21 @@ module.exports = {
       <option value="19">Tempo limite de AFK do servidor</options>
       </optgroup>
       <optgroup label="Informações sobre impulso do Servidor">
-      <option value="44">Contagem de reforços do servidor</options>
+      <option value="44">Contagem de impulsos do servidor</options>
       <option value="45">Nível de aumento de servidor</options>
       </optgroup>
-      <optgroup label="Contagens de Servidores">
-      <option value="17">Contagem de membros do servidor</options>
-      <option value="35">Contagem Humana do Servidor</options>
-      <option value="30">Contagem de bots do servidor</options>
-      <option value="24">Contagem de emojis do servidor</options>
-      <option value="37">Contagem de Cargos do servidor</options>
-      <option value="23">Contagem de canais do servidor</options>
-      <option value="38">Contagem de canais de texto do servidor</options>
-      <option value="39">Contagem de canais de voz do servidor</options>
+      <optgroup label="Contagens">
+      <option value="17">Total de membros do servidor</options>
+      <option value="35">Total de humanos no Servidor</options>
+      <option value="30">Total de bots do servidor</options>
+      <option value="24">Total de emojis do servidor</options>
+      <option value="37">Total de Cargos do servidor</options>
+      <option value="23">Total de canais do servidor</options>
+      <option value="38">Total de canais de texto do servidor</options>
+      <option value="39">Total de canais de voz do servidor</options>
       <option value="70">Total de membros nos canais de voz</options>
+      <option value="98">Total de figurinhas do servidor</option>
+      <option value="101">Total de eventos do servidor</option>
       </optgroup>
       <optgroup label="Informações da comunidade do servidor"">
       <option value="54">Servidor em parceria</options>
@@ -497,16 +508,23 @@ module.exports = {
       <option value="93">Lista de tags de membros do servidor em ordem de entrada</option>
       <option value="82">Lista de IDs de membros do servidor em ordem de entrada</option>
       <option value="83">Lista de Webhooks do servidor</option>
+      <option value="94">Lista de figurinhas do servidor</option>
+      <option value="95">Lista de nomes de figurinhas do servidor</option>
+      <option value="96">Lista de descrição das figurinhas do servidor</option>
+      <option value="97">Lista de id das figurinhas do servidor</option>
+      <option value="99">Lista de eventos do servidor</option>
+      <option value="100">Lista de nome de eventos do servidor</option>
+      <option value="102">Lista de ids de eventos do servidor</option>
       </optgroup>
       <optgroup label="Informações do Dono do servidor">
       <option value="48">ID do Dono do servidor</options>
       <option value="11">Dono do Servidor (Objeto)</options>
       </optgroup>
       <optgroup label="Contagem de Status do Servidor">
-      <option value="27">Contagem de membros online do servidor</options>
-      <option value="29">Contagem de membros inativos do servidor</options>
-      <option value="26">Contagem de membros ocupados do servidor</options>
-      <option value="28">Contagem de membros offline do servidor</options>
+      <option value="27">Total de membros online do servidor</options>
+      <option value="29">Total de membros inativos do servidor</options>
+      <option value="26">Total de membros ocupados do servidor</options>
+      <option value="28">Total de membros offline do servidor</options>
       </optgroup>
       <optgroup label="Template do Servidor">
       <option value="62">URL do Template</options>
@@ -519,12 +537,48 @@ module.exports = {
       <option value="69">Timestamp da atualização do Template</options>
       </optgroup>
 		</select>
+    <input type="text" id="filtrodoxinxyla" class="round" placeholder="Filtrar itens...">
 	</div>
 </div>
 
 <br>
 
-<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>`;
+<store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
+<style>
+.round2{width:100%;height:30px;outline:0}
+.round2 option{padding:3px 8px;text-align:left}
+.round2 optgroup{text-align:center;padding:4px 0px;}
+
+
+.abrir {
+  height: 30px;
+  animation: abrir .5s forwards;
+}
+
+@keyframes abrir {
+  from {
+    height: 30px;
+  }
+  to {
+    height: 130px;
+  }
+}
+
+.fechar {
+  height: 130px;
+  animation: fechar .5s forwards;
+}
+
+@keyframes fechar {
+  from {
+    height: 130px;
+  }
+  to {
+    height: 30px;
+  }
+}
+
+</style>`;
   },
 
   init() {
@@ -541,6 +595,72 @@ module.exports = {
         });
       }
     }
+
+    document.getElementById("info").addEventListener("click", function () {
+      document.getElementById("info").classList.add("abrir");
+      document.getElementById("info").classList.remove("fechar");
+      this.size = this.options.length;
+    });
+
+    document.getElementById("info").addEventListener("blur", function () {
+      this.size = 1;
+      document.getElementById("info").classList.remove("abrir");
+      document.getElementById("info").classList.add("fechar");
+      document.getElementById("info").style.height = "30px";
+    });
+
+    document.getElementById("filtrodoxinxyla").addEventListener("keyup", function () {
+      var select = document.getElementById("info");
+      var optgroups = select.getElementsByTagName("optgroup");
+      var filter = this.value.toLowerCase();
+      var options = document.getElementById("info").options;
+      for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+        if (option.text.toLowerCase().indexOf(filter) === -1) {
+          option.style.display = "none";
+        } else {
+          option.style.display = "";
+        }
+      }
+
+      for (var i = 0; i < optgroups.length; i++) {
+        var optgroup = optgroups[i];
+        var options = optgroup.getElementsByTagName("option");
+        var visibleOptions = 0;
+        for (var j = 0; j < options.length; j++) {
+          if (options[j].style.display !== "none") {
+            visibleOptions++;
+          }
+        }
+        if (visibleOptions === 0) {
+          optgroup.style.display = "none";
+        } else {
+          optgroup.style.display = "";
+        }
+      }
+
+      document.getElementById("info").dispatchEvent(new Event("click"));
+    });
+
+    var select = document.getElementById("my-select");
+    var optgroups = select.getElementsByTagName("optgroup");
+
+    for (var i = 0; i < optgroups.length; i++) {
+      var optgroup = optgroups[i];
+      var options = optgroup.getElementsByTagName("option");
+      var visibleOptions = 0;
+      for (var j = 0; j < options.length; j++) {
+        if (options[j].style.display !== "none") {
+          visibleOptions++;
+        }
+      }
+      if (visibleOptions === 0) {
+        optgroup.style.display = "none";
+      } else {
+        optgroup.style.display = "";
+      }
+    }
+
   },
 
   async action(cache) {
@@ -855,6 +975,33 @@ module.exports = {
         break;
       case 93:
         result = targetServer.members.cache.sort((a, b) => parseFloat(a.joinedTimestamp) - parseFloat(b.joinedTimestamp)).map((m) => m.user.tag);
+        break;
+      case 94:
+        result = [...targetServer.stickers.cache.values()];
+        break;
+      case 95:
+        result = targetServer.stickers.cache.map(sticker => sticker.name);
+        break;
+      case 96:
+        result = targetServer.stickers.cache.map(sticker => sticker.description);
+        break;
+      case 97:
+        result = targetServer.stickers.cache.map(sticker => sticker.id);
+        break;
+      case 98:
+        result = targetServer.stickers.cache.size;
+        break;
+      case 99:
+        result = [...targetServer.scheduledEvents.cache.values()];
+        break;
+      case 100:
+        result = targetServer.scheduledEvents.cache.map(scheduledEvents => scheduledEvents.name);
+        break;
+      case 101:
+        result = targetServer.scheduledEvents.cache.size;
+        break;
+      case 102:
+        result = targetServer.scheduledEvents.cache.map(scheduledEvents => scheduledEvents.id);
         break;
     }
     if (result !== undefined) {
