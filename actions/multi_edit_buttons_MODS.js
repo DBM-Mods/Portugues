@@ -27,7 +27,7 @@ module.exports = {
     html(isEvent, data) {
         return `
   <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+  <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
   <style>
     .dbmmodsbr1 {
@@ -76,48 +76,103 @@ module.exports = {
   
   <br><br><br>
   
-  <dialog-list id="branches" fields='["btn", "mode", "name", "emoji", "type", "nomecheck", "emojicheck", "typecheck", "val1", "val2", "comparar", "formula"]' dialogResizable dialogTitle="Editar botão" dialogWidth="600" dialogHeight="500" listLabel="Editar botões" listStyle="height: calc(100vh - 320px);" itemName="Item" itemHeight="28px;" itemTextFunction="glob.formatItem(data)" itemStyle="line-height: 28px;">
-  <div style="width: 100%; padding:8px;height: calc(100vh - 60px);overflow:auto">
-  <div style="padding: 16px;background:rgba(0,0,0,0.3)">
-  <span class="dbminputlabel">Exibir</span><br>
-  <select id="formula" class="round">
-  <option value="0" selected>Editar botão / Ignorar o comparador abaixo</option>
-  <option value="1">Editar o botão somente se o comparador for falso</option>
-  <option value="2">Editar o botão somente se o comparador for verdadeiro</option>
-</select>
-<br>
+  <dialog-list id="branches" fields='["btn", "name", "emoji", "url", "type", "nomecheck", "emojicheck", "urlcheck", "typecheck", "val1", "val2", "comparar", "formula"]' dialogResizable dialogTitle="Editar botão" dialogWidth="600" dialogHeight="500" listLabel="Editar botões" listStyle="height: calc(100vh - 320px);" itemName="Item" itemHeight="28px;" itemTextFunction="glob.formatItem(data)" itemStyle="line-height: 28px;">
+    <div style="width: 100%; padding:8px; height: calc(100vh - 60px); overflow: auto;" onmouseover="(function(){
+        if(document.getElementById('urlcheck').value) {
+            document.getElementById('divValue').style.display = 'none';
+        } else {
+            document.getElementById('divValue').style.display = 'block';
+        }
+
+        const select = document.getElementById('formula');
+        const value = select.options[select.selectedIndex].value;
+
+        if(value == '9') {
+            document.getElementById('divValue2').style.display = 'none';
+        } else {
+            document.getElementById('divValue2').style.display = 'block';
+        }
+    })()">
+        <div style="padding: 16px; background: rgba(0,0,0,0.3);">
+            <span class="dbminputlabel">Exibir</span>
+            <select id="formula" class="round" onchange="(function(){
+                const select = document.getElementById('formula');
+                const value = select.options[select.selectedIndex].value;
+        
+                if(value == '9') {
+                    document.getElementById('divValue2').style.display = 'none';
+                } else {
+                    document.getElementById('divValue2').style.display = 'block';
+                }
+            })()">
+                <option value="0" selected>Editar botão / Ignorar o comparador abaixo</option>
+                <option value="1">Editar o botão somente se o comparador for falso</option>
+                <option value="2">Editar o botão somente se o comparador for verdadeiro</option>
+                <option value="3">Desabilitar o botão / Ignorar o comparador abaixo</option>
+                <option value="4">Desabilitar o botão somente se o comparador for falso</option>
+                <option value="5">Desabilitar o botão somente se o comparador for verdadeiro</option>
+                <option value="6">Habilitar o botão / Ignorar o comparador abaixo</option>
+                <option value="7">Habilitar o botão somente se o comparador for falso</option>
+                <option value="8">Habilitar o botão somente se o comparador for verdadeiro</option>
+                <option value="9">Remover o botão / Ignorar o comparador abaixo</option>
+                <option value="10">Remover o botão somente se o comparador for falso</option>
+                <option value="11">Remover o botão somente se o comparador for verdadeiro</option>
+            </select>
+            <br>
    <table style="width:100%"><tr><td>
-     <span class="dbminputlabel">Valor A</span><br>
+     <span class="dbminputlabel">Valor A</span>
      <input id="val1" class="round" type="text">
      </td>
      <td>
-     <span class="dbminputlabel">Comparador</span><br>
+     <span class="dbminputlabel">Comparador</span>
      <select id="comparar" class="round">
-     <option value="0">Valor A - Existe</option>
-     <option value="1" selected>Igual a</option>
-     <option value="2">Exatamente igual</option>
-     <option value="3">Menor que</option>
-     <option value="13">Menor ou igual a</option>
-     <option value="4">Maior que</option>
-     <option value="12">Maior ou igual a</option>
-     <option value="5">Inclui</option>
-     <option value="6">Matches Regex</option>
-     <option value="14">Matches Full Regex</option>
-     <option value="7">O comprimento é maior que</option>
-     <option value="8">O comprimento é menor que</option>
-     <option value="9">O comprimento é igual a</option>
-     <option value="10">Começa com</option>
-     <option value="11">Termina com</option>
-     <option value="16">Valor A possui acentuações?</option>
-     <option value="17">Inclui as palavras  ["a" , "b" , "c"]</option>
-     <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
-     <option value="19">Valor A é um número par?</option>
-     <option value="20">Valor A é um número ímpar?</option>
-     <option value="21">Valor A é um número?</option>
-     <option value="24">Valor A é um texto?</option>
-     <option value="23">Valor A é um URL de imagem?</option>
-     <option value="25">Valor A é um URL?</option>
-   </select>
+        <optgroup label="Número ou Texto">
+            <option value="0">Valor A - Existe</option>
+            <option value="1" selected>Igual a</option>
+            <option value="2">Exatamente igual</option>
+        </optgroup>
+        <optgroup label="Número">
+            <option value="3">Menor que</option>
+            <option value="13">Menor ou igual a</option>
+            <option value="4">Maior que</option>
+            <option value="12">Maior ou igual a</option>
+            <option value="19">Valor A - É um número par?</option>
+            <option value="20">Valor A - É um número ímpar?</option>
+            <option value="21">Valor A - É um número?</option>
+        </optgroup>
+        <optgroup label="Texto">
+            <option value="6">Matches Regex</option>
+            <option value="14">Matches Full Regex</option>
+            <option value="7">O comprimento é maior que</option>
+            <option value="8">O comprimento é menor que</option>
+            <option value="9">O comprimento é igual a</option>
+            <option value="10">Começa com</option>
+            <option value="11">Termina com</option>
+            <option value="16">Valor A - Possui acentuações?</option>
+            <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
+            <option value="24">Valor A - É um texto?</option>
+            <option value="23">Valor A - É um URL de imagem?</option>
+            <option value="25">Valor A - É um URL?</option>
+            <option value="26">Valor A - O email existe?</option>
+        </optgroup>
+        <optgroup label="Texto ~ Inclui">
+            <option value="5">Inclui exatamente</option>
+            <option value="29">Inclui ~ Ignorar Minúscula/Maiúscula</option>
+            <option value="30">Inclui ~ Ignorar acentuações</option>
+            <option value="31">Inclui ~ Ignorar acentuações & Minúscula e Maiúscula</option>
+            <option value="17">Inclui exatamente ["a" , "b" , "c"]</option>
+            <option value="27">Inclui algum URL?</option>
+            <option value="28">Inclui algum convite do Discord?</option>
+            <option value="32">Inclui exatamente a palavra</option>
+            <option value="33">Inclui a palavra ~ Ignorar Minúscula/Maiúscula</option>
+            <option value="34">Inclui a palavra ~ Ignorar acentuações</option>
+            <option value="35">Inclui a palavra ~ Ignorar acentuações & Minúscula e Maiúscula</option>
+            <option value="36">Inclui as palavras ~ use virgulas ~ Ignorar acentuações & Minúscula e Maiúscula</option>
+        </optgroup>
+        <optgroup label="Outros">
+            <option value="22">Valor A - É uma lista?</option>
+        </optgroup>
+    </select>
     </td>
      <td>
      <span class="dbminputlabel">Valor B</span><br>
@@ -128,21 +183,10 @@ module.exports = {
 </div>
     <div style="margin: 10px;">
     
-    <table style="width:100%"><tr><td style="padding:0px 6px 0px 0px">
         <span class="dbminputlabel">ID do botão</span>
         <input type="text" id="btn" class="round">
         
-        </td><td>
-
-        <span class="dbminputlabel">Modo do botão</span>
-        <select id="mode" class="round">
-            <option value="0">Manter</option>
-            <option value="1">Habilitar</option>
-            <option value="2">Desabilitar</option>
-        </select>
-
-        </td></tr></table>
-
+        <div id="divValue2">
         <br>
 
         <table style="width:100%"><tr><td>
@@ -160,6 +204,20 @@ module.exports = {
         <br>
 
         <table style="width:100%"><tr><td>
+        <span class="dbminputlabel">Alterar o URL para</span>
+        <input type="text" id="url" class="round">
+        </td>
+        <td style="width:50px"><br><dbm-checkbox id="urlcheck" label="Editar" onchange="(function(){
+            if(document.getElementById('urlcheck').value) {
+                document.getElementById('divValue').style.display = 'none';
+            } else {
+                document.getElementById('divValue').style.display = 'block';
+            }
+        })()"></dbm-checkbox></td></tr></table>
+        <br>
+
+        <div id="divValue">
+        <table style="width:100%"><tr><td>
         <span class="dbminputlabel">Alterar o tipo de botão para</span>
         <br>
         <input id="type" value="PRIMARY" class="round" type="text">
@@ -167,11 +225,13 @@ module.exports = {
         <td style="width:50px"><br><dbm-checkbox id="typecheck" label="Editar" checked></dbm-checkbox></td></tr></table>
         <br>
 
+        <div style="padding: 10px; background :rgba(0, 0, 0, 0.2);">
         PRIMARY (Azul)<br>
         SECONDARY (Cinza)<br>
         SUCCESS (Verde)<br>
         DANGER (Vermelho)<br>
-        Ou use uma variavel, exemplo \${tempVars("cor")}</div>
+        Ou use uma variável, exemplo \${tempVars("cor")}
+        </div></div></div></div>
     </div>
     </div>
   </dialog-list>
@@ -196,14 +256,24 @@ module.exports = {
         }
 
         glob.formatItem = function (data) {
-            let result = '<div style="display: inline-block; width: 100%; padding-left: 8px;"><table><tr><td style="width:100%">';
-            const comp = "0";
-            switch (comp) {
-                case "0":
-                    result += data.emoji + ' ' + data.name;
-                    break;
+            let cor = "rgb(78,80,88)";
+            const type = data.type;
+
+            if (type == "PRIMARY") {
+                cor = "rgb(88,101,242)";
+            } else if (type == "SUCCESS") {
+                cor = "rgb(36,128,70)";
+            } else if (type == "DANGER") {
+                cor = "rgb(218,55,60)";
             }
-            result += "</td><td style='width:120px;text-align:right;padding:0px 10px 0px 0px'>" + data.btn + "</td></tr></table></div>";
+
+            if(!data.typecheck || data.urlcheck) cor = "rgb(78,80,88)";
+
+            let result = `<div style="display: inline-block; width: 100%;"><div style="width:10px;background:${cor};float:left;margin-left:-10px"><br></div><table style="margin-left:10px"><tr><td style="width:100%">`;
+
+            result += `${data.emojicheck ? data.emoji : ""} ${data.nomecheck ? data.name : ""}`;
+
+            result += `</td><td style='width:120px;text-align:right;padding:0px 10px 0px 0px'>${data.btn}</td></tr></table></div>`;
             return result;
         }
     },
@@ -230,24 +300,21 @@ module.exports = {
 
                 for (var t = 0; t < branches.length; t++) {
                     const branch = branches[t];
+                    const formula = parseInt(branch.formula);
 
                     val1 = this.evalMessage(branch.val1, cache);
                     val2 = this.evalMessage(branch.val2, cache);
                     result = true;
 
-                    if (branch.formula == "1" || branch.formula == "2") {
+                    if (formula == 1 || formula == 2 || formula == 4 || formula == 5 || formula == 7 || formula == 8 || formula == 10 || formula == 11) {
                         const compare = parseInt(branch.comparar, 10);
                         if (compare !== 6) {
-                            val1 = this.evalIfPossible(val1, cache)
-                            val2 = this.evalIfPossible(val2, cache)
+                            val1 = this.evalIfPossible(val1, cache);
+                            val2 = this.evalIfPossible(val2, cache);
                         }
                         switch (compare) {
                             case 0:
-                                if (typeof val1 !== 'undefined') {
-                                    result = true
-                                } else {
-                                    result = false
-                                }
+                                result = val1 !== undefined;
                                 break;
                             case 1:
                                 result = val1 == val2;
@@ -256,10 +323,10 @@ module.exports = {
                                 result = val1 === val2;
                                 break;
                             case 3:
-                                result = parseFloat(val1) < parseFloat(val2);
+                                result = val1 < val2;
                                 break;
                             case 4:
-                                result = parseFloat(val1) > parseFloat(val2);
+                                result = val1 > val2;
                                 break;
                             case 5:
                                 if (typeof val1?.toString().includes === "function") {
@@ -293,6 +360,12 @@ module.exports = {
                             case 14:
                                 result = Boolean(val1.toString().match(new RegExp(val2)))
                                 break;
+                            case 15:
+                                var numberj = val1.toString();
+                                if (numberj >= val2 && val1 <= val3) {
+                                    result = numberj
+                                }
+                                break;
                             case 16:
                                 const conditions = ["Ä", "Å", "Á", "Â", "À", "Ã", "Ā", "Ă", "Ą", "ā", "ă", "ą", "ä", "á", "â", "à", "ã", "É", "Ê", "Ë", "È", "Ė", "Ę", "Ě", "Ĕ", "Ē", "ė", "ę", "ě", "ĕ", "ē", "é", "ê", "ë", "è", "Í", "Î", "Ï", "Ì", "İ", "Į", "Ī", "ı", "į", "ī", "í", "î", "ï", "ì", "Ö", "Ó", "Ô", "Ò", "Õ", "Ő", "Ō", "ő", "ō", "ö", "ó", "ô", "ò", "õ", "Ü", "Ú", "Û", "Ų", "Ű", "Ů", "Ū", "ų", "ű", "ů", "ū", "ü", "ú", "û", "ù", "Ç", "Ć", "Č", "ç", "ć", "č", "Ñ", "Ň", "Ņ", "Ń", "ñ", "ň", "ņ", "ń", "Ÿ", "Ý", "ý", "Ź", "Ż", "Ž", "ź", "ż", "ž", "Ł", "Ľ", "Ļ", "Ĺ", "ł", "ľ", "ĺ", "Ķ", "ķ", "Ģ", "Ğ", "ģ", "ğ", "Ď", "ď", "Ś", "Š", "Ş", "ś", "š", "ş", "Ť", "Ț", "Ţ", "ť", "ț", "ţ", "Ŕ", "Ř", "ŕ", "ř"]
                                 result = conditions.some(el => val1.includes(el));
@@ -314,8 +387,11 @@ module.exports = {
                             case 21:
                                 result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
                                 break;
+                            case 22:
+                                result = Boolean(Array.isArray(val1));
+                                break;
                             case 23:
-                                const isImageUrl = require('is-image-url');
+                                const isImageUrl = require("is-image-url");
                                 result = isImageUrl(val1);
                                 break;
                             case 24:
@@ -324,33 +400,95 @@ module.exports = {
                             case 25:
                                 const isUrl = require("is-url");
                                 result = isUrl(val1);
+                                break;
+                            case 26:
+                                _this = this;
+
+                                const mail = require("email-existence");
+                                ignorar = 2
+                                mail.check(val1, (error, response) => {
+                                    result = response;
+                                });
+                                break;
+                            case 27:
+                                let pattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+                                result = val1.match(pattern);
+                                break;
+                            case 28:
+                                invite = new RegExp(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-z]/g);
+                                result = invite.test(val1);
+                                break;
+                            case 29:
+                                result = val1.toLowerCase().includes(val2.toLowerCase());
+                                break;
+                            case 30:
+                                tratarval1 = val1.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                tratar = val2.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                result = tratarval1.includes(tratar);
+                                break;
+                            case 31:
+                                tratarval1 = val1.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                tratar = val2.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                result = tratarval1.toLowerCase().includes(tratar);
+                                break;
+                            case 32:
+                                var words = val1.split(" ");
+                                result = words.includes(val2);
+                                break;
+                            case 33:
+                                var words = val1.toLowerCase().split(" ");
+                                result = words.includes(val2.toLowerCase());
+                                break;
+                            case 34:
+                                var words = val1.normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ");
+                                result = words.includes(val2.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+                                break;
+                            case 35:
+                                var words = val1.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ");
+                                result = words.includes(val2.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))
+                                break;
+                            case 36:
+                                var separador = val1.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ")
+                                var valor2 = val2.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(",")
+                                result = separador.some(els => valor2.includes(els));
+                                break;
+                        }
+
+                        result = Boolean(result);
+                    }
+
+                    if (formula == 1 && result != false) continue;
+                    if (formula == 2 && result != true) continue;
+
+                    if (id == this.evalMessage(branch.btn, cache)) {
+                        if (formula == 9 || formula == 10 && result == false || formula == 11 && result == true) {
+                            comp.remove = true;
+                            continue;
+                        }
+
+                        if (formula == 3) comp.disabled = true;
+                        if (formula == 4 && result == false) comp.disabled = true;
+                        if (formula == 5 && result == true) comp.disabled = true;
+
+                        if (formula == 6) comp.disabled = false;
+                        if (formula == 7 && result == false) comp.disabled = false;
+                        if (formula == 8 && result == true) comp.disabled = false;
+
+                        if (branch.typecheck) comp.style = this.evalMessage(branch.type, cache);
+                        if (branch.nomecheck) comp.label = this.evalMessage(branch.name, cache);
+                        if (branch.emojicheck) comp.emoji = this.evalMessage(branch.emoji, cache);
+
+                        if (branch.urlcheck) {
+                            comp.url = this.evalMessage(branch.url, cache);
+                            comp.style = "LINK";
+                            delete comp.custom_id;
+                            delete comp.customId;
                         }
                     }
-
-                    if (branch.formula == "1") {
-                        if (result == false) {
-                            result = true
-                        } else { result = false }
-                    }
-
-                    if (result == true) {
-
-                        if (id == this.evalMessage(branch.btn, cache)) {
-                            const mode = parseInt(branch.mode);
-                            if (mode == 1) {
-                                comp.disabled = false;
-                            } else if (mode == 2) {
-                                comp.disabled = true;
-                            }
-                            if(branch.typecheck == true){comp.style = this.evalMessage(branch.type, cache)}
-                            if(branch.nomecheck == true){comp.label = this.evalMessage(branch.name, cache)}
-                            if(branch.emojicheck == true){comp.emoji = this.evalMessage(branch.emoji, cache)}
-                        }
-
-                    }
-
                 }
             }
+
+            comps.components = comps.components.filter((b) => b.remove != true);
 
             newComponents.push(comps);
         }
