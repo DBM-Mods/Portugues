@@ -4,16 +4,18 @@ module.exports = {
   meta: {
     version: '2.1.7',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
 
   variableStorage(data, varType) {
-    const type = parseInt(data.storage)
-    const type2 = parseInt(data.errs)
-    let vars = []
+    const type = parseInt(data.storage);
+    const type2 = parseInt(data.errs);
+    const type3 = parseInt(data.store_source_conn_storage);
+
+    let vars = [];
 
     if (type == varType) {
       vars.push(data.varName);
@@ -25,34 +27,46 @@ module.exports = {
       vars.push("Texto ~ Erro");
     }
 
-    if (vars.length > 0) {
-      return vars;
+    if (type3 == varType && parseInt(data.source_conn_storage) == 0) {
+      vars.push(data.store_source_conn_varName);
+      vars.push("Conexão SQL");
     }
+    
+    const types = ["JSON", "Número", "Texto", "Lista", "True/False"];
+
+    for (var i = 0; i < data.branches?.length || 0; i++) {
+      if (data.branches[i].storage == varType) {
+        vars.push(data.branches[i].varName);
+        vars.push(types[parseInt(data.branches[i].formato)]);
+      }
+    }
+
+    if (vars.length > 0) return vars;
   },
 
   subtitle(data) {
-    let sub = ''
+    let sub = '';
     if (data.store_source_conn_storage !== 0) {
-      sub += ''
+      sub += '';
     }
 
     if (data.query) {
-      sub += `Ação(${data.query}) `
+      sub += `Ação(${data.query}) `;
     }
 
     if (data.path) {
-      sub += `Path(${data.path}) `
+      sub += `Path(${data.path}) `;
     }
 
     if (data.storage > 0) {
-      const storage = ['', 'Variavel Temporária', 'Variavel Servidor', 'Variavel Global']
+      const storage = ["", "Variável Temporária", "Variável Servidor", "Variável Global"]
       sub += `${storage[parseInt(data.storage)]}(${data.varName}) `
     }
 
     if (data.descriptionx == true) {
-      desccor = data.descriptioncolor
+      desccor = data.descriptioncolor;
     } else {
-      desccor = 'none'
+      desccor = "none";
     }
 
     return data.description
@@ -61,38 +75,39 @@ module.exports = {
   },
 
   fields: [
-    'storage',
-    'stringifyOutput',
-    'formato',
-    'varName',
-    'hostname',
-    'port',
-    'username',
-    'password',
-    'database',
-    'query',
-    'path',
-    'otype',
-    'source_conn_storage',
-    'source_conn_varName',
-    'store_source_conn_storage',
-    'store_source_conn_varName',
-    'debugMode',
-    'descriptioncolor',
-    'description',
-    'descriptionx',
-    'iffalse',
-    'iffalseVal',
-    'errcmd',
-    'errs',
-    'errv',
-    'actionserr'
+    "storage",
+    "stringifyOutput",
+    "formato",
+    "varName",
+    "hostname",
+    "port",
+    "username",
+    "password",
+    "database",
+    "query",
+    "path",
+    "otype",
+    "source_conn_storage",
+    "source_conn_varName",
+    "store_source_conn_storage",
+    "store_source_conn_varName",
+    "debugMode",
+    "descriptioncolor",
+    "description",
+    "descriptionx",
+    "iffalse",
+    "iffalseVal",
+    "errcmd",
+    "errs",
+    "errv",
+    "actionserr",
+    "branches"
   ],
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.3</div>
 
     <tab-system>
 
@@ -123,6 +138,7 @@ module.exports = {
       <option value="1">Número</option>
       <option value="2">Texto</option>
       <option value="3">Lista</option>
+      <option value="4">True/False</option>
     </select>
     </td></tr></table>
 
@@ -211,11 +227,7 @@ module.exports = {
                 <div id="checkConnection" class="ui button" style="float:left;width:120px">Check</div>
                 <a id="checkConnection_lbl" class="ui basic label yellow" style="width:100% !important;background:#222 !important">Preparar... Salve a action antes de clicar em Check!</a>
               </div>
-              
-           
-              
-
-
+             
       <div id="storeSource"><br />
 
       <span class="dbminputlabel">Modo de depuração</span><br>
@@ -240,6 +252,7 @@ module.exports = {
         <input id="store_source_conn_varName" class="round" type="text" />
       </div>
       </td></tr></table>
+      </div>
     </div>
 
     </div>
@@ -247,6 +260,61 @@ module.exports = {
     </div>
     </tab>
 
+    <tab label="Armazenar" icon="download">
+      <dialog-list id="branches" fields='["jsonPath", "debug", "formato", "storage", "varName"]' dialogResizable dialogTitle="Parse" dialogWidth="600" dialogHeight="400" listLabel="Parses" listStyle="height: calc(100vh - 250px);" itemName="Item" itemHeight="28px;" itemTextFunction="glob.formatItem(data)" itemStyle="line-height: 28px;">
+         
+        <div style="margin: 10px;" onmouseover='(function(){
+          const xinelaslink = document.getElementsByClassName("xinelaslink")[0];
+          const url = xinelaslink.getAttribute("data-url");
+          if (url) {
+            xinelaslink.setAttribute("title", url);
+            xinelaslink.addEventListener("click", (e) => {
+              e.stopImmediatePropagation();
+              console.log("Launching URL: [" + url + "] in your default browser.");
+              require("child_process").execSync("start " + url);
+            });
+          }
+        })()'>
+
+        <span class="dbminputlabel" style="float: left";>JSON Path / Nome da coluna</span>
+        <span class="xinelaslink dbminputlabel" style="float: right; cursor: pointer; text-decoration: underline;" data-url="http://goessner.net/articles/JsonPath/index.html#e2">Exemplos</span>
+        <input type="text" class="round" id="jsonPath">
+
+        <br>
+
+        <span class="dbminputlabel">Opções</span><br>
+        <div style="padding: 10px; background: rgba(0,0,0,0.2);">
+          <dbm-checkbox id="debug" label="Depurar no console"></dbm-checkbox>
+        </div>
+
+        <br>
+
+        <span class="dbminputlabel">Formato</span>
+        <select id="formato" class="round">
+          <option value="0">Fonte</option>
+          <option value="1">Número</option>
+          <option value="2">Texto</option>
+          <option value="3">Lista</option>
+          <option value="4">True/False</option>
+        </select>
+
+        <br>
+
+        <div style="float: left; width: 35%;">
+            <span class="dbminputlabel">Armazenar em</span>
+            <select id="storage" class="round">
+                ${data.variables[1]}
+            </select>
+        </div>
+
+        <div style="float: right; width: 60%;">
+            <span class="dbminputlabel">Nome da Variável</span>
+            <input id="varName" class="round" type="text">
+        </div>
+
+        </div>
+      </dialog-list>
+    </tab>
 
     <tab label="Config" icon="settings">
     <div style="width: 100%; padding:10px 5px;height: calc(100vh - 210px);overflow:auto">
@@ -407,20 +475,20 @@ module.exports = {
   },
 
   init() {
-    const { glob, document } = this
+    const { glob, document } = this;
 
     function getType(key) {
       switch (key) {
         case '0':
-          return 'mysql'
+          return 'mysql';
         case '1':
-          return 'postgres'
+          return 'postgres';
         case '2':
-          return 'mssql'
+          return 'mssql';
         case '3':
-          return 'sqlite'
+          return 'sqlite';
         default:
-          return 'mysql'
+          return 'mysql';
       }
     }
 
@@ -504,7 +572,6 @@ module.exports = {
           .catch((err) => isValid(false, err))
       }
 
-      // to show/hide certian connection options if sqllite is selected
       document.getElementById('otype').onchange = function (evt) {
         const lite = evt.target.value === '3'
         document.getElementById('auth').style.display = lite ? 'none' : ''
@@ -513,7 +580,6 @@ module.exports = {
       }
       document.getElementById('database').setAttribute('placeholder', document.getElementById('otype').value === '3' ? './mydb.sql' : 'dbm')
 
-      // interactive links
       const xinelaslinks = document.getElementsByClassName('xinelaslink');
       for (let x = 0; x < xinelaslinks.length; x++) {
         const xinelaslink = xinelaslinks[x];
@@ -528,8 +594,6 @@ module.exports = {
         }
       }
     } catch (error) {
-      // write any init errors to errors.txt in dbm's main directory
-      // eslint-disable-next-line no-undef
       alert(`[Run SQL Query] Error: \n\n ${error.message}\n\n Check \n ''${require('path').resolve('dbmmods_dbm_errors.txt')}' for more details.`)
       require('fs').appendFileSync('dbmmods_dbm_errors.txt', `${new Date().toUTCString()} : ${error.stack ? error.stack : error}\n\n`)
     }
@@ -546,76 +610,92 @@ module.exports = {
 
     glob.onComparisonChanged(document.getElementById("source_conn_storage"));
 
-
-
     glob.variableChange(document.getElementById('storage'), 'varNameContainer')
     glob.variableChange(document.getElementById('store_source_conn_storage'), 'varNameContainer3')
 
+    glob.formatItem = function (data) {
+      let result = `<div style="width: calc(100% - 40px); overflow: hidden; float: left;">Armazenar: `;
 
+      switch (parseInt(data.formato)) {
+        case 0:
+          result += "Fonte";
+          break;
+        case 1:
+          result += "Número";
+          break;
+        case 2:
+          result += "Texto";
+          break;
+        case 3:
+          result += "Lista";
+          break;
+        case 4:
+          result += "True/False";
+          break;
+      }
 
+      result += `: "${data.jsonPath}" em "${data.varName}"</div><div style="color:#d77979;overflow: hidden;float:right;width:40px;text-align:right;padding:0px 10px 0px 0px">${data.debug ? '<i class="bug icon"></i>': ""}</div>`;
+      return result;
+    };
 
   },
 
   action(cache) {
-    // fields: ["storage", "varName", "hostname", "port", "username", "password", "database", "query", "otype",
-    // "source_conn_storage", "storage_conn_varName", "store_source_conn_storage", "store_storage_conn_varName", "debugMode"],
+    const data = cache.actions[cache.index];
 
-    const data = cache.actions[cache.index]
+    const sourceConnStorage = parseInt(data.source_conn_storage);
+    const sourceConnVarName = this.evalMessage(data.source_conn_varName, cache);
 
-    const sourceConnStorage = parseInt(data.source_conn_storage)
-    const sourceConnVarName = this.evalMessage(data.source_conn_varName, cache)
+    const storeSourceConnStorage = parseInt(data.store_source_conn_storage);
+    const storeSourceConnVarName = this.evalMessage(data.store_source_conn_varName, cache);
 
-    const storeSourceConnStorage = parseInt(data.store_source_conn_storage)
-    const storeSourceConnVarName = this.evalMessage(data.store_source_conn_varName, cache)
+    const type = data.otype;
+    const hostname = this.evalMessage(data.hostname, cache);
+    const port = this.evalMessage(data.port, cache);
+    const username = this.evalMessage(data.username, cache);
+    const password = this.evalMessage(data.password, cache);
+    const database = this.evalMessage(data.database, cache);
+    const query = this.evalMessage(data.query, cache);
+    var path = this.evalMessage(data.path, cache);
+    const varName = this.evalMessage(data.varName, cache);
 
-    // 0=mysql, 1=postgres, 2=mssql, 3=sqllite
-    const type = data.otype
-    const hostname = this.evalMessage(data.hostname, cache)
-    const port = this.evalMessage(data.port, cache)
-    const username = this.evalMessage(data.username, cache)
-    const password = this.evalMessage(data.password, cache)
-    const database = this.evalMessage(data.database, cache)
-    const query = this.evalMessage(data.query, cache)
-    var path = this.evalMessage(data.path, cache)
-    const varName = this.evalMessage(data.varName, cache)
+    const storage = parseInt(data.storage);
 
-    const storage = parseInt(data.storage)
+    const DEBUG = parseInt(data.debugMode);
 
-    const DEBUG = parseInt(data.debugMode)
+    const stringifyOutput = parseInt(data.stringifyOutput);
+    if (stringifyOutput == 1) path = "";
 
-    const stringifyOutput = parseInt(data.stringifyOutput)
-    if (stringifyOutput == 1) { path = "" }
-
-    const Mods = this.getMods()
+    const Mods = this.getMods();
     function getType(key) {
       let res
       switch (key) {
         case '0':
-          res = 'mysql'
-          Mods.require('mysql2')
+          res = 'mysql';
+          Mods.require('mysql2');
           break
         case '1':
-          res = 'postgres'
-          Mods.require('pg-hstore')
+          res = 'postgres';
+          Mods.require('pg-hstore');
           break
         case '2':
-          res = 'mssql'
-          Mods.require('tedious')
+          res = 'mssql';
+          Mods.require('tedious');
           break
         case '3':
-          res = 'sqlite'
-          Mods.require('sqlite3')
+          res = 'sqlite';
+          Mods.require('sqlite3');
           break
         default:
-          res = 'sqlite'
-          Mods.require('sqlite3')
+          res = 'sqlite';
+          Mods.require('sqlite3');
           break
       }
-      return res
+      return res;
     }
 
     try {
-      const Sequelize = Mods.require('sequelize')
+      const Sequelize = Mods.require('sequelize');
 
       const options = {
         host: hostname || 'localhost',
@@ -629,9 +709,7 @@ module.exports = {
         }
       }
 
-      if (!DEBUG) {
-        options.logging = false
-      }
+      if (!DEBUG) options.logging = false;
 
       if (getType(type) === 'sqlite') options.storage = (require('path').resolve(database) || 'database.sqlite')
 
@@ -658,12 +736,12 @@ module.exports = {
         }
         if (query) {
           sequelize.query(query, { type: Object.keys(Sequelize.QueryTypes).find(type => query.toUpperCase().startsWith(type)) || Sequelize.QueryTypes.RAW }).then((results, metadata) => {
-            let jsonOut = false
+            let jsonOut = false;
             if (results && path !== undefined) {
               jsonOut = Mods.jsonPath(results, path)
-              // if it failed and if they didn't the required initial object, add it for them
+
               if (jsonOut === false) jsonOut = Mods.jsonPath(results, ('$.').concat(path))
-              // if it failed still, try just pulling the first object
+
               if (jsonOut === false) jsonOut = Mods.jsonPath(results, ('$.[0].').concat(path))
               if (jsonOut) {
                 if (jsonOut.length === 0) jsonOut = jsonOut[0]
@@ -680,56 +758,148 @@ module.exports = {
               const output = storageType[storage]
               console.log(`\r\nAnexe a chave com a qual deseja armazenar esse valor à variável.\nSe não estiver usando a caixa de texto Path no mod, veja como obter valores especiais.Exemplo \${${output}("${varName}")} para \${${output}("${varName}")[0]["${Object.keys(results[0])[0]}"]}\nExemplo: Run Script ${output}("${varName}")["${Object.keys(results[0])[0]}"] ou um lugar sem \${}.\r\nAnexe o caminho ao final após a chave ou use o mod Parse From Stored JSON, para obter o valor que você deseja\nExemplo \${${output}("${varName}")[key].path} ou use a caixa de caminho json na interface do usuário do mod.`)
             }
-            out = jsonOut || results
+
+            const branches = data.branches;
+
+            for (var i = 0; i < branches?.length || 0; i++) {
+              const branch = branches[i];
+              const pathParse = this.evalMessage(branch.jsonPath, cache);
+              const varNameParse = this.evalMessage(branch.varName, cache);
+              const storageParse = parseInt(branch.storage, 10);
+
+              try {
+                if (pathParse && results) {
+                  var outData = Mods.jsonPath(results, pathParse);
+
+                  if (outData == false) {
+                    outData = Mods.jsonPath(results, `$.${pathParse}`);
+                  }
+
+                  if (outData == false) {
+                    outData = Mods.jsonPath(results, `$..${pathParse}`);
+                  }
+
+                  if (branch.debug) console.log(outData);
+
+                  try {
+                    JSON.parse(JSON.stringify(outData));
+                  } catch (error) {
+                    const errorJson = JSON.stringify({ error, success: false });
+                    this.storeValue(errorJson, storageParse, varNameParse, cache);
+                    this.displayError(data, cache, error.stack ? error.stack : error);
+                    continue;
+                  }
+
+                  var outValue = eval(JSON.stringify(outData), cache);
+
+                  switch (parseInt(branch.formato)) {
+                    case 1:
+                      outValue = parseFloat(outValue);
+                      break;
+                    case 2:
+                      outValue = String(outValue);
+                      break;
+                    case 3:
+                      outValue = String(outValue).split(",");
+                      break;
+                    case 4:
+                      outValue = Boolean(outValue);
+                      break;
+                  }
+
+                  if (outData.success === null || outValue.success === null) {
+                    const errorJson = JSON.stringify({
+                      error: "error",
+                      statusCode: 0,
+                      success: false
+                    });
+
+                    this.storeValue(errorJson, storageParse, varNameParse, cache);
+                    this.displayError(data, cache, `Run SQL Query MOD: Erro JSON inválido, o caminho está definido corretamente? [${pathParse}]`);
+                    continue;
+
+                  } else if (!outValue || outValue.success === null) {
+                    const errorJson = JSON.stringify({
+                      error: "error",
+                      statusCode: 0,
+                      success: false
+                    });
+                    this.storeValue(errorJson, storageParse, varNameParse, cache);
+                    this.displayError(data, cache, `Run SQL Query MOD: Erro JSON inválido, o caminho está definido corretamente? [${pathParse}]`);
+                    continue;
+                  } else {
+                    this.storeValue(outValue, storageParse, varNameParse, cache);
+                    if (branch.debug) console.log(`Run SQL Query MOD: Foi armazenado os valores de [${pathParse}] para [${varNameParse}]`);
+                  }
+                }
+              } catch (error) {
+                const errorJson = JSON.stringify({
+                  error,
+                  statusCode: 0,
+                  success: false,
+                });
+                this.storeValue(errorJson, storageParse, varNameParse, cache);
+                this.displayError(data, cache, `Run SQL Query MOD: Erro: ${errorJson} armazenado para [${varNameParse}]`);
+                continue;
+              }
+            }
+
+            out = jsonOut || results;
 
             if (stringifyOutput == 1) {
-              out = JSON.stringify(out)
+              out = JSON.stringify(out);
             }
 
             if (data.formato == "0" || data.formato == "undefined" || data.formato == undefined) {
-              this.storeValue(out, storage, varName, cache)
-            }
-            if (data.formato == "1") {
-              out = parseFloat(out)
-              this.storeValue(out, storage, varName, cache)
-            }
-            if (data.formato == "2") {
-              out = out.toString()
-              this.storeValue(out, storage, varName, cache)
-            }
-            if (data.formato == "3") {
-              out = out.toString().split(new RegExp(','))
-              this.storeValue(out, storage, varName, cache)
+              this.storeValue(out, storage, varName, cache);
             }
 
-            this.callNextAction(cache)
+            if (data.formato == "1") {
+              out = parseFloat(out);
+              this.storeValue(out, storage, varName, cache);
+            }
+
+            if (data.formato == "2") {
+              out = String(out);
+              this.storeValue(out, storage, varName, cache);
+            }
+
+            if (data.formato == "3") {
+              out = String(out).split(new RegExp(","));
+              this.storeValue(out, storage, varName, cache);
+            }
+
+            if (data.formato == "4") {
+              out = Boolean(out);
+              this.storeValue(out, storage, varName, cache);
+            }
+
+            this.callNextAction(cache);
           }).catch((err) => {
             if (err && err.original) {
 
               if (data.errcmd === true) {
-                console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name)
-                console.log(err.original)
+                console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name);
+                console.log(err.original);
               }
 
-              this.storeValue(err.original, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+              this.storeValue(err.original, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache);
 
               if (data.iffalse == "5" || data.iffalse == "6") {
 
                 if (data.iffalse == "5") {
-                  this.executeSubActions(data.actionserr, cache)
+                  this.executeSubActions(data.actionserr, cache);
                 } else {
-                  this.executeSubActionsThenNextAction(data.actionserr, cache)
+                  this.executeSubActionsThenNextAction(data.actionserr, cache);
                 }
 
               } else {
                 this.executeResults(false, data, cache);
               }
-
-
             }
           })
         } else {
-          this.callNextAction(cache)
+          this.callNextAction(cache);
         }
       }).catch((err) => {
 
@@ -743,9 +913,9 @@ module.exports = {
         if (data.iffalse == "5" || data.iffalse == "6") {
 
           if (data.iffalse == "5") {
-            this.executeSubActions(data.actionserr, cache)
+            this.executeSubActions(data.actionserr, cache);
           } else {
-            this.executeSubActionsThenNextAction(data.actionserr, cache)
+            this.executeSubActionsThenNextAction(data.actionserr, cache);
           }
 
         } else {
@@ -757,24 +927,21 @@ module.exports = {
     } catch (error) {
 
       if (data.errcmd === true) {
-        console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name)
-        console.log(`${error.stack ? error.stack : error}`)
+        console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name);
+        console.log(`${error.stack ? error.stack : error}`);
       }
 
-      this.storeValue(error, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+      this.storeValue(error, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache);
 
       if (data.iffalse == "5" || data.iffalse == "6") {
-
         if (data.iffalse == "5") {
-          this.executeSubActions(data.actionserr, cache)
+          this.executeSubActions(data.actionserr, cache);
         } else {
-          this.executeSubActionsThenNextAction(data.actionserr, cache)
+          this.executeSubActionsThenNextAction(data.actionserr, cache);
         }
-
       } else {
         this.executeResults(false, data, cache);
       }
-
     }
   },
 
