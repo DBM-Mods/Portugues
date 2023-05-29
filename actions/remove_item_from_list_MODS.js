@@ -25,7 +25,7 @@ module.exports = {
 
   html(isEvent, data) {
     return `
-    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.2</div>
+    <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;right:0px;z-index:999999">Versão 0.3</div>
     <div style="position:absolute;bottom:0px;border: 1px solid #222;background:#000;color:#999;padding:3px;left:0px;z-index:999999">dbmmods.com</div>
 <retrieve-from-variable dropdownLabel="Lista" selectId="storage" variableContainerId="varNameContainer" variableInputId="varName"></retrieve-from-variable>
 
@@ -94,14 +94,13 @@ module.exports = {
 
   action(cache) {
     const data = cache.actions[cache.index];
-    const storage = parseInt(data.storage, 10);
+    const storage = parseInt(data.storage);
     const varName = this.evalMessage(data.varName, cache);
     const list = this.getVariable(storage, varName, cache);
     const valor = this.evalMessage(data.valor, cache);
-    const list2 = []
-    const type = parseInt(data.removeType, 10);
+    const type = parseInt(data.removeType);
 
-    let result = null;
+    let result;
     switch (type) {
       case 0:
         result = list.pop();
@@ -110,7 +109,7 @@ module.exports = {
         result = list.shift();
         break;
       case 2:
-        const position = parseInt(this.evalMessage(data.position, cache), 10);
+        const position = parseInt(this.evalMessage(data.position, cache));
         if (position < 0) {
           result = list.shift();
         } else if (position >= list.length) {
@@ -120,46 +119,33 @@ module.exports = {
           list.splice(position, 1);
         }
         break;
-        case 3:
-          const position2 = parseInt(this.evalMessage(data.position, cache), 10);
-          const quantidade2 = parseInt(this.evalMessage(data.quantidade, cache), 10);
-          if (position2 < 0) {
-            result = list.shift();
-          } else if (position2 >= list.length) {
-            result = list.pop();
-          } else {
-            calc = quantidade2 + position2
-            result = list.slice(position2, calc);
-            list.splice(position2, quantidade2);
-          }
-          break;
-          case 4:
-              for(var i = 0; i < list.length; i++)
-              if(valor.toString() == list[i].toString()) {
-              list2.push(list[i]);
-              list.splice(i, 1);
-              i = -1}
-              result = list2
-              break;
-            case 5:
-                for(var i = 0; i < list.length; i++)
-                if(list[i].includes(valor)) {
-                list2.push(list[i]);
-                list.splice(i, 1)
-                i = -1;}
-                result = list2
-              break;
+      case 3:
+        const position2 = parseInt(this.evalMessage(data.position, cache));
+        const quantidade2 = parseInt(this.evalMessage(data.quantidade, cache));
+        if (position2 < 0) {
+          result = list.shift();
+        } else if (position2 >= list.length) {
+          result = list.pop();
+        } else {
+          calc = quantidade2 + position2;
+          result = list.slice(position2, calc);
+          list.splice(position2, quantidade2);
+        }
+        break;
+      case 4:
+        result = list.filter((el) => el.toString() !== valor.toString());
+        break;
+      case 5:
+        result = list.filter((el) => !el.toString().includes(valor.toString()));
+        break;
     }
 
-    if (result) {
-      const varName2 = this.evalMessage(data.varName2, cache);
-      const storage2 = parseInt(data.storage2, 10);
-      this.storeValue(result, storage2, varName2, cache);
-    }
+    const varName2 = this.evalMessage(data.varName2, cache);
+    const storage2 = parseInt(data.storage2, 10);
+    this.storeValue(result, storage2, varName2, cache);
 
     this.callNextAction(cache);
   },
 
-
-  mod() {},
+  mod() { },
 };
