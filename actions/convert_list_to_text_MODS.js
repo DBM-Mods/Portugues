@@ -26,18 +26,38 @@ module.exports = {
 
 
   variableStorage(data, varType) {
-    const type = parseInt(data.storage, 10);
-    if (type !== varType) return;
-    return [data.varName2, "Text"];
+    let vars = [];
+
+    const type1 = parseInt(data.storagept, 10)
+    const varName1 = data.varNamept;
+
+    if (type1 == varType && varName1) {
+      vars.push(varName1);
+      vars.push("Número");
+    }
+    const type2 = parseInt(data.storage, 10)
+    const varName2 = data.varName2;
+
+    if (type2 == varType && varName2) {
+      vars.push(varName2);
+      vars.push("Texto");
+    }
+
+
+    if (vars.length > 0) {
+      return vars;
+    }
+
+
   },
 
 
-  fields: ["list", "varName", "numero", "start", "start2", "start3", "multi", "end", "end2", "end3", "posicao", "storage", "varName2", "itens", "descriptioncolor", "description", "descriptionx", "limite"],
+  fields: ["list", "varName", "numero", "istart", "start", "istart2", "start2", "start3", "multi", "end", "end2", "end3", "posicao", "storage", "varName2", "itens", "descriptioncolor", "description", "descriptionx", "limite", "pagina", "storagept", "varNamept", "endeval", "checkend", "endlib"],
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
 
     <tab-system style="margin-top: 0;">
 		<tab label="Converter" icon="align left">
@@ -73,16 +93,32 @@ module.exports = {
 
 <div style="width: 100%; padding: 10px;height: calc(100vh - 210px);overflow:auto">
 
+<span class="dbminputlabel">Inicio de cada item</span><br>
+<textarea id="istart" rows="3" style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
+<br>
 <dbm-checkbox id="numero" label="Mostrar nº da posição em cada item"></dbm-checkbox>
 <br>
 	
-		<span class="dbminputlabel">Inicio de cada item</span><br>
+		<span class="dbminputlabel">Meio de cada item</span><br>
     <textarea id="start" rows="3" style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
 	
 <br>
 	
-		<span class="dbminputlabel">Final de cada item</span><br>
-    <textarea id="end" rows="3" style="width: 100%; white-space: nowrap; resize: yes;" value="\\n"></textarea><br>
+      
+  <span class="dbminputlabel" name="xinelas">Final de cada item</span> <div style="float:right;margin-top:-5px"><dbm-checkbox id="checkend" onchange="glob.onChange3(this)" label="EVAL ITEM"></dbm-checkbox></div><br>
+  <div id="valor"><textarea id="end" rows="3" class="round" style="width:100%; white-space: nowrap; resize: yes;"></textarea></div>
+  <div style="display:none" id="valoreval"><textarea id="endeval" rows="3" name="is-eval" class="round" style="width:100%; white-space: nowrap; resize: yes;"></textarea>
+<br>
+
+  <dbm-checkbox id="endlib" label="Não mostrar o valor de cada item"></dbm-checkbox>
+
+  <br>
+  Use <span style="background:rgba(0,0,0,0.8);color:lime;padding:2px;">list[i]</span> para coletar informações de um item da lista caso esteja no formato JSON, exemplo <span style="background:rgba(0,0,0,0.8);color:lime;padding:2px;">list[i].user.username</span> da lista "Membros do servidor"
+  <br>Use <span style="background:rgba(0,0,0,0.8);color:lime;padding:2px;">\\n</span> para pular de linha
+  
+  </div>
+  <br>
+
 
 </div>
 </tab>
@@ -92,10 +128,15 @@ module.exports = {
 
   <span class="dbminputlabel">A cada * itens</span><br>
 <input id="multi" class="round" type="text" value="0">
-		
+
 <br>
 
 		<span class="dbminputlabel">Adicionar no inicio</span><br>
+    <textarea id="istart2" rows="3" style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
+		
+<br>
+
+		<span class="dbminputlabel">Adicionar no meio</span><br>
     <textarea id="start2" rows="3" style="width: 100%; white-space: nowrap; resize: yes;"></textarea>
 	
 <br>
@@ -170,7 +211,7 @@ module.exports = {
 
 <br>
 
-  <span class="dbminputlabel">Adicionar no final</span><br>
+  <span class="dbminputlabel">Adicionar no meio</span><br>
   <textarea id="end3" rows="3" style="width: 100%; white-space: nowrap; resize: yes;" value="\\n"></textarea><br>
 
 </div>
@@ -187,8 +228,20 @@ module.exports = {
 </tr></table>
 </div>
 
-<span class="dbminputlabel">Limite de itens</span><br><input type="text" class="round" id="limite" placeholder="Deixe vazio para desativar">
-
+<span class="dbminputlabel">Limite de itens por página</span><br><input type="text" class="round" id="limite" placeholder="Deixe vazio para desativar">
+<br>
+<span class="dbminputlabel">Página</span><br><input type="text" class="round" id="pagina" value="1" placeholder="Deixe vazio para 1">
+<br>
+<div style="float: left; width: 35%;">
+	<span class="dbminputlabel">Total de páginas</span><br>
+		<select id="storagept" class="round" onchange="glob.variableChange(this, 'varNameContainer3')">
+		${data.variables[0]}
+		</select>
+	</div>
+	<div id="varNameContainer3" style="float: right; display: none; width: 60%;">
+	<span class="dbminputlabel">Nome da Variável</span><br>
+		<input id="varNamept" class="round" type="text">
+	</div>
 
 </div>
 </tab>
@@ -225,6 +278,39 @@ table{width:100%}
       }
     }
 
+    glob.onChange2 = function (event) {
+      const value = parseInt(event.value, 10);
+      const dom = document.getElementById("varNameContainer3");
+      if (value == 0) {
+        dom.style.display = "none";
+      } else {
+        dom.style.display = null;
+      }
+    };
+
+    glob.onChange2(document.getElementById("storagept"));
+
+    glob.onChange3 = function (event) {
+      if (event.value == true) {
+        document.getElementById("valoreval").style.display = null;
+        document.getElementById("valor").style.display = "none";
+        document.querySelector("[name='xinelas']").innerText = (`Final de cada item / EVAL ITEM`);
+      }
+      if (event.value == false) {
+        document.getElementById("valoreval").style.display = "none";
+        document.getElementById("valor").style.display = null;
+        document.querySelector("[name='xinelas']").innerText = (`Final de cada item`);
+      }
+    };
+
+    glob.onChange3(document.getElementById("checkend"));
+
+    ;
+
+
+
+
+
   },
 
   async action(cache) {
@@ -232,7 +318,23 @@ table{width:100%}
     var list = await this.getListFromData(data.list, data.varName, cache);
 
     const start = this.evalMessage(data.start, cache).replace("\\n", "\n");
+    const istart = this.evalMessage(data.istart, cache).replace("\\n", "\n");
     const end = this.evalMessage(data.end, cache).replace("\\n", "\n");
+
+    var totaldeitens = list.length
+
+    var irseguir = 0
+
+    var pagina = this.evalMessage(data.pagina, cache)
+    if (pagina == "" || pagina == "undefined" || pagina == undefined || pagina == null) {
+      pagina = 1
+    } else {
+      pagina = parseFloat(this.evalMessage(data.pagina, cache))
+      if (pagina > 0) { } else { pagina = 1 }
+      list = list.slice(0, limite)
+    }
+
+  
 
     const multi = parseFloat(this.evalMessage(data.multi, cache))
     var limite = this.evalMessage(data.limite, cache)
@@ -241,9 +343,28 @@ table{width:100%}
       limiteoff = "off"
     } else {
       limite = parseFloat(this.evalMessage(data.limite, cache))
-      list = list.slice(0, limite)
+
+      if (limite > 0) { } else { limite = 10 }
+
+      var paginatotal = Math.ceil(totaldeitens / limite)
+
+      const varNamept = this.evalMessage(data.varNamept, cache);
+      const storagept = parseInt(data.storagept, 10);
+
+      this.storeValue(paginatotal, storagept, varNamept, cache);
+
+      if (pagina > paginatotal) { pagina = paginatotal }
+      if (pagina <= 0) { pagina = 1 }
+
+      var irseguir = Math.ceil(pagina * limite - limite)
+
+      const indiceFim = irseguir + limite;
+
+
+      list = list.slice(irseguir, indiceFim)
     }
 
+    const istart2 = this.evalMessage(data.istart2, cache).replace("\\n", "\n");
     const start2 = this.evalMessage(data.start2, cache).replace("\\n", "\n");
     const end2 = this.evalMessage(data.end2, cache).replace("\\n", "\n");
 
@@ -255,16 +376,21 @@ table{width:100%}
     for (let i = 0; i <= (list.length - 1); i++) {
 
       resultitem = ""
+      resultitem2 = ""
 
       if (data.numero == true) {
-        resultitem = parseFloat(parseFloat([i]) + 1) + resultitem
+        resultitem = parseFloat(parseFloat([i + irseguir]) + 1) + resultitem
+        resultitem2 = parseFloat(parseFloat([i + irseguir]) + 1) + resultitem2
       }
+
 
       if (acont == [i] && multi > 0) {
         acont = acont + multi
-        resultitem = resultitem + start + start2 + String(list[i]) + end2
+        resultitem = istart2 + istart + resultitem + start + start2 + String(list[i]) + end2
+        resultitem2 = istart2 + istart + resultitem2 + start + start2 + end2
       } else {
-        resultitem = resultitem + start + String(list[i]);
+        resultitem = istart + resultitem + start + String(list[i]);
+        resultitem2 = istart + resultitem2 + start
       }
 
 
@@ -272,12 +398,12 @@ table{width:100%}
 
         const posicao = parseFloat(this.evalMessage(data.itens[ix].posicao, cache))
 
-        if (posicao == [i]) {
+        if (posicao == (i + irseguir)) {
           val1 = this.evalMessage(data.itens[ix].val1, cache);
           val2 = this.evalMessage(data.itens[ix].val2, cache);
           resulty = true;
 
-          if (data.itens[i].formula == "Falso" || data.itens[i].formula == "Verdadeiro") {
+          if (data.itens[ix].formula == "Falso" || data.itens[ix].formula == "Verdadeiro") {
             const compare = parseInt(data.itens[ix].comparar, 10);
             switch (compare) {
               case 0:
@@ -372,15 +498,26 @@ table{width:100%}
             const start3 = this.evalMessage(data.itens[ix].start3, cache).replace("\\n", "\n");
             const end3 = this.evalMessage(data.itens[ix].end3, cache).replace("\\n", "\n");
             resultitem = start3 + resultitem + end3;
+            resultitem2 = start3 + resultitem2 + end3;
           }
 
         }
 
       }
 
+      if (data.checkend == true) {
 
+        if (data.endlib == true) {
+          result += resultitem2 + eval(String(this.evalMessage(data.endeval, cache)))
+        } else {
+          result += resultitem + eval(String(this.evalMessage(data.endeval, cache)))
+        }
 
-      result += resultitem + end
+      } else {
+
+        result += resultitem + end
+
+      }
 
     }
 
