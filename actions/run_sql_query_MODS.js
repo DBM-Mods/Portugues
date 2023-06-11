@@ -107,7 +107,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.4</div>
 
     <tab-system>
 
@@ -815,7 +815,6 @@ module.exports = {
                     });
 
                     this.storeValue(errorJson, storageParse, varNameParse, cache);
-                    this.displayError(data, cache, `Run SQL Query MOD: Erro JSON inválido, o caminho está definido corretamente? [${pathParse}]`);
                     continue;
 
                   } else if (!outValue || outValue.success === null) {
@@ -825,7 +824,6 @@ module.exports = {
                       success: false
                     });
                     this.storeValue(errorJson, storageParse, varNameParse, cache);
-                    this.displayError(data, cache, `Run SQL Query MOD: Erro JSON inválido, o caminho está definido corretamente? [${pathParse}]`);
                     continue;
                   } else {
                     this.storeValue(outValue, storageParse, varNameParse, cache);
