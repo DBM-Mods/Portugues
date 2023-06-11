@@ -5,7 +5,7 @@ module.exports = {
   meta: {
     version: '2.1.7',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
+    author: '[xinxyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -115,6 +115,8 @@ module.exports = {
       "Lista de nome de eventos do servidor",
       "Total de eventos do servidor",
       "Lista de ids de eventos do servidor",
+      "Cargo de Server Booster",
+      "Lista de membros com impulso por ordem de impulso",
     ];
 
     if (data.descriptionx) {
@@ -345,7 +347,15 @@ module.exports = {
         dataType = "Lista";
       case 92:
         dataType = "Lista";
+      case 102:
+        dataType = "Lista";
         break;
+      case 103:
+        dataType = "Objeto";
+        break;
+        case 104:
+          dataType = "Lista";
+          break;
     }
 
     return [data.varName2, dataType];
@@ -360,33 +370,9 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.8</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.9</div>
 
-    <style>
-      .dbmmodsbr1 {
-        position: absolute;
-        bottom: 0px;
-        border: 0px solid rgba(50,50,50,0.7);
-        background: rgba(0,0,0,0.7);
-        color: #999;
-        padding: 5px;
-        left: 0px;
-        z-index: 999999;
-        cursor: pointer
-      }
-
-      .dbmmodsbr2 {
-        position: absolute;
-        bottom: 0px;
-        border: 0px solid rgba(50,50,50,0.7);
-        background: rgba(0,0,0,0.7);
-        color: #999;
-        padding: 5px;
-        right: 0px;
-        z-index: 999999;
-        cursor: pointer
-      }
-    </style>
+    <div style="width: 100%; padding:5px 0px;height: calc(100vh - 160px);overflow:auto">
 
     <div id="flutuador" style="padding:0px 0px 15px 0px">
       <table style="width:100%;"><tr>
@@ -437,6 +423,8 @@ module.exports = {
       <optgroup label="Informações sobre impulso do Servidor">
       <option value="44">Contagem de impulsos do servidor</options>
       <option value="45">Nível de aumento de servidor</options>
+      <option value="103">Cargo do Server Booster</options>
+      <option value="104">Lista de membros com impulso por ordem de impulso</options>
       </optgroup>
       <optgroup label="Contagens">
       <option value="17">Total de membros do servidor</options>
@@ -544,40 +532,71 @@ module.exports = {
 <br>
 
 <store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
+
+</div>
+
 <style>
+.dbmmodsbr1 {
+  position: absolute;
+  bottom: 0px;
+  border: 0px solid rgba(50,50,50,0.7);
+  background: rgba(0,0,0,0.7);
+  color: #999;
+  padding: 5px;
+  left: 0px;
+  z-index: 999999;
+  cursor: pointer
+}
+
+.dbmmodsbr2 {
+  position: absolute;
+  bottom: 0px;
+  border: 0px solid rgba(50,50,50,0.7);
+  background: rgba(0,0,0,0.7);
+  color: #999;
+  padding: 5px;
+  right: 0px;
+  z-index: 999999;
+  cursor: pointer
+}
 .round2{width:100%;height:30px;outline:0}
 .round2 option{padding:3px 8px;text-align:left}
 .round2 optgroup{text-align:center;padding:4px 0px;}
 
 
 .abrir {
+  min-height: 30px;
   height: 30px;
   animation: abrir .5s forwards;
 }
 
 @keyframes abrir {
   from {
+    min-height: 30px;
     height: 30px;
   }
   to {
-    height: 130px;
+    min-height: 100px;
+    height: calc(100vh - 420px);
   }
 }
 
 .fechar {
-  height: 130px;
+  min-height: 100px;
+  height: calc(100vh - 420px);
   animation: fechar .5s forwards;
 }
 
 @keyframes fechar {
   from {
-    height: 130px;
+    min-height: 100px;
+    height: calc(100vh - 420px);
   }
   to {
+    min-height: 30px;
     height: 30px;
   }
 }
-
 </style>`;
   },
 
@@ -1002,6 +1021,12 @@ module.exports = {
         break;
       case 102:
         result = targetServer.scheduledEvents.cache.map(scheduledEvents => scheduledEvents.id);
+        break;
+      case 103:
+        result = targetServer.roles.cache.find((item) => item.tags && item.tags.premiumSubscriberRole === true);
+        break;
+      case 104:
+        result = targetServer.members.cache.filter((m) => m.premiumSinceTimestamp).sort((a, b) => parseFloat(a.premiumSinceTimestamp) - parseFloat(b.premiumSinceTimestamp)).map(a => a)
         break;
     }
     if (result !== undefined) {
