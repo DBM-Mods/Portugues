@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     version: '2.1.7',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[xinxyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -82,7 +82,7 @@ module.exports = {
 
   <br><br><br>
 
-  <span class="dbminputlabel">Filtrar com base na coluna</span><br>
+  <span class="dbminputlabel">Filtrar com base na coluna (Use . para sub-colunas)</span><br>
   <input type="text" class="round" id="coluna">
 
   <br>
