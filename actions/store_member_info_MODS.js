@@ -44,10 +44,14 @@ module.exports = {
       "Status personalizado de membro",
       "URL do Avatar do Servidor Membro",
       "Membro expirou em",
-      "Timestamp do membro expirou",
+      "Timestamp do membro castigado",
       "URL do banner do membro",
       "ID do Servidor do Membro",
       "Timestamp do Impulso do Membro",
+      "Total de convites do membro no servidor atual",
+      "Lista de convites do membro no servidor atual",
+      "Lista de usos dos convites do membro no servidor atual",
+      "Total de usos dos convites do membro no servidor atual",
     ];
 
     if (data.descriptionx) {
@@ -180,6 +184,18 @@ module.exports = {
       case 36:
         dataType = "Timestamp";
         break;
+      case 37:
+        dataType = "Número";
+        break;
+      case 38:
+        dataType = "Lista";
+        break;
+      case 39:
+        dataType = "Lista";
+        break;
+      case 40:
+        dataType = "Número";
+        break;
     }
 
     return [data.varName2, dataType];
@@ -190,39 +206,9 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.4</div>
 
-    <style>
-    .xin {
-      padding: 5px;
-      border: 1px solid #777;
-      background: rgba(255,255,255,0.1);
-    }
-
-    .dbmmodsbr1 {
-      position: absolute;
-      bottom: 0px;
-      border: 0px solid rgba(50,50,50,0.7);
-      background: rgba(0,0,0,0.7);
-      color: #999;
-      padding: 5px;
-      left: 0px;
-      z-index: 999999;
-      cursor: pointer;
-    }
-
-    .dbmmodsbr2 {
-      position: absolute;
-      bottom: 0px;
-      border: 0px solid rgba(50,50,50,0.7);
-      background: rgba(0,0,0,0.7);
-      color: #999;
-      padding: 5px;
-      right: 0px;
-      z-index: 999999;
-      cursor: pointer;
-    }
-  </style>
+    <div style="width: 100%; padding:5px 0px;height: calc(100vh - 160px);overflow:auto">
 
   <div id="flutuador" style="padding:0px 0px 15px 0px">
     <table style="width:100%;"><tr>
@@ -241,9 +227,10 @@ module.exports = {
     </table>
   </div>
 
+  <div style="overflow: hidden">
 <member-input dropdownLabel="Membro" selectId="member" variableContainerId="varNameContainer" variableInputId="varName"></member-input>
+</div>
 
-<br><br><br>
 
 <div style="padding-top: 8px;">
 	<span class="dbminputlabel">Informação</span><br>
@@ -283,8 +270,12 @@ module.exports = {
   <option value="28">Lista de badges do membro</option>
   <option value="29">Status do cliente membro [Web ou Mobile]</option>
   <option value="32">Tempo esgotado do membro em</option>
-  <option value="33">Timestamp do membro expirado</option>
+  <option value="33">Timestamp do membro castigado</option>
   <option value="36">Timestamp do Impulso do Membro</option>
+  <option value="37">Total de convites do membro no servidor atual</option>
+  <option value="38">Lista de convites do membro no servidor atual</option>
+  <option value="39">Lista de usos dos convites do membro no servidor atual</option>
+  <option value="40">Total de usos dos convites do membro no servidor atual</option>
 	</select>
   <input type="text" id="filtrodoxinxyla" class="round" placeholder="Filtrar opções...">
   </div>
@@ -293,39 +284,75 @@ module.exports = {
 
 <store-in-variable dropdownLabel="Armazenar em" selectId="storage" variableContainerId="varNameContainer2" variableInputId="varName2"></store-in-variable>
 
+</div>
+
 <style>
 .round2{width:100%;height:30px;outline:0}
-.round2 option{padding:3px 8px;}
+.round2 option{padding:3px 8px;text-align:left}
+.round2 optgroup{text-align:center;padding:4px 0px;}
+
+
 .abrir {
+  min-height: 30px;
   height: 30px;
   animation: abrir .5s forwards;
 }
 
 @keyframes abrir {
   from {
+    min-height: 30px;
     height: 30px;
   }
   to {
-    height: 140px;
+    min-height: 100px;
+    height: calc(100vh - 420px);
   }
 }
 
 .fechar {
-  height: 140px;
+  min-height: 100px;
+  height: calc(100vh - 420px);
   animation: fechar .5s forwards;
 }
 
 @keyframes fechar {
   from {
-    height: 140px;
+    min-height: 100px;
+    height: calc(100vh - 420px);
   }
   to {
+    min-height: 30px;
     height: 30px;
   }
 }
+.xin {
+  padding: 5px;
+  border: 1px solid #777;
+  background: rgba(255,255,255,0.1);
+}
 
-select {
-  max-height: 140px;
+.dbmmodsbr1 {
+  position: absolute;
+  bottom: 0px;
+  border: 0px solid rgba(50,50,50,0.7);
+  background: rgba(0,0,0,0.7);
+  color: #999;
+  padding: 5px;
+  left: 0px;
+  z-index: 999999;
+  cursor: pointer;
+}
+
+.dbmmodsbr2 {
+  position: absolute;
+  bottom: 0px;
+  border: 0px solid rgba(50,50,50,0.7);
+  background: rgba(0,0,0,0.7);
+  color: #999;
+  padding: 5px;
+  right: 0px;
+  z-index: 999999;
+  cursor: pointer;
 }
 </style>
 `;
@@ -398,6 +425,8 @@ select {
       if (memberfind == "100") { member = members.find((m) => m.user?.username === find); }
       if (memberfind == "101") { member = members.get(find) }
     }
+
+    const targetServer = await this.getServerFromData(0, data.varName, cache);
 
     if (!member) {
       this.callNextAction(cache);
@@ -535,6 +564,36 @@ select {
         break;
       case 36:
         result = member.premiumSinceTimestamp;
+        break;
+      case 37:
+        invites = await targetServer.invites.fetch();
+        convites = [...invites.values()];
+        convites = convites.map(v => v.inviter)
+        convite = convites.filter((item) => item.id == member.id)
+        result = convite.length
+        break;
+      case 38:
+        invites = await targetServer.invites.fetch();
+        convites = [...invites.values()];
+        convites = convites.map(v => v)
+        convite = convites.filter((item) => item.inviter.id == member.id)
+        result = convite
+        break;
+      case 39:
+        invites = await targetServer.invites.fetch();
+        convites = [...invites.values()];
+        convites = convites.map(v => v)
+        convite = convites.filter((item) => item.inviter.id == member.id)
+        convite = convite.map(v => v.uses)
+        result = convite
+        break;
+      case 40:
+        invites = await targetServer.invites.fetch();
+        convites = [...invites.values()];
+        convites = convites.map(v => v)
+        convite = convites.filter((item) => item.inviter.id == member.id)
+        convite = convite.map(v => v.uses)
+        result = convite.reduce((acumulador, numero) => acumulador + numero, 0);
         break;
       default:
         break;
