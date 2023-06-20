@@ -117,6 +117,10 @@ module.exports = {
       "Lista de ids de eventos do servidor",
       "Cargo de Server Booster",
       "Lista de membros com impulso por ordem de impulso",
+      "Lista de membros de castigo no servidor",
+      "Total de membros de castigo no servidor",
+      "Total de membros castigados no servidor",
+      "Lista de membros castigados no servidor",
     ];
 
     if (data.descriptionx) {
@@ -353,9 +357,21 @@ module.exports = {
       case 103:
         dataType = "Objeto";
         break;
-        case 104:
-          dataType = "Lista";
-          break;
+      case 104:
+        dataType = "Lista";
+        break;
+      case 105:
+        dataType = "Lista";
+        break;
+      case 106:
+        dataType = "Número";
+        break;
+      case 107:
+        dataType = "Número";
+        break;
+      case 108:
+        dataType = "Lista";
+        break;
     }
 
     return [data.varName2, dataType];
@@ -370,7 +386,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.9</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 2.0</div>
 
     <div style="width: 100%; padding:5px 0px;height: calc(100vh - 160px);overflow:auto">
 
@@ -438,6 +454,8 @@ module.exports = {
       <option value="70">Total de membros nos canais de voz</options>
       <option value="98">Total de figurinhas do servidor</option>
       <option value="101">Total de eventos do servidor</option>
+      <option value="106">Total de membros de castigo no servidor</option>
+      <option value="107">Total de membros castigados no servidor</option>
       </optgroup>
       <optgroup label="Informações da comunidade do servidor"">
       <option value="54">Servidor em parceria</options>
@@ -503,6 +521,8 @@ module.exports = {
       <option value="99">Lista de eventos do servidor</option>
       <option value="100">Lista de nome de eventos do servidor</option>
       <option value="102">Lista de ids de eventos do servidor</option>
+      <option value="105">Lista de membros de castigo no servidor</option>
+      <option value="108">Lista de membros que já foram castigados no servidor</option>
       </optgroup>
       <optgroup label="Informações do Dono do servidor">
       <option value="48">ID do Dono do servidor</options>
@@ -1027,6 +1047,18 @@ module.exports = {
         break;
       case 104:
         result = targetServer.members.cache.filter((m) => m.premiumSinceTimestamp).sort((a, b) => parseFloat(a.premiumSinceTimestamp) - parseFloat(b.premiumSinceTimestamp)).map(a => a)
+        break;
+      case 105:
+        result = targetServer.members.cache.filter((m) => m.communicationDisabledUntilTimestamp > Date.now()).sort((a, b) => parseFloat(a.communicationDisabledUntilTimestamp) - parseFloat(b.communicationDisabledUntilTimestamp)).map(a => a)
+        break;
+      case 106:
+        result = targetServer.members.cache.filter((m) => m.communicationDisabledUntilTimestamp > Date.now()).map(a => a).length
+        break;
+      case 107:
+        result = targetServer.members.cache.filter((m) => m.communicationDisabledUntilTimestamp > 0).map(a => a).length
+        break;
+      case 108:
+        result = targetServer.members.cache.filter((m) => m.communicationDisabledUntilTimestamp > 0).sort((a, b) => parseFloat(a.communicationDisabledUntilTimestamp) - parseFloat(b.communicationDisabledUntilTimestamp)).map(a => a)
         break;
     }
     if (result !== undefined) {
