@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     version: '2.1.7',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
+    author: '[xinxyla - 172782058396057602]<br>[Tempest - 321400509326032897]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -35,7 +35,9 @@ module.exports = {
       "Está no servidor atual?",
       "Foi banido do servidor atual?",
       "Possui convites no servidor atual?",
-      "Está no tópico/postagem?"
+      "Está no tópico/postagem?",
+      "Está de castigo no servidor?",
+      "Já foi castigado no servidor?",
     ];
 
     return data.description
@@ -48,7 +50,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.7</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.8</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -83,6 +85,8 @@ module.exports = {
       <option value="15">Foi banido do servidor atual?</option>
       <option value="16">Possui convites no servidor atual?</option>
       <option value="17">Está no tópico/postagem?</option>
+      <option value="18">Está de castigo no servidor?</option>
+      <option value="19">Já foi castigado no servidor?</option>
     </select>
   </div>
 </div><br><br><br>
@@ -243,6 +247,12 @@ xinspace{padding:10px 0px 0px 0px;display:block}
         const ids = Array.from(members.keys());
         id = ids.findIndex((item) => item == member.id)
         if (id == -1) { result = false } else { result = true }
+        break;
+      case 18:
+        result = member.communicationDisabledUntilTimestamp > Date.now()
+        break;
+      case 19:
+        result = member.communicationDisabledUntilTimestamp > 0
         break;
       default:
         console.log('Verifique sua ação "Verifique se o membro"! Há algo errado...');
