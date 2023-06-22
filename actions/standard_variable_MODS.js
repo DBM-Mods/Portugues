@@ -109,8 +109,6 @@ module.exports = {
     const varName = this.evalMessage(data.varName, cache);
     const storage = this.getVariable(type, varName, cache);
 
-    console.log(storage)
-
     let val = this.evalMessage(data.value, cache);
     try {
       val = this.eval(val, cache);
@@ -148,7 +146,6 @@ module.exports = {
     }
 
     if (data.nolista == true) {
-      console.log(Boolean(Array.isArray(storage)))
       if (Boolean(Array.isArray(storage)) == false){
         result = val;
         this.storeValue(result, type, varName, cache);
