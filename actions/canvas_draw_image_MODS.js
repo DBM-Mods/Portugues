@@ -12,6 +12,12 @@ module.exports = {
   subtitle(data, presets) {
     const storage = presets.variables;
 
+    if(data.storage2 == "10"){
+    nova = `Local/WEB URL: ${data.local}`
+    } else{
+    nova = `${storage[parseInt(data.storage2, 10)]} (${data.varName2})`
+    }
+
     if (data.descriptionx == true) {
       desccor = data.descriptioncolor
     } else {
@@ -20,15 +26,15 @@ module.exports = {
 
     return data.description
       ? `<font style="color:${desccor}">${data.description}</font>`
-      : `<font style="color:${desccor}">Juntar: ${storage[parseInt(data.storage, 10)]} (${data.varName}) Com: ${storage[parseInt(data.storage2, 10)]} (${data.varName2})</font>`
+      : `<font style="color:${desccor}">Juntar: ${storage[parseInt(data.storage, 10)]} (${data.varName}) > ${nova}</font>`
   },
 
-  fields: ['storage', 'varName', 'storage2', 'varName2', 'x', 'y', 'effect', 'descriptioncolor', 'description', 'descriptionx',],
+  fields: ['local', 'width', 'height', 'storage', 'varName', 'storage2', 'varName2', 'x', 'y', 'effect', 'descriptioncolor', 'description', 'descriptionx',],
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -51,19 +57,45 @@ module.exports = {
     <input id="varName" class="round" type="text" list="variableList"><br>
   </div>
 </div><br><br><br>
-<div style="padding-top: 8px;">
-  <div style="float: left; width: 45%;">
-  <span class="dbminputlabel">Juntar com a imagem</span><br>
-    <select id="storage2" class="round">
+
+
+<table style="width:100%;">
+<tr>
+  <td id="controlador1">
+    <span class="dbminputlabel">Juntar com a imagem</span><br>
+    <select id="storage2" class="round" style="width: 100%" onchange="glob.onChangexin2(this)">
       ${data.variables[1]}
+      <option value="10">Local/Web URL</option>
     </select>
+  </td>
+  <td id="controlador2" style="padding:0px 0px 0px 8px">
+    <span class="dbminputlabel">Nome da Variavel</span><br>
+    <input id="varName2" class="round" type="text" list="variableList">
+  </td>
+  <td id="controlador3" style="padding:0px 0px 0px 8px">
+  <span class="dbminputlabel">Local/Web URL</span><br>
+  <input id="local" class="round" type="text" placeholder="resources/output.png">
+</td>
+</tr>
+</table>
+
+
+<div id="controlador4">
+<br>
+  <div style="float: left; width: 50%;padding:0px 5px 0px 0px">
+  <span class="dbminputlabel">Largura (px ou %)</span><br>
+    <input id="width" class="round" type="text" placeholder="Deixe em branco para padrão" value="100%"><br>
   </div>
-  <div id="varNameContainer2" style="float: right; width: 50%;">
-  <span class="dbminputlabel">Nome da Variavel</span><br>
-    <input id="varName2" class="round" type="text" list="variableList"><br>
+  <div style="float: right; width: 50%;padding:0px">
+  <span class="dbminputlabel">Altura (px ou %)</span><br>
+    <input id="height" class="round" type="text" placeholder="Deixe em branco para padrão" value="100%"><br>
   </div>
-</div><br><br><br>
-<div style="padding-top: 8px">
+
+</div>
+
+<br>
+
+<div>
   <div style="float: left; width: 50%;padding:0px 5px 0px 0px">
   <span class="dbminputlabel">Posição X</span><br>
     <input id="x" class="round" type="text" value="0"><br>
@@ -122,6 +154,19 @@ table{width:100%}
 
   init() {
     const { glob, document } = this
+
+    glob.onChangexin2 = function (event) {
+      if (event.value === "10") {
+        document.getElementById("controlador2").style.display = 'none';
+        document.getElementById("controlador3").style.display = null;
+        document.getElementById("controlador4").style.display = null;
+      } else {
+        document.getElementById("controlador2").style.display = null;
+        document.getElementById("controlador3").style.display = 'none';
+        document.getElementById("controlador4").style.display = 'none';
+      }
+    }
+    glob.onChangexin2(document.getElementById('storage2'))
 
     glob.onComparisonChanged = function (event) {
       if (event.value == "0") {
@@ -206,7 +251,7 @@ table{width:100%}
 
   },
 
-  action(cache) {
+  async action(cache) {
     const Canvas = require('canvas')
     const data = cache.actions[cache.index]
     const storage = parseInt(data.storage)
@@ -219,17 +264,64 @@ table{width:100%}
     const storage2 = parseInt(data.storage2)
     const varName2 = this.evalMessage(data.varName2, cache)
     const imagedata2 = this.getVariable(storage2, varName2, cache)
-    if (!imagedata2) {
-      this.callNextAction(cache)
-      return
-    }
     const x = parseInt(this.evalMessage(data.x, cache))
     const y = parseInt(this.evalMessage(data.y, cache))
     const effect = parseInt(data.effect)
+    const local = this.evalMessage(data.local, cache)
+
     const image = new Canvas.Image()
     image.src = imagedata
-    const image2 = new Canvas.Image()
-    image2.src = imagedata2
+
+    if (storage2 == 10) {
+      try {
+        await Canvas.loadImage(local).then((imagex) => {
+        var scalex = this.evalMessage(data.width, cache)
+        var scaley = this.evalMessage(data.height, cache)
+        if (scalex == '') { scalex = "100%" }
+        if (scaley == '') { scaley = "100%" }
+        let imagew = imagex.width
+        let imageh = imagex.height
+        let scalew = 1
+        let scaleh = 1
+        scale(scalex, scaley)
+          const canvas2 = Canvas.createCanvas(imagew, imageh)
+          const ctx2 = canvas2.getContext('2d')
+          ctx2.drawImage(imagex, 0, 0, imagew, imageh)
+          image2 = new Canvas.Image()
+          image2.src = canvas2.toDataURL('image/png').replace('image/png', 'image/octet-stream')
+
+          function scale(w, h) {
+            if (w.endsWith('%')) {
+              const percent = w.replace('%', '')
+              scalew = parseInt(percent) / 100
+            } else {
+              scalew = parseInt(w) / imagew
+            }
+            if (h.endsWith('%')) {
+              const percent = h.replace('%', '')
+              scaleh = parseInt(percent) / 100
+            } else {
+              scaleh = parseInt(h) / imageh
+            }
+            imagew *= scalew
+            imageh *= scaleh
+          }
+
+        })
+      } catch (err) {
+        this.callNextAction(cache)
+        return
+      }
+    } else {
+      if (!imagedata2) {
+        this.callNextAction(cache)
+        return
+      }
+      image2 = new Canvas.Image()
+      image2.src = imagedata2
+    }
+
+
     const canvas = Canvas.createCanvas(image.width, image.height)
     const ctx = canvas.getContext('2d')
     ctx.drawImage(image, 0, 0, image.width, image.height)
@@ -253,7 +345,7 @@ table{width:100%}
     if (effect == "17") { ctx.globalCompositeOperation = 'color-burn' }
     if (effect == "18") { ctx.globalCompositeOperation = 'hard-light' }
     if (effect == "19") { ctx.globalCompositeOperation = 'soft-light' }
-    
+
     ctx.drawImage(image2, x, y, image2.width, image2.height)
     const result = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
     this.storeValue(result, storage, varName, cache)
