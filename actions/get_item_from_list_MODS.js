@@ -79,7 +79,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
 
     <div style="width: 100%; padding:5px 0px;height: calc(100vh - 160px);overflow:auto">
 
@@ -116,7 +116,8 @@ module.exports = {
 			<option value="2">Item aleatório</option>
       <option value="4">Item aleatório [PAR]</option>
       <option value="5">Item aleatório [ÍMPAR]</option>
-      <option value="7">Item aleatório [Escolher]</option>
+      <option value="7">Item aleatório [Entre]</option>
+      <option value="8">Item aleatório [igual]</option>
 		</select>
 	</div>
 	<div id="positionHolder" style="float: right; width: 60%; display: none;">
@@ -124,7 +125,7 @@ module.exports = {
 		<input id="position" class="round" type="text"><br>
 	</div>
   <div id="escolherHolder" style="float: right; width: 60%; display: none;">
-		<span class="dbminputlabel">Escolher de X em X</span><br>
+		<span class="dbminputlabel" name="alter">Escolher</span><br>
 		<input id="escolher" class="round" type="text"><br>
 	</div>
 </div>
@@ -186,7 +187,7 @@ module.exports = {
       } else {
         dom.style.display = "none";
       }
-      if (value == 7) {
+      if (value == 7 || value == 8) {
         dom2.style.display = null;
       } else {
         dom2.style.display = "none";
@@ -283,6 +284,18 @@ module.exports = {
         calc3 = Math.floor(escolher * calc2);
         result2 = Math.floor(calc3)
         result = list[result2];
+        break;
+      case 8:
+        const posicoes = [];
+        list.forEach((item, indice) => {
+          if (item === this.evalMessage(data.escolher, cache)) {
+            posicoes.push(indice);
+          }
+        });
+        random = Math.floor(Math.random() * posicoes.length);
+        result2 = posicoes[random]
+        result = list[result2];
+        break;
     }
 
     const varName2 = this.evalMessage(data.varName2, cache);
