@@ -18,6 +18,12 @@ module.exports = {
     nova = `${storage[parseInt(data.storage2, 10)]} (${data.varName2})`
     }
 
+    if(data.storage == "10"){
+      novap = `Localmente: ${data.localp}`
+      } else{
+      novap = `${storage[parseInt(data.storage, 10)]} (${data.varName})`
+      }
+
     if (data.descriptionx == true) {
       desccor = data.descriptioncolor
     } else {
@@ -26,15 +32,15 @@ module.exports = {
 
     return data.description
       ? `<font style="color:${desccor}">${data.description}</font>`
-      : `<font style="color:${desccor}">Juntar: ${storage[parseInt(data.storage, 10)]} (${data.varName}) > ${nova}</font>`
+      : `<font style="color:${desccor}">Juntar: ${novap} > ${nova}</font>`
   },
 
-  fields: ['local', 'width', 'height', 'storage', 'varName', 'storage2', 'varName2', 'x', 'y', 'effect', 'descriptioncolor', 'description', 'descriptionx',],
+  fields: ['local', 'localp', 'width', 'height', 'storage', 'varName', 'storage2', 'varName2', 'x', 'y', 'effect', 'descriptioncolor', 'description', 'descriptionx',],
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -45,19 +51,27 @@ module.exports = {
 </tr></table>
 </div>
 
-<div>
-  <div style="float: left; width: 45%;">
-  <span class="dbminputlabel">Imagem Canvas</span><br>
-    <select id="storage" class="round" onchange="glob.refreshVariableList(this)">
+<table style="width:100%;">
+<tr>
+  <td id="pcontrolador1">
+    <span class="dbminputlabel">Imagem Canvas</span><br>
+    <select id="storage" class="round" style="width: 100%" onchange="glob.onChangexinp(this)">
       ${data.variables[1]}
+      <option value="10">Salvar no Local</option>
     </select>
-  </div>
-  <div id="varNameContainer" style="float: right; width: 50%;">
-  <span class="dbminputlabel">Nome da Variavel</span><br>
-    <input id="varName" class="round" type="text" list="variableList"><br>
-  </div>
-</div><br><br><br>
+  </td>
+  <td id="pcontrolador2" style="padding:0px 0px 0px 8px">
+    <span class="dbminputlabel">Nome da Variavel</span><br>
+    <input id="varName" class="round" type="text" list="variableList">
+  </td>
+  <td id="pcontrolador3" style="padding:0px 0px 0px 8px">
+  <span class="dbminputlabel">Local</span><br>
+  <input id="localp" class="round" type="text" placeholder="resources/output.png">
+</td>
+</tr>
+</table>
 
+<br>
 
 <table style="width:100%;">
 <tr>
@@ -168,6 +182,17 @@ table{width:100%}
     }
     glob.onChangexin2(document.getElementById('storage2'))
 
+    glob.onChangexinp = function (event) {
+			if (event.value === "10") {
+				document.getElementById("pcontrolador2").style.display = 'none';
+				document.getElementById("pcontrolador3").style.display = null;
+			} else {
+				document.getElementById("pcontrolador2").style.display = null;
+				document.getElementById("pcontrolador3").style.display = 'none';
+			}
+		}
+		glob.onChangexinp(document.getElementById('storage'))
+
     glob.onComparisonChanged = function (event) {
       if (event.value == "0") {
         document.querySelector("[id='informacao']").innerText = (`Esse é o valor padrão e simplesmente desenha o novo elemento gráfico sobre o conteúdo existente no contexto.`);
@@ -256,11 +281,30 @@ table{width:100%}
     const data = cache.actions[cache.index]
     const storage = parseInt(data.storage)
     const varName = this.evalMessage(data.varName, cache)
-    const imagedata = this.getVariable(storage, varName, cache)
-    if (!imagedata) {
-      this.callNextAction(cache)
-      return
-    }
+    const localp = this.evalMessage(data.localp, cache)
+    if (storage == 10) {
+			try {
+				await Canvas.loadImage(localp).then((imagex) => {
+					canvas = Canvas.createCanvas(imagex.width, imagex.height)
+					ctx = canvas.getContext('2d')
+					ctx.drawImage(imagex, 0, 0, imagex.width, imagex.height)
+					image = new Canvas.Image()
+					image.src = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
+				})
+			} catch (err) {
+				this.callNextAction(cache)
+				return
+			}
+
+		} else {
+
+			imagedata = this.getVariable(storage, varName, cache);
+			if (!imagedata) {
+				this.callNextAction(cache);
+				return;
+			}
+
+		}
     const storage2 = parseInt(data.storage2)
     const varName2 = this.evalMessage(data.varName2, cache)
     const imagedata2 = this.getVariable(storage2, varName2, cache)
@@ -268,9 +312,10 @@ table{width:100%}
     const y = parseInt(this.evalMessage(data.y, cache))
     const effect = parseInt(data.effect)
     const local = this.evalMessage(data.local, cache)
-
-    const image = new Canvas.Image()
+    if (storage !== 10) {
+    image = new Canvas.Image()
     image.src = imagedata
+    }
 
     if (storage2 == 10) {
       try {
@@ -321,10 +366,11 @@ table{width:100%}
       image2.src = imagedata2
     }
 
-
-    const canvas = Canvas.createCanvas(image.width, image.height)
-    const ctx = canvas.getContext('2d')
+    if (storage !== 10) {
+    canvas = Canvas.createCanvas(image.width, image.height)
+    ctx = canvas.getContext('2d')
     ctx.drawImage(image, 0, 0, image.width, image.height)
+    }
 
     if (effect == "1") { ctx.globalCompositeOperation = 'destination-out' }
     if (effect == "2") { ctx.globalCompositeOperation = 'source-in' }
@@ -347,9 +393,17 @@ table{width:100%}
     if (effect == "19") { ctx.globalCompositeOperation = 'soft-light' }
 
     ctx.drawImage(image2, x, y, image2.width, image2.height)
-    const result = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
-    this.storeValue(result, storage, varName, cache)
-    this.callNextAction(cache)
+
+    if (storage == 10) {
+			const fs = require("fs");
+			const Path = this.evalMessage(data.localp, cache);
+			if (Path) {
+				fs.writeFileSync(Path, canvas.toBuffer());
+			}
+		} else {
+			this.storeValue(canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"), storage, varName, cache);
+		}
+		this.callNextAction(cache);
   },
 
   mod() { }
