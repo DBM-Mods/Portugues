@@ -12,6 +12,11 @@ module.exports = {
 
   subtitle(data, presets) {
     let text = "";
+
+    if (data.storagewebhook !== "0") {
+      text = `Enviar via Webhook: ${data.varwebhook}`;
+    } else {
+
     if (data.message) {
       text = `"${data.message.replace(/[\n\r]+/, " ↲ ")}"`;
     } else if (data.embeds?.length > 0) {
@@ -29,16 +34,17 @@ module.exports = {
     } else {
       text = `Nada (Pode ocasionar erro)`;
     }
+    
     if (data.dontSend) {
       text = `Armazenar Data: ${text}`;
     } else {
       text = `${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}`;
     }
+
+  }
+
     if (data.descriptioncolor == undefined) {
       data.descriptioncolor = "#ffffff";
-    }
-    if (data.storagewebhook > "0") {
-      return `Enviar via Webhook: ${data.varwebhook}`;
     }
 
     if (data.descriptionx == true) {
@@ -2196,7 +2202,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
             ctx.drawImage(image, 0, 0, image.width, image.height)
             const buffer = canvas.toBuffer('image/png', { compressionLevel: data.attachments[i].compress })
             const spoiler = !!attachment?.spoiler;
-            const name = attachment?.name || (spoiler ? Util.basename("image.png") : undefined);
+            const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename("image.png") : undefined);
             const msgAttachment = new MessageAttachment(buffer, name);
             if (spoiler) {
               msgAttachment.setSpoiler(true);
@@ -2212,7 +2218,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           const varid = this.evalMessage(attachment?.canvasvar, cache);
           const imagedata = this.getVariable(varid, varnamer, cache)
           const spoiler = !!attachment?.spoiler;
-          const name = attachment?.name || (spoiler ? Util.basename("image.png") : undefined);
+          const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename("image.png") : undefined);
           const buffer = await Images.createBuffer(imagedata)
           const msgAttachment = new MessageAttachment(buffer, name);
           if (spoiler) {
@@ -2226,7 +2232,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           const url = this.evalMessage(attachment?.url, cache);
           if (url) {
             const spoiler = !!attachment?.spoiler;
-            const name = attachment?.name || (spoiler ? Util.basename(url) : undefined);
+            const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename(url) : undefined);
             const msgAttachment = new MessageAttachment(url, name);
             if (spoiler) {
               msgAttachment.setSpoiler(true);
