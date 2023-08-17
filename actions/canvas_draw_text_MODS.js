@@ -18,19 +18,24 @@ module.exports = {
 			desccor = 'none'
 		}
 
-		const storeTypes = ['', 'Variavel Temporaria', 'Variavel Servidor', 'Variavel Global']
+		if (data.storage == "10") {
+			var salvar = `Local: ${data.local}`
+		} else {
+			var storeTypes = ['', 'Variavel Temporaria', 'Variavel Servidor', 'Variavel Global']
+			var salvar = `${storeTypes[parseInt(data.storage)]} (${data.varName})`
+		}
 
 		return data.description
 			? `<font style="color:${desccor}">${data.description}</font>`
-			: `<font style="color:${desccor}">${data.text} ~ ${storeTypes[parseInt(data.storage)]} (${data.varName})</font>`
+			: `<font style="color:${desccor}">${data.text} ~ ${salvar}</font>`
 	},
 
-	fields: ["storage", "varName", "x", "y", "fontPath", "fontColor", "fontSize", "align", "text", "shadowtipo", "shadowcor", "blur", "int", "shadowh", "shadowv", "largura", "larguramax", "alturamax", "rotacionar", "x2", "y2", "tipocor", "gradiente", "gradient2", "apartir", "flargura", "faltura", "xinit", "yinit", "bgradient2", "apartir2", "flargura2", "faltura2", "xinit2", "yinit2", "distancia", "menulargura", "bordatipo", "borda", "bordacor", "bordagradiente", "descriptioncolor", "description", "descriptionx"],
+	fields: ["storage", "varName", "local", "x", "y", "fontPath", "fontColor", "fontSize", "align", "text", "shadowtipo", "shadowcor", "blur", "int", "shadowh", "shadowv", "largura", "larguramax", "alturamax", "rotacionar", "x2", "y2", "tipocor", "gradiente", "gradient2", "apartir", "flargura", "faltura", "xinit", "yinit", "bgradient2", "apartir2", "flargura2", "faltura2", "xinit2", "yinit2", "distancia", "menulargura", "bordatipo", "borda", "bordacor", "bordagradiente", "descriptioncolor", "description", "descriptionx"],
 
 	html: function (isEvent, data) {
 		return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.7</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.8</div>
 
 	<div style="width: 100%; padding:0px 4px;height: calc(100vh - 160px);overflow:auto">
 
@@ -426,20 +431,27 @@ module.exports = {
 		</tr></table>
 		</div>
 		
+
 		<table style="width:100%;">
-		<tr>
-			<td>
-				<span class="dbminputlabel">Imagem Canvas</span><br>
-				<select id="storage" class="round" style="width: 100%" onchange="glob.refreshVariableList(this)">
-					${data.variables[1]}
-				</select>
-			</td>
-			<td>
-				<span class="dbminputlabel">Nome da Variavel</span><br>
-				<input id="varName" class="round" type="text" list="variableList">
-			</td>
-		</tr>
-	</table>
+<tr>
+  <td id="controlador1">
+    <span class="dbminputlabel">Adicionar texto a imagem</span><br>
+    <select id="storage" class="round" style="width: 100%" onchange="glob.onChangexin(this)">
+      ${data.variables[1]}
+      <option value="10">Local</option>
+    </select>
+  </td>
+  <td id="controlador2" style="padding:0px 0px 0px 8px">
+    <span class="dbminputlabel">Nome da Variavel</span><br>
+    <input id="varName" class="round" type="text" list="variableList">
+  </td>
+  <td id="controlador3" style="padding:0px 0px 0px 8px">
+  <span class="dbminputlabel">Local</span><br>
+  <input id="local" class="round" type="text" placeholder="resources/output.png">
+</td>
+</tr>
+</table>
+
 	<br>
 
 
@@ -473,6 +485,18 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 
 	init: function () {
 		const { glob, document } = this;
+
+
+		glob.onChangexin = function (event) {
+			if (event.value === "10") {
+				document.getElementById("controlador2").style.display = 'none';
+				document.getElementById("controlador3").style.display = null;
+			} else {
+				document.getElementById("controlador2").style.display = null;
+				document.getElementById("controlador3").style.display = 'none';
+			}
+		}
+		glob.onChangexin(document.getElementById('storage'))
 
 		const xinelaslinks = document.getElementsByClassName('xinelaslink');
 		for (let x = 0; x < xinelaslinks.length; x++) {
@@ -631,7 +655,7 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 
 		glob.onChange0(document.getElementById('tipocor'))
 
-		
+
 
 
 		glob.onChange3 = function (event) {
@@ -712,10 +736,9 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 		}
 		glob.onChange1(document.getElementById('menulargura'))
 
-		glob.refreshVariableList(document.getElementById('storage'));
 	},
 
-	action: function (cache) {
+	async action(cache) {
 		const Canvas = require('canvas');
 		const data = cache.actions[cache.index];
 		const fontPath = this.evalMessage(data.fontPath, cache);
@@ -723,11 +746,33 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 		Canvas.registerFont(fontPath, { family: fontName })
 		const storage = parseInt(data.storage);
 		const varName = this.evalMessage(data.varName, cache);
-		const imagedata = this.getVariable(storage, varName, cache);
-		if (!imagedata) {
-			this.callNextAction(cache);
-			return;
+		const local = this.evalMessage(data.local, cache);
+
+		if (storage == 10) {
+			try {
+				await Canvas.loadImage(local).then((imagex) => {
+					canvas = Canvas.createCanvas(imagex.width, imagex.height)
+					ctx = canvas.getContext('2d')
+					ctx.drawImage(imagex, 0, 0, imagex.width, imagex.height)
+					image = new Canvas.Image()
+					image.src = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
+				})
+			} catch (err) {
+				this.callNextAction(cache)
+				return
+			}
+
+		} else {
+
+			imagedata = this.getVariable(storage, varName, cache);
+			if (!imagedata) {
+				this.callNextAction(cache);
+				return;
+			}
+
 		}
+
+
 		const fontColor = this.evalMessage(data.fontColor, cache);
 		const largura = this.evalMessage(data.largura, cache);
 		const larguramax = this.evalMessage(data.larguramax, cache);
@@ -772,11 +817,13 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 		var x2 = this.evalMessage(data.x2, cache);
 		var y2 = this.evalMessage(data.y2, cache);
 		const text = this.evalMessage(data.text, cache);
-		const image = new Canvas.Image();
-		image.src = imagedata;
-		const canvas = Canvas.createCanvas(image.width, image.height);
-		const ctx = canvas.getContext('2d');
-		ctx.drawImage(image, 0, 0, image.width, image.height);
+		if (storage !== 10) {
+			image = new Canvas.Image();
+			image.src = imagedata;
+			canvas = Canvas.createCanvas(image.width, image.height);
+			ctx = canvas.getContext('2d');
+			ctx.drawImage(image, 0, 0, image.width, image.height);
+		}
 		ctx.font = fontSize + "px " + fontName;
 		switch (align) {
 			case 0:
@@ -834,7 +881,7 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 		ctx.shadowOffsetY = shadowv;
 		ctx.shadowBlur = blur;
 
-		
+
 		if (bordatipo == 0) {
 			ctx.lineWidth = 0
 			ctx.strokeStyle = 'rgba(0,0,0,0)'
@@ -1050,9 +1097,9 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 									ctx.strokeText(line, x, y);
 								}
 								if (blur > 0 || int > 1) {
-								for (let intA = 1; intA < int; intA++) {
-									ctx.strokeText(line, x, y);
-								  }
+									for (let intA = 1; intA < int; intA++) {
+										ctx.strokeText(line, x, y);
+									}
 								}
 
 								line = slicedWord + ' ';
@@ -1070,8 +1117,8 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 					if (blur > 0 || int > 1) {
 						for (let intA = 1; intA < int; intA++) {
 							ctx.strokeText(line, x, y);
-						  }
 						}
+					}
 				}
 			}
 
@@ -1106,9 +1153,15 @@ xinspace{margin:10px 0px 0px 0px;display:block}
 
 
 
-
-		const result = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-		this.storeValue(result, storage, varName, cache);
+		if (storage == 10) {
+			const fs = require("fs");
+			const Path = this.evalMessage(data.local, cache);
+			if (Path) {
+				fs.writeFileSync(Path, canvas.toBuffer());
+			}
+		} else {
+			this.storeValue(canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"), storage, varName, cache);
+		}
 		this.callNextAction(cache);
 	},
 
