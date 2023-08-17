@@ -13,9 +13,9 @@ module.exports = {
     const storage = presets.variables;
 
     if (data.descriptionx == true) {
-        desccor = data.descriptioncolor
+      desccor = data.descriptioncolor
     } else {
-        desccor = 'none'
+      desccor = 'none'
     }
 
     const opcao = [
@@ -48,12 +48,13 @@ module.exports = {
       "Que inclua ~ Ignorar Minúscula/Maiúscula",
       "Que inclua ~ Ignorar acentuações",
       "Que inclua ~ Ignorar acentuações & Minúscula e Maiúscula",
+      "Não inclui",
     ]
 
     return data.description
-        ? `<font style="color:${desccor}">${data.description}</font>`
-        : `<font style="color:${desccor}">${opcao[data.type]} ~ ${storage[parseInt(data.storage2, 10)]} (${data.varName2})</font>`
-},
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${opcao[data.type]} ~ ${storage[parseInt(data.storage2, 10)]} (${data.varName2})</font>`
+  },
 
 
 
@@ -62,12 +63,12 @@ module.exports = {
     return ([data.varName2, "Lista"]);
   },
 
-  fields: ['storage', 'varName', 'type', 'value', 'value2', 'coluna', 'storage2', 'varName2','descriptioncolor','description','descriptionx'],
+  fields: ['storage', 'varName', 'type', 'value', 'value2', 'coluna', 'storage2', 'varName2', 'descriptioncolor', 'description', 'descriptionx'],
 
   html(_isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -99,6 +100,7 @@ module.exports = {
       <option value="4">Maior que</option>
       <option value="12">Maior ou igual a</option>
       <option value="5">Inclui</option>
+      <option value="29">Não inclui</option>
       <option value="26">Inclui ~ Ignorar Minúscula/Maiúscula</option>
       <option value="27">Inclui ~ Ignorar acentuações</option>
       <option value="28">Inclui ~ Ignorar acentuações & Minúscula e Maiúscula</option>
@@ -188,8 +190,8 @@ xinspace{padding:16px 0px 0px 0px;display:block}
       const xinelaslink = xinelaslinks[x];
       const url = xinelaslink.getAttribute('data-url');
       if (url) {
-       xinelaslink.setAttribute('title', url);
-       xinelaslink.addEventListener('click', (e) => {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
           e.stopImmediatePropagation();
           console.log(`Launching URL: [${url}] in your default browser.`);
           require('child_process').execSync(`start ${url}`);
@@ -210,7 +212,7 @@ xinspace{padding:16px 0px 0px 0px;display:block}
     function getNestedValue(obj, columns) {
       const columnArr = columns.split('.');
       let colunas = obj;
-      
+
       for (let i = 0; i < columnArr.length; i++) {
         if (colunas && colunas.hasOwnProperty(columnArr[i])) {
           colunas = colunas[columnArr[i]];
@@ -218,7 +220,7 @@ xinspace{padding:16px 0px 0px 0px;display:block}
           return undefined;
         }
       }
-      
+
       return colunas;
     }
 
@@ -321,6 +323,9 @@ xinspace{padding:16px 0px 0px 0px;display:block}
       case 28:
         tratar = value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         result = variable.filter((item) => getNestedValue(item, colunasAninhadas).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(tratar));
+        break;
+      case 29:
+        result = variable.filter((item) => !getNestedValue(item, colunasAninhadas).toString().includes(value));
         break;
     }
 
