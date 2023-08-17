@@ -5,7 +5,7 @@ module.exports = {
   meta: {
     version: "2.1.7",
     preciseCheck: true,
-    author: "[XinXyla - 172782058396057602]<br>[Tempest - 321400509326032897]",
+    author: "[xinxyla - 172782058396057602]<br>[Tempest - 321400509326032897]",
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -115,7 +115,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 3.9</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 4.0</div>
 
     <div style="height:52px;overflow: hidden;padding-top: 3px;">
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -279,7 +279,7 @@ module.exports = {
                 </tr></table>
 
                 <span class="dbminputlabel">Descrição</span><br>
-                <textarea id="description" class="dbm_monospace" rows="4" placeholder="Deixe em branco para nenhum..."></textarea>
+                <textarea id="description" class="dbm_monospace" rows="7" placeholder="Deixe em branco para nenhum..."></textarea>
 
                 <br>
 
@@ -1275,7 +1275,11 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
     let isEdit = 0;
     if (data.editMessage === "intUpdate") {
+      if(cache.interaction?.replied && cache.interaction?.editReply){
       isEdit = 2;
+    } else if (cache?.interaction?.update) {
+      isEdit = 2;
+    }
     } else {
       const editMessage = parseInt(data.editMessage, 10);
       if (typeof editMessage === "number" && editMessage >= 0) {
@@ -1943,7 +1947,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
     if (Array.isArray(data.selectMenus)) {
       for (let i = 0; i < data.selectMenus.length; i++) {
-        const select = data.selectMenus[i];
+        select = data.selectMenus[i];
 
         totales = data.selectMenus[i].options.length;
 
@@ -1962,7 +1966,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           result = true;
 
           if (data.selectMenus[i].options[ix].formula == "Falso" || data.selectMenus[i].options[ix].formula == "Verdadeiro") {
-            const compare = parseInt(data.selectMenus[i].options[ix].comparar, 10);
+            compare = parseInt(data.selectMenus[i].options[ix].comparar, 10);
             if (compare !== 6) {
               val1 = this.evalIfPossible(val1, cache);
               val2 = this.evalIfPossible(val2, cache);
@@ -2118,7 +2122,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
         }
 
-        const selectData = this.generateSelectMenu(select, cache);
+        selectData = this.generateSelectMenu(select, cache);
         selectData.disabled = select.disabled;
 
         this.addSelectToActionRowArray(componentsArr, this.evalMessage(select.row, cache), selectData, cache);
@@ -2145,7 +2149,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
     }
 
     if (componentsArr.length > 0) {
-      const newComponents = componentsArr
+      newComponents = componentsArr
         .filter((comps) => comps.length > 0)
         .map(function (comps) {
           return {
@@ -2355,7 +2359,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
     }
 
 
-    else if (target?.send) {
+    else if (target?.send || storagewebhook > 0) {
 
       if (storagewebhook > 0) {
 
