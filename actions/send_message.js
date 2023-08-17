@@ -930,7 +930,7 @@ module.exports = {
       <div style="width:96%;display:block">
       <div style="padding-bottom: 12px;" id="xin1">
         <retrieve-from-variable allowNone dropdownLabel="Editar mensagem" selectId="editMessage" variableInputId="editMessageVarName" variableContainerId="editMessageVarNameContainer">
-          <option value="intUpdate">Interaction Update</option>
+          <option value="intUpdate">Atualizar interação</option>
         </retrieve-from-variable>
       
 
