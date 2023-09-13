@@ -107,7 +107,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.4</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.5</div>
 
     <tab-system>
 
@@ -795,6 +795,7 @@ module.exports = {
                   switch (parseInt(branch.formato)) {
                     case 1:
                       outValue = parseFloat(outValue);
+                      if(isNaN(outValue)){outValue = 0}
                       break;
                     case 2:
                       outValue = String(outValue);
@@ -823,7 +824,7 @@ module.exports = {
                       statusCode: 0,
                       success: false
                     });
-                    this.storeValue(errorJson, storageParse, varNameParse, cache);
+                    this.storeValue(outValue, storageParse, varNameParse, cache);
                     continue;
                   } else {
                     this.storeValue(outValue, storageParse, varNameParse, cache);
