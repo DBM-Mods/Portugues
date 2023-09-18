@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     version: '2.1.7',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[xinxyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -37,7 +37,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.5</div>
     <tab-system>
 
     <tab label="Opções" icon="wizard">
@@ -392,9 +392,13 @@ module.exports = {
     const type = data.type;
 
     let sourceSelect = null;
+    try{
+      if(cache.interaction == null || cache.interaction == "null" || cache.interaction == undefined || cache.interaction == "undefined"){
+      } else {
     if (cache.interaction.isSelectMenu()) {
       sourceSelect = cache.interaction.customId;
     }
+  }
 
 
 
@@ -669,6 +673,27 @@ module.exports = {
     } else {
       this.callNextAction(cache);
     }
+
+  } catch(err){
+    if (data.errcmd === true) {
+      console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name)
+      console.log(err)
+    }
+
+    this.storeValue(err, parseFloat(data.errs), this.evalMessage(data.errv, cache), cache)
+
+    if (data.iffalse == "5" || data.iffalse == "6") {
+
+      if (data.iffalse == "5") {
+        this.executeSubActions(data.actionserr, cache)
+      } else {
+        this.executeSubActionsThenNextAction(data.actionserr, cache)
+      }
+
+    } else {
+      this.executeResults(false, data, cache);
+    }
+  }
   },
 
 
