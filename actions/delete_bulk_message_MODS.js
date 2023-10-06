@@ -92,7 +92,7 @@ module.exports = {
     
     <table style="width:100%"><tr><td>
     <span class="dbminputlabel">Mensagens do membro...</span>
-    <input id="user" class="round" type="text" value="false" placeholder="true para ignorar"></td><td>
+    <input id="user" class="round" type="text" value="false" placeholder="false para desativar o recurso"></td><td>
     <span class="dbminputlabel">ignore / delete</span>
     <input id="acao" class="round" type="text" value="ignore" placeholder="ignore/delete"></td></tr></table>
 
