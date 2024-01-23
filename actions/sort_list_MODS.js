@@ -129,32 +129,34 @@ module.exports = {
 
 		switch (sorte) {
 			case 0:
-				result = list.sort((a, b) => a - b);
+				result = list.slice().sort((a, b) => a - b);
 				break;
 			case 1:
-				result = list.sort((a, b) => b - a);
+				result = list.slice().sort((a, b) => b - a);
 				break;
 			case 2:
-				result = list.sort();
+				result = list.slice().sort();
 				break;
 			case 3:
-				result = list.sort().reverse();
+				result = list.slice().sort().reverse();
 				break;
 			case 4:
-				result = list.sort(function (a, b) { return a.length - b.length });
+				result = list.slice().sort(function (a, b) { return a.length - b.length });
 				break;
 			case 5:
-				result = list.sort(function (a, b) { return b.length - a.length });
+				result = list.slice().sort(function (a, b) { return b.length - a.length });
 				break;
 			case 6:
 
-						for (let i = list.length - 1; i > 0; i--) {
-						const j = Math.floor(Math.random() * (i + 1));
-						[list[i], list[j]] = [list[j], list[i]];
-					}
+			const shuffledList = list.slice();
+
+			for (let i = shuffledList.length - 1; i > 0; i--) {
+			  const j = Math.floor(Math.random() * (i + 1));
+			  [shuffledList[i], shuffledList[j]] = [shuffledList[j], shuffledList[i]];
+			}
 
 
-				result = list
+				result = shuffledList
 
 				break;
 		}
