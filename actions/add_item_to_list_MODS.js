@@ -4,33 +4,33 @@ module.exports = {
   meta: {
     version: '2.1.7',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[xinxyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
 
   subtitle(data, presets) {
 
-    if(data.descriptionx == true){
+    if (data.descriptionx == true) {
       desccor = data.descriptioncolor
-      } else {
-        desccor = 'none'
-      }
+    } else {
+      desccor = 'none'
+    }
 
     const storage = presets.variables;
 
     return data.description
-    ? `<font style="color:${desccor}">${data.description}</font>`
-    : `<font style="color:${desccor}">${storage[parseInt(data.storage, 10)]} (${data.varName})</font>`
+      ? `<font style="color:${desccor}">${data.description}</font>`
+      : `<font style="color:${desccor}">${storage[parseInt(data.storage, 10)]} (${data.varName})</font>`
   },
 
-  fields: ["storage", "varName", "addType", "addType2", "position", "value" , "valueeval","descriptioncolor","description","descriptionx"],
+  fields: ["storage", "varName", "addType", "addType2", "position", "value", "valueeval", "descriptioncolor", "description", "descriptionx"],
 
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.3</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.4</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -52,6 +52,7 @@ module.exports = {
 			<option value="0" selected>Add no fim</option>
 			<option value="1">Add no início</option>
 			<option value="2">Add em uma posição específica</option>
+      <option value="3">Add no meio</option>
 		</select>
 	</div>
 	<div id="positionHolder" style="float: right; width: 50%; display: none;">
@@ -95,10 +96,10 @@ module.exports = {
     glob.onChange1 = function (event) {
       const value = parseInt(event.value, 10);
       const dom = document.getElementById("positionHolder");
-      if (value < 2) {
-        dom.style.display = "none";
-      } else {
+      if (value == 2) {
         dom.style.display = null;
+      } else {
+        dom.style.display = "none";
       }
     };
 
@@ -122,8 +123,8 @@ module.exports = {
       const xinelaslink = xinelaslinks[x];
       const url = xinelaslink.getAttribute('data-url');
       if (url) {
-       xinelaslink.setAttribute('title', url);
-       xinelaslink.addEventListener('click', (e) => {
+        xinelaslink.setAttribute('title', url);
+        xinelaslink.addEventListener('click', (e) => {
           e.stopImmediatePropagation();
           console.log(`Launching URL: [${url}] in your default browser.`);
           require('child_process').execSync(`start ${url}`);
@@ -138,7 +139,12 @@ module.exports = {
     const data = cache.actions[cache.index];
     const storage = parseInt(data.storage, 10);
     const varName = this.evalMessage(data.varName, cache);
-    const list = this.getVariable(storage, varName, cache);
+    var list = this.getVariable(storage, varName, cache);
+
+    if (Array.isArray(list)) {
+    } else {
+      list = []
+    }
 
     const type = parseInt(data.addType, 10);
     const type2 = parseInt(data.addType2, 10);
@@ -155,7 +161,7 @@ module.exports = {
             list.unshift(val);
             break;
           case 2:
-            const position = parseInt(this.evalMessage(data.position), 10);
+            const position = parseInt(this.evalMessage(data.position, cache));
             if (position < 0) {
               list.unshift(val);
             } else if (position >= list.length) {
@@ -164,39 +170,48 @@ module.exports = {
               list.splice(position, 0, val);
             }
             break;
+          case 3:
+            var meio = parseInt(list.length / 2)
+            list.splice(meio, 0, val);
+            break;
         }
-    break;
-      case 1:      
-    try {
-      val2 = this.eval(val2, cache);
-    } catch (e) {
-      this.displayError(data, cache, e);
-    }
-    switch (type) {
-      case 0:
-        list.push(val2);
         break;
       case 1:
-        list.unshift(val2);
-        break;
-      case 2:
-        const position = parseInt(this.evalMessage(data.position), 10);
-        if (position < 0) {
-          list.unshift(val2);
-        } else if (position >= list.length) {
-          list.push(val2);
-        } else {
-          list.splice(position, 0, val2);
+        try {
+          val2 = this.eval(val2, cache);
+        } catch (e) {
+          this.displayError(data, cache, e);
+        }
+        switch (type) {
+          case 0:
+            list.push(val2);
+            break;
+          case 1:
+            list.unshift(val2);
+            break;
+          case 2:
+            const position = parseInt(this.evalMessage(data.position, cache));
+            if (position < 0) {
+              list.unshift(val2);
+            } else if (position >= list.length) {
+              list.push(val2);
+            } else {
+              list.splice(position, 0, val2);
+            }
+            break;
+            case 3:
+              var meio = parseInt(list.length / 2)
+              list.splice(meio, 0, val2);
+              break;
         }
         break;
     }
-    break;
-  }
 
 
+    this.storeValue(list, storage, varName, cache);
     this.callNextAction(cache);
   },
 
 
-  mod() {},
+  mod() { },
 };
