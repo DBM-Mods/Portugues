@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     version: '2.1.7',
     preciseCheck: true,
-    author: '[XinXyla - 172782058396057602]',
+    author: '[xinxyla - 172782058396057602]',
     authorUrl: 'https://github.com/DBM-Mods/Portugues',
     downloadURL: 'https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip',
   },
@@ -69,7 +69,7 @@ module.exports = {
   html(_isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.5</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.6</div>
 
     <div style="width: 100%; padding:5px 5px;height: calc(100vh - 160px);overflow:auto">
 
@@ -291,8 +291,8 @@ module.exports = {
       <select id="Edit12" class="round" onchange="glob.onChange12(this)">
         <option value=0 selected>Manter conteúdo</option>
         <option value=1>Editar conteúdo</option>
-        <option value=2>Delete Field</option>
-        <option value=3>Delete All Fields</option>
+        <option value=2>Deletar Field</option>
+        <option value=3>Deletar todas as Fields</option>
         <option value=4>Add Field</option>
       </select><br>
     </div>
@@ -775,8 +775,8 @@ module.exports = {
       switch (Edit12) {
         case 1:
           if (embed.fields.length > fieldNum) {
-            embed.fields[fieldNum].name = fieldName;
-            embed.fields[fieldNum].value = fieldDescription;
+            embed.fields[fieldNum].name = fieldName || '\u200B';
+            embed.fields[fieldNum].value = fieldDescription || '\u200B';
             switch (fieldInline) {
               case 1:
                 embed.fields[fieldNum].inline = true;
@@ -796,9 +796,13 @@ module.exports = {
           embed.fields = [];
           break;
         case 4: {
+
+          if(embed.fields.length > 0) {}
+          else{embed.fields = []}
+
           const field = {};
-          field.name = fieldName;
-          field.value = fieldDescription;
+          field.name = fieldName || '\u200B';
+          field.value = fieldDescription || '\u200B';
           field.inline = fieldInline;
           switch (fieldInline) {
             case 1:
