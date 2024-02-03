@@ -52,7 +52,6 @@ module.exports = {
     <div style="float: left; width: 35%;">
 <span class="dbminputlabel">Mensagem de origem</span><br>
 <select id="storage" class="round" onchange="glob.onChangeMode(this)">
-<option value="500" selected>Nenhum</option>
 <option value="0" selected>Mensagem do comando</option>
 <option value="1">Variavel Temporaria</option>
 <option value="2">Variavel Servidor</option>
@@ -168,7 +167,7 @@ module.exports = {
     }
 
     glob.onChangeMode = function (message) {
-      if (parseInt(message.value) == 0 || parseInt(message.value) == 500) {
+      if (parseInt(message.value) == 0) {
         document.getElementById("xinxylagatu").style.display = "none";
       } else {
         document.getElementById("xinxylagatu").style.display = null;
@@ -237,8 +236,11 @@ module.exports = {
       messageToReplyWN = Object.assign(messageToReply, notificationObj);
     }
 
+    console.log(messageToReplyWN)
+
     messageToReplyWN.nonce = 0
 
+    if(messageToReplyWN.content == ''){messageToReplyWN.content = null}
 
     try {
       if (data.removeComps == true) messageToReplyWN.components = [];
