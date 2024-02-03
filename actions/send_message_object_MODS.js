@@ -236,8 +236,6 @@ module.exports = {
       messageToReplyWN = Object.assign(messageToReply, notificationObj);
     }
 
-    console.log(messageToReplyWN)
-
     messageToReplyWN.nonce = 0
 
     if(messageToReplyWN.content == ''){messageToReplyWN.content = null}
