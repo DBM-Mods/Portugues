@@ -304,7 +304,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.9</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 2.0</div>
 
     <div style="width: 100%; padding:5px 0px;height: calc(100vh - 160px);overflow:auto">
 
@@ -769,49 +769,92 @@ module.exports = {
         if (msg.embeds.length <= embednumero) {
           result = "";
         } else {
+
+
+          try{
           result = msg.embeds[embednumero].thumbnail.url;
+          }catch{
+            result = ""
+          }
+
         }
         break;
       case 29:
         if (msg.embeds.length <= embednumero) {
           result = "";
         } else {
-          result = msg.embeds[embednumero].image.url;
+
+          try{
+            result = msg.embeds[embednumero].image.url;
+            } catch {
+            result = ""
+            }
+
         }
         break;
       case 30:
         if (msg.embeds.length <= embednumero) {
           result = "";
         } else {
-          result = msg.embeds[embednumero].author.name;
+
+          try{
+            result = msg.embeds[embednumero].author.name;
+            } catch {
+            result = ""
+            }
+
         }
         break;
       case 31:
         if (msg.embeds.length <= embednumero) {
           result = "";
         } else {
-          result = msg.embeds[embednumero].author.iconURL;
+
+          try{
+            result = msg.embeds[embednumero].author.iconURL;
+            } catch {
+            result = ""
+            }
+
         }
         break;
       case 32:
         if (msg.embeds.length <= embednumero) {
           result = "";
         } else {
-          result = msg.embeds[embednumero].author.url;
+
+          try{
+            result = msg.embeds[embednumero].author.url;
+            } catch {
+            result = ""
+            }
+
         }
         break;
       case 33:
         if (msg.embeds.length <= embednumero) {
           result = "";
         } else {
+
+          try{
           result = msg.embeds[embednumero].footer.text;
+          } catch {
+          result = ""
+          }
+
         }
         break;
       case 34:
         if (msg.embeds.length <= embednumero) {
           result = "";
         } else {
-          result = msg.embeds[embednumero].footer.iconURL;
+
+          try{
+            result = msg.embeds[embednumero].footer.iconURL;
+            } catch {
+            result = ""
+            }
+
         }
         break;
       case 35:
