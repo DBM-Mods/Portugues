@@ -17,31 +17,31 @@ module.exports = {
       text = `Enviar via Webhook: ${data.varwebhook}`;
     } else {
 
-    if (data.message) {
-      text = `"${data.message.replace(/[\n\r]+/, " ↲ ")}"`;
-    } else if (data.embeds?.length > 0) {
-      text = `${data.embeds.length} Embeds`;
-    } else if (data.attachments?.length > 0) {
-      text = `${data.attachments.length} Arquivos`;
-    } else if (data.buttons?.length > 0 || data.selectMenus?.length > 0) {
-      text = `${data.buttons.length} Botões e ${data.selectMenus.length} Menus de seleção`;
-    } else if (data.editMessage && data.editMessage !== "0") {
-      if (data.editMessage === "intUpdate") {
-        text = "Opções da mensagem - Editar interação"
+      if (data.message) {
+        text = `"${data.message.replace(/[\n\r]+/, " ↲ ")}"`;
+      } else if (data.embeds?.length > 0) {
+        text = `${data.embeds.length} Embeds`;
+      } else if (data.attachments?.length > 0) {
+        text = `${data.attachments.length} Arquivos`;
+      } else if (data.buttons?.length > 0 || data.selectMenus?.length > 0) {
+        text = `${data.buttons.length} Botões e ${data.selectMenus.length} Menus de seleção`;
+      } else if (data.editMessage && data.editMessage !== "0") {
+        if (data.editMessage === "intUpdate") {
+          text = "Opções da mensagem - Editar interação"
+        } else {
+          text = `Opções da mensagem - ${presets.getVariableText(data.editMessage, data.editMessageVarName)}`;
+        }
       } else {
-        text = `Opções da mensagem - ${presets.getVariableText(data.editMessage, data.editMessageVarName)}`;
+        text = `Nada (Pode ocasionar erro)`;
       }
-    } else {
-      text = `Nada (Pode ocasionar erro)`;
-    }
-    
-    if (data.dontSend) {
-      text = `Armazenar Data: ${text}`;
-    } else {
-      text = `${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}`;
-    }
 
-  }
+      if (data.dontSend) {
+        text = `Armazenar Data: ${text}`;
+      } else {
+        text = `${presets.getSendReplyTargetText(data.channel, data.varName)}: ${text}`;
+      }
+
+    }
 
     if (data.descriptioncolor == undefined) {
       data.descriptioncolor = "#ffffff";
@@ -115,13 +115,14 @@ module.exports = {
     "removeAttachments",
     "removeCompsE",
     "removeEmbedsE",
-    "removeAttachmentsE"
+    "removeAttachmentsE",
+    "di",
   ],
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 4.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 4.2</div>
 
     <div style="height:52px;overflow: hidden;padding-top: 3px;">
     <div style="width:100%" id="xin2"><send-reply-target-input dropdownLabel="Enviar para" selectId="channel" variableInputId="varName"></send-reply-target-input>
@@ -158,7 +159,7 @@ module.exports = {
   <tab label="Embeds" icon="book image">
   <div style="width: 100%; padding:8px;height: calc(100vh - 250px);overflow:auto">
 
-      <dialog-list id="embeds" fields='["title", "url", "color", "colorrandom", "timestamp", "timestampper", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl", "formula", "val1", "comparar", "val2"]' dialogTitle="Embed Info" dialogResizable dialogWidth="750" dialogHeight="550" listLabel="Embeds" listStyle="height: calc(100vh - 310px);" itemName="Embed" itemCols="1" itemHeight="60px;" itemTextFunction="'<div style=margin-left:-10px;background:'+data.color+';float:left;width:10px;overflow:hidden;height:60px;><br></div><div style=float:left;width:59%;overflow:hidden;margin-left:5px;> Titulo: ' + data.title + ' <br> Descrição: ' + data.description + '</div><div style=float:right;width:39%;overflow:hidden;>Autor: '+ data.author +' <br>Fields: ' + data.fields.length + '</div>'" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="embeds" fields='["title", "url", "color", "colorrandom", "timestamp", "timestampper", "imageUrl", "thumbUrl", "description", "fields", "author", "authorUrl", "authorIcon", "footerText", "footerIconUrl", "formula", "val1", "comparar", "val2"]' dialogTitle="Embed Info" dialogResizable dialogWidth="750" dialogHeight="550" listLabel="Embeds" listStyle="height: calc(100vh - 310px);" itemName="Embed" itemCols="1" itemHeight="60px;" itemTextFunction="'<div style=margin-left:-10px;background:'+data.color+';float:left;width:10px;overflow:hidden;height:60px;><br></div><div style=float:left;width:59%;overflow:hidden;margin-left:5px;> Titulo: ' + data.title + ' <br> Descrição: ' + data.description + '</div><div style=float:right;width:39%;overflow:hidden;>Autor: '+ data.author +' <br>Fields: ' + data.fields.length + (data.formula == 1 || data.formula == 2 ? '<span style=float:right title=Condição_ligada> 🔘 </span>' : '') + '</div>'" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 8px 8px 0px 8px;">
 
 
@@ -795,11 +796,21 @@ module.exports = {
   <tab label="Arquivos" icon="file image">
   <div style="width: 100%; padding:8px;height: calc(100vh - 250px);overflow:auto">
 
-      <dialog-list id="attachments" fields='["tipo", "url", "canvasvar", "canvasnome", "compress", "name", "spoiler"]' dialogTitle="Informação do Anexo" dialogWidth="500" dialogHeight="480" listLabel="Arquivos" listStyle="height: calc(100vh - 310px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="glob.formatItem(data)" itemStyle="text-align: left; line-height: 30px;">
+      <dialog-list id="attachments" fields='["tipo", "url", "canvasvar", "canvasnome", "compress", "name", "spoiler","formula","val1","comparar","val2"]' dialogTitle="Informação do Anexo" dialogWidth="550" dialogHeight="560" listLabel="Arquivos" listStyle="height: calc(100vh - 310px);" itemName="File" itemCols="1" itemHeight="30px;" itemTextFunction="glob.formatItem(data)" itemStyle="text-align: left; line-height: 30px;">
         <div style="padding: 16px;" onmouseover="(function(){
 
           var aselect = document.getElementById('tipo');
             var avalue = aselect.options[aselect.selectedIndex].value
+
+            var aselect2 = document.getElementById('formula');
+            var avalue2 = aselect2.options[aselect2.selectedIndex].value
+
+            if (avalue2 == 1 || avalue2 == 2) {
+              document.getElementById('xinxyla4').style.display = 'block';
+            } else
+            {
+              document.getElementById('xinxyla4').style.display = 'none';
+            }
         
           if (avalue == 0) {
               document.getElementById('xinxyla1').style.display = 'none';
@@ -821,11 +832,24 @@ module.exports = {
         
         })()">
 
-        <span class="dbminputlabel">Tipo de Anexo</span>
-        <select id="tipo" class="round" onchange="(function(){
+        <div style="width: 100%; padding:5px 5px;height: calc(100vh - 80px);overflow:auto">
+
+        <div style="padding: 6px; background: rgba(0, 0, 0, 0.3);">
+        <span class="dbminputlabel">Condição</span>
+        <select id="formula" class="round" onchange="(function(){
 
           var aselect = document.getElementById('tipo');
-            var avalue = aselect.options[aselect.selectedIndex].value
+            var avalue = aselect.options[aselect.selectedIndex].value;
+
+            var aselect2 = document.getElementById('formula');
+            var avalue2 = aselect2.options[aselect2.selectedIndex].value;
+
+            if (avalue2 == 1 || avalue2 == 2) {
+              document.getElementById('xinxyla4').style.display = 'block';
+            } else
+            {
+              document.getElementById('xinxyla4').style.display = 'none';
+            }
         
             if (avalue == 0) {
               document.getElementById('xinxyla1').style.display = 'none';
@@ -844,7 +868,118 @@ module.exports = {
       document.getElementById('xinxyla3').style.display = 'none';
     }      
         
-        })()">>
+        })()">
+          <option value="0" selected>Sempre enviar o arquivo</option>
+          <option value="1">Enviar somente se o comparador for falso</option>
+          <option value="2">Enviar somente se o comparador for verdadeiro</option>
+        </select>
+
+        <br>
+
+        <div id="xinxyla4">
+        <table style="width: 100%;">
+          <tr>
+            <td style="width:33%">
+              <span class="dbminputlabel">Valor A</span>
+              <input id="val1" class="round" type="text">
+            </td>
+            <td style="width:33%;padding:0px 6px 0px 6px">
+              <span class="dbminputlabel">Comparador</span><br>
+              <select id="comparar" class="round">
+                <optgroup label="Número ou Texto">
+                  <option value="0">Valor A - Existe</option>
+                  <option value="1" selected>Igual a</option>
+                  <option value="2">Exatamente igual</option>
+                </optgroup>
+                <optgroup label="Número">
+                  <option value="3">Menor que</option>
+                  <option value="13">Menor ou igual a</option>
+                  <option value="4">Maior que</option>
+                  <option value="12">Maior ou igual a</option>
+                  <option value="19">Valor A - É um número par?</option>
+                  <option value="20">Valor A - É um número ímpar?</option>
+                  <option value="21">Valor A - É um número?</option>
+                </optgroup>
+                <optgroup label="Texto">
+                  <option value="6">Matches Regex</option>
+                  <option value="14">Matches Full Regex</option>
+                  <option value="7">O comprimento é maior que</option>
+                  <option value="8">O comprimento é menor que</option>
+                  <option value="9">O comprimento é igual a</option>
+                  <option value="10">Começa com</option>
+                  <option value="11">Termina com</option>
+                  <option value="16">Valor A - Possui acentuações?</option>
+                  <option value="18">É igual as palavras  ["a" , "b" , "c"]</option>
+                  <option value="24">Valor A - É um texto?</option>
+                  <option value="23">Valor A - É um URL de imagem?</option>
+                  <option value="25">Valor A - É um URL?</option>
+                  <option value="26">Valor A - O email existe?</option>
+                </optgroup>
+                <optgroup label="Texto ~ Inclui">
+                  <option value="5">Inclui exatamente</option>
+                  <option value="29">Inclui ~ Ignorar Minúscula/Maiúscula</option>
+                  <option value="30">Inclui ~ Ignorar acentuações</option>
+                  <option value="31">Inclui ~ Ignorar acentuações & Minúscula e Maiúscula</option>
+                  <option value="17">Inclui exatamente ["a" , "b" , "c"]</option>
+                  <option value="27">Inclui algum URL?</option>
+                  <option value="28">Inclui algum convite do Discord?</option>
+                  <option value="32">Inclui exatamente a palavra</option>
+                  <option value="33">Inclui a palavra ~ Ignorar Minúscula/Maiúscula</option>
+                  <option value="34">Inclui a palavra ~ Ignorar acentuações</option>
+                  <option value="35">Inclui a palavra ~ Ignorar acentuações & Minúscula e Maiúscula</option>
+                  <option value="36">Inclui as palavras ~ use virgulas ~ Ignorar acentuações & Minúscula e Maiúscula</option>
+                </optgroup>
+                <optgroup label="Outros">
+                  <option value="22">Valor A - É uma lista?</option>
+                </optgroup>
+              </select>
+            </td>
+            <td style="width:33%">
+              <span class="dbminputlabel">Valor B</span><br>
+              <input id="val2" class="round" type="text">
+            </td>
+          </tr>
+        </table><br>
+</div>
+  
+      </div>
+
+      
+
+        <span class="dbminputlabel">Tipo de Anexo</span>
+        <select id="tipo" class="round" onchange="(function(){
+
+          var aselect = document.getElementById('tipo');
+            var avalue = aselect.options[aselect.selectedIndex].value
+
+            var aselect2 = document.getElementById('formula');
+            var avalue2 = aselect2.options[aselect2.selectedIndex].value
+
+            if (avalue2 == 1 || avalue2 == 2) {
+              document.getElementById('xinxyla4').style.display = 'block';
+            } else
+            {
+              document.getElementById('xinxyla4').style.display = 'none';
+            }
+        
+            if (avalue == 0) {
+              document.getElementById('xinxyla1').style.display = 'none';
+              document.getElementById('xinxyla2').style.display = 'block';
+              document.getElementById('xinxyla3').style.display = 'block';
+        }
+        if (avalue == 1) {
+          document.getElementById('xinxyla2').style.display = 'none';
+          document.getElementById('xinxyla1').style.display = 'block';
+          document.getElementById('xinxyla3').style.display = 'block';
+    }   
+    
+    if (avalue == 2 || avalue == 3) {
+      document.getElementById('xinxyla2').style.display = 'none';
+      document.getElementById('xinxyla1').style.display = 'block';
+      document.getElementById('xinxyla3').style.display = 'none';
+    }      
+        
+        })()">
           <option value="0">Anexo Local/Web URL</option>
           <option value="1">Canvas</option>
           <option value="2">DBM Imagens</option>
@@ -888,6 +1023,8 @@ module.exports = {
           <div style="text-align: center; padding-top: 4px;">
             <dbm-checkbox id="spoiler" label="Fazer spoiler do anexo"></dbm-checkbox>
           </div>
+          <br>
+        </div>
         </div>
       </dialog-list>
     </div>
@@ -905,6 +1042,8 @@ module.exports = {
 
     <div id="xincheck">
     <div style="padding:10px">
+      <dbm-checkbox id="di" label="Desvincular da Start Thinking"></dbm-checkbox>
+      <xinspace>
       <dbm-checkbox id="reply" label="Responda à interação se possível" checked></dbm-checkbox>
       <xinspace>
       <dbm-checkbox id="ephemeral" label="Tornar a resposta privada"></dbm-checkbox>
@@ -1132,7 +1271,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
     glob.variableChangeError(document.getElementById("storageError"));
 
     glob.formatItem = function (data) {
-      let result = '<div style="display: inline-block; width: 200px; padding-left: 8px;">';
+      let result = '<div style="display: inline-block;width: calc(100% - 5px); padding-left: 8px;">';
       const comp = data.tipo;
       switch (comp) {
         case "0":
@@ -1148,7 +1287,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           result += "Enviar variavel: " + data.canvasnome;
           break;
       }
-      result += "</div>";
+      result += (data.formula == 1 || data.formula == 2 ? '<div style="float:right" title="Condição ligada">🔘 </div>' : '') + "</div>";
       return result;
     }
 
@@ -1165,7 +1304,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
           result += data.emoji + ' ' + data.name;
           break;
       }
-      result += "</td><td style='width:120px;text-align:right;padding:0px 10px 0px 0px'>" + data.id + "</td></tr></table></div>";
+      result += "</td><td style='width:120px;text-align:right;padding:0px 10px 0px 0px'>" + data.id + (data.formula == 1 || data.formula == 2 ? '<span title="Condição ligada"> 🔘 </span>' : '') + "</td></tr></table></div>";
       return result;
     }
 
@@ -1271,11 +1410,11 @@ xinspace{padding:5px 0px 0px 0px;display:block}
 
     let isEdit = 0;
     if (data.editMessage === "intUpdate") {
-      if(cache.interaction?.replied && cache.interaction?.editReply){
-      isEdit = 2;
-    } else if (cache?.interaction?.update) {
-      isEdit = 2;
-    }
+      if (cache.interaction?.replied && cache.interaction?.editReply) {
+        isEdit = 2;
+      } else if (cache?.interaction?.update) {
+        isEdit = 2;
+      }
     } else {
       const editMessage = parseInt(data.editMessage, 10);
       if (typeof editMessage === "number" && editMessage >= 0) {
@@ -1294,7 +1433,7 @@ xinspace{padding:5px 0px 0px 0px;display:block}
     }
 
     let content;
-    if (messageoff == true) content = message.length > 0 ? message : "";
+    if (messageoff == true) content = message.length > 0 ? message : null;
 
     if (content) {
       if (messageOptions.content && !overwrite) {
@@ -2177,22 +2316,223 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       }
       for (let i = 0; i < data.attachments.length; i++) {
 
-        if (data.attachments[i].tipo == "1") {
-          const { DiscordJS } = this.getDBM();
-          const Canvas = require("canvas")
-          const attachment = data.attachments[i];
-          const varnamer = this.evalMessage(attachment?.canvasnome, cache);
-          const varid = this.evalMessage(attachment?.canvasvar, cache);
-          const imagedata = this.getVariable(varid, varnamer, cache)
-          if (imagedata) {
-            const image = new Canvas.Image()
-            image.src = imagedata
-            const canvas = Canvas.createCanvas(image.width, image.height)
-            const ctx = canvas.getContext("2d")
-            ctx.drawImage(image, 0, 0, image.width, image.height)
-            const buffer = canvas.toBuffer('image/png', { compressionLevel: data.attachments[i].compress })
+        let liberolum = true
+
+        if (data.attachments[i].formula == "1" || data.attachments[i].formula == "2") {
+          const comparar = parseInt(data.attachments[i].comparar, 10);
+          val1 = this.evalMessage(data.attachments[i].val1, cache);
+          val2 = this.evalMessage(data.attachments[i].val2, cache);
+
+          switch (comparar) {
+            case 0:
+              result = val1 !== undefined;
+              break;
+            case 1:
+              result = val1 == val2;
+              break;
+            case 2:
+              result = val1 === val2;
+              break;
+            case 3:
+              result = val1 < val2;
+              break;
+            case 4:
+              result = val1 > val2;
+              break;
+            case 5:
+              if (typeof val1?.toString().includes === "function") {
+                result = val1.toString().includes(val2);
+              }
+              break;
+            case 6:
+              result = Boolean(val1.toString().match(new RegExp('^' + val2 + '$', 'i')));
+              break;
+            case 7:
+              result = Boolean(val1.toString().length > val2);
+              break;
+            case 8:
+              result = Boolean(val1.toString().length < val2);
+              break;
+            case 9:
+              result = Boolean(val1.toString().length == val2);
+              break;
+            case 10:
+              result = val1.toString().startsWith(val2);
+              break;
+            case 11:
+              result = val1.toString().endsWith(val2);
+              break;
+            case 12:
+              result = Boolean(val1 >= val2);
+              break;
+            case 13:
+              result = Boolean(val1 <= val2);
+              break;
+            case 14:
+              result = Boolean(val1.toString().match(new RegExp(val2)));
+              break;
+            case 16:
+              const conditions = ["Ä", "Å", "Á", "Â", "À", "Ã", "Ā", "Ă", "Ą", "ā", "ă", "ą", "ä", "á", "â", "à", "ã", "É", "Ê", "Ë", "È", "Ė", "Ę", "Ě", "Ĕ", "Ē", "ė", "ę", "ě", "ĕ", "ē", "é", "ê", "ë", "è", "Í", "Î", "Ï", "Ì", "İ", "Į", "Ī", "ı", "į", "ī", "í", "î", "ï", "ì", "Ö", "Ó", "Ô", "Ò", "Õ", "Ő", "Ō", "ő", "ō", "ö", "ó", "ô", "ò", "õ", "Ü", "Ú", "Û", "Ų", "Ű", "Ů", "Ū", "ų", "ű", "ů", "ū", "ü", "ú", "û", "ù", "Ç", "Ć", "Č", "ç", "ć", "č", "Ñ", "Ň", "Ņ", "Ń", "ñ", "ň", "ņ", "ń", "Ÿ", "Ý", "ý", "Ź", "Ż", "Ž", "ź", "ż", "ž", "Ł", "Ľ", "Ļ", "Ĺ", "ł", "ľ", "ĺ", "Ķ", "ķ", "Ģ", "Ğ", "ģ", "ğ", "Ď", "ď", "Ś", "Š", "Ş", "ś", "š", "ş", "Ť", "Ț", "Ţ", "ť", "ț", "ţ", "Ŕ", "Ř", "ŕ", "ř"]
+              result = conditions.some(el => val1.includes(el));
+              break;
+            case 17:
+              const conditionsX = val2
+              result = conditionsX.some(els => val1.includes(els));
+              break;
+            case 18:
+              const conditionsZ = val2
+              result = conditionsZ.some(elz => val1 == (elz));
+              break;
+            case 19:
+              result = val1 % 2 == 0
+              break;
+            case 20:
+              result = val1 % 2 == 1
+              break;
+            case 21:
+              result = Boolean(!isNaN(parseFloat(val1.toString().replace(",", "."))));
+              break;
+            case 22:
+              result = Boolean(Array.isArray(val1));
+              break;
+            case 23:
+              const isImageUrlx = require("is-image-url");
+              result = isImageUrlx(val1);
+              break;
+            case 24:
+              result = typeof val1 === "string";
+              break;
+            case 25:
+              const isUrl = require("is-url");
+              result = isUrl(val1);
+              break;
+            case 26:
+              const mailx = require("email-existence");
+              mailx.check(val1, (error, response) => {
+                result = response;
+              });
+              break;
+            case 27:
+              let pattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+              result = val1.match(pattern);
+              break;
+            case 28:
+              invite = new RegExp(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-z]/g);
+              result = invite.test(val1);
+              break;
+            case 29:
+              result = val1.toLowerCase().includes(val2.toLowerCase());
+              break;
+            case 30:
+              tratarval1 = val1.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              tratar = val2.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              result = tratarval1.includes(tratar);
+              break;
+            case 31:
+              tratarval1 = val1.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              tratar = val2.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              result = tratarval1.toLowerCase().includes(tratar);
+              break;
+            case 32:
+              var words = val1.split(" ");
+              result = words.includes(val2);
+              break;
+            case 33:
+              var words = val1.toLowerCase().split(" ");
+              result = words.includes(val2.toLowerCase());
+              break;
+            case 34:
+              var words = val1.normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ");
+              result = words.includes(val2.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+              break;
+            case 35:
+              var words = val1.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ");
+              result = words.includes(val2.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+              break;
+            case 36:
+              var separador = val1.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ");
+              var valor2 = val2.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(",");
+              result = separador.some(els => valor2.includes(els));
+              break;
+          }
+
+          liberolum = result
+
+          if (data.attachments.formula == "1") {
+            if (liberolum == false) {
+              liberolum = true
+            } else { liberolum = false }
+          }
+
+
+        }
+
+
+
+        if (liberolum == true) {
+
+          if (data.attachments[i].tipo == "1") {
+            const { DiscordJS } = this.getDBM();
+            const Canvas = require("canvas")
+            const attachment = data.attachments[i];
+            const varnamer = this.evalMessage(attachment?.canvasnome, cache);
+            const varid = this.evalMessage(attachment?.canvasvar, cache);
+            const imagedata = this.getVariable(varid, varnamer, cache)
+            if (imagedata) {
+              const image = new Canvas.Image()
+              image.src = imagedata
+              const canvas = Canvas.createCanvas(image.width, image.height)
+              const ctx = canvas.getContext("2d")
+              ctx.drawImage(image, 0, 0, image.width, image.height)
+              const buffer = canvas.toBuffer('image/png', { compressionLevel: data.attachments[i].compress })
+              const spoiler = !!attachment?.spoiler;
+              const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename("image.png") : undefined);
+              const msgAttachment = new MessageAttachment(buffer, name);
+              if (spoiler) {
+                msgAttachment.setSpoiler(true);
+              }
+              messageOptions.files.push(msgAttachment);
+            }
+
+          }
+          if (data.attachments[i].tipo == "2") {
+            const { Images } = this.getDBM();
+            const attachment = data.attachments[i];
+            const varnamer = this.evalMessage(attachment?.canvasnome, cache);
+            const varid = this.evalMessage(attachment?.canvasvar, cache);
+            const imagedata = this.getVariable(varid, varnamer, cache)
             const spoiler = !!attachment?.spoiler;
             const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename("image.png") : undefined);
+            const buffer = await Images.createBuffer(imagedata)
+            const msgAttachment = new MessageAttachment(buffer, name);
+            if (spoiler) {
+              msgAttachment.setSpoiler(true);
+            }
+            messageOptions.files.push(msgAttachment);
+
+          }
+          if (data.attachments[i].tipo == "0" || data.attachments[i].tipo == undefined) {
+            const attachment = data.attachments[i];
+            const url = this.evalMessage(attachment?.url, cache);
+            if (url) {
+              const spoiler = !!attachment?.spoiler;
+              const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename(url) : undefined);
+              const msgAttachment = new MessageAttachment(url, name);
+              if (spoiler) {
+                msgAttachment.setSpoiler(true);
+              }
+              messageOptions.files.push(msgAttachment);
+            }
+          }
+          if (data.attachments[i].tipo == "3") {
+            const attachment = data.attachments[i];
+            const varnamer = this.evalMessage(attachment?.canvasnome, cache);
+            const varid = this.evalMessage(attachment?.canvasvar, cache);
+            const conteudodata = this.getVariable(varid, varnamer, cache)
+            const spoiler = !!attachment?.spoiler;
+            var name = this.evalMessage(attachment?.name, cache)
+            if (name == "") { name = "texto.txt" }
+            const buffer = Buffer.from(conteudodata)
             const msgAttachment = new MessageAttachment(buffer, name);
             if (spoiler) {
               msgAttachment.setSpoiler(true);
@@ -2200,51 +2540,10 @@ xinspace{padding:5px 0px 0px 0px;display:block}
             messageOptions.files.push(msgAttachment);
           }
 
-        }
-        if (data.attachments[i].tipo == "2") {
-          const { Images } = this.getDBM();
-          const attachment = data.attachments[i];
-          const varnamer = this.evalMessage(attachment?.canvasnome, cache);
-          const varid = this.evalMessage(attachment?.canvasvar, cache);
-          const imagedata = this.getVariable(varid, varnamer, cache)
-          const spoiler = !!attachment?.spoiler;
-          const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename("image.png") : undefined);
-          const buffer = await Images.createBuffer(imagedata)
-          const msgAttachment = new MessageAttachment(buffer, name);
-          if (spoiler) {
-            msgAttachment.setSpoiler(true);
-          }
-          messageOptions.files.push(msgAttachment);
 
         }
-        if (data.attachments[i].tipo == "0" || data.attachments[i].tipo == undefined) {
-          const attachment = data.attachments[i];
-          const url = this.evalMessage(attachment?.url, cache);
-          if (url) {
-            const spoiler = !!attachment?.spoiler;
-            const name = this.evalMessage(attachment?.name, cache) || (spoiler ? Util.basename(url) : undefined);
-            const msgAttachment = new MessageAttachment(url, name);
-            if (spoiler) {
-              msgAttachment.setSpoiler(true);
-            }
-            messageOptions.files.push(msgAttachment);
-          }
-        }
-        if (data.attachments[i].tipo == "3") {
-          const attachment = data.attachments[i];
-          const varnamer = this.evalMessage(attachment?.canvasnome, cache);
-          const varid = this.evalMessage(attachment?.canvasvar, cache);
-          const conteudodata = this.getVariable(varid, varnamer, cache)
-          const spoiler = !!attachment?.spoiler;
-          var name = this.evalMessage(attachment?.name, cache)
-          if (name == "") { name = "texto.txt" }
-          const buffer = Buffer.from(conteudodata)
-          const msgAttachment = new MessageAttachment(buffer, name);
-          if (spoiler) {
-            msgAttachment.setSpoiler(true);
-          }
-          messageOptions.files.push(msgAttachment);
-        }
+
+
       }
     }
 
@@ -2280,7 +2579,11 @@ xinspace{padding:5px 0px 0px 0px;display:block}
       }
     };
 
-    const isMessageTarget = target instanceof this.getDBM().DiscordJS.Message;
+    if(data.di == true){
+    isMessageTarget = target
+    } else {
+    isMessageTarget = target instanceof this.getDBM().DiscordJS.Message;
+    }
 
     const sameId = target?.id?.length > 0 && (target?.id ?? "") === cache?.interaction?.channel?.id;
     const sameChannel = channel === 0 || sameId;
