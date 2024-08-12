@@ -17,7 +17,11 @@ module.exports = {
       "Limpar valores",
       "Consultar",
       "Buscar valor exato da coluna",
-      "Buscar linhas [Matches Regex]"
+      "Buscar linhas [Matches Regex]",
+      "Deletar linhas",
+      "Somar coluna",
+      "Deletar coluna",
+      "Criar linhas"
     ];
     const info2 = [
       "[Texto]",
@@ -48,7 +52,7 @@ module.exports = {
 
     if (type == varType) {
       vars.push(data.varName);
-      vars.push("Texto ~ Log");
+      vars.push("Dados");
     }
 
     if (typeError == varType) {
@@ -60,13 +64,13 @@ module.exports = {
   },
 
 
-  fields: ["acao", "planilha", "coluna", "valor", "errcmd", "cmd", "storage", "varName", "stringifyOutput", "descriptioncolor", "description", "descriptionx", "iffalse", "iffalseVal", "errs", "errv", "actionserr",],
+  fields: ["acao", "planilha", "coluna", "valor", "errcmd", "cmd", "storage", "varName", "segundo", "terceiro", "stringifyOutput", "descriptioncolor", "description", "descriptionx", "iffalse", "iffalseVal", "errs", "errv", "actionserr",],
 
 
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
     <div style="width: 100%; padding:1px 0px;height: calc(100vh - 160px);overflow:auto">
 
@@ -80,25 +84,37 @@ module.exports = {
       <select id="acao" class="round"  onchange="glob.onComparisonChanged2(this)">
       <option value="0" selected>Acrescentar [Pula de linha se houver algum valor, Use JSON]</option>
       <option value="1">Alterar valores [Use JSON]</option>
-      <option value="2">Atualizar valor [Use apenas números]</option>
-      <option value="3">Limpar valores</option>
-      <option value="4">Consultar</option>
-      <option value="5">Buscar linha [valor exato da coluna]</option>
+      <option value="2">Atualizar valor [Use apenas números no valor]</option>
+      <option value="5">Buscar linha [busca o valor exato, Use o exemplo Página1!A:A]</option>
       <option value="6">Buscar linhas [Matches Regex]</option>
-      </optgroup>
+      <option value="3">Limpar valores</option>
+      <option value="7">Deletar linhas [Coloque apenas o nome da página]</option>
+      <option value="9">Deletar coluna [Coloque apenas o nome da página]</option>
+      <option value="10">Criar linhas [Coloque apenas o nome da página]</option>
+      <option value="8">Somar coluna</option>
+      <option value="4">Consultar</option>
       </select>
 
        <xinspace>
 
     <div>
-    <span class="dbminputlabel">Página!Coluna</span><br>
-    <input id="coluna" class="round" type="text" placeholder="Página1!A1">
+    <span class="dbminputlabel" id="alterartextoa">Página!Coluna</span><br>
+    <input id="coluna" class="round" type="text" placeholder="Página1!A1 ou Página1!A:A para toda a coluna">
     </div>
 
      <xinspace>
 
+     <div id="ocultado2">
+<table><tr><td style="padding:2px"> <span class="dbminputlabel" id="alterartextob">Inicio</span>
+              <input id="segundo" class="round" type="text"></td>
+              <td id="nhamnham" style="padding:2px"><span class="dbminputlabel" id="alterartextoc">Até a linha</span>
+              <input id="terceiro" class="round" type="text"></tr></table>
+</div>
+    
+
      <div id="ocultado">
-    <span class="dbminputlabel">Valor</span><br>
+      <xinspace>
+    <span class="dbminputlabel">Valor ~ EVAL</span><br>
     <textarea id="valor" rows="2" style="width: 100%; font-family: monospace; white-space: nowrap" placeholder="['Valor1', 'Valor2']"></textarea>
 </div>
   
@@ -106,8 +122,8 @@ module.exports = {
   <div id="xinxylagotoso">
       <span class="dbminputlabel">Resultado da Consulta ~ Saída</span><br>
     <select id="stringifyOutput" class="round">
-      <option value="0">Texto</option>
-      <option value="1" selected>JSON</option>
+      <option value="0">Formato: Texto</option>
+      <option value="1" selected>Formato: JSON ~ Objeto</option>
     </select>
      <xinspace>
   <div style="float: left; width: 35%;">
@@ -279,17 +295,54 @@ tlt{background:rgba(0,0,0,0.2);border: 1px solid rgba(50,50,50,0.2);padding:4px;
     const { glob, document } = this;
 
     glob.onComparisonChanged2 = function (event) {
+
+      const alterartextoa = document.getElementById('alterartextoa')
+      const alterartextob = document.getElementById('alterartextob')
+      const alterartextoc = document.getElementById('alterartextoc')
+
       if (event.value == 0 || event.value == 1 || event.value == 2 || event.value == 5 || event.value == 6) {
         document.getElementById("xinxylagotoso").style.display = null;
         document.getElementById("ocultado").style.display = null;
+        document.getElementById("ocultado2").style.display = "none";
+        alterartextoa.innerHTML = 'Página!Coluna'
       }
       if (event.value == 3) {
         document.getElementById("xinxylagotoso").style.display = "none";
         document.getElementById("ocultado").style.display = "none";
+        document.getElementById("ocultado2").style.display = "none";
+        alterartextoa.innerHTML = 'Página!Coluna'
       }
-      if (event.value == 4) {
+      if (event.value == 4 || event.value == 8) {
         document.getElementById("xinxylagotoso").style.display = null;
         document.getElementById("ocultado").style.display = "none";
+        document.getElementById("ocultado2").style.display = "none";
+        alterartextoa.innerHTML = 'Página!Coluna'
+      }
+      if (event.value == 7) {
+        document.getElementById("xinxylagotoso").style.display = "none";
+        document.getElementById("ocultado").style.display = "none";
+        document.getElementById("ocultado2").style.display = null;
+        document.getElementById("nhamnham").style.display = null;
+        alterartextoa.innerHTML = 'Página'
+        alterartextob.innerHTML = 'Apagar linha'
+        alterartextoc.innerHTML = 'Até a linha'
+      }
+      if (event.value == 9) {
+        document.getElementById("xinxylagotoso").style.display = "none";
+        document.getElementById("ocultado").style.display = "none";
+        document.getElementById("ocultado2").style.display = null;
+        document.getElementById("nhamnham").style.display = "none";
+        alterartextoa.innerHTML = 'Página'
+        alterartextob.innerHTML = 'Letra da coluna'
+      }
+      if (event.value == 10) {
+        document.getElementById("xinxylagotoso").style.display = "none";
+        document.getElementById("ocultado").style.display = "none";
+        document.getElementById("ocultado2").style.display = null;
+        document.getElementById("nhamnham").style.display = null;
+        alterartextoa.innerHTML = 'Página'
+        alterartextob.innerHTML = 'Nº da linha'
+        alterartextoc.innerHTML = 'Nº de linhas a serem inseridas'
       }
     }
     glob.onComparisonChanged2(document.getElementById('acao'), 'onComparisonChanged2')
@@ -462,7 +515,7 @@ tlt{background:rgba(0,0,0,0.2);border: 1px solid rgba(50,50,50,0.2);padding:4px;
       const authClient = await getAuthClient();
       const sheets = google.sheets({ version: 'v4', auth: authClient });
 
-        const response = await sheets.spreadsheets.values.get({
+      const response = await sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         range: range,
       });
@@ -474,47 +527,206 @@ tlt{background:rgba(0,0,0,0.2);border: 1px solid rgba(50,50,50,0.2);padding:4px;
         return null;
       }
 
-     
+
       for (let i = 0; i < values.length; i++) {
         if (values[i][0] == searchValue) {
-          return i + 1; 
+          return i + 1;
         }
       }
 
-      return null; 
+      return null;
 
     }
 
 
     async function findValuesInColumnWithRegex(sheetId, range, regexPattern) {
-        const authClient = await getAuthClient();
-        const sheets = google.sheets({ version: 'v4', auth: authClient });
-    
-        const response = await sheets.spreadsheets.values.get({
-          spreadsheetId: sheetId,
-          range: range,
-        });
-    
-        const values = response.data.values;
-    
-        if (!values || values.length === 0) {
-          if (data.cmd === true) { console.log('Nenhum dado encontrado.'); };
-          return null;
-        }
+      const authClient = await getAuthClient();
+      const sheets = google.sheets({ version: 'v4', auth: authClient });
 
-        const regex = new RegExp(regexPattern);
+      const response = await sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        range: range,
+      });
 
-        const matches = [];
-        for (let i = 0; i < values.length; i++) {
-          if (regex.test(values[i][0])) {
-            matches.push({ row: i + 1, value: values[i][0] });
-          }
+      const values = response.data.values;
+
+      if (!values || values.length === 0) {
+        if (data.cmd === true) { console.log('Nenhum dado encontrado.'); };
+        return null;
+      }
+
+      const regex = new RegExp(regexPattern);
+
+      const matches = [];
+      for (let i = 0; i < values.length; i++) {
+        if (regex.test(values[i][0])) {
+          matches.push({ row: i + 1, value: values[i][0] });
         }
-    
-        return matches.length > 0 ? matches : null;
+      }
+
+      return matches.length > 0 ? matches : null;
 
     }
 
+    async function deleteRows(sheetId, sheetName, startIndex, endIndex) {
+
+      const authClient = await getAuthClient();
+      const sheets = google.sheets({ version: 'v4', auth: authClient });
+
+      const sheetIdByName = await getSheetIdByName(sheetId, sheetName, sheets);
+
+      const requests = [{
+        deleteDimension: {
+          range: {
+            sheetId: sheetIdByName,
+            dimension: 'ROWS',
+            startIndex: startIndex - 1,
+            endIndex: endIndex
+          }
+        }
+      }];
+
+      const batchUpdateRequest = { requests };
+
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: sheetId,
+        resource: batchUpdateRequest,
+      });
+
+      if (data.cmd === true) { console.log(`Linhas de ${startIndex} a ${endIndex} deletadas com sucesso.`) };
+
+    }
+
+    async function getSheetIdByName(spreadsheetId, sheetName, sheets) {
+      const response = await sheets.spreadsheets.get({
+        spreadsheetId: spreadsheetId,
+      });
+
+      const sheet = response.data.sheets.find(sheet => sheet.properties.title === sheetName);
+      if (!sheet) {
+        throw new Error(`A aba com o nome "${sheetName}" não foi encontrada.`);
+      }
+      return sheet.properties.sheetId;
+    }
+
+    async function sumColumnValues(sheetId, range) {
+      const authClient = await getAuthClient();
+      const sheets = google.sheets({ version: 'v4', auth: authClient });
+
+
+      const response = await sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        range: range,
+      });
+
+      const values = response.data.values;
+
+      if (!values || values.length === 0) {
+        if (data.cmd === true) { console.log('Nenhum dado encontrado.')};
+        return 0;
+      }
+
+
+      let sum = 0;
+      for (let i = 0; i < values.length; i++) {
+        const rawValue = values[i][0];
+        if (rawValue) {
+          const cleanedValue = rawValue.replace(/[^0-9,-]+/g, '').replace(',', '.');
+          const numericValue = parseFloat(cleanedValue);
+          if (!isNaN(numericValue)) {
+            sum += numericValue;
+          }
+        }
+      }
+
+      return sum;
+
+    }
+
+    function columnLetterToIndex(letter) {
+      let column = 0;
+      const length = letter.length;
+      
+      for (let i = 0; i < length; i++) {
+        column += (letter.charCodeAt(i) - 64) * Math.pow(26, length - i - 1);
+      }
+      
+      return column - 1;
+    }
+
+    async function deleteColumn(sheetId, sheetName, columnLetter) {
+        const authClient = await getAuthClient();
+        const sheets = google.sheets({ version: 'v4', auth: authClient });
+    
+        const sheetIdByName = await getSheetIdByName(sheetId, sheetName, sheets);
+    
+        const columnIndex = columnLetterToIndex(columnLetter);
+    
+        const requests = [{
+          deleteDimension: {
+            range: {
+              sheetId: sheetIdByName,
+              dimension: 'COLUMNS',
+              startIndex: columnIndex,
+              endIndex: columnIndex + 1
+            }
+          }
+        }];
+    
+        const batchUpdateRequest = { requests };
+    
+        await sheets.spreadsheets.batchUpdate({
+          spreadsheetId: sheetId,
+          resource: batchUpdateRequest,
+        });
+    
+        if (data.cmd === true) { console.log(`Coluna ${columnLetter} deletada com sucesso.`) };
+
+    }
+    
+    async function getSheetIdByName(spreadsheetId, sheetName, sheets) {
+      const response = await sheets.spreadsheets.get({
+        spreadsheetId: spreadsheetId,
+      });
+    
+      const sheet = response.data.sheets.find(sheet => sheet.properties.title === sheetName);
+      if (!sheet) {
+        throw new Error(`A aba com o nome "${sheetName}" não foi encontrada.`);
+      }
+      return sheet.properties.sheetId;
+    }
+
+
+
+    async function addRows(sheetId, sheetName, startRowIndex, numRows) {
+        const authClient = await getAuthClient();
+        const sheets = google.sheets({ version: 'v4', auth: authClient });
+    
+
+        const sheetIdByName = await getSheetIdByName(sheetId, sheetName, sheets);
+    
+        const requests = [{
+          insertDimension: {
+            range: {
+              sheetId: sheetIdByName,
+              dimension: 'ROWS',
+              startIndex: startRowIndex - 1,
+              endIndex: startRowIndex - 1 + numRows
+            },
+            inheritFromBefore: false
+          }
+        }];
+    
+        const batchUpdateRequest = { requests };
+    
+        await sheets.spreadsheets.batchUpdate({
+          spreadsheetId: sheetId,
+          resource: batchUpdateRequest,
+        });
+    
+        if (data.cmd === true) { console.log(`${numRows} linha(s) inserida(s) a partir da linha ${startRowIndex}.`)};
+
+    }
 
 
     (async () => {
@@ -551,24 +763,44 @@ tlt{background:rgba(0,0,0,0.2);border: 1px solid rgba(50,50,50,0.2);padding:4px;
         }
         if (data.acao == "5") {
           result = await findValueInColumn(sheetId, range, values);
-          if(result == null){ result = 0}
+          if (result == null) { result = 0 }
           if (data.cmd === true) { console.log('Valor encontrado na linha: ' + result); }
         }
         if (data.acao == "6") {
           result = await findValuesInColumnWithRegex(sheetId, range, values);
 
           if (result !== null) {
-                
-              if (data.cmd === true) { console.log(result);}
-        
+
+            if (data.cmd === true) { console.log(result); }
+
           }
 
-          if(result == null){ result = 0}
-          
-          
+          if (result == null) { result = 0 }
+
+
+        }
+        if (data.acao == "7") {
+          segundo = parseFloat(this.evalMessage(data.segundo, cache));
+          terceiro = parseFloat(this.evalMessage(data.terceiro, cache));
+          result = await deleteRows(sheetId, range, segundo, terceiro);
+        }
+        if (data.acao == "8") {
+          result = await sumColumnValues(sheetId, range);
+
+            if (data.cmd === true) { console.log(`A soma dos valores na coluna é: ${result}`) }
+
+        }
+        if (data.acao == "9") {
+          segundo = this.evalMessage(data.segundo, cache);
+          result = await deleteColumn(sheetId, range, segundo);
+        }
+        if (data.acao == "10") {
+          segundo = parseFloat(this.evalMessage(data.segundo, cache));
+          terceiro = parseFloat(this.evalMessage(data.terceiro, cache));
+          result = await addRows(sheetId, range, segundo, terceiro);
         }
 
-        if (data.acao == "0" || data.acao == "1" || data.acao == "2" || data.acao == "4" || data.acao == "5" || data.acao == "6") {
+        if (data.acao == "0" || data.acao == "1" || data.acao == "2" || data.acao == "4" || data.acao == "5" || data.acao == "6" || data.acao == "8") {
           const varName = this.evalMessage(data.varName, cache);
           const storage = parseInt(data.storage, 10);
 
