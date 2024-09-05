@@ -1090,9 +1090,11 @@ const ActionsCache = (Actions.ActionsCache = class ActionsCache {
             );
 
         } else {
+          if(Actions.getDefaultResponseText() == " "){
+          this.interaction.deferUpdate()
+          }
           this.interaction.reply(replyData)
           .catch((err) => {
-
             if(Actions.getDefaultResponseText() !== " "){
             Actions.displayError(null, this, err)}
 
