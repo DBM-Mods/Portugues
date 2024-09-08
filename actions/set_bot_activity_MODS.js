@@ -15,7 +15,8 @@ module.exports = {
       "Ouvindo",
       "Assistindo",
       "Transmitindo",
-      "Competindo"
+      "Competindo",
+      "Nenhum"
     ];
 
     const stats = ["Online", "Ausente", "Invisível", "Ocupado"];
@@ -43,6 +44,7 @@ module.exports = {
 									<option value="2">Assistindo</option>
 									<option value="3">Transmitindo</option>
                   <option value="4">Competindo</option>
+                  <option value="5">Nenhum</option>
 								</select>
 							</div>
 							<div style="width: 50%; padding-left: 10px">
@@ -134,6 +136,9 @@ module.exports = {
         case 4:
           target = "COMPETING";
           break;
+        case 5:
+          target = "CUSTOM";
+          break;
       }
     }
 
@@ -168,25 +173,26 @@ module.exports = {
             status: statustarget,
           }
         }
-      }}
-
-
-      try {
-
-        botClient
-          .setPresence(obj)
-          
-      } catch (error) {
-        console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name);
-        console.log(`${error.stack ? error.stack : error}`);
       }
+    }
 
 
-      this.callNextAction(cache);
+    try {
 
-    },
+      botClient
+        .setPresence(obj)
+
+    } catch (error) {
+      console.log('ERROR: ' + cache.toString() + ' - Action ' + (cache.index + 1) + '# ' + data.name);
+      console.log(`${error.stack ? error.stack : error}`);
+    }
+
+
+    this.callNextAction(cache);
+
+  },
 
 
 
-    mod: function (DBM) { }
-  };
+  mod: function (DBM) { }
+};
