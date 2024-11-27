@@ -206,7 +206,7 @@ module.exports = {
   html(isEvent, data) {
     return `
     <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.4</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 1.5</div>
 
     <div style="width: 100%; padding:5px 0px;height: calc(100vh - 160px);overflow:auto">
 
@@ -566,34 +566,42 @@ module.exports = {
         result = member.premiumSinceTimestamp;
         break;
       case 37:
+        try{
         invites = await targetServer.invites.fetch();
         convites = [...invites.values()];
         convites = convites.map(v => v.inviter)
         convite = convites.filter((item) => item.id == member.id)
         result = convite.length
+      }  catch (err) { result = 0 }
         break;
       case 38:
+        try{
         invites = await targetServer.invites.fetch();
         convites = [...invites.values()];
         convites = convites.map(v => v)
         convite = convites.filter((item) => item.inviter.id == member.id)
         result = convite
+        }  catch (err) { result = 0 }
         break;
       case 39:
+        try{
         invites = await targetServer.invites.fetch();
         convites = [...invites.values()];
         convites = convites.map(v => v)
         convite = convites.filter((item) => item.inviter.id == member.id)
         convite = convite.map(v => v.uses)
         result = convite
+      }  catch (err) { result = 0 }
         break;
       case 40:
+        try{
         invites = await targetServer.invites.fetch();
         convites = [...invites.values()];
         convites = convites.map(v => v)
         convite = convites.filter((item) => item.inviter.id == member.id)
         convite = convite.map(v => v.uses)
         result = convite.reduce((acumulador, numero) => acumulador + numero, 0);
+      }  catch (err) { result = 0 }
         break;
       default:
         break;
