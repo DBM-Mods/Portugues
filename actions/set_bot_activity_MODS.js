@@ -16,12 +16,12 @@ module.exports = {
       "Assistindo",
       "Transmitindo",
       "Competindo",
-      "Nenhum"
+      "Customizado"
     ];
 
     const stats = ["Online", "Ausente", "Invisível", "Ocupado"];
 
-    return `Status: ${stats[data.stats]} - ${activities[data.activity]} ${data.nameText}`;
+    return `Status: ${stats[data.stats]} - ${activities[data.activity]}: ${data.nameText}`;
   },
 
 
@@ -32,7 +32,7 @@ module.exports = {
     return `
 
         <div class="dbmmodsbr1 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues/archive/refs/heads/main.zip">Atualizar</div>
-    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.1</div>
+    <div class="dbmmodsbr2 xinelaslink" data-url="https://github.com/DBM-Mods/Portugues">Versão 0.2</div>
 
      
 						<div style="display: flex;">
@@ -44,7 +44,7 @@ module.exports = {
 									<option value="2">Assistindo</option>
 									<option value="3">Transmitindo</option>
                   <option value="4">Competindo</option>
-                  <option value="5">Nenhum</option>
+                  <option value="5">Customizado</option>
 								</select>
 							</div>
 							<div style="width: 50%; padding-left: 10px">
